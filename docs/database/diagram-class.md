@@ -56,11 +56,16 @@ classDiagram
     }
 
     class ANSWER {
-        boolean has_won
     }
 
     class ANSWER_TEXT {
         string[255] content
+    }
+
+    class WINNER {
+        id id PK
+        id auditor_id FK AUDITOR.id
+        id interaction_id FK INTERACTION.id
     }
 
     class CALL_TO_ACTION {
@@ -100,7 +105,11 @@ classDiagram
     CALL_TO_ACTION -- "1..1" MEDIA : has et CI-13
     MEDIA -- "0..*" CALL_TO_ACTION : belongs_to et CI-13
 
-    ANSWER -- ANSWER : CI-14, CI-15 et CI-16
+I   NTERACTION -- "0..*" WINNER : has et CI-14, CI-15 et CI-16
+    WINNER -- "1..1" INTERACTION : belongs_to CI-14, CI-15 et CI-16
+
+    AUDITOR -- "0..*" WINNER : wins et CI-10
+    WINNER -- "1..1" AUDITOR
 
     ANSWER -- "1..1" QUESTION_CHOICE : responds_with et CI-10
     QUESTION_CHOICE -- "0..*" ANSWER : responds_to et CI-10

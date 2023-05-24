@@ -56,6 +56,7 @@ classDiagram
         datetime ended_at
         id animator_id FK ANIMATOR.id
         id reward_id FK REWARD.id NULL
+        int winners_quantity NULL
     }
 
     class REWARD {
@@ -74,7 +75,6 @@ classDiagram
 
     class ANSWER {
         id id PK
-        boolean has_won
         id auditor_id FK AUDITOR.id
         id interaction_id FK INTERACTION.id
         id responds_with_id FK [MEDIA.id|ANSWER_TEXT.id|QUESTION_CHOICE.id]
@@ -83,6 +83,12 @@ classDiagram
     class ANSWER_TEXT {
         id id PK
         string[255] content
+    }
+
+    class WINNER {
+        id id PK
+        id auditor_id FK AUDITOR.id
+        id interaction_id FK INTERACTION.id
     }
 
     class CALL_TO_ACTION {
@@ -114,5 +120,7 @@ classDiagram
     ANSWER --> ANSWER_TEXT : CI-11
     ANSWER --> QUESTION_CHOICE : CI-10
     ANSWER --> MEDIA : CI-9 et CI-13
-    ANSWER -- ANSWER : CI-14, CI-15 et CI-16
+
+    WINNER --> INTERACTION : CI-14, CI-15 et CI-16
+    WINNER --> AUDITOR
 ```
