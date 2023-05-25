@@ -62,7 +62,6 @@ classDiagram
     class REWARD {
         id id PK
         string[255] name
-        id interaction_id FK INTERACTION.id
         id media_id FK MEDIA.id NULL
     }
 
