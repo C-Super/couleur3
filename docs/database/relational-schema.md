@@ -51,7 +51,7 @@ classDiagram
     class INTERACTION {
         id id PK
         string title
-        enum[MCQ|SURVEY|TEXT|AUDIO|PICTURE|VIDEO] type
+        enum[MCQ|SURVEY|TEXT|AUDIO|PICTURE|VIDEO|CTA] type
         datetime created_at
         datetime ended_at
         id animator_id FK ANIMATOR.id
