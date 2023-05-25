@@ -11,7 +11,7 @@ classDiagram
     }
 
     class USER {
-        string email UNIQUE
+        string email PK
         string password
     }
 
