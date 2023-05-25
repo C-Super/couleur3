@@ -1,15 +1,48 @@
 ```mermaid
 ---
-title: Diagramme de séquence Animateur active/désactive le chat le chat
+title: Diagramme de séquence Animateur création d'une interaction photo
 ---
 sequenceDiagram
-    participant Animateur as Animateur (Frontend)
+    participant Auditeur
+    participant Animateur
+    participant FrontendAuditeur as Frontend (Auditeur)
+    participant FrontendAnimateur as Frontend (Animateur)
+    participant Event as Event Server (Pusher)
     participant Backend as Backend (Laravel)
     participant DB as Base de données
 
-    Animateur->>Backend: Publie une interaction avec une photo
-    Backend->>Backend: Vérifie que l'animateur a le droit de publier une interaction (CI-1)
-    Backend->>Backend: Vérifie que le type de média correspond au type de l'interaction (CI-9)
-    Backend->>DB: Enregistre l'interaction
-    DB->>Backend: Renvoie les détails de l'interaction enregistrée
-    Backend->>Animateur: Confirme la publication de l'interaction
+    Animateur->>FrontendAnimateur: Publie une interaction avec une photo
+    activate FrontendAnimateur
+
+    FrontendAnimateur->>+Backend: requestCreatePhotoInteraction()
+    activate Backend
+
+    Backend->>+DB: getCurrentInteractions()
+    activate DB
+
+    DB-->>-Backend: CurrentInteractions
+    deactivate DB
+
+    Backend->>Backend: noOtherInteractionsInProgress()
+    Backend->>Backend: isValidMediaTypeForInteraction()
+
+    Backend->>+DB: saveInteraction()
+    activate DB
+
+    DB-->>-Backend: InteractionDetails
+    deactivate DB
+
+    Backend->>FrontendAnimateur: confirmInteractionPublication()
+    deactivate Backend
+
+    FrontendAnimateur->>Animateur: Confirme la publication de l'interaction
+    deactivate FrontendAnimateur
+
+    Backend->>+Event: notifyNewInteraction()
+    activate Event
+
+    Event-->>FrontendAuditeur: sendNewInteractionToAuditors()
+    deactivate Event
+
+    FrontendAuditeur->>Auditeur: Affiche l'interaction
+

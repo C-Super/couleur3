@@ -3,16 +3,40 @@
 title: Diagramme de séquence Animateur lance une interaction CTA
 ---
 sequenceDiagram
-    participant Animateur as Animateur (Frontend)
-    participant Auditeur as Auditeur (Frontend)
+    participant Auditeur
+    participant Animateur
+    participant FrontendAuditeur as Frontend (Auditeur)
+    participant FrontendAnimateur as Frontend (Animateur)
+    participant Event as Event Server (Pusher)
     participant Backend as Backend (Laravel)
     participant DB as Base de données
 
-    Animateur->>Backend: Demande de terminer une interaction
-    Backend->>DB: Met à jour l'interaction avec "ended_at" à maintenant
-    DB->>Backend: Renvoie les détails de l'interaction mise à jour
-    Backend->>Animateur: Confirme la fin de l'interaction
-    Backend->>Auditeur: Notifie la fin de l'interaction
+    Animateur->>FrontendAnimateur: Demande de terminer une interaction
+    activate FrontendAnimateur
+
+    FrontendAnimateur->>+Backend: requestEndInteraction()
+    activate Backend
+
+    Backend->>+DB: updateInteractionEndTime()
+    activate DB
+
+    DB-->>-Backend: UpdatedInteractionDetails
+    deactivate DB
+
+    Backend->>FrontendAnimateur: confirmEndOfInteraction()
+    deactivate Backend
+
+    FrontendAnimateur->>Animateur: Confirme la fin de l'interaction
+    deactivate FrontendAnimateur
+
+    Backend->>+Event: notifyEndOfInteraction()
+    activate Event
+
+    Event-->>FrontendAuditeur: sendEndOfInteraction()
+    deactivate Event
+
+    FrontendAuditeur->>Auditeur: Affiche la fin de l'interaction
+
 
 
 

@@ -3,18 +3,45 @@
 title: Diagramme de séquence Animateur active/désactive le chat le chat
 ---
 sequenceDiagram
-    participant Auditeur as Auditeur (Frontend)
-    participant Animateur as Animateur (Frontend)
+    participant Auditeur
+    participant Animateur
+    participant FrontendAuditeur as Frontend (Auditeur)
+    participant FrontendAnimateur as Frontend (Animateur)
+    participant Event as Event Server (Pusher)
     participant Backend as Backend (Laravel)
     participant DB as Base de données
-    Animateur->>Backend: Demande d'activation/désactivation du chat
-    Backend->>DB: Vérifie la configuration "is_chat_enabled"
+
+    Animateur->>FrontendAnimateur: Demande d'activation/désactivation du chat
+    activate FrontendAnimateur
+
+    FrontendAnimateur->>+Backend: toggleChatStatus()
+    activate Backend
+
+    Backend->>+DB: checkChatStatus()
+    activate DB
+
     alt is_chat_enabled est vrai
-        DB->>Backend: Renvoie "Le chat est déjà activé"
-        Backend->>Animateur: Affiche "Le chat est déjà activé"
+        DB-->>-Backend: "Le chat est déjà activé"
+
+        Backend-->>FrontendAnimateur: showChatStatus("Le chat est déjà activé")
+        deactivate Backend
+
     else is_chat_enabled est faux
-        DB->>Backend: Modifie la valeur de "is_chat_enabled" à vrai
-        Backend->>Animateur: Confirme l'activation du chat
-        Backend->>Auditeur: Affiche le chat
+        DB-->>-Backend: setChatStatus(true)
+
+        Backend-->>FrontendAnimateur: confirmChatStatus(true)
+        deactivate Backend
+
+        FrontendAnimateur->>Animateur: Notifie chat activé
+
+        Backend->>+Event: notifyChatActivation()
+        activate Event
+
+        Event-->>FrontendAuditeur: chatActivatedNotification()
+        deactivate Event
+
+        FrontendAuditeur->>Auditeur: chat activé
     end
+    deactivate FrontendAnimateur
+
 

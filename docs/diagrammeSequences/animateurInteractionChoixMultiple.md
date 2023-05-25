@@ -3,16 +3,47 @@
 title: Diagramme de séquence Animateur lance une interaction à choix multiple
 ---
 sequenceDiagram
-    participant Animateur as Animateur (Frontend)
-    participant Auditeur as Auditeur (Frontend)
+    participant Auditeur
+    participant Animateur
+    participant FrontendAuditeur as Frontend (Auditeur)
+    participant FrontendAnimateur as Frontend (Animateur)
+    participant Event as Event Server (Pusher)
     participant Backend as Backend (Laravel)
     participant DB as Base de données
 
-    Animateur->>Backend: Demande de lancement d'une interaction MCQ avec N choix (2 <= N <= 6)
-    Backend->>Backend: Vérifie que le nombre de choix est entre 2 et 6 (CI-6)
-    Backend->>DB: Crée une nouvelle interaction de type "MCQ" avec les choix
-    DB->>Backend: Renvoie les détails de l'interaction créée
-    Backend->>Animateur: Confirme la création de l'interaction
-    Backend->>Auditeur: Notifie la nouvelle interaction à choix multiple
+    Animateur->>FrontendAnimateur: Demande de lancement d'une interaction MCQ avec N choix (2 <= N <= 6)
+    activate FrontendAnimateur
+
+    FrontendAnimateur->>+Backend: createMCQInteraction(N)
+    activate Backend
+
+    Backend->>+DB: getCurrentInteractions()
+    activate DB
+
+    DB-->>-Backend: CurrentInteractions
+    deactivate DB
+
+    Backend->>Backend: noOtherInteractionsInProgress()
+    Backend->>Backend: isChoiceNumberValid(N)
+
+    Backend->>+DB: createMCQInteractionWithChoices()
+    activate DB
+
+    DB-->>-Backend: CreatedInteractionDetails
+    deactivate DB
+
+    Backend->>FrontendAnimateur: confirmInteractionCreation()
+    deactivate Backend
+
+    FrontendAnimateur->>Animateur: Confirme la création de l'interaction
+    deactivate FrontendAnimateur
+
+    Backend->>+Event: notifyNewInteraction()
+    activate Event
+
+    Event-->>FrontendAuditeur: sendMCQInteractionToAuditors()
+    deactivate Event
+
+    FrontendAuditeur->>Auditeur: Affiche l'interaction
 
 
