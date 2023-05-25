@@ -25,3 +25,5 @@
 
 18. Si une `INTERACTION` est liée à un `REWARD` alors `winners_quantity` doit être supérieur à 0.
 19. Il ne peut y avoir plus de `WINNER` que d'`INTERACTION` `winners_quantity`.
+
+20. Un `ANIMATOR` ne peut pas créer une nouvelle `INTERACTION` si une autre `INTERACTION` est en cours (`ended_at`).
