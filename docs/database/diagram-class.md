@@ -76,8 +76,8 @@ classDiagram
     ANIMATOR --> USER : inherits et CI-1
     AUDITOR --> USER : inherits et CI-1
 
-    ANIMATOR -- "0..*" INTERACTION : creates
-    INTERACTION -- "1..1" ANIMATOR : created_by
+    ANIMATOR -- "0..*" INTERACTION : creates et CI-20
+    INTERACTION -- "1..1" ANIMATOR : created_by et CI-20
 
     AUDITOR -- "0..*" MESSAGE : sends et CI-2
     MESSAGE -- "1..1" AUDITOR : sent_by et CI-2
