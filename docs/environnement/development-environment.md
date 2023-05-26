@@ -12,10 +12,12 @@ flowchart TB
 
         subgraph devContainer[Conteneur Docker]
             mysql[(MySQL)]
-            php[PHP]
             redis[(Redis)]
+            minio[(Minio)]
+            soketi[Soketi]
+            phpmyadmin[phpMyAdmin]
             mailpit[Mailpit]
-
+            
             remoteSourceCode[Code source]
         end
 
@@ -23,6 +25,8 @@ flowchart TB
         sourceCode -->|synchronisé| remoteSourceCode
     end
 ```
+
+> Nous utilisons Docker pour créer un environnement de développement isolé. Cela permet de ne pas avoir à installer les dépendances sur votre ordinateur et de pouvoir partager le même environnement de développement entre tous les développeurs. Cela permet aussi de ne pas avoir à installer PHP, MySQL, Redis, etc. sur votre ordinateur.
 
 ## Prérequis
 
@@ -54,6 +58,8 @@ cd couleur3 && code .
 
 Si ce n'est pas déjà fait, installer l'extension [Remote Development](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack) dans VS Code.
 
+Et n'oubliez pas de lancer l'application Docker Desktop, avant !
+
 Vous devriez voir une fenêtre de sélection de l'environnement de développement s'ouvrir.
 
 ![Fenêtre de sélection de l'environnement de développement](./development-sources/win-vscode-select-dev-container.png)
@@ -77,5 +83,12 @@ Vous pouvez maintenant ouvrir l'application dans votre navigateur à l'adresse [
 ![Laravel Welcome page](./development-sources/laravel-welcome.png)
 
 Voilàà ! Vous pouvez maintenant commencer à développer.
+
+### 5. Installer les extensions VS Code recommandées
+
+
+### 6. Conclusion
+
+Quand vous ouvrirez VS Code, les prochaines fois, vous pourrez ouvrir le projet dans un conteneur en cliquant sur l'icône de l'antenne dans la barre d'outils.
 
 ## Installation sur Mac
