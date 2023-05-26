@@ -1,6 +1,6 @@
 ```mermaid
 ---
-title: Diagramme de séquence Animateur active/désactive le chat le chat
+title: Diagramme de séquence Animateur crée une interaction audio
 ---
 sequenceDiagram
     participant Auditeur

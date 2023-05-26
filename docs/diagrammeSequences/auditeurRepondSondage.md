@@ -3,18 +3,65 @@
 title: Diagramme de séquence Auditeur répond à une interaction de type "Sondage"
 ---
 sequenceDiagram
-    participant Auditeur as Auditeur (Frontend)
+    participant Auditeur
+    participant Animateur
+    participant FrontendAuditeur as Frontend (Auditeur)
+    participant FrontendAnimateur as Frontend (Animateur)
+    participant Event as Event Server (Pusher)
     participant Backend as Backend (Laravel)
     participant DB as Base de données
 
-    Auditeur->>Backend: Envoie la réponse à une interaction de type "SURVEY"
-    Backend->>Backend: Vérifie que l'interaction n'est pas terminée (CI-3)
-    Backend->>Backend: Vérifie que l'auditeur n'a pas déjà répondu à cette interaction (CI-4)
-    Backend->>Backend: Vérifie que la réponse correspond à une des choix de l'interaction (CI-10)
-    Backend->>DB: Crée une nouvelle réponse avec la référence au choix de la question
-    DB->>Backend: Renvoie les détails de la réponse créée
-    Backend->>Auditeur: Confirme la prise en compte de la réponse
+    Auditeur->>FrontendAuditeur: sendMCQResponse()
+    activate FrontendAuditeur
 
+    FrontendAuditeur->>FrontendAuditeur: verifyInteractionNotFinished()
+    FrontendAuditeur->>FrontendAuditeur: verifyNoPreviousResponse()
+    FrontendAuditeur->>FrontendAuditeur: verifyResponseValidity()
+
+    FrontendAuditeur->>+Backend: relayResponse()
+    activate Backend
+
+    Backend->>+DB: fetchOngoingInteractions()
+    activate DB
+
+    DB-->>-Backend: OngoingInteractions
+    deactivate DB
+
+    Backend->>Backend: verifyInteractionNotFinished()
+    Backend->>+DB: fetchUserResponsesForInteraction()
+    activate DB
+
+    DB-->>-Backend: UserResponsesForInteraction
+    deactivate DB
+
+    Backend->>Backend: verifyNoPreviousResponse()
+    Backend->>+DB: fetchInteractionResponses()
+    activate DB
+
+    DB-->>-Backend: InteractionResponses
+    deactivate DB
+
+    Backend->>Backend: verifyResponseValidity()
+    
+    Backend->>+DB: createNewResponseWithReference()
+    activate DB
+
+    DB-->>-Backend: CreatedResponseDetails
+    deactivate DB
+
+    Backend->>FrontendAuditeur: confirmResponseRecorded()
+    deactivate Backend
+
+    FrontendAuditeur->>Auditeur: displayConfirmation()
+    deactivate FrontendAuditeur
+
+    Backend->>+Event: emitNewResponseEvent()
+    activate Event
+
+    Event->>FrontendAnimateur: newResponseEvent()
+    deactivate Event
+
+    FrontendAnimateur->>Animateur: displayResponse()
 
 
 

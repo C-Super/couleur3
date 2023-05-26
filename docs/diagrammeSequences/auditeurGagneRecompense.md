@@ -3,24 +3,55 @@
 title: Diagramme de séquence Auditeur gagne une récompense
 ---
 sequenceDiagram
-    participant Auditeur as Auditeur (Frontend)
+    participant Auditeur
+    participant FrontendAuditeur as Frontend (Auditeur)
     participant Backend as Backend (Laravel)
     participant DB as Base de données
 
-    Auditeur->>Backend: Demande de récupération des récompenses
-    Backend->>DB: Récupère les récompenses de l'auditeur
-    DB->>Backend: Renvoie les récompenses de l'auditeur
-    Backend->>DB: Récupère les informations de l'utilisateur
-    DB->>Backend: Renvoie les informations de l'utilisateur
-    alt informations utilisateur est complète
-        Backend->>Auditeur: Affiche les récompenses de l'auditeur
-    else informations utilisateur est incomplet
-        Backend->>Auditeur: Demande à l'auditeur de compléter ses informations
-        Auditeur->>Backend: Envoie les informations de l'auditeur
-        Backend->>DB: Met à jour les informations de l'auditeur
-        DB->>Backend: Renvoie les informations de l'auditeur
-        Backend->>Auditeur: Affiche les récompenses de l'auditeur
+    Auditeur->>FrontendAuditeur: Demande une récompense
+    activate FrontendAuditeur
+
+    FrontendAuditeur->>+Backend: requestRewards()
+    activate Backend
+
+    Backend->>+DB: fetchAuditorRewards()
+    activate DB
+
+    DB-->>-Backend: AuditorRewards
+    deactivate DB
+
+    Backend->>Backend: verifyRewardEligibility()
+
+    Backend->>+DB: fetchAuditorInformation()
+    activate DB
+
+    DB-->>-Backend: AuditorInformation
+    deactivate DB
+    
+    Backend->>Backend: verifyAuditorInformationCompleteness()
+
+    alt Auditor Information Complete
+        Backend->>Auditeur: displayRewards()
+        deactivate Backend
+    else Auditor Information Incomplete
+        Backend->>Auditeur: requestCompleteInformation()
+        deactivate Backend
+
+        Auditeur->>+Backend: sendCompleteInformation()
+        activate Backend
+
+        Backend->>+DB: updateAuditorInformation()
+        activate DB
+
+        DB-->>-Backend: UpdatedAuditorInformation
+        deactivate DB
+
+        Backend->>FrontendAuditeur: displayRewards()
+        deactivate Backend
+        
+        FrontendAuditeur->>Auditeur: Affiche la récompense
     end
+
      
 
 

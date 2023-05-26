@@ -1,19 +1,48 @@
 ```mermaid
 ---
-title: Diagramme de séquence Animateur active/désactive le chat le chat
+title: Diagramme de séquence Animateur lance une interaction vidéo
 ---
 sequenceDiagram
-    participant Auditeur as Auditeur (Frontend)
-    participant Animateur as Animateur (Frontend)
+    participant Auditeur
+    participant Animateur
+    participant FrontendAuditeur as Frontend (Auditeur)
+    participant FrontendAnimateur as Frontend (Animateur)
     participant Event as Event Server (Pusher)
     participant Backend as Backend (Laravel)
     participant DB as Base de données
 
-    Animateur->>Backend: Publie une interaction avec une vidéo
-    Backend->>Backend: Vérifie qu'il n'y a pas d'autres interactions en cours
-    Backend->>Backend: Vérifie que le type de média correspond au type de l'interaction
-    Backend->>DB: Enregistre l'interaction
-    DB->>Backend: Renvoie les détails de l'interaction enregistrée
-    Backend->>Animateur: Confirme la publication de l'interaction
-    Backend->>Event: Notifie qu'il y a une nouvelle interaction
-    Event->>Auditeur: Envoie l'interaction aux auditeurs
+    Animateur->>FrontendAnimateur: Demande de lancement d'une interaction vidéo
+    activate FrontendAnimateur
+
+    FrontendAnimateur->>+Backend: requestCreateVideoInteraction()
+    activate Backend
+
+    Backend->>+DB: getCurrentInteractions()
+    activate DB
+
+    DB-->>-Backend: CurrentInteractions
+    deactivate DB
+
+    Backend->>Backend: noOtherInteractionsInProgress()
+    Backend->>Backend: verifyMediaMatchesInteractionType()
+
+    Backend->>+DB: createVideoInteraction()
+    activate DB
+
+    DB-->>-Backend: InteractionDetails
+    deactivate DB
+
+    Backend->>FrontendAnimateur: confirmInteractionCreation()
+    deactivate Backend
+
+    FrontendAnimateur->>Animateur: Confirme la création de l'interaction
+    deactivate FrontendAnimateur
+
+    Backend->>+Event: notifyNewVideoInteraction()
+    activate Event
+
+    Event-->>FrontendAuditeur: sendNewVideoInteraction()
+    deactivate Event
+
+    FrontendAuditeur->>Auditeur: Affiche l'interaction
+

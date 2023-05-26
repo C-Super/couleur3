@@ -1,16 +1,45 @@
 ```mermaid
 ---
-title: Diagramme de séquence Animateur active/désactive le chat le chat
+title: Diagramme de séquence Interaction finit
 ---
 sequenceDiagram
+    participant Auditeur
+    participant Animateur
+    participant FrontendAuditeur as Frontend (Auditeur)
+    participant FrontendAnimateur as Frontend (Animateur)
+    participant Event as Event Server (Pusher)
     participant Backend as Backend (Laravel)
-    participant DB as Base de données
+    participant DB as Database
 
-    Backend->>DB: Vérifie le temps restant de l'interaction
-    DB->>Backend: Renvoie le temps restant
-    Backend->>Backend: Si le temps est écoulé, termine l'interaction
-    Backend->>DB: Met à jour l'état de l'interaction
-    DB->>Backend: Renvoie l'état mis à jour de l'interaction
+    Backend->>+DB: Queries Remaining Interaction Time
+    activate DB
+
+    DB-->>-Backend: Returns Remaining Time
+    deactivate DB
+
+    Backend->>Backend: If Time is Up, Ends Interaction
+
+    Backend->>+DB: Updates Interaction Status
+    activate DB
+
+    DB-->>-Backend: Returns Updated Interaction Status
+    deactivate DB
+
+    Backend->>+Event: Emits Interaction End Event
+    activate Event
+
+    Event-->>FrontendAuditeur: newInteractionEvent()
+    deactivate Event
+
+    FrontendAuditeur->>Auditeur: displayInteractionEnded()
+    FrontendAuditeur->>Auditeur: disableInteraction()
+
+    Event->>+FrontendAnimateur: newInteractionEvent()
+    activate FrontendAnimateur
+
+    FrontendAnimateur->>Animateur: Display Interaction End
+    deactivate FrontendAnimateur
+
 
 
 

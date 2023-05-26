@@ -1,6 +1,6 @@
 ```mermaid
 ---
-title: Diagramme de séquence Auditeur répond à une interaction de type "Sondage"
+title: Diagramme de séquence Animateur choisit une récompense
 ---
 sequenceDiagram
     participant Animateur

@@ -1,6 +1,6 @@
 ```mermaid
 ---
-title: Diagramme de séquence Animateur lance une interaction CTA
+title: Diagramme de séquence Animateur met fin à une interaction
 ---
 sequenceDiagram
     participant Auditeur
