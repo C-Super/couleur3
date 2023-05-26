@@ -17,32 +17,35 @@ sequenceDiagram
     FrontendAnimateur->>+Backend: publishAudioInteraction()
     activate Backend
 
-    Backend->>+DB: getCurrentInteractions()
-    activate DB
+    alt Animateur a les autorisations
+        Backend->>Backend: validateAndCleanAudioInput()
 
-    DB-->>-Backend: CurrentInteractions
-    deactivate DB
+        Backend->>+DB: getCurrentInteractions()
+        activate DB
 
-    Backend->>Backend: noOtherInteractionsInProgress()
-    Backend->>Backend: isMediaTypeMatchingInteractionType()
+        DB-->>-Backend: CurrentInteractions
+        deactivate DB
 
-    Backend->>+DB: registerInteraction()
-    activate DB
+        Backend->>Backend: validateCurrentInteractions() and validateMediaType()
 
-    DB-->>-Backend: RegisteredInteractionDetails
-    deactivate DB
+        Backend->>+DB: registerInteraction()
+        activate DB
 
-    Backend->>FrontendAnimateur: confirmInteractionPublication()
-    deactivate Backend
+        DB-->>-Backend: RegisteredInteractionDetails
+        deactivate DB
 
-    FrontendAnimateur->>Animateur: Confirme la publication de l'interaction
-    deactivate FrontendAnimateur
+        Backend-->>FrontendAnimateur: confirmInteractionPublication()
+        deactivate Backend
+        deactivate FrontendAnimateur
 
-    Backend->>+Event: notifyNewInteraction()
-    activate Event
+        Backend->>+Event: notifyNewInteraction()
+        activate Event
 
-    Event-->>FrontendAuditeur: sendInteractionToAuditors()
-    deactivate Event
+        Event-->>FrontendAuditeur: sendInteractionToAuditors()
+        deactivate Event
 
-    FrontendAuditeur->>Auditeur: Affiche l'interaction
-
+        FrontendAuditeur->>Auditeur: Affiche l'interaction
+    else Animateur n'a pas les autorisations
+        Backend->>FrontendAnimateur: errorNotification("L'Animateur n'a pas les autorisations nécessaires")
+        deactivate Backend
+    end

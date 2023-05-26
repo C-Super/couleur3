@@ -11,40 +11,30 @@ sequenceDiagram
     Animateur->>FrontendAnimateur: Attribue une récompense à une interaction
     activate FrontendAnimateur
 
-    FrontendAnimateur->>+Backend: Demande d'ajout de la récompense à l'interaction
+    FrontendAnimateur->>+Backend: requestRewardAdditionToInteraction()
     activate Backend
 
-    Backend->>+DB: Demande le type d'interaction
-    activate DB
+    alt Animateur a les autorisations
+        Backend->>+DB: requestInteractionAndRewardDetails()
+        activate DB
 
-    DB-->>-Backend: Renvoie le type d'interaction
-    deactivate DB
+        DB-->>-Backend: Returns interaction type and reward details
+        deactivate DB
 
-    Backend->>Backend: Vérifie que l'interaction est de type "MCQ", "TEXT", "AUDIO", "VIDEO" ou "PICTURE"
+        Backend->>Backend: validateInteractionType() and validateRewardType()
 
-    Backend->>+DB: Demande les détails de la récompense
-    activate DB
+        Backend->>+DB: addRewardToInteraction()
+        activate DB
 
-    DB-->>-Backend: Renvoie les détails de la récompense
-    deactivate DB
+        DB-->>-Backend: Returns updated interaction details
+        deactivate DB
 
-    Backend->>Backend: Vérifie que la récompense est associée à un media de type "AUDIO", "VIDEO" ou "PICTURE"
+        Backend-->>FrontendAnimateur: confirmRewardAddition()
+        deactivate Backend
 
-    Backend->>+DB: Ajoute la récompense à l'interaction
-    activate DB
-
-    DB-->>-Backend: Renvoie les détails de l'interaction mise à jour
-    deactivate DB
-
-    Backend-->>-FrontendAnimateur: Confirme l'ajout de la récompense à l'interaction
-    deactivate Backend
-
-    FrontendAnimateur->>Animateur: Récompense ajoutée à l'interaction
-    deactivate FrontendAnimateur
-
-
-
-
-
-
-
+        FrontendAnimateur->>Animateur: Notifie l'ajout de la récompense à l'interaction
+        deactivate FrontendAnimateur
+    else Animateur n'a pas les autorisations
+        Backend->>FrontendAnimateur: errorNotification("L'Animateur n'a pas les autorisations nécessaires")
+        deactivate Backend
+    end

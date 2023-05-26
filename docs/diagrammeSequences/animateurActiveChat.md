@@ -3,8 +3,8 @@
 title: Diagramme de séquence Animateur active/désactive le chat le chat
 ---
 sequenceDiagram
-    participant Auditeur
-    participant Animateur
+    Actor Auditeur
+    Actor Animateur
     participant FrontendAuditeur as Frontend (Auditeur)
     participant FrontendAnimateur as Frontend (Animateur)
     participant Event as Event Server (Pusher)
@@ -14,34 +14,28 @@ sequenceDiagram
     Animateur->>FrontendAnimateur: Demande d'activation/désactivation du chat
     activate FrontendAnimateur
 
-    FrontendAnimateur->>+Backend: toggleChatStatus()
+    FrontendAnimateur->>+Backend: toggleChatActivation()
     activate Backend
 
-    Backend->>+DB: checkChatStatus()
-    activate DB
+    alt L'Animateur a les autorisations
+        Backend->>+DB: toggleChatStatus()
+        activate DB
 
-    alt is_chat_enabled est vrai
-        DB-->>-Backend: "Le chat est déjà activé"
+        DB-->>-Backend: Nouveau statut du chat (activé/désactivé)
+        deactivate DB
 
-        Backend-->>FrontendAnimateur: showChatStatus("Le chat est déjà activé")
+        Backend->>Event: notifyChatStatusChange(Nouveau statut du chat)
         deactivate Backend
 
-    else is_chat_enabled est faux
-        DB-->>-Backend: setChatStatus(true)
+        Event-->>FrontendAnimateur: chatStatusChangedNotification(Nouveau statut du chat)
+        Event-->>FrontendAuditeur: chatStatusChangedNotification(Nouveau statut du chat)
 
-        Backend-->>FrontendAnimateur: confirmChatStatus(true)
+
+        FrontendAnimateur->>Animateur: Notifie le changement du statut du chat (activé/désactivé)
+        FrontendAuditeur->>Auditeur: Notifie le changement du statut du chat (activé/désactivé)
+
+    else L'Animateur n'a pas les autorisations
+        Backend->>FrontendAnimateur: errorNotification("L'Animateur n'a pas les autorisations nécessaires")
         deactivate Backend
-
-        FrontendAnimateur->>Animateur: Notifie chat activé
-
-        Backend->>+Event: notifyChatActivation()
-        activate Event
-
-        Event-->>FrontendAuditeur: chatActivatedNotification()
-        deactivate Event
-
-        FrontendAuditeur->>Auditeur: chat activé
+        deactivate FrontendAnimateur
     end
-    deactivate FrontendAnimateur
-
-

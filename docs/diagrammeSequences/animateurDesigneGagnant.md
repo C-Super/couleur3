@@ -3,13 +3,13 @@
 title: Diagramme de séquence Animateur designe un gagnant
 ---
 sequenceDiagram
-    participant Auditeur
-    participant Animateur
-    participant FrontendAuditeur as Frontend (Auditeur)
-    participant FrontendAnimateur as Frontend (Animateur)
-    participant Event as Event Server (Pusher)
-    participant Backend as Backend (Laravel)
-    participant DB as Base de données
+participant Auditeur
+participant Animateur
+participant FrontendAuditeur as Frontend (Auditeur)
+participant FrontendAnimateur as Frontend (Animateur)
+participant Event as Event Server (Pusher)
+participant Backend as Backend (Laravel)
+participant DB as Base de données
 
     Animateur->>FrontendAnimateur: Désigne un gagnant pour une interaction
     activate FrontendAnimateur
@@ -17,31 +17,33 @@ sequenceDiagram
     FrontendAnimateur->>+Backend: designateWinnerForInteraction()
     activate Backend
 
-    Backend->>+DB: getInteractionDetails()
-    activate DB
+    alt Animateur a les autorisations
+        Backend->>+DB: getInteractionDetails()
+        activate DB
 
-    DB-->>-Backend: InteractionDetails
-    deactivate DB
+        DB-->>-Backend: InteractionDetails
+        deactivate DB
 
-    Backend->>Backend: isInteractionFinished()
-    Backend->>Backend: hasAssociatedReward()
-    Backend->>Backend: isValidInteractionType()
+        Backend->>Backend: validateInteraction()
 
-    Backend->>+DB: designateWinnerForInteraction()
-    activate DB
+        Backend->>+DB: designateWinnerForInteraction()
+        activate DB
 
-    DB-->>-Backend: UpdatedInteractionDetails
-    deactivate DB
+        DB-->>-Backend: UpdatedInteractionDetails
+        deactivate DB
 
-    Backend->>+Event: notifyWinnerForInteraction()
-    activate Event
+        Backend->>+Event: notifyWinnerForInteraction()
+        activate Event
 
-    Event-->>FrontendAuditeur: winnerNotification()
-    deactivate Event
+        Event-->>FrontendAuditeur: winnerNotification()
+        deactivate Event
 
-    FrontendAuditeur->>Auditeur: Notifie le gagnant pour l'interaction
+        FrontendAuditeur->>Auditeur: Notifie le gagnant pour l'interaction
 
-    Backend->>Animateur: confirmWinnerDesignation()
-    deactivate Backend
-
-
+        Backend-->>FrontendAnimateur: confirmWinnerDesignation()
+        deactivate Backend
+        deactivate FrontendAnimateur
+    else Animateur n'a pas les autorisations
+        Backend->>FrontendAnimateur: errorNotification("L'Animateur n'a pas les autorisations nécessaires")
+        deactivate Backend
+    end
