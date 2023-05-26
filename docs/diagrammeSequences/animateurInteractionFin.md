@@ -3,8 +3,8 @@
 title: Diagramme de séquence Animateur met fin à une interaction
 ---
 sequenceDiagram
-    participant Auditeur
-    participant Animateur
+    Actor Auditeur
+    Actor Animateur
     participant FrontendAuditeur as Frontend (Auditeur)
     participant FrontendAnimateur as Frontend (Animateur)
     participant Event as Event Server (Pusher)
@@ -17,27 +17,33 @@ sequenceDiagram
     FrontendAnimateur->>+Backend: requestEndInteraction()
     activate Backend
 
-    Backend->>+DB: updateInteractionEndTime()
-    activate DB
+    alt Animateur a les autorisations et l'interaction existe
+        Backend->>+DB: getInteractionDetails()
+        activate DB
 
-    DB-->>-Backend: UpdatedInteractionDetails
-    deactivate DB
+        DB-->>-Backend: InteractionDetails
+        deactivate DB
 
-    Backend->>FrontendAnimateur: confirmEndOfInteraction()
-    deactivate Backend
+        Backend->>Backend: isInteractionInProgress()
 
-    FrontendAnimateur->>Animateur: Confirme la fin de l'interaction
-    deactivate FrontendAnimateur
+        Backend->>+DB: updateInteractionEndTime()
+        activate DB
 
-    Backend->>+Event: notifyEndOfInteraction()
-    activate Event
+        DB-->>-Backend: UpdatedInteractionDetails
+        deactivate DB
 
-    Event-->>FrontendAuditeur: sendEndOfInteraction()
-    deactivate Event
+        Backend-->>FrontendAnimateur: confirmEndOfInteraction()
+        deactivate Backend
+        deactivate FrontendAnimateur
 
-    FrontendAuditeur->>Auditeur: Affiche la fin de l'interaction
+        Backend->>+Event: notifyEndOfInteraction()
+        activate Event
 
+        Event-->>FrontendAuditeur: sendEndOfInteraction()
+        deactivate Event
 
-
-
-
+        FrontendAuditeur->>Auditeur: Affiche la fin de l'interaction
+    else Animateur n'a pas les autorisations ou l'interaction n'existe pas
+        Backend->>FrontendAnimateur: errorNotification("Impossible de terminer l'interaction")
+        deactivate Backend
+    end

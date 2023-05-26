@@ -3,67 +3,57 @@
 title: Diagramme de séquence Auditeur répond à une interaction de type "Sondage"
 ---
 sequenceDiagram
-    participant Auditeur
-    participant Animateur
+    Actor Auditeur
+    Actor Animateur
     participant FrontendAuditeur as Frontend (Auditeur)
     participant FrontendAnimateur as Frontend (Animateur)
     participant Event as Event Server (Pusher)
     participant Backend as Backend (Laravel)
-    participant DB as Base de données
+    participant DB as Database
 
-    Auditeur->>FrontendAuditeur: sendMCQResponse()
+    Auditeur->>FrontendAuditeur: Sends Survey Response
     activate FrontendAuditeur
 
-    FrontendAuditeur->>FrontendAuditeur: verifyInteractionNotFinished()
-    FrontendAuditeur->>FrontendAuditeur: verifyNoPreviousResponse()
-    FrontendAuditeur->>FrontendAuditeur: verifyResponseValidity()
+    FrontendAuditeur->>FrontendAuditeur: verifyInteractionOpen()
+    FrontendAuditeur->>FrontendAuditeur: Checks if Response Type Matches Interaction Type
 
-    FrontendAuditeur->>+Backend: relayResponse()
-    activate Backend
+    alt Auditeur est authentifié
+        FrontendAuditeur->>+Backend: relaysResponse()
+        activate Backend
 
-    Backend->>+DB: fetchOngoingInteractions()
-    activate DB
+        Backend->>+DB: fetchInteractionDetails()
+        activate DB
 
-    DB-->>-Backend: OngoingInteractions
-    deactivate DB
+        DB-->>-Backend: Returns Interaction Details
+        deactivate DB
 
-    Backend->>Backend: verifyInteractionNotFinished()
-    Backend->>+DB: fetchUserResponsesForInteraction()
-    activate DB
+        Backend->>Backend: verifyInteractionOpen()
+        Backend->>Backend: Checks if Response Type Matches Interaction Type
 
-    DB-->>-Backend: UserResponsesForInteraction
-    deactivate DB
+        alt Interaction is Survey type
+            Backend->>+DB: recordResponse()
+            activate DB
 
-    Backend->>Backend: verifyNoPreviousResponse()
-    Backend->>+DB: fetchInteractionResponses()
-    activate DB
+            DB-->>-Backend: Returns Recorded Response Details
+            deactivate DB
 
-    DB-->>-Backend: InteractionResponses
-    deactivate DB
+            Backend->>FrontendAuditeur: displayConfirmation()
+            deactivate Backend
 
-    Backend->>Backend: verifyResponseValidity()
-    
-    Backend->>+DB: createNewResponseWithReference()
-    activate DB
+            FrontendAuditeur->>Auditeur: displayConfirmation()
+            deactivate FrontendAuditeur
 
-    DB-->>-Backend: CreatedResponseDetails
-    deactivate DB
+            Backend->>+Event: emitNewResponseEvent()
+            activate Event
 
-    Backend->>FrontendAuditeur: confirmResponseRecorded()
-    deactivate Backend
+            Event->>FrontendAnimateur: newResponseEvent()
+            deactivate Event
 
-    FrontendAuditeur->>Auditeur: displayConfirmation()
-    deactivate FrontendAuditeur
-
-    Backend->>+Event: emitNewResponseEvent()
-    activate Event
-
-    Event->>FrontendAnimateur: newResponseEvent()
-    deactivate Event
-
-    FrontendAnimateur->>Animateur: displayResponse()
-
-
-
-
-
+            FrontendAnimateur->>Animateur: displayResponse()
+        else Interaction is not Survey type
+            Backend-->>FrontendAuditeur: showIncorrectInteractionTypeMessage()
+            deactivate Backend
+        end
+    else Auditeur n'est pas authentifié
+        FrontendAuditeur->>Auditeur: showAuthenticationRequiredMessage()
+    end

@@ -3,8 +3,8 @@
 title: Diagramme de séquence Animateur crée une interaction audio
 ---
 sequenceDiagram
-    participant Auditeur
-    participant Animateur
+    Actor Auditeur
+    Actor Animateur
     participant FrontendAuditeur as Frontend (Auditeur)
     participant FrontendAnimateur as Frontend (Animateur)
     participant Event as Event Server (Pusher)

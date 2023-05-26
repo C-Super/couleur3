@@ -3,7 +3,7 @@
 title: Diagramme de séquence Animateur choisit une récompense
 ---
 sequenceDiagram
-    participant Animateur
+    Actor Animateur
     participant FrontendAnimateur as Frontend (Animateur)
     participant Backend as Backend (Laravel)
     participant DB as Base de données

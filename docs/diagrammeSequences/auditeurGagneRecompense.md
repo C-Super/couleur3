@@ -3,7 +3,7 @@
 title: Diagramme de séquence Auditeur gagne une récompense
 ---
 sequenceDiagram
-    participant Auditeur
+    Actor Auditeur
     participant FrontendAuditeur as Frontend (Auditeur)
     participant Backend as Backend (Laravel)
     participant DB as Base de données
@@ -14,44 +14,49 @@ sequenceDiagram
     FrontendAuditeur->>+Backend: requestRewards()
     activate Backend
 
-    Backend->>+DB: fetchAuditorRewards()
-    activate DB
+    alt Auditeur est authentifié
+        Backend->>Backend: validateAndEncryptAuditorInput()
 
-    DB-->>-Backend: AuditorRewards
-    deactivate DB
-
-    Backend->>Backend: verifyRewardEligibility()
-
-    Backend->>+DB: fetchAuditorInformation()
-    activate DB
-
-    DB-->>-Backend: AuditorInformation
-    deactivate DB
-    
-    Backend->>Backend: verifyAuditorInformationCompleteness()
-
-    alt Auditor Information Complete
-        Backend->>Auditeur: displayRewards()
-        deactivate Backend
-    else Auditor Information Incomplete
-        Backend->>Auditeur: requestCompleteInformation()
-        deactivate Backend
-
-        Auditeur->>+Backend: sendCompleteInformation()
-        activate Backend
-
-        Backend->>+DB: updateAuditorInformation()
+        Backend->>+DB: fetchAuditorRewards()
         activate DB
 
-        DB-->>-Backend: UpdatedAuditorInformation
+        DB-->>-Backend: AuditorRewards
         deactivate DB
 
-        Backend->>FrontendAuditeur: displayRewards()
+        Backend->>Backend: verifyRewardEligibility()
+
+        Backend->>+DB: fetchAuditorInformation()
+        activate DB
+
+        DB-->>-Backend: AuditorInformation
+        deactivate DB
+
+        Backend->>Backend: verifyAuditorInformationCompleteness()
+
+        alt Auditor Information Complete
+            Backend-->>FrontendAuditeur: displayRewards()
+            deactivate Backend
+        else Auditor Information Incomplete
+            Backend-->>FrontendAuditeur: requestCompleteInformation()
+            deactivate Backend
+
+            Auditeur->>+Backend: sendCompleteInformation()
+            activate Backend
+
+            Backend->>Backend: validateAndEncryptAuditorInput()
+
+            Backend->>+DB: updateAuditorInformation()
+            activate DB
+
+            DB-->>-Backend: UpdatedAuditorInformation
+            deactivate DB
+
+            Backend-->>FrontendAuditeur: displayRewards()
+            deactivate Backend
+
+            FrontendAuditeur->>Auditeur: Affiche la récompense
+        end
+    else Auditeur n'est pas authentifié
+        Backend->>FrontendAuditeur: errorNotification("Vous devez être authentifié pour demander une récompense")
         deactivate Backend
-        
-        FrontendAuditeur->>Auditeur: Affiche la récompense
     end
-
-     
-
-

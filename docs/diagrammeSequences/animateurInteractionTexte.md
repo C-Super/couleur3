@@ -3,8 +3,8 @@
 title: Diagramme de séquence Animateur lance une interaction texte
 ---
 sequenceDiagram
-    participant Auditeur
-    participant Animateur
+    Actor Auditeur
+    Actor Animateur
     participant FrontendAuditeur as Frontend (Auditeur)
     participant FrontendAnimateur as Frontend (Animateur)
     participant Event as Event Server (Pusher)
@@ -17,33 +17,35 @@ sequenceDiagram
     FrontendAnimateur->>+Backend: requestCreateTextInteraction()
     activate Backend
 
-    Backend->>+DB: getCurrentInteractions()
-    activate DB
+    alt Animateur a les autorisations
+        Backend->>+DB: getCurrentInteractions()
+        activate DB
 
-    DB-->>-Backend: CurrentInteractions
-    deactivate DB
+        DB-->>-Backend: CurrentInteractions
+        deactivate DB
 
-    Backend->>Backend: noOtherInteractionsInProgress()
+        Backend->>Backend: noOtherInteractionsInProgress()
+        Backend->>Backend: isTextContentValid()
 
-    Backend->>+DB: createTextInteraction()
-    activate DB
+        Backend->>+DB: createTextInteraction()
+        activate DB
 
-    DB-->>-Backend: InteractionDetails
-    deactivate DB
+        DB-->>-Backend: InteractionDetails
+        deactivate DB
 
-    Backend->>FrontendAnimateur: confirmInteractionCreation()
-    deactivate Backend
+        Backend-->>FrontendAnimateur: confirmInteractionCreation()
+        deactivate Backend
+        deactivate FrontendAnimateur
 
-    FrontendAnimateur->>Animateur: Confirme la création de l'interaction
-    deactivate FrontendAnimateur
+        Backend->>+Event: notifyNewTextInteraction()
+        activate Event
 
-    Backend->>+Event: notifyNewTextInteraction()
-    activate Event
+        Event-->>FrontendAuditeur: sendNewTextInteraction()
+        deactivate Event
 
-    Event-->>FrontendAuditeur: sendNewTextInteraction()
-    deactivate Event
+        FrontendAuditeur->>Auditeur: Affiche l'interaction
 
-    FrontendAuditeur->>Auditeur: Affiche l'interaction
-
-
-
+    else Animateur n'a pas les autorisations ou le contenu du texte n'est pas valide
+        Backend->>FrontendAnimateur: errorNotification("Impossible de créer l'interaction")
+        deactivate Backend
+    end

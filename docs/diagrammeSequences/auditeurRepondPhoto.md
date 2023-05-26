@@ -1,10 +1,10 @@
 ```mermaid
 ---
-title: Diagramme de séquence Audituer répond à une interaction photo
+title: Diagramme de séquence Auditeur répond à une interaction photo
 ---
 sequenceDiagram
-    participant Auditeur
-    participant Animateur
+    Actor Auditeur
+    Actor Animateur
     participant FrontendAuditeur as Frontend (Auditeur)
     participant FrontendAnimateur as Frontend (Animateur)
     participant Event as Event Server (Pusher)
@@ -14,40 +14,46 @@ sequenceDiagram
     Auditeur->>FrontendAuditeur: Sends Photo Response
     activate FrontendAuditeur
 
-    FrontendAuditeur->>FrontendAuditeur: Checks if Interaction is Active
+    FrontendAuditeur->>FrontendAuditeur: verifyInteractionOpen()
     FrontendAuditeur->>FrontendAuditeur: Checks if Media Type Matches Interaction Type
 
-    FrontendAuditeur->>+Backend: Sends Response
-    activate Backend
+    alt Auditeur est authentifié
+        FrontendAuditeur->>+Backend: Sends Response
+        activate Backend
 
-    Backend->>+DB: Queries Interaction Details
-    activate DB
+        Backend->>+DB: Queries Interaction Details
+        activate DB
 
-    DB-->>-Backend: Returns Interaction Details
-    deactivate DB
+        DB-->>-Backend: Returns Interaction Details
+        deactivate DB
 
-    Backend->>Backend: Checks if Interaction is Active
-    Backend->>Backend: Checks if Media Type Matches Interaction Type
+        Backend->>Backend: verifyInteractionOpen()
+        Backend->>Backend: Checks if Media Type Matches Interaction Type
 
-    Backend->>+DB: Records Response
-    activate DB
+        alt Interaction is Photo type
+            Backend->>+DB: Records Response
+            activate DB
 
-    DB-->>-Backend: Returns Recorded Response Details
-    deactivate DB
+            DB-->>-Backend: Returns Recorded Response Details
+            deactivate DB
 
-    Backend->>FrontendAuditeur: Confirms Response Registration
-    deactivate Backend
+            Backend->>FrontendAuditeur: displayConfirmation()
+            deactivate Backend
 
-    FrontendAuditeur->>Auditeur: Confirms Response Registration
-    deactivate FrontendAuditeur
+            FrontendAuditeur->>Auditeur: displayConfirmation()
+            deactivate FrontendAuditeur
 
-    Backend->>+Event: Notifies New Response
-    activate Event
+            Backend->>+Event: emitNewResponseEvent()
+            activate Event
 
-    Event->>FrontendAnimateur: Sends New Response
-    deactivate Event
+            Event->>FrontendAnimateur: newResponseEvent()
+            deactivate Event
 
-    FrontendAnimateur->>Animateur: Displays New Response
-
-
-
+            FrontendAnimateur->>Animateur: displayResponse()
+        else Interaction is not Photo type
+            Backend-->>FrontendAuditeur: showIncorrectInteractionTypeMessage()
+            deactivate Backend
+        end
+    else Auditeur n'est pas authentifié
+        FrontendAuditeur->>Auditeur: showAuthenticationRequiredMessage()
+    end

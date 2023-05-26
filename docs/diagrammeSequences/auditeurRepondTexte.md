@@ -1,10 +1,10 @@
 ```mermaid
 ---
-title: Diagramme de séquence Auditeur répond à une interaction texte
+title: Diagramme de séquence Auditeur répond à une interaction de type "Texte"
 ---
 sequenceDiagram
-    participant Auditeur
-    participant Animateur
+    Actor Auditeur
+    Actor Animateur
     participant FrontendAuditeur as Frontend (Auditeur)
     participant FrontendAnimateur as Frontend (Animateur)
     participant Event as Event Server (Pusher)
@@ -17,36 +17,43 @@ sequenceDiagram
     FrontendAuditeur->>FrontendAuditeur: Checks if Interaction is Open
     FrontendAuditeur->>FrontendAuditeur: Validates Text
 
-    FrontendAuditeur->>+Backend: Sends Response
-    activate Backend
+    alt Auditeur est authentifié
+        FrontendAuditeur->>+Backend: Sends Response
+        activate Backend
 
-    Backend->>+DB: Queries Current Interaction Details
-    activate DB
+        Backend->>+DB: Queries Current Interaction Details
+        activate DB
 
-    DB-->>-Backend: Returns Current Interaction Details
-    deactivate DB
+        DB-->>-Backend: Returns Current Interaction Details
+        deactivate DB
 
-    Backend->>Backend: Checks if Auditor is Allowed to Respond
-    Backend->>Backend: Validates Text
+        Backend->>Backend: Checks if Auditor is Allowed to Respond
+        Backend->>Backend: Validates Text
 
-    Backend->>+DB: Records Response
-    activate DB
+        alt Interaction is Text type
+            Backend->>+DB: Records Response
+            activate DB
 
-    DB-->>-Backend: Returns Recorded Response Details
-    deactivate DB
+            DB-->>-Backend: Returns Recorded Response Details
+            deactivate DB
 
-    Backend->>FrontendAuditeur: Confirms Response Registration
-    deactivate Backend
+            Backend->>FrontendAuditeur: displayConfirmation()
+            deactivate Backend
 
-    FrontendAuditeur->>Auditeur: Confirms Response Registration
-    deactivate FrontendAuditeur
+            FrontendAuditeur->>Auditeur: displayConfirmation()
+            deactivate FrontendAuditeur
 
-    Backend->>+Event: notifyNewTextAnswer()
-    activate Event
+            Backend->>+Event: emitNewResponseEvent()
+            activate Event
 
-    Event-->>FrontendAnimateur: sendNewTextAnswer()
-    deactivate Event
+            Event-->>FrontendAnimateur: newResponseEvent()
+            deactivate Event
 
-    FrontendAnimateur->>Animateur: Displays Response
-
-
+            FrontendAnimateur->>Animateur: displayResponse()
+        else Interaction is not Text type
+            Backend-->>FrontendAuditeur: showIncorrectInteractionTypeMessage()
+            deactivate Backend
+        end
+    else Auditeur n'est pas authentifié
+        FrontendAuditeur->>Auditeur: showAuthenticationRequiredMessage()
+    end

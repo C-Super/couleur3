@@ -3,8 +3,8 @@
 title: Diagramme de séquence Auditeur répond à une interaction audio
 ---
 sequenceDiagram
-    participant Auditeur
-    participant Animateur
+    Actor Auditeur
+    Actor Animateur
     participant FrontendAuditeur as Frontend (Auditeur)
     participant FrontendAnimateur as Frontend (Animateur)
     participant Event as Event Server (Pusher)
@@ -17,35 +17,45 @@ sequenceDiagram
     FrontendAuditeur->>FrontendAuditeur: verifyInteractionOpen()
     FrontendAuditeur->>FrontendAuditeur: verifyResponseType()
 
-    FrontendAuditeur->>+Backend: relayResponse()
-    activate Backend
+    alt Auditeur est authentifié
+        FrontendAuditeur->>+Backend: relayResponse()
+        activate Backend
 
-    Backend->>+DB: fetchInteractionDetails()
-    activate DB
+        Backend->>+DB: fetchInteractionDetails()
+        activate DB
 
-    DB-->>-Backend: InteractionDetails
-    deactivate DB
+        DB-->>-Backend: InteractionDetails
+        deactivate DB
 
-    Backend->>Backend: verifyInteractionOpen()
-    Backend->>Backend: verifyResponseType()
+        Backend->>Backend: verifyInteractionOpen()
+        Backend->>Backend: verifyResponseType()
 
-    Backend->>+DB: storeResponse()
-    activate DB
+        alt Interaction est de type audio
+            Backend->>+DB: storeResponse()
+            activate DB
 
-    DB-->>-Backend: StoredResponseDetails
-    deactivate DB
+            DB-->>-Backend: StoredResponseDetails
+            deactivate DB
 
-    Backend->>FrontendAuditeur: confirmResponseRecorded()
-    deactivate Backend
+            Backend->>FrontendAuditeur: confirmResponseRecorded()
+            deactivate Backend
 
-    FrontendAuditeur->>Auditeur: displayConfirmation()
-    deactivate FrontendAuditeur
+            FrontendAuditeur->>Auditeur: displayConfirmation()
+            deactivate FrontendAuditeur
 
-    Backend->>+Event: emitNewResponseEvent()
-    activate Event
+            Backend->>+Event: emitNewResponseEvent()
+            activate Event
 
-    Event->>FrontendAnimateur: newResponseEvent()
-    deactivate Event
+            Event->>FrontendAnimateur: newResponseEvent()
+            deactivate Event
 
-    FrontendAnimateur->>Animateur: displayResponse()
+            FrontendAnimateur->>Animateur: displayResponse()
+        else Interaction n'est pas de type audio
+            Backend-->>FrontendAuditeur: showIncorrectInteractionTypeMessage()
+            deactivate Backend
+        end
+    else Auditeur n'est pas authentifié
+        FrontendAuditeur->>Auditeur: showAuthenticationRequiredMessage()
+    end
+
 

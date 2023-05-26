@@ -3,8 +3,8 @@
 title: Diagramme de séquence Auditeur répond à une interaction de type "MCQ"
 ---
 sequenceDiagram
-    participant Auditeur
-    participant Animateur
+    Actor Auditeur
+    Actor Animateur
     participant FrontendAuditeur as Frontend (Auditeur)
     participant FrontendAnimateur as Frontend (Animateur)
     participant Event as Event Server (Pusher)
@@ -18,59 +18,63 @@ sequenceDiagram
     FrontendAuditeur->>FrontendAuditeur: verifyNoPreviousResponse()
     FrontendAuditeur->>FrontendAuditeur: verifyResponseValidity()
 
-    FrontendAuditeur->>+Backend: relayResponse()
-    activate Backend
+    alt Auditeur est authentifié
+        FrontendAuditeur->>+Backend: relayResponse()
+        activate Backend
 
-    Backend->>+DB: fetchOngoingInteractions()
-    activate DB
+        Backend->>+DB: fetchOngoingInteractions()
+        activate DB
 
-    DB-->>-Backend: OngoingInteractions
-    deactivate DB
+        DB-->>-Backend: OngoingInteractions
+        deactivate DB
 
-    Backend->>Backend: verifyInteractionNotFinished()
-    Backend->>+DB: fetchUserResponsesForInteraction()
-    activate DB
+        Backend->>Backend: verifyInteractionNotFinished()
+        Backend->>+DB: fetchUserResponsesForInteraction()
+        activate DB
 
-    DB-->>-Backend: UserResponsesForInteraction
-    deactivate DB
+        DB-->>-Backend: UserResponsesForInteraction
+        deactivate DB
 
-    Backend->>Backend: verifyNoPreviousResponse()
-    Backend->>+DB: fetchInteractionResponses()
-    activate DB
+        Backend->>Backend: verifyNoPreviousResponse()
+        Backend->>+DB: fetchInteractionResponses()
+        activate DB
 
-    DB-->>-Backend: InteractionResponses
-    deactivate DB
+        DB-->>-Backend: InteractionResponses
+        deactivate DB
 
-    Backend->>Backend: verifyResponseValidity()
-    Backend->>+DB: fetchCorrectInteractionResponse()
-    activate DB
+        Backend->>Backend: verifyResponseValidity()
 
-    DB-->>-Backend: CorrectInteractionResponse
-    deactivate DB
+        alt Interaction is MCQ type
+            Backend->>+DB: fetchCorrectInteractionResponse()
+            activate DB
 
-    Backend->>Backend: verifyResponseCorrectness()
-    Backend->>+DB: createNewResponseWithReference()
-    activate DB
+            DB-->>-Backend: CorrectInteractionResponse
+            deactivate DB
 
-    DB-->>-Backend: CreatedResponseDetails
-    deactivate DB
+            Backend->>Backend: verifyResponseCorrectness()
+            Backend->>+DB: createNewResponseWithReference()
+            activate DB
 
-    Backend->>FrontendAuditeur: confirmResponseRecorded()
-    deactivate Backend
+            DB-->>-Backend: CreatedResponseDetails
+            deactivate DB
 
-    FrontendAuditeur->>Auditeur: displayConfirmation()
-    deactivate FrontendAuditeur
+            Backend->>FrontendAuditeur: confirmResponseRecorded()
+            deactivate Backend
 
-    Backend->>+Event: emitNewResponseEvent()
-    activate Event
+            FrontendAuditeur->>Auditeur: displayConfirmation()
+            deactivate FrontendAuditeur
 
-    Event->>FrontendAnimateur: newResponseEvent()
-    deactivate Event
+            Backend->>+Event: emitNewResponseEvent()
+            activate Event
 
-    FrontendAnimateur->>Animateur: displayResponse()
+            Event->>FrontendAnimateur: newResponseEvent()
+            deactivate Event
 
-
-
-
-
-
+            FrontendAnimateur->>Animateur: displayResponse()
+        else Interaction is not MCQ type
+            Backend-->>FrontendAuditeur: showIncorrectInteractionTypeMessage()
+            deactivate Backend
+        end
+    else Auditeur n'est pas authentifié
+        FrontendAuditeur->>Auditeur: showAuthenticationRequiredMessage()
+    end

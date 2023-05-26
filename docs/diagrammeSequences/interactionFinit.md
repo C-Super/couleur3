@@ -3,21 +3,21 @@
 title: Diagramme de séquence Interaction finit
 ---
 sequenceDiagram
-    participant Auditeur
-    participant Animateur
+    Actor Auditeur
+    ACtor Animateur
     participant FrontendAuditeur as Frontend (Auditeur)
     participant FrontendAnimateur as Frontend (Animateur)
     participant Event as Event Server (Pusher)
     participant Backend as Backend (Laravel)
     participant DB as Database
 
-    Backend->>+DB: Queries Remaining Interaction Time
+    Backend->>+DB: Queries Interaction Status and Remaining Time
     activate DB
 
-    DB-->>-Backend: Returns Remaining Time
+    DB-->>-Backend: Returns Interaction Status and Remaining Time
     deactivate DB
 
-    Backend->>Backend: If Time is Up, Ends Interaction
+    Backend->>Backend: If Interaction is Active and Time is Up, Ends Interaction
 
     Backend->>+DB: Updates Interaction Status
     activate DB
@@ -40,6 +40,4 @@ sequenceDiagram
     FrontendAnimateur->>Animateur: Display Interaction End
     deactivate FrontendAnimateur
 
-
-
-
+    Backend->>Backend: Disables Responses from Auditors

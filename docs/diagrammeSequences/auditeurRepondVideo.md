@@ -3,8 +3,8 @@
 title: Diagramme de séquence Auditeur répond à une interaction vidéo
 ---
 sequenceDiagram
-    participant Auditeur
-    participant Animateur
+    Actor Auditeur
+    Actor Animateur
     participant FrontendAuditeur as Frontend (Auditeur)
     participant FrontendAnimateur as Frontend (Animateur)
     participant Event as Event Server (Pusher)
@@ -17,35 +17,43 @@ sequenceDiagram
     FrontendAuditeur->>FrontendAuditeur: Checks if Interaction is Open
     FrontendAuditeur->>FrontendAuditeur: Validates Media Type
 
-    FrontendAuditeur->>+Backend: Sends Response
-    activate Backend
+    alt Auditeur est authentifié
+        FrontendAuditeur->>+Backend: Sends Response
+        activate Backend
 
-    Backend->>+DB: Queries Interaction Details
-    activate DB
+        Backend->>+DB: Queries Interaction Details
+        activate DB
 
-    DB-->>-Backend: Returns Interaction Details
-    deactivate DB
+        DB-->>-Backend: Returns Interaction Details
+        deactivate DB
 
-    Backend->>Backend: Checks if Interaction is Open
-    Backend->>Backend: Validates Media Type
+        Backend->>Backend: Checks if Interaction is Open
+        Backend->>Backend: Validates Media Type
 
-    Backend->>+DB: Records Response
-    activate DB
+        alt Interaction is Video type
+            Backend->>+DB: Records Response
+            activate DB
 
-    DB-->>-Backend: Returns Recorded Response Details
-    deactivate DB
+            DB-->>-Backend: Returns Recorded Response Details
+            deactivate DB
 
-    Backend->>FrontendAuditeur: Confirms Response Registration
-    deactivate Backend
+            Backend->>FrontendAuditeur: displayConfirmation()
+            deactivate Backend
 
-    FrontendAuditeur->>Auditeur: Confirms Response Registration
-    deactivate FrontendAuditeur
+            FrontendAuditeur->>Auditeur: displayConfirmation()
+            deactivate FrontendAuditeur
 
-    Backend->>+Event: notifyNewVideoResponse()
-    activate Event
+            Backend->>+Event: notifyNewVideoResponse()
+            activate Event
 
-    Event-->>FrontendAnimateur: sendNewVideoResponse()
-    deactivate Event
+            Event-->>FrontendAnimateur: sendNewVideoResponse()
+            deactivate Event
 
-    FrontendAnimateur->>Animateur: Displays New Response
-
+            FrontendAnimateur->>Animateur: Displays New Response
+        else Interaction is not Video type
+            Backend-->>FrontendAuditeur: showIncorrectInteractionTypeMessage()
+            deactivate Backend
+        end
+    else Auditeur n'est pas authentifié
+        FrontendAuditeur->>Auditeur: showAuthenticationRequiredMessage()
+    end

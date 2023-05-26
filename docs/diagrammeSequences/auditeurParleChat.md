@@ -3,8 +3,8 @@
 title: Diagramme de séquence Auditeur parle dans le chat
 ---
 sequenceDiagram
-    participant Auditeur
-    participant Animateur
+    Actor Auditeur
+    Actor Animateur
     participant FrontendAuditeur as Frontend (Auditeur)
     participant FrontendAnimateur as Frontend (Animateur)
     participant Event as Event Server (Pusher)
@@ -15,42 +15,49 @@ sequenceDiagram
     activate FrontendAuditeur
 
     FrontendAuditeur->>FrontendAuditeur: verifyChatPermission()
-    
-    FrontendAuditeur->>+Backend: relayMessage()
-    activate Backend
 
-    Backend->>+DB: fetchUserDetails()
-    activate DB
+    alt Auditeur est authentifié
+        FrontendAuditeur->>+Backend: relayMessage()
+        activate Backend
 
-    DB-->>-Backend: UserDetails
-    deactivate DB
+        Backend->>+DB: fetchUserDetails()
+        activate DB
 
-    Backend->>Backend: verifyChatPermission()
+        DB-->>-Backend: UserDetails
+        deactivate DB
 
-    Backend->>+DB: fetchChatInteraction()
-    activate DB
+        Backend->>Backend: verifyChatPermission()
 
-    DB-->>-Backend: ChatInteractionDetails
-    deactivate DB
+        Backend->>+DB: fetchChatInteraction()
+        activate DB
 
-    Backend->>Backend: verifyChatOpen()
-    
-    Backend->>Backend: validateMessageContent()
+        DB-->>-Backend: ChatInteractionDetails
+        deactivate DB
 
-    Backend->>+DB: storeChatMessage()
-    activate DB
+        Backend->>Backend: verifyChatOpen()
 
-    DB-->>-Backend: StoredMessageDetails
-    deactivate DB
+        alt Chat is open
+            Backend->>Backend: validateMessageContent()
 
-    Backend->>Event: emitNewMessageEvent()
-    deactivate Backend
+            Backend->>+DB: storeChatMessage()
+            activate DB
 
-    Event->>FrontendAuditeur: newMessageEvent()
-    FrontendAuditeur->>Auditeur: displayNewMessage()
-    deactivate FrontendAuditeur
+            DB-->>-Backend: StoredMessageDetails
+            deactivate DB
 
-    Event->>FrontendAnimateur: newMessageEvent()
-    FrontendAnimateur->>Animateur: displayNewMessage()
+            Backend->>Event: emitNewMessageEvent()
+            deactivate Backend
 
+            Event->>FrontendAuditeur: newMessageEvent()
+            FrontendAuditeur->>Auditeur: displayNewMessage()
+            deactivate FrontendAuditeur
 
+            Event->>FrontendAnimateur: newMessageEvent()
+            FrontendAnimateur->>Animateur: displayNewMessage()
+        else Chat is closed
+            Backend-->>FrontendAuditeur: showChatStatus("Le chat est fermé")
+            deactivate Backend
+        end
+    else Auditeur n'est pas authentifié
+        FrontendAuditeur->>Auditeur: showAuthenticationRequiredMessage()
+    end

@@ -3,8 +3,8 @@
 title: Diagramme de séquence Animateur lance une interaction vidéo
 ---
 sequenceDiagram
-    participant Auditeur
-    participant Animateur
+    Actor Auditeur
+    Actor Animateur
     participant FrontendAuditeur as Frontend (Auditeur)
     participant FrontendAnimateur as Frontend (Animateur)
     participant Event as Event Server (Pusher)
@@ -17,32 +17,35 @@ sequenceDiagram
     FrontendAnimateur->>+Backend: requestCreateVideoInteraction()
     activate Backend
 
-    Backend->>+DB: getCurrentInteractions()
-    activate DB
+    alt Animateur a les autorisations
+        Backend->>Backend: validateAndCleanVideoInput()
 
-    DB-->>-Backend: CurrentInteractions
-    deactivate DB
+        Backend->>+DB: getCurrentInteractions()
+        activate DB
 
-    Backend->>Backend: noOtherInteractionsInProgress()
-    Backend->>Backend: verifyMediaMatchesInteractionType()
+        DB-->>-Backend: CurrentInteractions
+        deactivate DB
 
-    Backend->>+DB: createVideoInteraction()
-    activate DB
+        Backend->>Backend: validateCurrentInteractions() and validateMediaType()
 
-    DB-->>-Backend: InteractionDetails
-    deactivate DB
+        Backend->>+DB: createVideoInteraction()
+        activate DB
 
-    Backend->>FrontendAnimateur: confirmInteractionCreation()
-    deactivate Backend
+        DB-->>-Backend: InteractionDetails
+        deactivate DB
 
-    FrontendAnimateur->>Animateur: Confirme la création de l'interaction
-    deactivate FrontendAnimateur
+        Backend-->>FrontendAnimateur: confirmInteractionCreation()
+        deactivate Backend
+        deactivate FrontendAnimateur
 
-    Backend->>+Event: notifyNewVideoInteraction()
-    activate Event
+        Backend->>+Event: notifyNewVideoInteraction()
+        activate Event
 
-    Event-->>FrontendAuditeur: sendNewVideoInteraction()
-    deactivate Event
+        Event-->>FrontendAuditeur: sendNewVideoInteraction()
+        deactivate Event
 
-    FrontendAuditeur->>Auditeur: Affiche l'interaction
-
+        FrontendAuditeur->>Auditeur: Affiche l'interaction
+    else Animateur n'a pas les autorisations
+        Backend->>FrontendAnimateur: errorNotification("L'Animateur n'a pas les autorisations nécessaires")
+        deactivate Backend
+    end

@@ -3,8 +3,8 @@
 title: Diagramme de séquence Animateur lance une interaction à choix multiple
 ---
 sequenceDiagram
-    participant Auditeur
-    participant Animateur
+    Actor Auditeur
+    Actor Animateur
     participant FrontendAuditeur as Frontend (Auditeur)
     participant FrontendAnimateur as Frontend (Animateur)
     participant Event as Event Server (Pusher)
@@ -17,33 +17,35 @@ sequenceDiagram
     FrontendAnimateur->>+Backend: createMCQInteraction(N)
     activate Backend
 
-    Backend->>+DB: getCurrentInteractions()
-    activate DB
+    alt Animateur a les autorisations
+        Backend->>Backend: validateChoiceNumber(N)
 
-    DB-->>-Backend: CurrentInteractions
-    deactivate DB
+        Backend->>+DB: getCurrentInteractions()
+        activate DB
 
-    Backend->>Backend: noOtherInteractionsInProgress()
-    Backend->>Backend: isChoiceNumberValid(N)
+        DB-->>-Backend: CurrentInteractions
+        deactivate DB
 
-    Backend->>+DB: createMCQInteractionWithChoices()
-    activate DB
+        Backend->>Backend: validateCurrentInteractions()
 
-    DB-->>-Backend: CreatedInteractionDetails
-    deactivate DB
+        Backend->>+DB: createMCQInteractionWithChoices()
+        activate DB
 
-    Backend->>FrontendAnimateur: confirmInteractionCreation()
-    deactivate Backend
+        DB-->>-Backend: CreatedInteractionDetails
+        deactivate DB
 
-    FrontendAnimateur->>Animateur: Confirme la création de l'interaction
-    deactivate FrontendAnimateur
+        Backend-->>FrontendAnimateur: confirmInteractionCreation()
+        deactivate Backend
+        deactivate FrontendAnimateur
 
-    Backend->>+Event: notifyNewInteraction()
-    activate Event
+        Backend->>+Event: notifyNewInteraction()
+        activate Event
 
-    Event-->>FrontendAuditeur: sendMCQInteractionToAuditors()
-    deactivate Event
+        Event-->>FrontendAuditeur: sendMCQInteractionToAuditors()
+        deactivate Event
 
-    FrontendAuditeur->>Auditeur: Affiche l'interaction
-
-
+        FrontendAuditeur->>Auditeur: Affiche l'interaction
+    else Animateur n'a pas les autorisations
+        Backend->>FrontendAnimateur: errorNotification("L'Animateur n'a pas les autorisations nécessaires")
+        deactivate Backend
+    end
