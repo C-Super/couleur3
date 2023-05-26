@@ -21,8 +21,10 @@ flowchart TB
             remoteSourceCode[Code source]
         end
 
-        vscode -->|Port exposé| devContainer
-        sourceCode -->|synchronisé| remoteSourceCode
+        vscode -->|"localhost:80 (laravel)
+            localhost:8025 (mailpit)
+            localhost:8080 (phpmyadmin)"| devContainer
+        sourceCode -.->|synchronisé| remoteSourceCode
     end
 ```
 

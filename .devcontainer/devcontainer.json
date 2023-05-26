@@ -1,6 +1,6 @@
 // https://aka.ms/devcontainer.json
 {
-    "name": "Couleur3 App",
+    "name": "Couleur3",
     "dockerComposeFile": [
         "../docker-compose.yml"
     ],
@@ -11,13 +11,24 @@
             "extensions": [
                 "onecentlin.laravel-extension-pack",
                 "Vue.volar"
-            ],
-            "settings": {}
+            ]
         }
     },
     "remoteUser": "sail",
-    "postCreateCommand": "chown -R 1000:1000 /var/www/html"
+    "postCreateCommand": "chown -R 1000:1000 /var/www/html",
     // "forwardPorts": [],
+    "portsAttributes": {
+        "80": {
+            "label": "Application",
+            "onAutoForward": "notify"
+        },
+        "8025": {
+            "label": "Mailpit"
+        },
+        "8080": {
+            "label": "phpMyAdmin"
+        }
+    }
     // "runServices": [],
     // "shutdownAction": "none",
 }
