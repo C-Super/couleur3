@@ -15,7 +15,7 @@
         }
     },
     "remoteUser": "sail",
-    "postCreateCommand": "chown -R 1000:1000 /var/www/html && cp /var/www/html/.env.example .env && composer install --ignore-platform-reqs && ./vendor/bin/sail php artisan key:generate && ./vendor/bin/sail php artisan storage:link",
+    "postCreateCommand": "chown -R 1000:1000 /var/www/html",
     "forwardPorts": [
         8025,
         8080
@@ -32,9 +32,7 @@
             "label": "phpMyAdmin"
         },
         "5173": {
-            "label": "Vite HRM"
+            "label": "Vite (hmr)"
         }
     }
-    // "runServices": [],
-    // "shutdownAction": "none",
 }
