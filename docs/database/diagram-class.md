@@ -41,7 +41,7 @@ classDiagram
 
     class INTERACTION {
         string title
-        enum[MCQ|SURVEY|TEXT|AUDIO|PICTURE|VIDEO|CTA] type
+        enum[MCQ|SURVEY|TEXT|AUDIO|PICTURE|VIDEO|CTA|QUICK] type
         datetime created_at
         datetime ended_at
     }
