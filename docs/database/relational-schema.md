@@ -51,7 +51,7 @@ classDiagram
     class INTERACTION {
         id id PK
         string title
-        enum[MCQ|SURVEY|TEXT|AUDIO|PICTURE|VIDEO|CTA] type
+        enum[MCQ|SURVEY|TEXT|AUDIO|PICTURE|VIDEO|CTA|QUICK] type
         datetime created_at
         datetime ended_at
         id animator_id FK ANIMATOR.id
@@ -74,6 +74,7 @@ classDiagram
 
     class ANSWER {
         id id PK
+        datetime created_at
         id auditor_id FK AUDITOR.id
         id interaction_id FK INTERACTION.id
         id responds_with_id FK [MEDIA.id|ANSWER_TEXT.id|QUESTION_CHOICE.id]
@@ -93,7 +94,8 @@ classDiagram
     class CALL_TO_ACTION {
         id id PK
         string[255] description
-        string[255] url
+        string[255] url NULLABLE
+        string[50] button_text
         id interaction_id FK INTERACTION.id
         id media_id FK MEDIA.id
     }
@@ -112,7 +114,7 @@ classDiagram
     REWARD --> MEDIA : CI-13
 
     CALL_TO_ACTION --> MEDIA : CI-13
-    CALL_TO_ACTION --> INTERACTION
+    CALL_TO_ACTION --> INTERACTION : CI-21 et CI-22
 
     ANSWER --> AUDITOR : CI-3 et CI-4
     ANSWER --> INTERACTION : CI-12
