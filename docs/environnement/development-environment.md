@@ -30,19 +30,65 @@ flowchart TB
 
 > Nous utilisons Docker pour créer un environnement de développement isolé. Cela permet de ne pas avoir à installer les dépendances sur votre ordinateur et de pouvoir partager le même environnement de développement entre tous les développeurs. Cela permet aussi de ne pas avoir à installer PHP, MySQL, Redis, etc. sur votre ordinateur.
 
+## Utiliser GitHub Codespaces (recommandé)
+
+### 1. Créer un codespace
+
+- Ouvrir le projet dans GitHub
+- Cliquer sur le bouton `Code` et sélectionner l'onglet `Codespaces`
+- Cliquer sur l'icône `+`
+
+![Créer un codespace](./screenshots/github-codespaces-create.png)
+
+### 2. Ouvrir le codespace dans VS Code ou PhpStorm
+
+- Faire suivant suivant, ouvrir ouvrir, oui oui, installer installer, etc.
+
+Après quelques minutes, vous devriez voir une fenêtre de sélection de l'environnement de développement s'ouvrir.
+
+### 3. Ouvrir l'application dans le conteneur
+
+Vous devriez voir une fenêtre de sélection de l'environnement de développement s'ouvrir.
+
+![Fenêtre de sélection de l'environnement de développement](./screenshots/win-vscode-select-dev-container.png)
+
+### 4. Ouvrir l'application dans le navigateur
+
+Quand le conteneur est prêt, vous devriez voir un icône (une petite antenne) dans la barre d'outils de VS Code.
+
+![Dev Container prêt](./screenshots/dev-container-ready.png)
+
+Vous pouvez maintenant ouvrir l'application dans votre navigateur à l'adresse [http://localhost:80](http://localhost:80).
+
+![Laravel Welcome page](./screenshots/laravel-welcome.png)
+
+Voilàà ! Vous pouvez maintenant commencer à développer.
+
+### 5. Installer les extensions VS Code recommandées
+
+Les extensions recommandées sont visibles dans le menu `Extensions` de VS Code, dans l'onglet `CODESPACES`.
+
+### 6. (Attention) Avant de fermer VS Code
+
+Avant de fermer VS Code, il faut arrêter le conteneur.
+
+- En bas à gauche, cliquer sur l'icône `>< Codespaces` pour ouvrir le menu des codespaces
+- Cliquer sur l'option `Stop Ccurrent Codespace`, sinon le conteneur va continuer de tourner et le temps sera décompté de votre forfait (60 heures gratuit par mois).
+
+## Configuration sur Windows
+
 ## Prérequis
 
-- [Docker](https://www.docker.com/) (pour Windows: avoir [WSL2](https://learn.microsoft.com/en-us/windows/wsl/about))
+- [Docker](https://www.docker.com/)
+- [WSL2](https://learn.microsoft.com/en-us/windows/wsl/about)
 - [VS Code](https://code.visualstudio.com/)
 - [VS Code - Remote Development (Extension)](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack)
-
-## Installation sur Windows
 
 ### 1. Cloner le projet
 
 Ouvrir l'application *Terminal* et sélectionner le sous-système Ubuntu.
 
-![Ouvrir l'environnement Ubuntu dans le Terminal](./development-sources/win-run-wsl.png)
+![Ouvrir l'environnement Ubuntu dans le Terminal](./screenshots/win-run-wsl.png)
 
 ```bash
 git clone https://github.com/C-Super/couleur3.git
@@ -64,7 +110,7 @@ Et n'oubliez pas de lancer l'application Docker Desktop, avant !
 
 Vous devriez voir une fenêtre de sélection de l'environnement de développement s'ouvrir.
 
-![Fenêtre de sélection de l'environnement de développement](./development-sources/win-vscode-select-dev-container.png)
+![Fenêtre de sélection de l'environnement de développement](./screenshots/win-vscode-select-dev-container.png)
 
 Si vous ne voyer pas la fenêtre de sélection de l'environnement de développement.
 
@@ -78,11 +124,11 @@ Cela peut prendre quelques minutes la première fois que vous ouvrez le projet d
 
 Quand le conteneur est prêt, vous devriez voir un icône (une petite antenne) dans la barre d'outils de VS Code.
 
-![Dev Container prêt](./development-sources/dev-container-ready.png)
+![Dev Container prêt](./screenshots/dev-container-ready.png)
 
 Vous pouvez maintenant ouvrir l'application dans votre navigateur à l'adresse [http://localhost:8080](http://localhost:80).
 
-![Laravel Welcome page](./development-sources/laravel-welcome.png)
+![Laravel Welcome page](./screenshots/laravel-welcome.png)
 
 Voilàà ! Vous pouvez maintenant commencer à développer.
 
@@ -93,4 +139,4 @@ Voilàà ! Vous pouvez maintenant commencer à développer.
 
 Quand vous ouvrirez VS Code, les prochaines fois, vous pourrez ouvrir le projet dans un conteneur en cliquant sur l'icône de l'antenne dans la barre d'outils.
 
-## Installation sur Mac
+## Configuration sur Mac
