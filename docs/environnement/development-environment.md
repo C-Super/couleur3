@@ -9,7 +9,6 @@ flowchart TB
 
         sourceCode[Code source]
         
-
         subgraph devContainer[Conteneur Docker]
             mysql[(MySQL)]
             redis[(Redis)]
@@ -21,9 +20,9 @@ flowchart TB
             remoteSourceCode[Code source]
         end
 
-        vscode -->|"localhost:80 (laravel)
-            localhost:8025 (mailpit)
-            localhost:8080 (phpmyadmin)"| devContainer
+        vscode -->|"localhost:80 (Application)
+            localhost:8025 (Mailpit)
+            localhost:8080 (phpMyAdmin)"| devContainer
         sourceCode -.->|synchronisé| remoteSourceCode
     end
 ```
@@ -36,7 +35,7 @@ flowchart TB
 
 - Ouvrir le projet dans GitHub
 - Cliquer sur le bouton `Code` et sélectionner l'onglet `Codespaces`
-- Cliquer sur l'icône `+`
+- Cliquer sur le bouton `Create codespace on main`
 
 ![Créer un codespace](./screenshots/github-codespaces-create.png)
 
@@ -56,6 +55,8 @@ Vous devriez voir une fenêtre de sélection de l'environnement de développemen
 
 Quand le conteneur est prêt, vous devriez voir un icône (une petite antenne) dans la barre d'outils de VS Code.
 
+Cette vue liste tous les points d'entrée disponible.
+
 ![Dev Container prêt](./screenshots/dev-container-ready.png)
 
 Vous pouvez maintenant ouvrir l'application dans votre navigateur à l'adresse [http://localhost:80](http://localhost:80).
@@ -64,16 +65,14 @@ Vous pouvez maintenant ouvrir l'application dans votre navigateur à l'adresse [
 
 Voilàà ! Vous pouvez maintenant commencer à développer.
 
-### 5. Installer les extensions VS Code recommandées
-
-Les extensions recommandées sont visibles dans le menu `Extensions` de VS Code, dans l'onglet `CODESPACES`.
-
-### 6. (Attention) Avant de fermer VS Code
+### 5. (Attention) Avant de fermer VS Code
 
 Avant de fermer VS Code, il faut arrêter le conteneur.
 
 - En bas à gauche, cliquer sur l'icône `>< Codespaces` pour ouvrir le menu des codespaces
 - Cliquer sur l'option `Stop Ccurrent Codespace`, sinon le conteneur va continuer de tourner et le temps sera décompté de votre forfait (60 heures gratuit par mois).
+
+![Close Codespaces](./screenshots/github-codespaces-close.png)
 
 ## Configuration sur Windows
 
