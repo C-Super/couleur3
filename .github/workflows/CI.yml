@@ -34,47 +34,106 @@ jobs:
       - name: Install npm dependencies
         run: npm ci
 
-  format:
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: application
+          path: .
+
+  laravel-pint:
     runs-on: ubuntu-latest
 
     needs: setup
 
     steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: application
+
       - name: Run Laravel Pint
         run: ./vendor/bin/pint --test
+
+  prettier:
+    runs-on: ubuntu-latest
+
+    needs: setup
+
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: application
 
       - name: Run Prettier
         run: prettier --check resources/js
 
-  lint:
+  larastan:
     runs-on: ubuntu-latest
 
     needs: setup
 
     steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: application
+
       - name: Run Larastan
         run: ./vendor/bin/phpstan analyse --memory-limit=2G
+
+  eslint:
+    runs-on: ubuntu-latest
+
+    needs: setup
+
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: application
 
       - name: Run ESLint
         run: eslint --ext .js,.vue --ignore-path .gitignore
 
-  test:
+  pest:
     runs-on: ubuntu-latest
 
     needs: setup
 
     steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: application
+
       - name: Run Pest
         run: ./vendor/bin/pest
 
-  security:
+  php-security-checker:
     runs-on: ubuntu-latest
 
     needs: setup
 
     steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: application
+
       - name: Run PHP Security Checker
         run: ./vendor/bin/security-checker security:check
+
+  npm-audit:
+    runs-on: ubuntu-latest
+
+    needs: setup
+
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: application
 
       - name: Run NPM Audit
         run: npm audit
