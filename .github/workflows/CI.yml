@@ -1,16 +1,41 @@
 name: Continous Integration
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+on: [push, pull_request]
 
 jobs:
   setup:
     runs-on: ubuntu-latest
+
+    env:
+      DB_DATABASE: laravel
+      DB_USERNAME: root
+      DB_PASSWORD: password
+      BROADCAST_DRIVER: log
+      CACHE_DRIVER: redis
+      QUEUE_CONNECTION: redis
+      SESSION_DRIVER: redis
+
+    services:
+      mysql:
+        image: mysql:latest
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: false
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: laravel
+        ports:
+          - 3306/tcp
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+      redis:
+        image: redis
+        ports:
+          - 6379/tcp
+        options: --health-cmd="redis-cli ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php-versions: ['8.1', '8.2']
 
     steps:
       - name: Checkout code
@@ -19,26 +44,58 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.2
-          tools: composer:v2
+          php-version: ${{ matrix.php-versions }}
+          tools: composer:v2, cs2pr
+          extensions: mbstring, dom, fileinfo, mysql
           coverage: xdebug
 
+      - name: Setup problem matchers for PHPUnit
+        run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache composer dependencies
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
       - name: Install composer dependencies
-        run: composer update --prefer-stable --prefer-dist --no-interaction --no-progress
+        run: composer install --prefer-stable --prefer-dist --no-interaction --no-progress
 
       - name: Setup Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: 16
+          cache: npm
 
       - name: Install npm dependencies
         run: npm ci
 
+      - name: Prepare the application
+         run: |
+          php -r "file_exists('.env') || copy('.env.example', '.env');"
+          php artisan key:generate
+
+      - name: Clear Config
+        run: php artisan config:clear
+
+      - name: Run Migration
+        run: php artisan migrate -v
+        env:
+          DB_PORT: ${{ job.services.mysql.ports['3306'] }}
+          REDIS_PORT: ${{ job.services.redis.ports['6379'] }}
+
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: application
-          path: .
+          name: artifacts
+          path: |
+            vendor
+            node_modules
 
   laravel-pint:
     runs-on: ubuntu-latest
@@ -49,10 +106,10 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v2
         with:
-          name: application
+          name: artifacts
 
       - name: Run Laravel Pint
-        run: ./vendor/bin/pint --test
+        run: ./vendor/bin/pint --test --format=checkstyle | cs2pr
 
   prettier:
     runs-on: ubuntu-latest
@@ -63,7 +120,7 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v2
         with:
-          name: application
+          name: artifacts
 
       - name: Run Prettier
         run: prettier --check resources/js
@@ -77,10 +134,10 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v2
         with:
-          name: application
+          name: artifacts
 
       - name: Run Larastan
-        run: ./vendor/bin/phpstan analyse --memory-limit=2G
+        run: ./vendor/bin/phpstan analyse --memory-limit=2G --error-format=checkstyle | cs2pr
 
   eslint:
     runs-on: ubuntu-latest
@@ -91,7 +148,7 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v2
         with:
-          name: application
+          name: artifacts
 
       - name: Run ESLint
         run: eslint --ext .js,.vue --ignore-path .gitignore
@@ -105,10 +162,13 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v2
         with:
-          name: application
+          name: artifacts
 
-      - name: Run Pest
-        run: ./vendor/bin/pest
+      - name: Configure matchers
+        uses: mheap/phpunit-matcher-action@v1
+
+      - name: Run Pest tests
+        run: ./vendor/bin/pest --teamcity
 
   php-security-checker:
     runs-on: ubuntu-latest
@@ -119,7 +179,7 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v2
         with:
-          name: application
+          name: artifacts
 
       - name: Run PHP Security Checker
         run: ./vendor/bin/security-checker security:check
@@ -133,7 +193,7 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v2
         with:
-          name: application
+          name: artifacts
 
       - name: Run NPM Audit
         run: npm audit
