@@ -1,4 +1,4 @@
-name: Continous Integration
+name: Continuous integration
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
 
 jobs:
   continuous-integration:
-    name: Continous Integration (PHP ${{ matrix.php-versions }})
+    name: Continuous Integration (PHP ${{ matrix.php-versions }})
 
     runs-on: ubuntu-latest
 
