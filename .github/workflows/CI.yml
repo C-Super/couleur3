@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  ci:
+  laravel-tests:
     runs-on: ubuntu-latest
 
     env:
@@ -104,13 +104,13 @@ jobs:
         run: vendor/bin/pint --test --format=checkstyle | cs2pr
 
       - name: Run Prettier
-        run: prettier --check resources/js
+        run: npx prettier --check resources/js
 
       - name: Run Larastan
         run: vendor/bin/phpstan analyse --memory-limit=2G --error-format=checkstyle | cs2pr
 
       - name: Run ESLint
-        run: eslint --ext .js,.vue --ignore-path .gitignore
+        run: npx eslint --ext .js,.vue --ignore-path .gitignore
 
       - name: Run Pest tests
         run: vendor/bin/pest --teamcity
