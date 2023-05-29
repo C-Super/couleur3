@@ -32,6 +32,7 @@
     "remoteUser": "sail",
     "postCreateCommand": "chown -R 1000:1000 /var/www/html && cp .env.example .env && composer install && php artisan key:generate && npm install && npm run dev",
     "forwardPorts": [
+        80,
         8025,
         8080
     ],
