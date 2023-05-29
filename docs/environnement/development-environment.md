@@ -8,7 +8,7 @@ flowchart TB
         end
 
         sourceCode[Code source]
-        
+
         subgraph devContainer[Conteneur Docker]
             mysql[(MySQL)]
             redis[(Redis)]
@@ -16,7 +16,7 @@ flowchart TB
             soketi[Soketi]
             phpmyadmin[phpMyAdmin]
             mailpit[Mailpit]
-            
+
             remoteSourceCode[Code source]
         end
 
@@ -33,31 +33,25 @@ flowchart TB
 
 ### 1. Créer un codespace
 
-- Ouvrir le projet dans GitHub
-- Cliquer sur le bouton `Code` et sélectionner l'onglet `Codespaces`
-- Cliquer sur le bouton `Create codespace on main`
+-   Ouvrir le projet dans GitHub
+-   Cliquer sur le bouton `Code` et sélectionner l'onglet `Codespaces`
+-   Cliquer sur le bouton `Create codespace on main`
 
 ![Créer un codespace](./screenshots/github-codespaces-create.png)
 
 ### 2. Ouvrir le codespace dans VS Code ou PhpStorm
 
-- Faire suivant suivant, ouvrir ouvrir, oui oui, installer installer, etc.
+-   Faire suivant suivant, ouvrir ouvrir, oui oui, installer installer, etc.
 
 Après quelques minutes, vous devriez voir une fenêtre de sélection de l'environnement de développement s'ouvrir.
 
-### 3. Ouvrir l'application dans le conteneur
-
-Vous devriez voir une fenêtre de sélection de l'environnement de développement s'ouvrir.
-
-![Fenêtre de sélection de l'environnement de développement](./screenshots/win-vscode-select-dev-container.png)
-
-### 4. Ouvrir l'application dans le navigateur
+### 3. Ouvrir l'application dans le navigateur
 
 Quand le conteneur est prêt, vous devriez voir un icône (une petite antenne) dans la barre d'outils de VS Code.
 
 Cette vue liste tous les points d'entrée disponible.
 
-![Dev Container prêt](./screenshots/dev-container-ready.png)
+![Dev Container prêt](./screenshots/dev-container-ports.png)
 
 Vous pouvez maintenant ouvrir l'application dans votre navigateur à l'adresse [http://localhost:80](http://localhost:80).
 
@@ -65,12 +59,12 @@ Vous pouvez maintenant ouvrir l'application dans votre navigateur à l'adresse [
 
 Voilàà ! Vous pouvez maintenant commencer à développer.
 
-### 5. (Attention) Avant de fermer VS Code
+### 4. (Attention) Avant de fermer VS Code
 
 Avant de fermer VS Code, il faut arrêter le conteneur.
 
-- En bas à gauche, cliquer sur l'icône `>< Codespaces` pour ouvrir le menu des codespaces
-- Cliquer sur l'option `Stop Ccurrent Codespace`, sinon le conteneur va continuer de tourner et le temps sera décompté de votre forfait (60 heures gratuit par mois).
+-   En bas à gauche, cliquer sur l'icône `>< Codespaces` pour ouvrir le menu des codespaces
+-   Cliquer sur l'option `Stop Current Codespace`, sinon le conteneur va continuer de tourner et le temps sera décompté de votre forfait (60 heures gratuit par mois).
 
 ![Close Codespaces](./screenshots/github-codespaces-close.png)
 
@@ -78,14 +72,14 @@ Avant de fermer VS Code, il faut arrêter le conteneur.
 
 ## Prérequis
 
-- [Docker](https://www.docker.com/)
-- [WSL2](https://learn.microsoft.com/en-us/windows/wsl/about)
-- [VS Code](https://code.visualstudio.com/)
-- [VS Code - Remote Development (Extension)](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack)
+-   [Docker](https://www.docker.com/)
+-   [WSL2](https://learn.microsoft.com/en-us/windows/wsl/about)
+-   [VS Code](https://code.visualstudio.com/)
+-   [VS Code - Remote Development (Extension)](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack)
 
 ### 1. Cloner le projet
 
-Ouvrir l'application *Terminal* et sélectionner le sous-système Ubuntu.
+Ouvrir l'application _Terminal_ et sélectionner le sous-système Ubuntu.
 
 ![Ouvrir l'environnement Ubuntu dans le Terminal](./screenshots/win-run-wsl.png)
 
@@ -113,9 +107,9 @@ Vous devriez voir une fenêtre de sélection de l'environnement de développemen
 
 Si vous ne voyer pas la fenêtre de sélection de l'environnement de développement.
 
-- Ouvrir la palette de commande (Ctrl + Shift + P)
-- Rechercher et sélectionner `Remote-Containers: Open Folder in Container...`
-- Sélectionner le dossier du projet
+-   Ouvrir la palette de commande (Ctrl + Shift + P)
+-   Rechercher et sélectionner `Remote-Containers: Open Folder in Container...`
+-   Sélectionner le dossier du projet
 
 Cela peut prendre quelques minutes la première fois que vous ouvrez le projet dans un conteneur.
 
@@ -123,7 +117,7 @@ Cela peut prendre quelques minutes la première fois que vous ouvrez le projet d
 
 Quand le conteneur est prêt, vous devriez voir un icône (une petite antenne) dans la barre d'outils de VS Code.
 
-![Dev Container prêt](./screenshots/dev-container-ready.png)
+![Dev Container prêt](./screenshots/dev-container-ports.png)
 
 Vous pouvez maintenant ouvrir l'application dans votre navigateur à l'adresse [http://localhost:8080](http://localhost:80).
 
@@ -132,7 +126,6 @@ Vous pouvez maintenant ouvrir l'application dans votre navigateur à l'adresse [
 Voilàà ! Vous pouvez maintenant commencer à développer.
 
 ### 5. Installer les extensions VS Code recommandées
-
 
 ### 6. Conclusion
 
