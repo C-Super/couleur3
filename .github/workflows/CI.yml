@@ -10,7 +10,7 @@ on:
 
 jobs:
   continuous-integration:
-    name: Laravel (PHP ${{ matrix.php-versions }})
+    name: Continous Integration (PHP ${{ matrix.php-versions }})
 
     runs-on: ubuntu-latest
 
@@ -102,8 +102,8 @@ jobs:
       - name: Run Migration
         run: php artisan migrate -v
         env:
-          DB_PORT: ${{ job.services.mysql.ports['3306'] }}
-          REDIS_PORT: ${{ job.services.redis.ports['6379'] }}
+          DB_PORT: ${{ job.services.mysql.ports }}
+          REDIS_PORT: ${{ job.services.redis.ports }}
 
       - name: Run Laravel Pint
         run: vendor/bin/pint --test --format=checkstyle | cs2pr
@@ -119,6 +119,9 @@ jobs:
 
       - name: Run Pest tests
         run: vendor/bin/pest --teamcity
+        env:
+          DB_PORT: ${{ job.services.mysql.ports }}
+          REDIS_PORT: ${{ job.services.redis.ports }}
 
       - name: Run PHP Security Checker
         run: vendor/bin/security-checker security:check
