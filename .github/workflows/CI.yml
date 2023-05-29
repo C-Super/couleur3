@@ -49,9 +49,6 @@ jobs:
           extensions: mbstring, dom, fileinfo, mysql
           coverage: xdebug
 
-      - name: Setup problem matchers for PHPUnit
-        run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
-
       - name: Get composer cache directory
         id: composer-cache
         run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
@@ -72,6 +69,11 @@ jobs:
           node-version: 16
           cache: npm
 
+      - name: Get npm cache directory
+        id: npm-cache-dir
+        shell: bash
+        run: echo "dir=$(npm config get cache)" >> ${GITHUB_OUTPUT}
+
       - name: Install npm dependencies
         run: npm ci
 
@@ -89,27 +91,17 @@ jobs:
           DB_PORT: ${{ job.services.mysql.ports['3306'] }}
           REDIS_PORT: ${{ job.services.redis.ports['6379'] }}
 
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: artifacts
-          path: |
-            vendor
-            node_modules
-
   laravel-pint:
     runs-on: ubuntu-latest
 
     needs: setup
 
     steps:
-      - name: Download artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: artifacts
+      - name: Run ls -la
+        run: ls -la
 
       - name: Run Laravel Pint
-        run: ./vendor/bin/pint --test --format=checkstyle | cs2pr
+        run: vendor/bin/pint --test --format=checkstyle | cs2pr
 
   prettier:
     runs-on: ubuntu-latest
@@ -117,11 +109,6 @@ jobs:
     needs: setup
 
     steps:
-      - name: Download artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: artifacts
-
       - name: Run Prettier
         run: prettier --check resources/js
 
@@ -131,13 +118,8 @@ jobs:
     needs: setup
 
     steps:
-      - name: Download artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: artifacts
-
       - name: Run Larastan
-        run: ./vendor/bin/phpstan analyse --memory-limit=2G --error-format=checkstyle | cs2pr
+        run: vendor/bin/phpstan analyse --memory-limit=2G --error-format=checkstyle | cs2pr
 
   eslint:
     runs-on: ubuntu-latest
@@ -145,11 +127,6 @@ jobs:
     needs: setup
 
     steps:
-      - name: Download artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: artifacts
-
       - name: Run ESLint
         run: eslint --ext .js,.vue --ignore-path .gitignore
 
@@ -159,16 +136,11 @@ jobs:
     needs: setup
 
     steps:
-      - name: Download artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: artifacts
-
       - name: Configure matchers
         uses: mheap/phpunit-matcher-action@v1
 
       - name: Run Pest tests
-        run: ./vendor/bin/pest --teamcity
+        run: vendor/bin/pest --teamcity
 
   php-security-checker:
     runs-on: ubuntu-latest
@@ -176,13 +148,8 @@ jobs:
     needs: setup
 
     steps:
-      - name: Download artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: artifacts
-
       - name: Run PHP Security Checker
-        run: ./vendor/bin/security-checker security:check
+        run: vendor/bin/security-checker security:check
 
   npm-audit:
     runs-on: ubuntu-latest
@@ -190,10 +157,5 @@ jobs:
     needs: setup
 
     steps:
-      - name: Download artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: artifacts
-
       - name: Run NPM Audit
         run: npm audit
