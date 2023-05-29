@@ -20,14 +20,6 @@ sequenceDiagram
         FrontendAuditeur->>+Backend: relayMessage()
         activate Backend
 
-        Backend->>+DB: fetchUserDetails()
-        activate DB
-
-        DB-->>-Backend: UserDetails
-        deactivate DB
-
-        Backend->>Backend: verifyChatPermission()
-
         Backend->>+DB: fetchChatInteraction()
         activate DB
 
@@ -35,6 +27,14 @@ sequenceDiagram
         deactivate DB
 
         Backend->>Backend: verifyChatOpen()
+
+        Backend->>+DB: fetchUserDetails()
+        activate DB
+
+        DB-->>-Backend: UserDetails
+        deactivate DB
+
+        Backend->>Backend: verifyChatPermission()
 
         alt Chat is open
             Backend->>Backend: validateMessageContent()

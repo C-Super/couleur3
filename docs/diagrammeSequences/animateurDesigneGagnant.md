@@ -1,7 +1,4 @@
 ```mermaid
----
-title: Diagramme de séquence Animateur designe un gagnant
----
 sequenceDiagram
 Actor Auditeur
 Actor Animateur
@@ -9,15 +6,15 @@ participant FrontendAuditeur as Frontend (Auditeur)
 participant FrontendAnimateur as Frontend (Animateur)
 participant Event as Event Server (Pusher)
 participant Backend as Backend (Laravel)
-participant DB as Base de données
+participant DB as Database
 
-    Animateur->>FrontendAnimateur: Désigne un gagnant pour une interaction
+    Animateur->>FrontendAnimateur: Designates Winners for an Interaction
     activate FrontendAnimateur
 
-    FrontendAnimateur->>+Backend: designateWinnerForInteraction()
+    FrontendAnimateur->>+Backend: designateWinnersForInteraction()
     activate Backend
 
-    alt Animateur a les autorisations
+    alt Animateur has permissions
         Backend->>+DB: getInteractionDetails()
         activate DB
 
@@ -26,24 +23,26 @@ participant DB as Base de données
 
         Backend->>Backend: validateInteraction()
 
-        Backend->>+DB: designateWinnerForInteraction()
+        Backend->>+DB: designateWinnersForInteraction()
         activate DB
 
         DB-->>-Backend: UpdatedInteractionDetails
         deactivate DB
 
-        Backend->>+Event: notifyWinnerForInteraction()
-        activate Event
+        loop for each winner
+            Backend->>+Event: notifyWinnerForInteraction()
+            activate Event
 
-        Event-->>FrontendAuditeur: winnerNotification()
-        deactivate Event
+            Event-->>FrontendAuditeur: winnerNotification()
+            deactivate Event
 
-        FrontendAuditeur->>Auditeur: Notifie le gagnant pour l'interaction
+            FrontendAuditeur->>Auditeur: Notify the winner for the interaction
+        end
 
-        Backend-->>FrontendAnimateur: confirmWinnerDesignation()
+        Backend-->>FrontendAnimateur: confirmWinnersDesignation()
         deactivate Backend
         deactivate FrontendAnimateur
-    else Animateur n'a pas les autorisations
-        Backend->>FrontendAnimateur: errorNotification("L'Animateur n'a pas les autorisations nécessaires")
+    else Animateur does not have permissions
+        Backend->>FrontendAnimateur: errorNotification("The Host does not have the necessary permissions")
         deactivate Backend
     end

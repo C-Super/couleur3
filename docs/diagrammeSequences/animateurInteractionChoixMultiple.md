@@ -11,7 +11,7 @@ sequenceDiagram
     participant Backend as Backend (Laravel)
     participant DB as Base de données
 
-    Animateur->>FrontendAnimateur: Demande de lancement d'une interaction MCQ avec N choix (2 <= N <= 6)
+    Animateur->>FrontendAnimateur: Demande de lancement d'une interaction MCQ avec N choix (2 <= N <= 4)
     activate FrontendAnimateur
 
     FrontendAnimateur->>+Backend: createMCQInteraction(N)

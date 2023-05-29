@@ -1,7 +1,4 @@
 ```mermaid
----
-title: Diagramme de séquence Auditeur répond à une interaction de type "Sondage"
----
 sequenceDiagram
     Actor Auditeur
     Actor Animateur
@@ -47,9 +44,11 @@ sequenceDiagram
             activate Event
 
             Event->>FrontendAnimateur: newResponseEvent()
+            Event->>+FrontendAuditeur: sendSurveyResultsUpdate()
             deactivate Event
 
             FrontendAnimateur->>Animateur: displayResponse()
+            FrontendAuditeur->>Auditeur: updateSurveyPercentages()
         else Interaction is not Survey type
             Backend-->>FrontendAuditeur: showIncorrectInteractionTypeMessage()
             deactivate Backend

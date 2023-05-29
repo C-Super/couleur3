@@ -5,16 +5,18 @@ title: Diagramme de séquence Auditeur gagne une récompense
 sequenceDiagram
     Actor Auditeur
     participant FrontendAuditeur as Frontend (Auditeur)
+    participant Event as Event Server (Pusher)
     participant Backend as Backend (Laravel)
-    participant DB as Base de données
+    participant DB as Database
+    
 
-    Auditeur->>FrontendAuditeur: Demande une récompense
+    Auditeur->>FrontendAuditeur: Requests a Reward
     activate FrontendAuditeur
 
     FrontendAuditeur->>+Backend: requestRewards()
     activate Backend
 
-    alt Auditeur est authentifié
+    alt Auditeur is authenticated
         Backend->>Backend: validateAndEncryptAuditorInput()
 
         Backend->>+DB: fetchAuditorRewards()
@@ -33,10 +35,19 @@ sequenceDiagram
 
         Backend->>Backend: verifyAuditorInformationCompleteness()
 
-        alt Auditor Information Complete
+        alt Auditor Information is Complete
+            Backend->>+Event: emitRewardEvent()
+            activate Event
+
+            Event-->>FrontendAuditeur: rewardNotification()
+            deactivate Event
+
+            FrontendAuditeur->>Auditeur: Display Reward
+            deactivate FrontendAuditeur
+
             Backend-->>FrontendAuditeur: displayRewards()
             deactivate Backend
-        else Auditor Information Incomplete
+        else Auditor Information is Incomplete
             Backend-->>FrontendAuditeur: requestCompleteInformation()
             deactivate Backend
 
@@ -54,9 +65,9 @@ sequenceDiagram
             Backend-->>FrontendAuditeur: displayRewards()
             deactivate Backend
 
-            FrontendAuditeur->>Auditeur: Affiche la récompense
+            FrontendAuditeur->>Auditeur: Display Reward
         end
-    else Auditeur n'est pas authentifié
-        Backend->>FrontendAuditeur: errorNotification("Vous devez être authentifié pour demander une récompense")
+    else Auditeur is not authenticated
+        Backend->>FrontendAuditeur: errorNotification("You must be authenticated to request a reward")
         deactivate Backend
     end
