@@ -2,55 +2,58 @@
 
 ```mermaid
 flowchart LR
-
     subgraph setup
         direction TB
 
         setupPHP
         installComposerDepedencies
+
         setupNode
         installNpmDependencies
     end
 
     subgraph format
-        direction TB
+        direction LR
 
         laravelPint
         prettier
     end
 
     subgraph lint
-        direction TB
+        direction LR
 
         larastan
         eslint
     end
 
     subgraph test
-        direction TB
+        direction LR
 
         pest
     end
 
     subgraph security
-        direction TB
+        direction LR
 
         phpSecurityChecker
         npmAudit
     end
 
     subgraph build
-        direction TB
+        direction LR
 
         npmBuild
         composerProduction
     end
 
     subgraph deploy
-        direction TB
+        direction LR
 
         connectSSH
     end
+
+    setupPHP --> installComposerDepedencies
+    setupNode --> installNpmDependencies
 
     setup --> format
     format --> lint
