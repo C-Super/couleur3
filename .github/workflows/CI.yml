@@ -18,9 +18,6 @@ jobs:
       DB_DATABASE: laravel
       DB_USERNAME: root
       DB_PASSWORD: password
-      DB_HOST: 127.0.0.1
-      DB_PORT: 3306
-      REDIS_PORT: 6379
       BROADCAST_DRIVER: log
       CACHE_DRIVER: redis
       QUEUE_CONNECTION: redis
@@ -101,6 +98,9 @@ jobs:
 
       - name: Run Migration
         run: php artisan migrate -v
+        env:
+          DB_PORT: ${{ job.services.mysql.ports['3306'] }}
+          REDIS_PORT: ${{ job.services.redis.ports['6379'] }}
 
       - name: Run Laravel Pint
         run: vendor/bin/pint --test --format=checkstyle | cs2pr
@@ -116,6 +116,9 @@ jobs:
 
       - name: Run Pest tests
         run: vendor/bin/pest --teamcity
+        env:
+          DB_PORT: ${{ job.services.mysql.ports['3306'] }}
+          REDIS_PORT: ${{ job.services.redis.ports['6379'] }}
 
       - name: Run PHP Security Checker
         run: vendor/bin/security-checker security:check
