@@ -5,55 +5,55 @@ flowchart LR
     subgraph setup
         direction TB
 
-        setupPHP
-        installComposerDepedencies
+        setup-php
+        install-composer-depedencies
 
-        setupNode
-        installNpmDependencies
+        setup-node
+        install-npm-dependencies
     end
 
     subgraph format
         direction LR
 
-        laravelPint
-        prettier
+        laravel-pint[<a href='https://laravel.com/docs/10.x/pint'>laravel-pint</a>]
+        prettier[<a href='https://prettier.io/'>prettier</a>]
     end
 
     subgraph lint
         direction LR
 
-        larastan
-        eslint
+        larastan[<a href='https://github.com/nunomaduro/larastan'>larastan</a>]
+        eslint[<a href='https://eslint.org/'>eslint</a>]
     end
 
     subgraph test
         direction LR
 
-        pest
+        pest[<a href='https://pestphp.com/'>pest</a>]
     end
 
     subgraph security
         direction LR
 
-        phpSecurityChecker
-        npmAudit
+        php-security-checker[<a href='https://github.com/enlightn/security-checker'>php-security-checker</a>]
+        npm-audit[<a href='https://docs.npmjs.com/cli/v9/commands/npm-audit'>npm-audit</a>]
     end
 
     subgraph build
         direction LR
 
-        npmBuild
-        composerProduction
+        npm-build
+        composer-production
     end
 
     subgraph deploy
         direction LR
 
-        connectSSH
+        connect-ssh
     end
 
-    setupPHP --> installComposerDepedencies
-    setupNode --> installNpmDependencies
+    setup-php --> install-composer-depedencies
+    setup-node --> install-npm-dependencies
 
     setup --> format
     format --> lint
@@ -61,14 +61,6 @@ flowchart LR
     test --> security
     security --> build
     build --> deploy
-
-    click laravelPint "https://laravel.com/docs/10.x/pint" _blank
-    click prettier "https://prettier.io/" _blank
-    click larastan "https://github.com/nunomaduro/larastan" _blank
-    click eslint "https://eslint.org/" _blank
-    click pest "https://pestphp.com/" _blank
-    click phpSecurityChecker "https://github.com/enlightn/security-checker" _blank
-    click npmAudit "https://docs.npmjs.com/cli/v9/commands/npm-audit" _blank
 ```
 
 ## Laravel Pint
