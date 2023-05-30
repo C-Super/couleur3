@@ -25,7 +25,7 @@ phpstan: ## Run linter with Larastan
 
 .PHONY: eslint
 eslint: ## Run linter with ESLint
-	eslint --ext .js,.vue --ignore-path .gitignore --fix resources/js
+	npx eslint --ext .js,.vue --ignore-path .gitignore --fix resources/js
 
 lint: phpstan eslint ## Run all linters
 
@@ -44,3 +44,7 @@ npm-audit: ## Run security check for npm dependencies
 	npm audit
 
 security: security-checker npm-audit ## Run all
+
+.PHONY: zora
+zora: ## Generate translations keys for Vue
+	php artisan zora:generate

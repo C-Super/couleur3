@@ -1,3 +1,4 @@
+<!-- eslint-disable no-undef -->
 <script setup>
 import DangerButton from "@/Components/DangerButton.vue";
 import InputError from "@/Components/InputError.vue";
@@ -22,7 +23,7 @@ const confirmUserDeletion = () => {
 };
 
 const deleteUser = () => {
-    form.delete($route("profile.destroy"), {
+    form.delete(route("profile.destroy"), {
         preserveScroll: true,
         onSuccess: () => closeModal(),
         onError: () => passwordInput.value.focus(),
