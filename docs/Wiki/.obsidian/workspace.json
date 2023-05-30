@@ -1,0 +1,177 @@
+{
+  "main": {
+    "id": "67e6161467cb5e40",
+    "type": "split",
+    "children": [
+      {
+        "id": "9cd27bb03792a862",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "7917eb4bfb3501b6",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Workflow Github.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "5bf34a53b31d654b",
+    "type": "split",
+    "children": [
+      {
+        "id": "2dbf07dfeb53d2a7",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "8db17425ec342cbc",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "8d3e54ddbc1b6b79",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "c6fbc7f96751c720",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "073e039aa67c4d22",
+    "type": "split",
+    "children": [
+      {
+        "id": "43c4722a40881637",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "52afdf37bd7fa2a7",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Workflow Github.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "2af2a7888c9dff99",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Workflow Github.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "8d4d2feea9c66966",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "ebb83553180afaa6",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Workflow Github.md"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false
+    }
+  },
+  "active": "7917eb4bfb3501b6",
+  "lastOpenFiles": [
+    "UX/Fiche persona - Animateurs.png.crdownload",
+    "UX/Fiche persona - Animateurs.png",
+    "UX/Variables comportementales - Animateurs.jpg",
+    "UX/Variables comportementales - Animateurs.jpg.crdownload",
+    "UX/Empathy - Animateurs.jpg",
+    "UX/Empathy - Animateurs.jpg.crdownload",
+    "UX/Entretien animateur.md",
+    "Workflow Github.md",
+    "Nomenclature.md",
+    "Img/Guides/workflow_9.png",
+    "Img/Guides/workflow_8.png",
+    "Img/Guides/workflow_7.png",
+    "Img/Guides/workflow_6.png",
+    "Img/Guides/workflow_5.png",
+    "Img/Guides/workflow_4.png",
+    "Img/Guides/workflow_3.png",
+    "Img/Guides",
+    "Img",
+    "0. Index.md",
+    "GesProj/Gestion de projet.md",
+    "GesProj/Avant Projet.md",
+    "GesProj",
+    "Gestion de projet.md",
+    "UX/Benchmark.md",
+    "UX"
+  ]
+}
