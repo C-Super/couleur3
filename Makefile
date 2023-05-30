@@ -1,24 +1,46 @@
+.DEFAULT_GOAL := help
+.PHONY: help
+help: ## Affiche cette aide
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+
 .PHONY: helpers
-helpers:
+helpers: ## Run helpers for IDE's
 	php artisan ide-helper:generate
 	php artisan ide-helper:models -F helpers/ModelHelper.php -M
 	php artisan ide-helper:meta
 
-.PHONY: format
-format:
+.PHONY: pint
+pint: ## Run format with Laravel Pint
 	./vendor/bin/pint
+
+.PHONY: prettier
+prettier: ## Run format with Prettier
 	npx prettier --write resources/js
 
-.PHONY: lint
-lint:
-	./vendor/bin/phpstan analyse
-	npx eslint --ext .js,.vue --ignore-path .gitignore --fix resources/js
+format: pint prettier ## Run all formaters
 
-.PHONY: test
-test:
+.PHONY: phpstan
+phpstan: ## Run linter with Larastan
+	./vendor/bin/phpstan analyse
+
+.PHONY: eslint
+eslint: ## Run linter with ESLint
+	eslint --ext .js,.vue --ignore-path .gitignore --fix resources/js
+
+lint: phpstan eslint ## Run all linters
+
+.PHONY: pest
+pest: ## Run tets with Pest
 	./vendor/bin/pest
 
-.PHONY: security
-security:
+test: pest ## Run all tests
+
+.PHONY: security-checker
+security-checker: ## Run security check for composer dependencies
 	./vendor/bin/security-checker security:check
+
+.PHONY: npm-audit
+npm-audit: ## Run security check for npm dependencies
 	npm audit
+
+security: security-checker npm-audit ## Run all
