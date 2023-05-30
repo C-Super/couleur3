@@ -7,18 +7,18 @@ classDiagram
     class SETTING {
         id id PK
         string name UNIQUE
-        json payload
+        json value
     }
 
     class USER {
         id id PK
         string email UNIQUE
         string password
+        id roleable_id FK [AUDITOR.id|ANIMATOR.id]
     }
 
     class ANIMATOR {
         id id PK
-        id user_id FK USER.id
     }
 
     class AUDITOR {
@@ -55,23 +55,25 @@ classDiagram
     class INTERACTION {
         id id PK
         string title
-        enum[MCQ|SURVEY|TEXT|AUDIO|PICTURE|VIDEO|CTA|QUICK] type
+        enum[MCQ|SURVEY|TEXT|AUDIO|PICTURE|VIDEO|CTA|QUICK_CLICK] type
         datetime created_at
         datetime ended_at
         id animator_id FK ANIMATOR.id
+        id type_id FK [MEDIA.id|ANSWER_TEXT.id|QUESTION_CHOICE.id|CALL_TO_ACTION.id]
         id reward_id FK REWARD.id NULL
-        int winners_quantity NULL
+        int winners_count NULL
     }
 
     class REWARD {
         id id PK
         string[255] name
+        string[255] description
         id media_id FK MEDIA.id NULL
     }
 
     class QUESTION_CHOICE {
         id id PK
-        string content
+        string value
         boolean is_correct_answer
         id interaction_id FK INTERACTION.id
     }
@@ -81,7 +83,7 @@ classDiagram
         datetime created_at
         id auditor_id FK AUDITOR.id
         id interaction_id FK INTERACTION.id
-        id responds_with_id FK [MEDIA.id|ANSWER_TEXT.id|QUESTION_CHOICE.id]
+        id responds_with_id FK [MEDIA.id|ANSWER_TEXT.id|QUESTION_CHOICE.id|CALL_TO_ACTION.id]
     }
 
     class ANSWER_TEXT {
@@ -98,9 +100,8 @@ classDiagram
     class CALL_TO_ACTION {
         id id PK
         string[255] description
-        string[255] url NULLABLE
+        string[255] link NULLABLE
         string[50] button_text
-        id interaction_id FK INTERACTION.id
         id media_id FK MEDIA.id
     }
 
