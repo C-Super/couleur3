@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\Auditor;
 use App\Models\User;
 use Hash;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class AuditorSeeder extends Seeder
@@ -17,7 +16,7 @@ class AuditorSeeder extends Seeder
     {
         for ($i = 0; $i < 10; $i++) {
             $auditor = Auditor::factory()->create([
-                'phone' => fake()->phoneNumber
+                'phone' => fake()->phoneNumber,
             ]);
 
             User::factory()->create([
