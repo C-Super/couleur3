@@ -4,11 +4,14 @@ import "../css/app.css";
 import { createApp, h } from "vue";
 import { createInertiaApp } from "@inertiajs/vue3";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
-import { ZiggyVue, Ziggy, route } from "../../vendor/tightenco/ziggy/dist/vue.m";
+import {
+    ZiggyVue,
+    Ziggy,
+    route,
+} from "../../vendor/tightenco/ziggy/dist/vue.m";
 
 const appName =
     window.document.getElementsByTagName("title")[0]?.innerText || "Laravel";
-
 
 const app = createInertiaApp({
     title: (title) => `${title} - ${appName}`,
@@ -28,4 +31,4 @@ const app = createInertiaApp({
     },
 });
 
-app.config.globalProperties.$route = route
+app.config.globalProperties.$route = route;

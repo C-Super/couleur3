@@ -13,7 +13,7 @@ defineProps({
     },
     status: {
         type: String,
-        default: ""
+        default: "",
     },
 });
 
