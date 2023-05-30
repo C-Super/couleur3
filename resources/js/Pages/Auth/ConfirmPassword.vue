@@ -11,7 +11,7 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post(this.$route("password.confirm"), {
+    form.post(route("password.confirm"), {
         onFinish: () => form.reset(),
     });
 };
