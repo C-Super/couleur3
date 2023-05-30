@@ -18,6 +18,7 @@ jobs:
       DB_DATABASE: laravel
       DB_USERNAME: root
       DB_PASSWORD: password
+      DB_HOST: 127.0.0.1
       BROADCAST_DRIVER: log
       CACHE_DRIVER: redis
       QUEUE_CONNECTION: redis
