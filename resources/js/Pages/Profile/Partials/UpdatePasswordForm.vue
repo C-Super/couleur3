@@ -16,7 +16,7 @@ const form = useForm({
 });
 
 const updatePassword = () => {
-    form.put(route("password.update"), {
+    form.put(this.$route("password.update"), {
         preserveScroll: true,
         onSuccess: () => form.reset(),
         onError: () => {
@@ -46,7 +46,7 @@ const updatePassword = () => {
             </p>
         </header>
 
-        <form @submit.prevent="updatePassword" class="mt-6 space-y-6">
+        <form class="mt-6 space-y-6" @submit.prevent="updatePassword">
             <div>
                 <InputLabel for="current_password" value="Current Password" />
 

@@ -7,13 +7,14 @@ import { Head, Link, useForm } from "@inertiajs/vue3";
 const props = defineProps({
     status: {
         type: String,
+        default: ""
     },
 });
 
 const form = useForm({});
 
 const submit = () => {
-    form.post(route("verification.send"));
+    form.post(this.$route("verification.send"));
 };
 
 const verificationLinkSent = computed(
@@ -32,8 +33,8 @@ const verificationLinkSent = computed(
         </div>
 
         <div
-            class="mb-4 font-medium text-sm text-green-600 dark:text-green-400"
             v-if="verificationLinkSent"
+            class="mb-4 font-medium text-sm text-green-600 dark:text-green-400"
         >
             A new verification link has been sent to the email address you
             provided during registration.
