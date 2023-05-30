@@ -4,10 +4,10 @@ title: Diagramme de classe
 ---
 
 classDiagram
-    class CONFIGURATION {
-        string name PK
-        string value
-        enum[STRING|INTEGER|BOOLEAN] type
+    class SETTING {
+        id id PK
+        string name UNIQUE
+        json payload
     }
 
     class USER {
@@ -22,11 +22,15 @@ classDiagram
         string[50] username PK
         string firstname
         string lastname
-        string phone
-        string address
-        string city
-        string country
+        string phone NULL
+    }
+
+    class ADDRESS {
+        id id PK
+        string[255] street
+        string[255] city
         int[4] zip_code
+        string[255] country
     }
 
     class MESSAGE {
@@ -76,6 +80,9 @@ classDiagram
 
     ANIMATOR --> USER : inherits et CI-1
     AUDITOR --> USER : inherits et CI-1
+
+    AUDITOR --> "0..1" ADDRESS : lives_at
+    ADDRESS -- "1..1" AUDITOR : lives_at
 
     ANIMATOR -- "0..*" INTERACTION : creates et CI-20
     INTERACTION -- "1..1" ANIMATOR : created_by et CI-20

@@ -2,7 +2,7 @@
 
 1. Un `USER` ne peut pas être à la fois un `ANIMATOR` et un `AUDITOR`.
 
-2. Un `AUDITOR` ne peut pas envoyer de `MESSAGE` si la `CONFIGURATION` `is_chat_enabled` est `false`.
+2. Un `AUDITOR` ne peut pas envoyer de `MESSAGE` si le `SETTING` `is_chat_enabled` est `false`.
 3. Un `AUDITOR` ne peut pas `ANSWER` à une `INTERACTION` si la `ended_at` de celle-ci est dépassée.
 4. un `AUDITOR` ne peut pas `ANSWER` à une même `INTERACTION` plusieurs fois. (UNIQUE: `interaction_id`, `auditor_id`)
 

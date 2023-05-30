@@ -4,11 +4,10 @@ title: Schéma relationnel
 ---
 
 classDiagram
-    class CONFIGURATION {
+    class SETTING {
         id id PK
         string name UNIQUE
-        string value
-        enum[STRING|INTEGER|BOOLEAN] type
+        json payload
     }
 
     class USER {
@@ -28,11 +27,16 @@ classDiagram
         string[50] username UNIQUE
         string firstname
         string lastname
-        string phone
-        string address
-        string city
-        string country
+        string phone NULL
+        id address_id FK ADDRESS.id NULL
+    }
+
+    class ADDRESS {
+        id id PK
+        string[255] street
+        string[255] city
         int[4] zip_code
+        string[255] country
     }
 
     class MESSAGE {
@@ -102,6 +106,8 @@ classDiagram
 
     AUDITOR --> USER : inherits et CI-1
     ANIMATOR --> USER : inherits et CI-1
+
+    AUDITOR --> ADDRESS
 
     MESSAGE --> AUDITOR : CI-2
 
