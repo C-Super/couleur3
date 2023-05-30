@@ -4,10 +4,10 @@ title: Diagramme de classe
 ---
 
 classDiagram
-    class CONFIGURATION {
-        string name PK
-        string value
-        enum[STRING|INTEGER|BOOLEAN] type
+    class SETTING {
+        id id PK
+        string name UNIQUE
+        json payload
     }
 
     class USER {
@@ -22,11 +22,15 @@ classDiagram
         string[50] username PK
         string firstname
         string lastname
-        string phone
-        string address
-        string city
-        string country
+        string phone NULL
+    }
+
+    class ADDRESS {
+        id id PK
+        string[255] street
+        string[255] city
         int[4] zip_code
+        string[255] country
     }
 
     class MESSAGE {
@@ -41,7 +45,7 @@ classDiagram
 
     class INTERACTION {
         string title
-        enum[MCQ|SURVEY|TEXT|AUDIO|PICTURE|VIDEO|CTA] type
+        enum[MCQ|SURVEY|TEXT|AUDIO|PICTURE|VIDEO|CTA|QUICK] type
         datetime created_at
         datetime ended_at
     }
@@ -56,6 +60,7 @@ classDiagram
     }
 
     class ANSWER {
+        datetime created_at
     }
 
     class ANSWER_TEXT {
@@ -76,6 +81,9 @@ classDiagram
     ANIMATOR --> USER : inherits et CI-1
     AUDITOR --> USER : inherits et CI-1
 
+    AUDITOR --> "0..1" ADDRESS : lives_at
+    ADDRESS -- "1..1" AUDITOR : lives_at
+
     ANIMATOR -- "0..*" INTERACTION : creates et CI-20
     INTERACTION -- "1..1" ANIMATOR : created_by et CI-20
 
@@ -87,10 +95,10 @@ classDiagram
     INTERACTION -- "0..*" ANSWER : has et CI-12
     ANSWER -- "1..1" INTERACTION : belongs_to et CI-12
 
-    INTERACTION -- "0..*" CALL_TO_ACTION : has
-    CALL_TO_ACTION -- "1..1" INTERACTION : belongs_to
+    INTERACTION -- "0..*" CALL_TO_ACTION : has et CI-21 et CI-22
+    CALL_TO_ACTION -- "1..1" INTERACTION : belongs_to et CI-21 et CI-22
 
-    INTERACTION -- "2..6" QUESTION_CHOICE : has et CI-6, CI-7 et CI-8
+    INTERACTION -- "2..4" QUESTION_CHOICE : has et CI-6, CI-7 et CI-8
     QUESTION_CHOICE -- "1..1" INTERACTION : belongs_to et CI-6, CI-7 et CI-8
 
     INTERACTION -- "1..1" REWARD : has et CI-17
