@@ -5,6 +5,9 @@ import { createApp, h } from "vue";
 import { createInertiaApp } from "@inertiajs/vue3";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
 import { ZiggyVue } from "../../vendor/tightenco/ziggy/dist/vue.m";
+import { Ziggy } from "./ziggy";
+import { ZoraVue } from "zora";
+import { Zora } from "./zora.js";
 
 const appName =
     window.document.getElementsByTagName("title")[0]?.innerText || "Laravel";
@@ -19,7 +22,7 @@ createInertiaApp({
     setup({ el, App, props, plugin }) {
         const VueApp = createApp({ render: () => h(App, props) });
 
-        VueApp.use(plugin).use(ZiggyVue, window.Ziggy).mount(el);
+        VueApp.use(plugin).use(ZiggyVue, Ziggy).use(ZoraVue, Zora).mount(el);
     },
     progress: {
         color: "#4B5563",

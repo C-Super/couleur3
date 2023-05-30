@@ -4,6 +4,13 @@ import vue from "@vitejs/plugin-vue";
 import eslintPlugin from "vite-plugin-eslint";
 
 export default defineConfig({
+    resolve: {
+        alias: {
+            ziggy: "vendor/tightenco/ziggy/dist/vue.es.js",
+            zora: "vendor/jetstreamlabs/zora/dist/vue.js",
+            "zora-js": "vendor/jetstreamlabs/zora/dist/index.js",
+        },
+    },
     plugins: [
         laravel({
             input: "resources/js/app.js",

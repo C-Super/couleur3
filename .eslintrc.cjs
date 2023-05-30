@@ -8,7 +8,7 @@ module.exports = {
         ecmaVersion: "latest",
         sourceType: "module",
     },
-    rules : {
-        'vue/multi-word-component-names': 0
-    }
+    rules: {
+        "vue/multi-word-component-names": 0,
+    },
 };

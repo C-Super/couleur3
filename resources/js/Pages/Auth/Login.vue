@@ -1,3 +1,4 @@
+<!-- eslint-disable no-undef -->
 <script setup>
 import Checkbox from "@/Components/Checkbox.vue";
 import GuestLayout from "@/Layouts/GuestLayout.vue";
@@ -5,7 +6,8 @@ import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
-import { Head, Link, useForm } from "@inertiajs/vue3";
+import { Head, Link } from "@inertiajs/vue3";
+import { useForm } from "laravel-precognition-vue-inertia";
 
 defineProps({
     canResetPassword: {
@@ -17,17 +19,17 @@ defineProps({
     },
 });
 
-const form = useForm({
+const form = useForm("post", route("login"), {
     email: "",
     password: "",
     remember: false,
 });
 
-const submit = () => {
-    form.post(route("login"), {
+const submit = () =>
+    form.submit({
+        preserveScroll: true,
         onFinish: () => form.reset("password"),
     });
-};
 </script>
 
 <template>
@@ -50,6 +52,7 @@ const submit = () => {
                     required
                     autofocus
                     autocomplete="username"
+                    @change="form.validate('email')"
                 />
 
                 <InputError class="mt-2" :message="form.errors.email" />
@@ -65,6 +68,7 @@ const submit = () => {
                     class="mt-1 block w-full"
                     required
                     autocomplete="current-password"
+                    @change="form.validate('password')"
                 />
 
                 <InputError class="mt-2" :message="form.errors.password" />

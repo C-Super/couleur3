@@ -12,7 +12,7 @@ class RewardPolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -20,7 +20,7 @@ class RewardPolicy
      */
     public function view(User $user, Reward $reward): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -28,7 +28,7 @@ class RewardPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return false;
     }
 
     /**
@@ -36,7 +36,7 @@ class RewardPolicy
      */
     public function update(User $user, Reward $reward): bool
     {
-        //
+        return false;
     }
 
     /**
@@ -44,7 +44,7 @@ class RewardPolicy
      */
     public function delete(User $user, Reward $reward): bool
     {
-        //
+        return false;
     }
 
     /**
@@ -52,7 +52,7 @@ class RewardPolicy
      */
     public function restore(User $user, Reward $reward): bool
     {
-        //
+        return false;
     }
 
     /**
@@ -60,6 +60,6 @@ class RewardPolicy
      */
     public function forceDelete(User $user, Reward $reward): bool
     {
-        //
+        return false;
     }
 }
