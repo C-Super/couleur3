@@ -53,6 +53,7 @@ class User extends Authenticatable implements MustVerifyEmailContract
     public function roleable(): MorphTo
     {
         return $this->morphTo();
+    }
 
     public function hasVerifiedEmail()
     {
