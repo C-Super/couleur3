@@ -7,12 +7,12 @@ helpers:
 .PHONY: format
 format:
 	./vendor/bin/pint
-	prettier --write resources/js
+	npx prettier --write resources/js
 
 .PHONY: lint
 lint:
 	./vendor/bin/phpstan analyse
-	eslint --ext .js,.vue --ignore-path .gitignore --fix resources/js
+	npx eslint --ext .js,.vue --ignore-path .gitignore --fix resources/js
 
 .PHONY: test
 test:
