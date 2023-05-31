@@ -34,10 +34,31 @@ class InteractionController extends Controller
 
     public function store(StoreInteractionRequest $request)
     {
-        $interaction = new Interaction($request->validated());
-        $interaction->save();
+        // 1. Contrôle d'accès
+        //TODO
 
-        return response()->json($interaction, 201);
+        // 2. Obtenez les interactions actuelles
+        $currentInteractions = Interaction::where('ended_at', '>', now())->orWhereNull('ended_at')->get();
+
+        // 3. Vérifiez si d'autres interactions sont en cours
+        if (!$currentInteractions->isEmpty()) {
+            throw new InvalidArgumentException('D\'autres interactions sont en cours');
+        }
+
+        // 4. Vérifiez la validité du contenu du texte
+        $validated = $request->validated();
+
+        // 5. Créer l'interaction de texte
+        $interaction = Interaction::create($validated);
+
+        // 6. Confirmer la création de l'interaction
+        $response = ['message' => 'Interaction crée', 'interaction' => $interaction];
+
+        // 7. Notifier la nouvelle interaction de texte
+        //TODO
+        //event(new NewTextInteraction($interaction));
+
+        return response()->json($response, 201);
     }
 
     /**

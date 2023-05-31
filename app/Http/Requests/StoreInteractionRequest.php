@@ -29,20 +29,20 @@ class StoreInteractionRequest extends FormRequest
         $typeableType = null;
 
         switch ($type) {
-            case InteractionType::MCQ:
-            case InteractionType::SURVEY:
+            case 'mcq':
+            case 'survey':
                 $typeableType = 'question_choices';
                 break;
-            case InteractionType::TEXT:
+            case 'text':
                 $typeableType = null;
                 break;
-            case InteractionType::AUDIO:
-            case InteractionType::VIDEO:
-            case InteractionType::PICTURE:
+            case 'audio':
+            case 'video':
+            case 'picture':
                 $typeableType = null;
                 break;
-            case InteractionType::CTA:
-            case InteractionType::QUICK_CLICK:
+            case 'cta':
+            case 'quick_click':
                 $typeableType = 'call_to_actions';
                 break;
             default:
@@ -55,7 +55,8 @@ class StoreInteractionRequest extends FormRequest
             'type' => 'required|in:' . implode(',', InteractionType::getValues()),
             'animator_id' => 'required|exists:animators,id',
             'reward_id' => 'exists:rewards,id',
-            'winners_count' => 'nullable|integer'
+            'winners_count' => 'nullable|integer',
+            'ended_at' => 'nullable|date_format:Y-m-d H:i:s'
         ];
         if ($typeableType !== null) {
             $rules['typeable_id'] = ["required", "exists:$typeableType,id"];

@@ -24,30 +24,35 @@ class InteractionFactory extends Factory
         $randomType = $this->faker->randomElement(InteractionType::getValues());
 
         switch ($randomType) {
-            case InteractionType::MCQ:
-            case InteractionType::SURVEY:
-                $typeable = QuestionChoice::factory()->create();
+            case 'mcq':
+                $typeable = QuestionChoice::factory()->count(4)->create();
                 break;
-            case InteractionType::CTA:
-            case InteractionType::QUICK_CLICK:
+            case 'survey':
+                $typeable = QuestionChoice::factory()->count(4)->create();
+                break;
+            case 'cta':
                 $typeable = CallToAction::factory()->create();
                 break;
-            case InteractionType::TEXT:
-            case InteractionType::AUDIO:
-            case InteractionType::VIDEO:
-            case InteractionType::PICTURE:
+            case 'quick_click':
+                $typeable = CallToAction::factory()->create();
+                break;
+            case 'text':
+            case 'audio':
+            case 'video':
+            case 'picture':
             default:
                 $typeable = null;
         }
 
         return [
-            'title' => $this->faker->sentence,
+            'title' => $this->faker->sentence(2,5),
             'type' => $randomType,
             'animator_id' => Animator::factory(),
             'reward_id' => Reward::factory(),
             'winners_count' => $this->faker->numberBetween(1, 20),
             'typeable_id' => $typeable ? $typeable->id : null,
             'typeable_type' => $typeable ? get_class($typeable) : null,
+            'ended_at' => $this->faker->dateTimeBetween('now', '+10 minutes'),
         ];
     }
 }

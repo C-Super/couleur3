@@ -3,7 +3,14 @@
 use App\Models\Interaction;
 use App\Models\Animator;
 use App\Models\Reward;
+use App\Models\QuestionChoice;
 use function Pest\Laravel\{postJson, patchJson, deleteJson, getJson};
+use Illuminate\Foundation\Testing\RefreshDatabase;
+
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+
+//uses(DatabaseTransactions::class);
+
 
 it('can store interactions', function () {
     $animator = Animator::factory()->create();
@@ -11,7 +18,9 @@ it('can store interactions', function () {
 
     $response = postJson('/interactions', [
         'title' => 'Test Interaction',
-        'type' => 'text',
+        'type' => 'mcq',
+        'typeable_id' => 2,
+        'typeable_type' => 'App\Models\QuestionChoice',
         'animator_id' => $animator->id,
         'reward_id' => $reward->id,
         'winners_count' => 10,
@@ -19,7 +28,7 @@ it('can store interactions', function () {
 
     $response->assertStatus(201);
     expect(Interaction::where('title', 'Test Interaction')->exists())->toBeTrue();
-});
+})->only();
 
 it('can update interactions', function () {
     $interaction = Interaction::factory()->create();

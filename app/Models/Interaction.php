@@ -22,6 +22,7 @@ class Interaction extends Model
         'type',
         'typeable_id',
         'typeable_type',
+        'ended_at',
         'animator_id',
         'reward_id',
         'winners_count',
