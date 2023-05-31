@@ -30,18 +30,6 @@ class StoreInteractionRequest extends FormRequest
         $typeableType = null;
 
         switch ($type) {
-            case 'mcq':
-            case 'survey':
-                $typeableType = null;
-                break;
-            case 'text':
-                $typeableType = null;
-                break;
-            case 'audio':
-            case 'video':
-            case 'picture':
-                $typeableType = null;
-                break;
             case 'cta':
             case 'quick_click':
                 $typeableType = 'call_to_actions';
