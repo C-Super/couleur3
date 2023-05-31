@@ -9,6 +9,7 @@
 		- Sélectionner des gagnants parmi les participants `winner` 
 			- Aléatoire
 			- Manuelle
+			- Par rapidité `answer:created_at`
 			- Sélectionner un lot remporté `reward`
 	- CTA `call_to_action`
 		- Lien `url`
