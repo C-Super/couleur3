@@ -1,6 +1,15 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\InteractionController;
+use App\Http\Controllers\AnswerController;
+use App\Http\Controllers\AnswerTextController;
+use App\Http\Controllers\CallToActionController;
+use App\Http\Controllers\MediaController;
+use App\Http\Controllers\QuestionChoiceController;
+use App\Http\Controllers\RewardController;
+use App\Http\Controllers\WinnerController;
+
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -35,4 +44,28 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+// InteractionController Routes
+Route::resource('interactions', InteractionController::class);
+
+// AnswerController Routes
+Route::resource('answers', AnswerController::class);
+
+// AnswerTextController Routes
+Route::resource('answerTexts', AnswerTextController::class);
+
+// CallToActionController Routes
+Route::resource('callToActions', CallToActionController::class);
+
+// MediaController Routes
+Route::resource('media', MediaController::class);
+
+// QuestionChoiceController Routes
+Route::resource('questionChoices', QuestionChoiceController::class);
+
+// RewardController Routes
+Route::resource('rewards', RewardController::class);
+
+// WinnerController Routes
+Route::resource('winners', WinnerController::class);
+
+require __DIR__ . '/auth.php';

@@ -25,14 +25,60 @@ class UpdateInteractionRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'title' => 'max:255',
-            'type' => 'in:' . implode(',', InteractionType::getValues()),
-            'typeable_id' => 'required',
-            'typeable_type' => 'required',
-            'animator_id' => 'exists:animators,id',
+        $type = $this->input('type');
+        $typeableType = null;
+
+        switch ($type) {
+            case InteractionType::MCQ:
+            case InteractionType::SURVEY:
+                $typeableType = 'question_choices';
+                break;
+            case InteractionType::TEXT:
+                $typeableType = null;
+                break;
+            case InteractionType::AUDIO:
+            case InteractionType::VIDEO:
+            case InteractionType::PICTURE:
+                $typeableType = null;
+                break;
+            case InteractionType::CTA:
+            case InteractionType::QUICK_CLICK:
+                $typeableType = 'call_to_actions';
+                break;
+            default:
+                // Handle unexpected interaction type
+                break;
+        }
+
+        $rules = [
+            'title' => 'required|max:255',
+            'type' => 'required|in:' . implode(',', InteractionType::getValues()),
+            'animator_id' => 'required|exists:animators,id',
             'reward_id' => 'exists:rewards,id',
             'winners_count' => 'nullable|integer'
         ];
+        if ($typeableType !== null) {
+            $rules['typeable_id'] = ["required", "exists:$typeableType,id"];
+            $rules['typeable_type'] = 'required';
+        }
+
+        return $rules;
+    }
+
+    /**
+     * Configure the validator instance.
+     *
+     * @param  \Illuminate\Validation\Validator  $validator
+     * @return void
+     */
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            $interaction = $this->route('interaction');
+
+            if ($this->input('type') !== $interaction->type) {
+                $validator->errors()->add('type', 'The type of the interaction cannot be changed.');
+            }
+        });
     }
 }

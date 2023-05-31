@@ -17,7 +17,9 @@ class CallToActionFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'description' => $this->faker->sentence,
+            'link' => $this->faker->url,
+            'button_text' => $this->faker->words(3, true),
         ];
     }
 }

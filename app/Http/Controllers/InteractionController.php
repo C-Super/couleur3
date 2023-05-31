@@ -25,19 +25,19 @@ class InteractionController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function show(Interaction $interaction)
     {
         // Récupérer l'interaction et la retourner
         $interaction = Interaction::findOrFail($interaction->id);
         return response()->json($interaction);
+    }
+
+    public function store(StoreInteractionRequest $request)
+    {
+        $interaction = new Interaction($request->validated());
+        $interaction->save();
+
+        return response()->json($interaction, 201);
     }
 
     /**
@@ -64,7 +64,7 @@ class InteractionController extends Controller
         $interaction->delete();
 
         // Retourner une réponse indiquant que la suppression a réussi
-        return response()->json(['message' => 'Interaction deleted successfully']);
+        return response()->json($interaction, 204);
     }
 
 
