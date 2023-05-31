@@ -58,7 +58,7 @@ class StoreInteractionRequest extends FormRequest
             'reward_id' => 'exists:rewards,id',
             'winners_count' => 'nullable|integer',
             'ended_at' => [
-                'nullable',
+                'required',
                 'date_format:Y-m-d H:i:s',
                 'after:' . Carbon::now()->format('Y-m-d H:i:s')
             ]

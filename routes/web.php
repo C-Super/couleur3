@@ -45,6 +45,7 @@ Route::middleware('auth')->group(function () {
 });
 
 // InteractionController Routes
+Route::post('/interactions', [InteractionsController::class, 'store'])->middleware('fill_ended_at');
 Route::resource('interactions', InteractionController::class);
 
 // AnswerController Routes

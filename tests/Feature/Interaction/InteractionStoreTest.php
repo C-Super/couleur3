@@ -239,6 +239,8 @@ it('cannot store an interaction with another interaction running', function () {
         'reward_id' => $reward->id,
         'winners_count' => 10,
     ]);
+    $response->assertStatus(201);
+    expect(Interaction::where('title', 'Test Interaction')->exists())->toBeTrue();
 
     $response = postJson('/interactions', [
         'title' => 'Test Interaction 2',
