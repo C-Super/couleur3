@@ -2,6 +2,7 @@ import { defineConfig } from "vite";
 import laravel from "laravel-vite-plugin";
 import vue from "@vitejs/plugin-vue";
 import eslintPlugin from "vite-plugin-eslint";
+import VueI18nPlugin from "@intlify/unplugin-vue-i18n/vite";
 
 export default defineConfig({
     resolve: {
@@ -25,6 +26,7 @@ export default defineConfig({
             },
         }),
         eslintPlugin(),
+        VueI18nPlugin(),
     ],
     server: {
         hmr: {

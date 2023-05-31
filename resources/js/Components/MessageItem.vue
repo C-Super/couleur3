@@ -1,22 +1,20 @@
 <template>
-    <div>
-        <span> [{{ msg.created_at.toLocaleTimeString() }}] </span>
+    <div class="text-white">
+        <span> [{{ useLocaleTimeAgo(msg.created_at).value }}] </span>
         <span>
-            <i>{{ msg.content }}</i>
+            <b>{{ msg.user_name }}</b
+            >: {{ msg.content }}
         </span>
-        <span v-if="msg.user"
-            ><b>{{ msg.user }}</b
-            >: {{ msg.content }}</span
-        >
-        <span v-else>{{ msg.content }}</span>
     </div>
 </template>
 
 <script setup>
+import { useLocaleTimeAgo } from "@/Composables/useLocaleTimeAgo";
+
 defineProps({
     msg: {
-        type: {},
-        default: "",
+        type: Object,
+        required: true,
     },
 });
 </script>

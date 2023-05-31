@@ -11,6 +11,7 @@
             "extensions": [
                 "onecentlin.laravel-extension-pack",
                 "Vue.volar",
+                "nhedger.inertia",
                 "dbaeumer.vscode-eslint",
                 "esbenp.prettier-vscode"
             ],
@@ -30,7 +31,7 @@
         }
     },
     "remoteUser": "sail",
-    "postCreateCommand": "chown -R 1000:1000 /var/www/html && cp .env.example .env && composer install && php artisan key:generate && php artisan storage:link && php artisan migrate --force --seed && npm install && npm run dev",
+    "postCreateCommand": "chown -R 1000:1000 /var/www/html && cp .env.example .env && composer install && php artisan key:generate && php artisan storage:link && php artisan migrate --force && php artisan migrate:fresh --seed && npm install && npm run dev",
     "forwardPorts": [
         80,
         8025,

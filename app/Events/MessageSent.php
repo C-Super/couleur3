@@ -2,7 +2,6 @@
 
 namespace App\Events;
 
-use App\Models\Auditor;
 use App\Models\Message;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
@@ -14,12 +13,10 @@ class MessageSent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public Auditor $auditor;
-    public Message $message;
+    public $message;
 
-    public function __construct(Auditor $auditor, Message $message)
+    public function __construct(Message $message)
     {
-        $this->auditor = $auditor;
         $this->message = $message;
     }
 

@@ -1,7 +1,14 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import ChatLayout from "@/Layouts/ChatLayout.vue";
+import ChatComponent from "@/Components/ChatComponent.vue";
 import { Head } from "@inertiajs/vue3";
+
+defineProps({
+    messages: {
+        type: Array,
+        required: true,
+    },
+});
 </script>
 
 <template>
@@ -16,6 +23,6 @@ import { Head } from "@inertiajs/vue3";
             </h2>
         </template>
 
-        <ChatLayout />
+        <ChatComponent :messages="messages" />
     </AuthenticatedLayout>
 </template>
