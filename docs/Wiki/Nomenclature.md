@@ -1,1 +1,19 @@
-TODO
+- Interaction `interaction`
+	- Question (Réponse) `answer` (mais pas d'équivalent pour question)
+		- Types `type`
+			- Texte `text`
+			- Audio `audio`
+			- Image `picture`
+			- Vidéo `video`
+			- QCM `mcq`
+		- Sélectionner des gagnants parmi les participants `winner` 
+			- Aléatoire
+			- Manuelle
+			- Par rapidité `answer:created_at`
+			- Sélectionner un lot remporté `reward`
+	- CTA `call_to_action`
+		- Lien `url`
+		- Bouton de participation `quick_click`
+	- Mettre en pause `setting`
+	- Supprimer `setting`
+- Chat `message`
