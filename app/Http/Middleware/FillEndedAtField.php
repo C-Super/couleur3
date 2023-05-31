@@ -15,7 +15,7 @@ class FillEndedAtField
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if ($request->isMethod('post') && !$request->filled('ended_at')) {
+        if ($request->isMethod('post') && ! $request->filled('ended_at')) {
             $request->merge(['ended_at' => now()->addMinutes(20)->format('Y-m-d H:i:s')]);
         }
 

@@ -2,11 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Enums\InteractionType;
 use App\Models\Animator;
-use App\Models\Reward;
 use App\Models\CallToAction;
 use App\Models\QuestionChoice;
-use App\Enums\InteractionType;
+use App\Models\Reward;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -45,14 +45,13 @@ class InteractionFactory extends Factory
         }
 
         return [
-            'title' => $this->faker->sentence(2,5),
+            'title' => $this->faker->sentence(2, 5),
             'type' => $randomType,
             'animator_id' => Animator::factory(),
             'reward_id' => Reward::factory(),
             'winners_count' => $this->faker->numberBetween(1, 20),
-            'typeable_id' => $typeable ? $typeable->id : null,
-            'typeable_type' => $typeable ? get_class($typeable) : null,
             'ended_at' => $this->faker->dateTimeBetween('now', '+10 minutes'),
+            'click_to_action' => $typeable,
         ];
     }
 }

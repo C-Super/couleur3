@@ -1,15 +1,14 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\InteractionController;
 use App\Http\Controllers\AnswerController;
 use App\Http\Controllers\AnswerTextController;
 use App\Http\Controllers\CallToActionController;
+use App\Http\Controllers\InteractionController;
 use App\Http\Controllers\MediaController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QuestionChoiceController;
 use App\Http\Controllers\RewardController;
 use App\Http\Controllers\WinnerController;
-
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -69,4 +68,4 @@ Route::resource('rewards', RewardController::class);
 // WinnerController Routes
 Route::resource('winners', WinnerController::class);
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';

@@ -1,17 +1,14 @@
 <?php
 
-use App\Models\Interaction;
 use App\Models\Animator;
-use App\Models\Reward;
 use App\Models\CallToAction;
+use App\Models\Interaction;
+use App\Models\Reward;
 use Carbon\Carbon;
-use function Pest\Laravel\{postJson, patchJson, deleteJson, getJson};
-use Illuminate\Foundation\Testing\RefreshDatabase;
-
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use function Pest\Laravel\postJson;
 
 uses(DatabaseTransactions::class);
-
 
 it('can store mcq interactions', function () {
     $animator = Animator::factory()->create();

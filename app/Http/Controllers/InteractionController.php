@@ -4,12 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreInteractionRequest;
 use App\Http\Requests\UpdateInteractionRequest;
-use App\Models\Interaction;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
 use App\Models\Answer;
+use App\Models\Interaction;
 use App\Models\Winner;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class InteractionController extends Controller
 {
@@ -20,6 +19,7 @@ class InteractionController extends Controller
     {
         // Récupérer toutes les interactions et les retourner
         $interactions = Interaction::all();
+
         return response()->json($interactions);
     }
 
@@ -30,6 +30,7 @@ class InteractionController extends Controller
     {
         // Récupérer l'interaction et la retourner
         $interaction = Interaction::findOrFail($interaction->id);
+
         return response()->json($interaction);
     }
 
@@ -42,7 +43,7 @@ class InteractionController extends Controller
         $currentInteractions = Interaction::where('ended_at', '>', now())->orWhereNull('ended_at')->get();
 
         // 3. Vérifiez si d'autres interactions sont en cours
-        if (!$currentInteractions->isEmpty()) {
+        if (! $currentInteractions->isEmpty()) {
             return response()->json(['message' => 'Une autre interaction est en cours'], 422);
         }
 
@@ -88,7 +89,6 @@ class InteractionController extends Controller
         // Retourner une réponse indiquant que la suppression a réussi
         return response()->json($interaction, 204);
     }
-
 
     public function end(Interaction $interaction)
     {

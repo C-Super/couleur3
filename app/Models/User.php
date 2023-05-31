@@ -25,6 +25,8 @@ class User extends Authenticatable implements MustVerifyEmailContract
         'name',
         'email',
         'password',
+        'roleable_id',
+        'roleable_type',
     ];
 
     /**
@@ -58,5 +60,18 @@ class User extends Authenticatable implements MustVerifyEmailContract
     public function hasVerifiedEmail()
     {
         return ! is_null($this->email_verified_at);
+    }
+
+    public static function create(array $attributes = [])
+    {
+        // Si aucun roleable n'a été fourni, créez un Auditeur par défaut
+        if (! isset($attributes['roleable_id']) && ! isset($attributes['roleable_type'])) {
+            $auditeur = Auditor::create([]);
+
+            $attributes['roleable_id'] = $auditeur->id;
+            $attributes['roleable_type'] = Auditor::class;
+        }
+
+        return parent::create($attributes);
     }
 }

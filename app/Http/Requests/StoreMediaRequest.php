@@ -24,7 +24,7 @@ class StoreMediaRequest extends FormRequest
     {
         return [
             'path' => 'required|string',
-            'type' => 'required|in:' . implode(',', MediaType::getValues())
+            'type' => 'required|in:'.implode(',', MediaType::getValues()),
         ];
     }
 }

@@ -41,18 +41,18 @@ class StoreInteractionRequest extends FormRequest
 
         $rules = [
             'title' => 'required|max:255',
-            'type' => 'required|in:' . implode(',', InteractionType::getValues()),
+            'type' => 'required|in:'.implode(',', InteractionType::getValues()),
             'animator_id' => 'required|exists:animators,id',
             'reward_id' => 'exists:rewards,id',
             'winners_count' => 'nullable|integer',
             'ended_at' => [
                 'required',
                 'date_format:Y-m-d H:i:s',
-                'after:' . Carbon::now()->format('Y-m-d H:i:s')
-            ]
+                'after:'.Carbon::now()->format('Y-m-d H:i:s'),
+            ],
         ];
         if ($typeableType !== null) {
-            $rules['call_to_action_id'] = ["required", "exists:$typeableType,id"];
+            $rules['call_to_action_id'] = ['required', "exists:$typeableType,id"];
         }
 
         return $rules;

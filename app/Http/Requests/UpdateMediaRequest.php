@@ -24,7 +24,7 @@ class UpdateMediaRequest extends FormRequest
     {
         return [
             'path' => 'string',
-            'required|in:' . implode(',', MediaType::getValues())
+            'required|in:'.implode(',', MediaType::getValues()),
         ];
     }
 }
