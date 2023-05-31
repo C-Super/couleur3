@@ -89,6 +89,9 @@ jobs:
       - name: Install npm dependencies
         run: npm ci
 
+      - name: Run npm build
+        run: npm run build
+
       - name: Prepare the application
         run: |
           php -r "file_exists('.env') || copy('.env.example', '.env');"
