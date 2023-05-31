@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Enums\InteractionType;
+use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreInteractionRequest extends FormRequest
@@ -31,7 +32,7 @@ class StoreInteractionRequest extends FormRequest
         switch ($type) {
             case 'mcq':
             case 'survey':
-                $typeableType = 'question_choices';
+                $typeableType = null;
                 break;
             case 'text':
                 $typeableType = null;
@@ -56,11 +57,14 @@ class StoreInteractionRequest extends FormRequest
             'animator_id' => 'required|exists:animators,id',
             'reward_id' => 'exists:rewards,id',
             'winners_count' => 'nullable|integer',
-            'ended_at' => 'nullable|date_format:Y-m-d H:i:s'
+            'ended_at' => [
+                'nullable',
+                'date_format:Y-m-d H:i:s',
+                'after:' . Carbon::now()->format('Y-m-d H:i:s')
+            ]
         ];
         if ($typeableType !== null) {
-            $rules['typeable_id'] = ["required", "exists:$typeableType,id"];
-            $rules['typeable_type'] = 'required';
+            $rules['call_to_action_id'] = ["required", "exists:$typeableType,id"];
         }
 
         return $rules;

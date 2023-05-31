@@ -42,7 +42,7 @@ class InteractionController extends Controller
 
         // 3. Vérifiez si d'autres interactions sont en cours
         if (!$currentInteractions->isEmpty()) {
-            throw new InvalidArgumentException('D\'autres interactions sont en cours');
+            return response()->json(['message' => 'Une autre interaction est en cours'], 422);
         }
 
         // 4. Vérifiez la validité du contenu du texte

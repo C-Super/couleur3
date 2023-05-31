@@ -20,8 +20,7 @@ class Interaction extends Model
     protected $fillable = [
         'title',
         'type',
-        'typeable_id',
-        'typeable_type',
+        'call_to_action_id',
         'ended_at',
         'animator_id',
         'reward_id',
