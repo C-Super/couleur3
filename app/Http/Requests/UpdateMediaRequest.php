@@ -2,16 +2,17 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\MediaType;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateRewardRequest extends FormRequest
+class UpdateMediaRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -22,8 +23,8 @@ class UpdateRewardRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255',
-            'description' => 'required|string'
+            'path' => 'string',
+            'required|in:' . implode(',', MediaType::getValues())
         ];
     }
 }
