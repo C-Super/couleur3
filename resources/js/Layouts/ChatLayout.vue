@@ -5,7 +5,7 @@
                 <div v-if="messages" class="messageContainer">
                     <message-item
                         v-for="msg in messages"
-                        :key="msg.time.getTime() + '-' + msg.content"
+                        :key="msg.id"
                         :msg="msg"
                     />
                 </div>
@@ -39,14 +39,6 @@
 <script>
 // eslint-disable-next-line no-unused-vars
 import MessageItem from "@/Components/MessageItem.vue";
-
-export class Message {
-    constructor(props) {
-        this.user = props.user;
-        this.content = props.content;
-        this.time = props.time ?? new Date();
-    }
-}
 
 export default {
     components: {
@@ -91,18 +83,18 @@ export default {
             const message = this.message?.trim();
             if (!message) return;
 
-            window.axios.post("/messages", message).then((response) => {
-                this.messages.push(response.data);
-                this.message = null;
-            });
+            window.axios
+                .post("/messages", {
+                    message,
+                })
+                .then((response) => {
+                    this.messages.push(response.data);
+                    this.message = null;
+                });
         },
 
         addNewMessage(data) {
-            this.channel.messages.push(
-                new Message({
-                    content: data.message,
-                })
-            );
+            this.messages.push(data);
 
             this.scrollToBottom();
         },

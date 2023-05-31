@@ -19,6 +19,6 @@ class MessageController extends Controller
 
         broadcast(new MessageSent($auditor, $message))->toOthers();
 
-        return ['data' => $message];
+        return $message;
     }
 }

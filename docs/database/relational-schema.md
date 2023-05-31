@@ -59,7 +59,7 @@ classDiagram
         datetime created_at
         datetime ended_at
         id animator_id FK ANIMATOR.id
-        id type_id FK [MEDIA.id|ANSWER_TEXT.id|QUESTION_CHOICE.id|CALL_TO_ACTION.id]
+        id call_to_action_id FK CALL_TO_ACTION.id NULLABLE
         id reward_id FK REWARD.id NULL
         int winners_count NULL
     }

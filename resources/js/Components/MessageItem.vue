@@ -1,17 +1,14 @@
 <template>
     <div>
-        <span v-if="msg.time"> [{{ msg.time.toLocaleTimeString() }}] </span>
-        <span v-if="msg.type === 'status'">
+        <span> [{{ msg.created_at.toLocaleTimeString() }}] </span>
+        <span>
             <i>{{ msg.content }}</i>
         </span>
-        <span v-else-if="msg.user"
+        <span v-if="msg.user"
             ><b>{{ msg.user }}</b
             >: {{ msg.content }}</span
         >
-        <span v-else-if="msg.type === 'broadcast'"
-            ><b>{{ msg.content }}</b></span
-        >
-        <span v-else>{{ msg }}</span>
+        <span v-else>{{ msg.content }}</span>
     </div>
 </template>
 
