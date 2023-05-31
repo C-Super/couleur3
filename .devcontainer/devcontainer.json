@@ -49,6 +49,9 @@
         },
         "5173": {
             "label": "Vite (hmr)"
+        },
+        "6001": {
+            "label": "Soketi"
         }
     }
 }

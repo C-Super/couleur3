@@ -45,6 +45,10 @@ npm-audit: ## Run security check for npm dependencies
 
 security: security-checker npm-audit ## Run all
 
+.PHONY: ziggy
+ziggy: ## Generate routes for Vue
+	php artisan ziggy:generate
+
 .PHONY: zora
 zora: ## Generate translations keys for Vue
 	php artisan zora:generate
