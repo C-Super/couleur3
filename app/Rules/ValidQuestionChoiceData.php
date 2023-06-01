@@ -2,9 +2,8 @@
 
 namespace App\Rules;
 
-use Closure;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Support\Facades\Validator;
 
 class ValidQuestionChoiceData implements Rule
 {
@@ -17,6 +16,8 @@ class ValidQuestionChoiceData implements Rule
      */
     public function passes($attribute, $value)
     {
+        $validator = null;
+
         foreach ($value as $choice) {
             $validator = Validator::make($choice, [
                 'value' => 'required|string',
@@ -24,7 +25,6 @@ class ValidQuestionChoiceData implements Rule
             ]);
         }
         // Perform your CTA-specific validation
-
 
         return $validator->passes();
     }

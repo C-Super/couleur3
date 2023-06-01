@@ -3,11 +3,11 @@
 namespace App\Http\Requests;
 
 use App\Enums\InteractionType;
-use Carbon\Carbon;
-use Illuminate\Foundation\Http\FormRequest;
 use App\Rules\NoActiveInteractions;
 use App\Rules\ValidCtaData;
 use App\Rules\ValidQuestionChoiceData;
+use Carbon\Carbon;
+use Illuminate\Foundation\Http\FormRequest;
 
 class StoreInteractionRequest extends FormRequest
 {
@@ -60,7 +60,7 @@ class StoreInteractionRequest extends FormRequest
             $rules['question_choice_data'] = ['required', 'array', 'between:2,4', new ValidQuestionChoiceData];
         }
 
-        if($type === 'cta' || $type === 'quick_click') {
+        if ($type === 'cta' || $type === 'quick_click') {
             $rules['call_to_action_data'] = ['required', new ValidCtaData];
         }
 

@@ -2,13 +2,11 @@
 
 namespace App\Rules;
 
-use Closure;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Support\Facades\Validator;
 
 class ValidCtaData implements Rule
 {
-
     private $errorMessage = '';
 
     /**
@@ -20,6 +18,9 @@ class ValidCtaData implements Rule
      */
     public function passes($attribute, $value)
     {
+
+        $validator = null;
+
         // Perform your CTA-specific validation
         foreach ($value as $choice) {
             $validator = Validator::make($choice, [
@@ -31,6 +32,7 @@ class ValidCtaData implements Rule
 
         if ($validator->fails()) {
             $this->errorMessage = $validator->errors()->first();
+
             return false;
         }
 

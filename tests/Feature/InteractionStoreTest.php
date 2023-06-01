@@ -24,12 +24,12 @@ it('can store mcq interactions', function () {
         'question_choice_data' => [
             [
                 'is_correct_answer' => true,
-                'value' => 'Choice 1'
+                'value' => 'Choice 1',
             ],
             [
                 'is_correct_answer' => false,
-                'value' => 'Choice 2'
-            ]
+                'value' => 'Choice 2',
+            ],
         ],
     ]);
 
@@ -54,12 +54,12 @@ it('can store survey interactions', function () {
         'question_choice_data' => [
             [
                 'is_correct_answer' => false,
-                'value' => 'Choice 1'
+                'value' => 'Choice 1',
             ],
             [
                 'is_correct_answer' => false,
-                'value' => 'Choice 2'
-            ]
+                'value' => 'Choice 2',
+            ],
         ],
     ]);
 
@@ -150,11 +150,11 @@ it('can store cta interactions', function () {
         'winners_count' => 10,
         'ended_at' => Carbon::now()->addMinutes(10)->format('Y-m-d H:i:s'),
         'call_to_action_data' => [[
-                'description' => 'Description 1',
-                'link' => 'https://example.com',
-                'button_text' => 'Button Text 1',]
+            'description' => 'Description 1',
+            'link' => 'https://example.com',
+            'button_text' => 'Button Text 1', ],
 
-        ]
+        ],
 
     ]);
 
@@ -178,9 +178,9 @@ it('can store quick_click interactions', function () {
         'call_to_action_data' => [[
             'description' => 'Description 1',
             'link' => 'https://example.com',
-            'button_text' => 'Button Text 1',]
+            'button_text' => 'Button Text 1', ],
 
-    ]
+        ],
     ]);
 
     $response->assertStatus(201);
@@ -204,9 +204,9 @@ it('can store an interactions when another interaction is finished', function ()
         'call_to_action_data' => [[
             'description' => 'Description 1',
             'link' => 'https://example.com',
-            'button_text' => 'Button Text 1',]
+            'button_text' => 'Button Text 1', ],
 
-    ]
+        ],
     ]);
     $response->assertStatus(201);
     expect(Interaction::where('title', 'Test Interaction')->exists())->toBeTrue();
@@ -261,7 +261,7 @@ it('cannot store survey or mcq interactions with less than 1 choice', function (
         'question_choice_data' => [
             [
                 'is_correct_answer' => false,
-                'value' => 'Choice 1'
+                'value' => 'Choice 1',
             ],
         ],
     ]);
@@ -286,23 +286,23 @@ it('cannot store survey or mcq interactions with more than 4 choices', function 
         'question_choice_data' => [
             [
                 'is_correct_answer' => false,
-                'value' => 'Choice 1'
+                'value' => 'Choice 1',
             ],
             [
                 'is_correct_answer' => false,
-                'value' => 'Choice 2'
+                'value' => 'Choice 2',
             ],
             [
                 'is_correct_answer' => false,
-                'value' => 'Choice 3'
+                'value' => 'Choice 3',
             ],
             [
                 'is_correct_answer' => false,
-                'value' => 'Choice 4'
+                'value' => 'Choice 4',
             ],
             [
                 'is_correct_answer' => false,
-                'value' => 'Choice 5'
+                'value' => 'Choice 5',
             ],
         ],
     ]);
@@ -370,9 +370,9 @@ it('cannot store an interaction with another interaction running', function () {
         'call_to_action_data' => [[
             'description' => 'Description 1',
             'link' => 'https://example.com',
-            'button_text' => 'Button Text 1',]
+            'button_text' => 'Button Text 1', ],
 
-    ]
+        ],
     ]);
 
     $response->assertStatus(422);
