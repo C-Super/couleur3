@@ -20,6 +20,6 @@ class AuthenticateAsAnimator
             return $next($request);
         }
 
-        throw new AuthenticationException('You are not an animator.');
+        return response()->with('error', 'You are not an animator.');
     }
 }

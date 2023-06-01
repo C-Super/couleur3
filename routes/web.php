@@ -26,11 +26,12 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware(['auth', 'auth.auditor', HandlePrecognitiveRequests::class])->group(function () {
-    Route::post('/messages', [AuditorDashboardController::class, 'storeMessage'])->name('auditor.messages.store');
+    Route::post('/messages', [AuditorDashboardController::class, 'storeMessage'])->middleware('chat.enabled')->name('auditor.messages.store');
 });
 
 Route::middleware(['auth', 'auth.animator', HandlePrecognitiveRequests::class])->group(function () {
     Route::get('/dashboard', [AnimatorDashboardController::class, 'index'])->name('animator.index');
+    Route::post('/dashboard/chat', [AnimatorDashboardController::class, 'updateChatSetting'])->name('animator.chat.update');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

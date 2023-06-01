@@ -6,16 +6,21 @@ use App\Events\MessageSent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreMessageRequest;
 use App\Models\Message;
+use App\Settings\GeneralSettings;
 use DB;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
-use Route;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(GeneralSettings $settings)
     {
+        if (!$settings->is_chat_enabled) {
+            return Inertia::render('Auditor/Dashboard', [
+                'messages' => [],
+            ]);
+        }
+
         $lastMessages = Message::orderByDesc('messages.created_at')
             ->take(10)
             ->join('auditors', 'auditors.id', '=', 'messages.auditor_id')
@@ -29,10 +34,6 @@ class DashboardController extends Controller
 
         return Inertia::render('Auditor/Dashboard', [
             'messages' => array_reverse($lastMessages),
-            'canLogin' => Route::has('login'),
-            'canRegister' => Route::has('register'),
-            'laravelVersion' => Application::VERSION,
-            'phpVersion' => PHP_VERSION,
         ]);
     }
 
