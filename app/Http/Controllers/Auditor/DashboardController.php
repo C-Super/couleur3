@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auditor;
 use App\Events\MessageSent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreMessageRequest;
+use App\Models\Auditor;
 use App\Models\Message;
 use App\Settings\GeneralSettings;
 use DB;
@@ -16,7 +17,7 @@ class DashboardController extends Controller
 {
     public function index(GeneralSettings $settings): Response
     {
-        if (! $settings->is_chat_enabled) {
+        if (!$settings->is_chat_enabled) {
             return Inertia::render('Auditor/Dashboard', [
                 'messages' => [],
             ]);
@@ -44,6 +45,10 @@ class DashboardController extends Controller
 
         $user = Auth::user();
         $auditor = $user->roleable;
+
+        if (!$auditor instanceof Auditor) {
+            abort(403);
+        }
 
         $message = $auditor->messages()->create([
             'content' => $validated['message'],
