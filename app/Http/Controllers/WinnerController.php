@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreRewardRequest;
-use App\Http\Requests\UpdateRewardRequest;
-use App\Models\Reward;
+use App\Http\Requests\StoreWinnerRequest;
+use App\Http\Requests\UpdateWinnerRequest;
+use App\Models\Winner;
 
-class RewardController extends Controller
+class WinnerController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,18 +27,18 @@ class RewardController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreRewardRequest $request)
+    public function store(StoreWinnerRequest $request)
     {
         $validated = $request->validated();
-        $reward = Reward::create($validated);
+        $winner = Winner::create($validated);
 
-        return response()->json($reward, 201);
+        return response()->json($winner, 201);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Reward $reward)
+    public function show(Winner $winner)
     {
         //
     }
@@ -46,7 +46,7 @@ class RewardController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Reward $reward)
+    public function edit(Winner $winner)
     {
         //
     }
@@ -54,20 +54,20 @@ class RewardController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRewardRequest $request, Reward $reward)
+    public function update(UpdateWinnerRequest $request, Winner $winner)
     {
         $validated = $request->validated();
-        $reward->update($validated);
+        $winner->update($validated);
 
-        return response()->json($reward, 200);
+        return response()->json($winner, 200);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Reward $reward)
+    public function destroy(Winner $winner)
     {
-        $reward->delete();
+        $winner->delete();
 
         return response()->json(null, 204);
     }

@@ -4,14 +4,14 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateRewardRequest extends FormRequest
+class UpdateCallToActionRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -22,8 +22,11 @@ class UpdateRewardRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255',
-            'description' => 'required|string',
+            'description' => 'string',
+            'link' => 'nullable|url',
+            'button_text' => 'string',
+            'interaction_id' => 'exists:interactions,id',
+            'media_id' => 'exists:medias,id',
         ];
     }
 }

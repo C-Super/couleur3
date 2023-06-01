@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreRewardRequest;
-use App\Http\Requests\UpdateRewardRequest;
-use App\Models\Reward;
+use App\Http\Requests\StoreMediaRequest;
+use App\Http\Requests\UpdateMediaRequest;
+use App\Models\Media;
 
-class RewardController extends Controller
+class MediaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,18 +27,18 @@ class RewardController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreRewardRequest $request)
+    public function store(StoreMediaRequest $request)
     {
         $validated = $request->validated();
-        $reward = Reward::create($validated);
+        $media = Media::create($validated);
 
-        return response()->json($reward, 201);
+        return response()->json($media, 201);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Reward $reward)
+    public function show(Media $media)
     {
         //
     }
@@ -46,7 +46,7 @@ class RewardController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Reward $reward)
+    public function edit(Media $media)
     {
         //
     }
@@ -54,20 +54,20 @@ class RewardController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRewardRequest $request, Reward $reward)
+    public function update(UpdateMediaRequest $request, Media $media)
     {
         $validated = $request->validated();
-        $reward->update($validated);
+        $media->update($validated);
 
-        return response()->json($reward, 200);
+        return response()->json($media, 200);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Reward $reward)
+    public function destroy(Media $media)
     {
-        $reward->delete();
+        $media->delete();
 
         return response()->json(null, 204);
     }

@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreRewardRequest;
-use App\Http\Requests\UpdateRewardRequest;
-use App\Models\Reward;
+use App\Http\Requests\StoreCallToActionRequest;
+use App\Http\Requests\UpdateCallToActionRequest;
+use App\Models\CallToAction;
 
-class RewardController extends Controller
+class CallToActionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,18 +27,18 @@ class RewardController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreRewardRequest $request)
+    public function store(StoreCallToActionRequest $request)
     {
         $validated = $request->validated();
-        $reward = Reward::create($validated);
+        $callToAction = CallToAction::create($validated);
 
-        return response()->json($reward, 201);
+        return response()->json($callToAction, 201);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Reward $reward)
+    public function show(CallToAction $callToAction)
     {
         //
     }
@@ -46,7 +46,7 @@ class RewardController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Reward $reward)
+    public function edit(CallToAction $callToAction)
     {
         //
     }
@@ -54,20 +54,20 @@ class RewardController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRewardRequest $request, Reward $reward)
+    public function update(UpdateCallToActionRequest $request, CallToAction $callToAction)
     {
         $validated = $request->validated();
-        $reward->update($validated);
+        $callToAction->update($validated);
 
-        return response()->json($reward, 200);
+        return response()->json($callToAction, 200);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Reward $reward)
+    public function destroy(CallToAction $callToAction)
     {
-        $reward->delete();
+        $callToAction->delete();
 
         return response()->json(null, 204);
     }

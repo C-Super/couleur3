@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreRewardRequest;
-use App\Http\Requests\UpdateRewardRequest;
-use App\Models\Reward;
+use App\Http\Requests\StoreAnswerRequest;
+use App\Http\Requests\UpdateAnswerRequest;
+use App\Models\Answer;
 
-class RewardController extends Controller
+class AnswerController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,18 +27,18 @@ class RewardController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreRewardRequest $request)
+    public function store(StoreAnswerRequest $request)
     {
         $validated = $request->validated();
-        $reward = Reward::create($validated);
+        $answer = Answer::create($validated);
 
-        return response()->json($reward, 201);
+        return response()->json($answer, 201);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Reward $reward)
+    public function show(Answer $answer)
     {
         //
     }
@@ -46,7 +46,7 @@ class RewardController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Reward $reward)
+    public function edit(Answer $answer)
     {
         //
     }
@@ -54,20 +54,20 @@ class RewardController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRewardRequest $request, Reward $reward)
+    public function update(UpdateAnswerRequest $request, Answer $answer)
     {
         $validated = $request->validated();
-        $reward->update($validated);
+        $answer->update($validated);
 
-        return response()->json($reward, 200);
+        return response()->json($answer, 200);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Reward $reward)
+    public function destroy(Answer $answer)
     {
-        $reward->delete();
+        $answer->delete();
 
         return response()->json(null, 204);
     }

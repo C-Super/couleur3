@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateRewardRequest extends FormRequest
+class StoreAnswerRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,8 +22,10 @@ class UpdateRewardRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255',
-            'description' => 'required|string',
+            'auditor_id' => 'required|exists:auditors,id',
+            'interaction_id' => 'required|exists:interactions,id',
+            'replyable_id' => 'required',
+            'replyable_type' => 'required|in:App\Models\AnswerText,App\Models\QuestionChoice,App\Models\Media',
         ];
     }
 }
