@@ -16,8 +16,9 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->enum('type', InteractionType::getValues());
-            $table->nullableMorphs('typeable');
+            $table->foreignId('call_to_action_id')->nullable()->constrained();
             $table->timestamps();
+            $table->timestamp('ended_at')->nullable();
             $table->foreignId('animator_id')->constrained();
             $table->foreignId('reward_id')->constrained();
             $table->integer('winners_count')->nullable();

@@ -136,6 +136,8 @@ namespace App\Models{
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property int|null $address_id
      * @property mixed $password
+     * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Message> $messages
+     * @property-read int|null $messages_count
      * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
      * @property-read int|null $notifications_count
      * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $roleable
@@ -200,6 +202,7 @@ namespace App\Models{
      * @property int|null $typeable_id
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property \Illuminate\Support\Carbon|null $updated_at
+     * @property string|null $ended_at
      * @property int $animator_id
      * @property int $reward_id
      * @property int|null $winners_count
@@ -210,6 +213,7 @@ namespace App\Models{
      * @method static \Illuminate\Database\Eloquent\Builder|Interaction query()
      * @method static \Illuminate\Database\Eloquent\Builder|Interaction whereAnimatorId($value)
      * @method static \Illuminate\Database\Eloquent\Builder|Interaction whereCreatedAt($value)
+     * @method static \Illuminate\Database\Eloquent\Builder|Interaction whereEndedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder|Interaction whereId($value)
      * @method static \Illuminate\Database\Eloquent\Builder|Interaction whereRewardId($value)
      * @method static \Illuminate\Database\Eloquent\Builder|Interaction whereTitle($value)
@@ -257,6 +261,7 @@ namespace App\Models{
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property int $auditor_id
+     * @property-read \App\Models\Auditor $auditor
      *
      * @method static \Database\Factories\MessageFactory factory($count = null, $state = [])
      * @method static \Illuminate\Database\Eloquent\Builder|Message newModelQuery()
@@ -327,33 +332,6 @@ namespace App\Models{
      * @mixin \Eloquent
      */
     class IdeHelperReward
-    {
-    }
-}
-
-namespace App\Models{
-    /**
-     * App\Models\Setting
-     *
-     * @property int $id
-     * @property string $key
-     * @property array $value
-     * @property \Illuminate\Support\Carbon|null $created_at
-     * @property \Illuminate\Support\Carbon|null $updated_at
-     *
-     * @method static \Database\Factories\SettingFactory factory($count = null, $state = [])
-     * @method static \Illuminate\Database\Eloquent\Builder|Setting newModelQuery()
-     * @method static \Illuminate\Database\Eloquent\Builder|Setting newQuery()
-     * @method static \Illuminate\Database\Eloquent\Builder|Setting query()
-     * @method static \Illuminate\Database\Eloquent\Builder|Setting whereCreatedAt($value)
-     * @method static \Illuminate\Database\Eloquent\Builder|Setting whereId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder|Setting whereKey($value)
-     * @method static \Illuminate\Database\Eloquent\Builder|Setting whereUpdatedAt($value)
-     * @method static \Illuminate\Database\Eloquent\Builder|Setting whereValue($value)
-     *
-     * @mixin \Eloquent
-     */
-    class IdeHelperSetting
     {
     }
 }

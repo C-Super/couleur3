@@ -1,0 +1,24 @@
+{
+    "common": {
+        "timeAgo": {
+            "just-now": "maintenant",
+            "ago": "il y a {0}",
+            "in": "dans {0}",
+            "last-month": "un mois",
+            "next-month": "dans un mois",
+            "month": "mois | mois",
+            "last-year": "une année",
+            "next-year": "dans un an",
+            "year": "année | années",
+            "yesterday": "hier",
+            "tomorrow": "demain",
+            "day": "jour | jours",
+            "last-week": "une semaine",
+            "next-week": "dans une semaine",
+            "week": "semaine | semaines",
+            "hour": "jour | jours",
+            "minute": "minute | minutes",
+            "second": "seconde | secondes"
+        }
+    }
+}

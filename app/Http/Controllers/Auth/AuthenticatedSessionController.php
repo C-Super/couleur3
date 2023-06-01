@@ -34,7 +34,11 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+        if (Auth::user()->isAnimator()) {
+            return redirect()->intended(RouteServiceProvider::ANIMATOR_HOME);
+        }
+
+        return redirect()->intended(RouteServiceProvider::AUDITOR_HOME);
     }
 
     /**
