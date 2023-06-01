@@ -14,27 +14,37 @@
                     />
                 </div>
 
-                <div>
-                    <input
-                        v-model="message"
-                        type="text"
-                        class="form-control w-100 messageInput"
-                        placeholder="Message..."
-                        @keydown.enter="sendMessage"
-                    />
-                </div>
+                <form @submit.prevent="submit">
+                    <div>
+                        <TextInput
+                            id="message"
+                            v-model="form.message"
+                            type="text"
+                            class="mt-1 block w-full"
+                            required
+                            autofocus
+                            placeholder="Message..."
+                            @change="form.validate('message')"
+                            @keyup.enter="submit"
+                        />
 
-                <div class="row mt-3 mb-2">
-                    <div class="col-6 text-start">
-                        <button
-                            type="button"
-                            class="btn btn-alt text-white"
-                            @click="sendMessage"
-                        >
-                            Send message
-                        </button>
+                        <InputError
+                            class="mt-2"
+                            :message="form.errors.message"
+                        />
                     </div>
-                </div>
+
+                    <div class="row mt-3 mb-2">
+                        <div class="col-6 text-start">
+                            <PrimaryButton
+                                :class="{ 'opacity-25': form.processing }"
+                                :disabled="form.processing"
+                            >
+                                Send message
+                            </PrimaryButton>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -42,10 +52,13 @@
 
 <script setup>
 import { ref, onMounted, nextTick } from "vue";
+import { useForm } from "laravel-precognition-vue-inertia";
 import MessageItem from "@/Components/MessageItem.vue";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
+import TextInput from "@/Components/TextInput.vue";
+import InputError from "@/Components/InputError.vue";
 
 const channelName = "chat";
-const message = ref(null);
 const messageContainer = ref(null);
 
 const props = defineProps({
@@ -54,6 +67,17 @@ const props = defineProps({
         required: true,
     },
 });
+
+// eslint-disable-next-line no-undef
+const form = useForm("post", route("auditor.messages.store"), {
+    message: "",
+});
+
+const submit = () =>
+    form.submit({
+        preserveScroll: true,
+        onSuccess: () => form.reset(),
+    });
 
 onMounted(() => {
     subscribeToPublicChannel();
@@ -69,21 +93,6 @@ function subscribeToPublicChannel() {
             console.error(error);
         });
 }
-
-const sendMessage = () => {
-    window.axios
-        .post("/messages", {
-            message: message.value,
-        })
-        .then((response) => {
-            if ("error" in response) {
-                alert(response.error.message);
-                return;
-            }
-
-            message.value = null;
-        });
-};
 
 function addNewMessage(data) {
     // eslint-disable-next-line vue/no-mutating-props

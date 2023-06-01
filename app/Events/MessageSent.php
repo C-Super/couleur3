@@ -15,7 +15,7 @@ class MessageSent implements ShouldBroadcast
 
     public $message;
 
-    public function __construct(Message $message)
+    public function __construct(array $message)
     {
         $this->message = $message;
     }

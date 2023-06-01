@@ -3,6 +3,26 @@ const Ziggy = {
     port: null,
     defaults: {},
     routes: {
+        "debugbar.openhandler": {
+            uri: "_debugbar/open",
+            methods: ["GET", "HEAD"],
+        },
+        "debugbar.clockwork": {
+            uri: "_debugbar/clockwork/{id}",
+            methods: ["GET", "HEAD"],
+        },
+        "debugbar.assets.css": {
+            uri: "_debugbar/assets/stylesheets",
+            methods: ["GET", "HEAD"],
+        },
+        "debugbar.assets.js": {
+            uri: "_debugbar/assets/javascript",
+            methods: ["GET", "HEAD"],
+        },
+        "debugbar.cache.delete": {
+            uri: "_debugbar/cache/{key}/{tags?}",
+            methods: ["DELETE"],
+        },
         "sanctum.csrf-cookie": {
             uri: "sanctum/csrf-cookie",
             methods: ["GET", "HEAD"],
@@ -19,7 +39,8 @@ const Ziggy = {
             uri: "_ignition/update-config",
             methods: ["POST"],
         },
-        dashboard: { uri: "dashboard", methods: ["GET", "HEAD"] },
+        "auditor.messages.store": { uri: "messages", methods: ["POST"] },
+        "animator.index": { uri: "dashboard", methods: ["GET", "HEAD"] },
         "profile.edit": { uri: "profile", methods: ["GET", "HEAD"] },
         "profile.update": { uri: "profile", methods: ["PATCH"] },
         "profile.destroy": { uri: "profile", methods: ["DELETE"] },
