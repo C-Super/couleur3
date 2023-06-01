@@ -58,8 +58,8 @@ jobs:
           extensions: mbstring, dom, fileinfo, mysql, libxml, xml, xmlwriter, dom, tokenizer, filter, json, phar, pcre, openssl, pdo, intl, curl, redis
           coverage: xdebug
 
-      - name: Configure matchers for PHPUnit
-        uses: mheap/phpunit-matcher-action@v1
+      - name: Setup problem matchers for PHPUnit
+        run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
       - name: Get composer cache directory
         id: composer-cache

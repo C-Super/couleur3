@@ -10,12 +10,13 @@ use App\Settings\GeneralSettings;
 use DB;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class DashboardController extends Controller
 {
-    public function index(GeneralSettings $settings)
+    public function index(GeneralSettings $settings): Response
     {
-        if (!$settings->is_chat_enabled) {
+        if (! $settings->is_chat_enabled) {
             return Inertia::render('Auditor/Dashboard', [
                 'messages' => [],
             ]);

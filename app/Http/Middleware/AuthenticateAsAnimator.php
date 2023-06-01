@@ -3,7 +3,6 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -20,6 +19,6 @@ class AuthenticateAsAnimator
             return $next($request);
         }
 
-        return response()->with('error', 'You are not an animator.');
+        return back()->with('error', 'You are not an animator.');
     }
 }

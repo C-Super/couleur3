@@ -34,4 +34,4 @@ Route::middleware(['auth', 'auth.animator', HandlePrecognitiveRequests::class])-
     Route::post('/dashboard/chat', [AnimatorDashboardController::class, 'updateChatSetting'])->name('animator.chat.update');
 });
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';

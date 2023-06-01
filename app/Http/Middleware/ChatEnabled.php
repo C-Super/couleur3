@@ -20,6 +20,6 @@ class ChatEnabled
             return $next($request);
         }
 
-        return response()->with('error', 'Chat is disabled.');
+        return back()->with('error', 'Chat is disabled.');
     }
 }

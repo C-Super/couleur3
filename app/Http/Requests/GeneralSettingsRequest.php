@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Settings\GeneralSettings;
 use Illuminate\Foundation\Http\FormRequest;
 
 class GeneralSettingsRequest extends FormRequest
@@ -23,7 +22,7 @@ class GeneralSettingsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'is_chat_enabled' => "required|boolean"
+            'is_chat_enabled' => 'required|boolean',
         ];
     }
 }

@@ -13,7 +13,7 @@ class DashboardController extends Controller
 {
     public function index(GeneralSettings $settings)
     {
-        if (!$settings->is_chat_enabled) {
+        if (! $settings->is_chat_enabled) {
             return Inertia::render('Animator/Dashboard', [
                 'messages' => [],
                 'isChatEnabled' => $settings->is_chat_enabled,
@@ -44,14 +44,14 @@ class DashboardController extends Controller
         if ($validated['is_chat_enabled'] === true && $settings->is_chat_enabled) {
             return back()->with([
                 'error', 'Le chat est déjà activé.',
-                'isChatEnabled' => $settings->is_chat_enabled
+                'isChatEnabled' => $settings->is_chat_enabled,
             ]);
         }
 
-        if ($validated['is_chat_enabled'] === false && !$settings->is_chat_enabled) {
+        if ($validated['is_chat_enabled'] === false && ! $settings->is_chat_enabled) {
             return back()->with([
                 'error', 'Le chat est déjà désactivé.',
-                'isChatEnabled' => $settings->is_chat_enabled
+                'isChatEnabled' => $settings->is_chat_enabled,
             ]);
         }
 

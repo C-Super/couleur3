@@ -198,28 +198,28 @@ namespace App\Models{
      * @property int $id
      * @property string $title
      * @property string $type
-     * @property string|null $typeable_type
-     * @property int|null $typeable_id
+     * @property int|null $call_to_action_id
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property string|null $ended_at
      * @property int $animator_id
      * @property int $reward_id
      * @property int|null $winners_count
+     * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\QuestionChoice> $question_choices
+     * @property-read int|null $question_choices_count
      *
      * @method static \Database\Factories\InteractionFactory factory($count = null, $state = [])
      * @method static \Illuminate\Database\Eloquent\Builder|Interaction newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder|Interaction newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder|Interaction query()
      * @method static \Illuminate\Database\Eloquent\Builder|Interaction whereAnimatorId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder|Interaction whereCallToActionId($value)
      * @method static \Illuminate\Database\Eloquent\Builder|Interaction whereCreatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder|Interaction whereEndedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder|Interaction whereId($value)
      * @method static \Illuminate\Database\Eloquent\Builder|Interaction whereRewardId($value)
      * @method static \Illuminate\Database\Eloquent\Builder|Interaction whereTitle($value)
      * @method static \Illuminate\Database\Eloquent\Builder|Interaction whereType($value)
-     * @method static \Illuminate\Database\Eloquent\Builder|Interaction whereTypeableId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder|Interaction whereTypeableType($value)
      * @method static \Illuminate\Database\Eloquent\Builder|Interaction whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder|Interaction whereWinnersCount($value)
      *
@@ -235,6 +235,8 @@ namespace App\Models{
      * App\Models\Media
      *
      * @property int $id
+     * @property string $path
+     * @property string $type
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property \Illuminate\Support\Carbon|null $updated_at
      *
@@ -243,6 +245,8 @@ namespace App\Models{
      * @method static \Illuminate\Database\Eloquent\Builder|Media query()
      * @method static \Illuminate\Database\Eloquent\Builder|Media whereCreatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder|Media whereId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder|Media wherePath($value)
+     * @method static \Illuminate\Database\Eloquent\Builder|Media whereType($value)
      * @method static \Illuminate\Database\Eloquent\Builder|Media whereUpdatedAt($value)
      *
      * @mixin \Eloquent
