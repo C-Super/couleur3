@@ -71,4 +71,18 @@ class User extends Authenticatable implements MustVerifyEmailContract
     {
         return $this->roleable_type === 'App\Models\Animator';
     }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            if (! $model->roleable_id && ! $model->roleable_type) {
+                $auditor = Auditor::create();
+
+                $model->roleable_id = $auditor->id;
+                $model->roleable_type = get_class($auditor);
+            }
+        });
+    }
 }

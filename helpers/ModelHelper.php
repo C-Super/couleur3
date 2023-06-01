@@ -47,12 +47,6 @@ namespace App\Models{
      * @property int $id
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property \Illuminate\Support\Carbon|null $updated_at
-     * @property mixed $password
-     * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
-     * @property-read int|null $notifications_count
-     * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $roleable
-     * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
-     * @property-read int|null $tokens_count
      * @property-read \App\Models\User|null $user
      *
      * @method static \Database\Factories\AnimatorFactory factory($count = null, $state = [])
@@ -135,14 +129,9 @@ namespace App\Models{
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property int|null $address_id
-     * @property mixed $password
+     * @property-read \App\Models\Address|null $address
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Message> $messages
      * @property-read int|null $messages_count
-     * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
-     * @property-read int|null $notifications_count
-     * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $roleable
-     * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
-     * @property-read int|null $tokens_count
      * @property-read \App\Models\User|null $user
      *
      * @method static \Database\Factories\AuditorFactory factory($count = null, $state = [])

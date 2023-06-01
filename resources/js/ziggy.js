@@ -46,6 +46,19 @@ const Ziggy = {
         "auditor.messages.store": { uri: "messages", methods: ["POST"] },
         "animator.index": { uri: "dashboard", methods: ["GET", "HEAD"] },
         "animator.chat.update": { uri: "dashboard/chat", methods: ["POST"] },
+        "animator.interactions.index": {
+            uri: "dashboard/interactions",
+            methods: ["GET", "HEAD"],
+        },
+        "animator.interactions.store": {
+            uri: "dashboard/interactions",
+            methods: ["POST"],
+        },
+        "animator.interactions.show": {
+            uri: "dashboard/interactions/{interaction}",
+            methods: ["GET", "HEAD"],
+            bindings: { interaction: "id" },
+        },
         register: { uri: "register", methods: ["GET", "HEAD"] },
         login: { uri: "login", methods: ["GET", "HEAD"] },
         "password.request": {

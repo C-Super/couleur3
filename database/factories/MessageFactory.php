@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Auditor;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,9 +17,11 @@ class MessageFactory extends Factory
      */
     public function definition(): array
     {
+        $auditors = Auditor::all()->pluck('id');
+
         return [
             'content' => $this->faker->sentence(),
-            'auditor_id' => $this->faker->numberBetween(1, 10),
+            'auditor_id' => $this->faker->randomElement($auditors),
         ];
     }
 }

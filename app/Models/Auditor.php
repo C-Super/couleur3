@@ -3,13 +3,15 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 /**
  * @mixin IdeHelperAuditor
  */
-class Auditor extends User
+class Auditor extends Model
 {
     use HasFactory;
 
@@ -28,6 +30,14 @@ class Auditor extends User
     public function user(): MorphOne
     {
         return $this->morphOne(User::class, 'roleable');
+    }
+
+    /**
+     * Get the auditor's address.
+     */
+    public function address(): HasOne
+    {
+        return $this->hasOne(Address::class);
     }
 
     /*

@@ -53,3 +53,4 @@ ziggy: ## Generate routes for Vue
 .PHONY: zora
 zora: ## Generate translations keys for Vue
 	php artisan zora:generate
+	npx prettier --write resources/js/zora.js

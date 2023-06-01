@@ -33,9 +33,11 @@ Route::middleware(['auth', 'auth.auditor', HandlePrecognitiveRequests::class])->
 Route::middleware(['auth', 'auth.animator', HandlePrecognitiveRequests::class])->group(function () {
     Route::get('/dashboard', [AnimatorDashboardController::class, 'index'])->name('animator.index');
     Route::post('/dashboard/chat', [AnimatorDashboardController::class, 'updateChatSetting'])->name('animator.chat.update');
-    Route::resource('/dashboard/interactions', InteractionController::class)->parameters([
-        'interactions' => 'animator.interactions',
-    ]);
+    Route::resource('/dashboard/interactions', InteractionController::class)->names([
+        'index' => 'animator.interactions.index',
+        'show' => 'animator.interactions.show',
+        'store' => 'animator.interactions.store',
+    ])->only(['index', 'show', 'store']);
 });
 
 require __DIR__.'/auth.php';
