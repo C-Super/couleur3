@@ -119,7 +119,7 @@ jobs:
         run: npx eslint --ext .js,.vue --ignore-path .gitignore
 
       - name: Run Pest tests
-        run: vendor/bin/pest --teamcity
+        run: vendor/bin/pest
         env:
           DB_PORT: ${{ job.services.mysql.ports['3306'] }}
           REDIS_PORT: ${{ job.services.redis.ports['6379'] }}

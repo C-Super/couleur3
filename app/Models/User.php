@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use DB;
 use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -59,7 +60,7 @@ class User extends Authenticatable implements MustVerifyEmailContract
 
     public function hasVerifiedEmail()
     {
-        return ! is_null($this->email_verified_at);
+        return !is_null($this->email_verified_at);
     }
 
     public function isAuditor(): bool
@@ -70,17 +71,17 @@ class User extends Authenticatable implements MustVerifyEmailContract
     public function isAnimator(): bool
     {
         return $this->roleable_type === 'App\Models\Animator';
-
     }
 
     public static function create(array $attributes = [])
     {
         // Si aucun roleable n'a été fourni, créez un Auditeur par défaut
-        if (! isset($attributes['roleable_id']) && ! isset($attributes['roleable_type'])) {
-            $auditeur = Auditor::create([]);
+        if (!isset($attributes['roleable_id']) && !isset($attributes['roleable_type'])) {
+            $auditor = new Auditor();
+            $auditor->save();
 
-            $attributes['roleable_id'] = $auditeur->id;
-            $attributes['roleable_type'] = Auditor::class;
+            $attributes['roleable_id'] = $auditor->id;
+            $attributes['roleable_type'] = DB::raw(get_class($auditor));
         }
 
         return parent::create($attributes);

@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Animator;
+use App\Models\Auditor;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -24,8 +24,8 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => Str::random(10),
-            'roleable_type' => 'App\Models\Animator',
-            'roleable_id' => Animator::factory()->create()->id,
+            'roleable_type' => 'App\Models\Auditor',
+            'roleable_id' => Auditor::factory()->create()->id,
         ];
     }
 
