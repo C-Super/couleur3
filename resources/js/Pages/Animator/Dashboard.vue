@@ -1,6 +1,6 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import ChatComponent from "@/Components/ChatComponent.vue";
+import MessageItem from "@/Components/MessageItem.vue";
 import { Head } from "@inertiajs/vue3";
 
 defineProps({
@@ -23,6 +23,8 @@ defineProps({
             </h2>
         </template>
 
-        <ChatComponent :messages="messages" />
+        <div v-if="messages" ref="messageContainer" class="messageContainer">
+            <message-item v-for="msg in messages" :key="msg.id" :msg="msg" />
+        </div>
     </AuthenticatedLayout>
 </template>

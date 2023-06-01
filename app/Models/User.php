@@ -59,4 +59,14 @@ class User extends Authenticatable implements MustVerifyEmailContract
     {
         return ! is_null($this->email_verified_at);
     }
+
+    public function isAuditor(): bool
+    {
+        return $this->roleable_type === 'App\Models\Auditor';
+    }
+
+    public function isAnimator(): bool
+    {
+        return $this->roleable_type === 'App\Models\Animator';
+    }
 }

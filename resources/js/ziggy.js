@@ -39,6 +39,7 @@ const Ziggy = {
             uri: "_ignition/update-config",
             methods: ["POST"],
         },
+        "auditor.index": { uri: "/", methods: ["GET", "HEAD"] },
         "auditor.messages.store": { uri: "messages", methods: ["POST"] },
         "animator.index": { uri: "dashboard", methods: ["GET", "HEAD"] },
         "profile.edit": { uri: "profile", methods: ["GET", "HEAD"] },

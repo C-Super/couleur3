@@ -8,7 +8,6 @@ use App\Http\Requests\StoreMessageRequest;
 use App\Models\Message;
 use DB;
 use Illuminate\Foundation\Application;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Route;
