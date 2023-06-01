@@ -26,4 +26,12 @@ class Interaction extends Model
         'reward_id',
         'winners_count',
     ];
+
+    /**
+     * Get all question_choices for the interaction.
+     */
+    public function question_choices()
+    {
+        return $this->hasMany(QuestionChoice::class);
+    }
 }

@@ -3,12 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreInteractionRequest;
-use App\Http\Requests\UpdateInteractionRequest;
 use App\Models\Answer;
 use App\Models\Interaction;
-use App\Models\Winner;
+use App\Models\CallToAction;
+use App\Models\QuestionChoice;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+
+use Illuminate\Support\Facades\Validator;
+use App\Rules\ValidCtaData;
+use App\Rules\ValidQuestionChoiceData;
 
 class InteractionController extends Controller
 {
@@ -36,120 +40,55 @@ class InteractionController extends Controller
 
     public function store(StoreInteractionRequest $request)
     {
-        // 1. Contrôle d'accès
-        //TODO
 
-        // 2. Obtenez les interactions actuelles
-        $currentInteractions = Interaction::where('ended_at', '>', now())->orWhereNull('ended_at')->get();
+        // Then, depending on the type of interaction, create the call_to_action or question_choice
+        if ($request->type === 'survey' || $request->type === 'mcq') {
+            $validated = $request->validated();
+            $interaction = Interaction::create($validated);
+            foreach ($validated['question_choice_data'] as $questionChoiceData) {
+                QuestionChoice::create(array_merge($questionChoiceData, ['interaction_id' => $interaction->id]));
+            }
+        }
+        elseif ($request->type === 'cta' || $request->type === 'quick_click') {
+            $validated = $request->validated();
+            foreach ($request->call_to_action_data as $ctaData) {
+                $cta = CallToAction::create($ctaData);
+            }
+            $interaction = Interaction::create(array_merge($validated, ['call_to_action_id' => $cta->id]));
 
-        // 3. Vérifiez si d'autres interactions sont en cours
-        if (! $currentInteractions->isEmpty()) {
-            return response()->json(['message' => 'Une autre interaction est en cours'], 422);
+        }
+        else{
+            $validated = $request->validated();
+            $interaction = Interaction::create($validated);
         }
 
-        // 4. Vérifiez la validité du contenu du texte
-        $validated = $request->validated();
-
-        // 5. Créer l'interaction de texte
-        $interaction = Interaction::create($validated);
-
-        // 6. Confirmer la création de l'interaction
-        $response = ['message' => 'Interaction crée', 'interaction' => $interaction];
-
-        // 7. Notifier la nouvelle interaction de texte
-        //TODO
-        //event(new NewTextInteraction($interaction));
+        $response = ['message' => 'Interaction created', 'interaction' => $interaction];
 
         return response()->json($response, 201);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateInteractionRequest $request, Interaction $interaction)
+    private function createCallToActionInteraction($interaction, $callToActionData)
     {
-        $interaction = Interaction::findOrFail($interaction->id);
-        $interaction->fill($request->validated());
-        $interaction->save();
+        foreach($callToActionData as $data) {
+            $validator = Validator::make($data, [
+                '*' => [new ValidCtaData],
+            ]);
+            $validatedData = $validator->validate();
 
-        return response()->json($interaction);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Interaction $interaction)
-    {
-        // Récupérer l'interaction
-        $interaction = Interaction::findOrFail($interaction->id);
-
-        // Supprimer l'interaction
-        $interaction->delete();
-
-        // Retourner une réponse indiquant que la suppression a réussi
-        return response()->json($interaction, 204);
-    }
-
-    public function end(Interaction $interaction)
-    {
-        // Trouver l'interaction
-        $interaction = Interaction::findOrFail($interaction->id);
-
-        // Vérifier si l'utilisateur actuel est l'animateur de l'interaction
-        if (Auth::user()->id != $interaction->animator_id) {
-            return response()->json(['message' => 'Unauthorized'], 403);
+            CallToAction::create(array_merge($validatedData, ['interaction_id' => $interaction->id]));
         }
-
-        // Terminer l'interaction
-        $interaction->ended_at = now();
-        $interaction->save();
-
-        // Pusher pour notifier les auditeurs de la fin de l'interaction
-
-        return response()->json(['message' => 'Interaction ended successfully']);
     }
 
-    public function respond(Request $request, Interaction $interaction)
+    private function createQuestionChoiceInteraction($interaction, $questionChoiceData)
     {
-        // À faire : validation des données d'entrée
+        foreach($questionChoiceData as $data) {
 
-        // Trouver l'interaction
-        $interaction = Interaction::findOrFail($interaction->id);
+            $validator = Validator::make($data, [
+                '*' => [new ValidQuestionChoiceData],
+            ]);
+            $validatedData = $validator->validate();
 
-        // Créer une nouvelle réponse
-        $answer = new Answer($request->all());
-        $answer->auditor_id = Auth::user()->id;
-        $answer->interaction_id = $interaction->id;
-
-        // Enregistrer la réponse
-        $answer->save();
-
-        // Pusher pour notifier l'animateur de la nouvelle réponse
-
-        return response()->json($answer, 201);
-    }
-
-    public function designateWinner(Request $request, $id)
-    {
-        // À faire : validation des données d'entrée
-
-        // Trouver l'interaction
-        $interaction = Interaction::findOrFail($id);
-
-        // Vérifier si l'utilisateur actuel est l'animateur de l'interaction
-        if (Auth::user()->id != $interaction->animator_id) {
-            return response()->json(['message' => 'Unauthorized'], 403);
+            QuestionChoice::create(array_merge($validatedData, ['interaction_id' => $interaction->id]));
         }
-
-        // Créer une nouvelle entrée gagnante
-        $winner = new Winner($request->all());
-        $winner->interaction_id = $interaction->id;
-
-        // Enregistrer le gagnant
-        $winner->save();
-
-        // Pusher pour notifier l'auditeur gagnant de la victoire
-
-        return response()->json($winner, 201);
     }
 }

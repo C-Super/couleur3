@@ -22,7 +22,8 @@ class StoreQuestionChoiceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'value' => 'required|string',
+            'is_correct_answer' => 'required|boolean',
         ];
     }
 }

@@ -5,6 +5,9 @@ namespace App\Http\Requests;
 use App\Enums\InteractionType;
 use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
+use App\Rules\NoActiveInteractions;
+use App\Rules\ValidCtaData;
+use App\Rules\ValidQuestionChoiceData;
 
 class StoreInteractionRequest extends FormRequest
 {
@@ -49,10 +52,16 @@ class StoreInteractionRequest extends FormRequest
                 'required',
                 'date_format:Y-m-d H:i:s',
                 'after:'.Carbon::now()->format('Y-m-d H:i:s'),
+                new NoActiveInteractions(),
             ],
         ];
-        if ($typeableType !== null) {
-            $rules['call_to_action_id'] = ['required', "exists:$typeableType,id"];
+
+        if ($type === 'survey' || $type === 'mcq') {
+            $rules['question_choice_data'] = ['required', 'array', 'between:2,4', new ValidQuestionChoiceData];
+        }
+
+        if($type === 'cta' || $type === 'quick_click') {
+            $rules['call_to_action_data'] = ['required', new ValidCtaData];
         }
 
         return $rules;
