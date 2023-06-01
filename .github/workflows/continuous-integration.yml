@@ -113,7 +113,7 @@ jobs:
         run: npx prettier --check resources/js
 
       - name: Run Larastan
-        run: vendor/bin/phpstan analyse --memory-limit=2G --error-format=checkstyle | cs2pr
+        run: vendor/bin/phpstan analyse --error-format=checkstyle | cs2pr
 
       - name: Run ESLint
         run: npx eslint --ext .js,.vue --ignore-path .gitignore
