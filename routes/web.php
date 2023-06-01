@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Animator\DashboardController as AnimatorDashboardController;
 use App\Http\Controllers\Auditor\DashboardController as AuditorDashboardController;
+use App\Http\Controllers\InteractionController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Support\Facades\Route;
@@ -32,6 +33,9 @@ Route::middleware(['auth', 'auth.auditor', HandlePrecognitiveRequests::class])->
 Route::middleware(['auth', 'auth.animator', HandlePrecognitiveRequests::class])->group(function () {
     Route::get('/dashboard', [AnimatorDashboardController::class, 'index'])->name('animator.index');
     Route::post('/dashboard/chat', [AnimatorDashboardController::class, 'updateChatSetting'])->name('animator.chat.update');
+    Route::resource('/dashboard/interactions', InteractionController::class)->parameters([
+        "interactions" => "animator.interactions"
+    ]);
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

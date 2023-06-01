@@ -33,7 +33,6 @@ class InteractionController extends Controller
 
     public function store(StoreInteractionRequest $request)
     {
-
         // Initialize $cta to null
         $cta = null;
 
@@ -50,7 +49,6 @@ class InteractionController extends Controller
                 $cta = CallToAction::create($ctaData);
             }
             $interaction = Interaction::create(array_merge($validated, ['call_to_action_id' => $cta->id]));
-
         } else {
             $validated = $request->validated();
             $interaction = Interaction::create($validated);

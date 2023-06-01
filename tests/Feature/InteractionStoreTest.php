@@ -4,6 +4,7 @@ use App\Models\Animator;
 use App\Models\CallToAction;
 use App\Models\Interaction;
 use App\Models\Reward;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use function Pest\Laravel\postJson;
@@ -12,9 +13,18 @@ uses(DatabaseTransactions::class);
 
 it('can store mcq interactions', function () {
     $animator = Animator::factory()->create();
+    $user = User::factory()->create([
+        'name' => fake()->name(),
+        'email' => fake()->email(),
+        'password' => Hash::make('animator'),
+        'roleable_id' => $animator->id,
+        'roleable_type' => get_class($animator),
+    ]);
     $reward = Reward::factory()->create();
 
-    $response = postJson('/interactions', [
+    $this->actingAs($user);
+
+    $response = postJson('/dashboard/interactions', [
         'title' => 'Test Interaction',
         'type' => 'mcq',
         'animator_id' => $animator->id,
@@ -42,9 +52,18 @@ it('can store mcq interactions', function () {
 
 it('can store survey interactions', function () {
     $animator = Animator::factory()->create();
+    $user = User::factory()->create([
+        'name' => fake()->name(),
+        'email' => fake()->email(),
+        'password' => Hash::make('animator'),
+        'roleable_id' => $animator->id,
+        'roleable_type' => get_class($animator),
+    ]);
     $reward = Reward::factory()->create();
 
-    $response = postJson('/interactions', [
+    $this->actingAs($user);
+
+    $response = postJson('/dashboard/interactions', [
         'title' => 'Test Interaction',
         'type' => 'survey',
         'animator_id' => $animator->id,
@@ -72,9 +91,18 @@ it('can store survey interactions', function () {
 
 it('can store audio interactions', function () {
     $animator = Animator::factory()->create();
+    $user = User::factory()->create([
+        'name' => fake()->name(),
+        'email' => fake()->email(),
+        'password' => Hash::make('animator'),
+        'roleable_id' => $animator->id,
+        'roleable_type' => get_class($animator),
+    ]);
     $reward = Reward::factory()->create();
 
-    $response = postJson('/interactions', [
+    $this->actingAs($user);
+
+    $response = postJson('/dashboard/interactions', [
         'title' => 'Test Interaction',
         'type' => 'audio',
         'animator_id' => $animator->id,
@@ -89,9 +117,18 @@ it('can store audio interactions', function () {
 
 it('can store video interactions', function () {
     $animator = Animator::factory()->create();
+    $user = User::factory()->create([
+        'name' => fake()->name(),
+        'email' => fake()->email(),
+        'password' => Hash::make('animator'),
+        'roleable_id' => $animator->id,
+        'roleable_type' => get_class($animator),
+    ]);
     $reward = Reward::factory()->create();
 
-    $response = postJson('/interactions', [
+    $this->actingAs($user);
+
+    $response = postJson('/dashboard/interactions', [
         'title' => 'Test Interaction',
         'type' => 'video',
         'animator_id' => $animator->id,
@@ -106,9 +143,18 @@ it('can store video interactions', function () {
 
 it('can store picture interactions', function () {
     $animator = Animator::factory()->create();
+    $user = User::factory()->create([
+        'name' => fake()->name(),
+        'email' => fake()->email(),
+        'password' => Hash::make('animator'),
+        'roleable_id' => $animator->id,
+        'roleable_type' => get_class($animator),
+    ]);
     $reward = Reward::factory()->create();
 
-    $response = postJson('/interactions', [
+    $this->actingAs($user);
+
+    $response = postJson('/dashboard/interactions', [
         'title' => 'Test Interaction',
         'type' => 'picture',
         'animator_id' => $animator->id,
@@ -123,9 +169,18 @@ it('can store picture interactions', function () {
 
 it('can store text interactions', function () {
     $animator = Animator::factory()->create();
+    $user = User::factory()->create([
+        'name' => fake()->name(),
+        'email' => fake()->email(),
+        'password' => Hash::make('animator'),
+        'roleable_id' => $animator->id,
+        'roleable_type' => get_class($animator),
+    ]);
     $reward = Reward::factory()->create();
 
-    $response = postJson('/interactions', [
+    $this->actingAs($user);
+
+    $response = postJson('/dashboard/interactions', [
         'title' => 'Test Interaction',
         'type' => 'text',
         'animator_id' => $animator->id,
@@ -140,19 +195,30 @@ it('can store text interactions', function () {
 
 it('can store cta interactions', function () {
     $animator = Animator::factory()->create();
+    $user = User::factory()->create([
+        'name' => fake()->name(),
+        'email' => fake()->email(),
+        'password' => Hash::make('animator'),
+        'roleable_id' => $animator->id,
+        'roleable_type' => get_class($animator),
+    ]);
     $reward = Reward::factory()->create();
 
-    $response = postJson('/interactions', [
+    $this->actingAs($user);
+
+    $response = postJson('/dashboard/interactions', [
         'title' => 'Test Interaction',
         'type' => 'cta',
         'animator_id' => $animator->id,
         'reward_id' => $reward->id,
         'winners_count' => 10,
         'ended_at' => Carbon::now()->addMinutes(10)->format('Y-m-d H:i:s'),
-        'call_to_action_data' => [[
-            'description' => 'Description 1',
-            'link' => 'https://example.com',
-            'button_text' => 'Button Text 1', ],
+        'call_to_action_data' => [
+            [
+                'description' => 'Description 1',
+                'link' => 'https://example.com',
+                'button_text' => 'Button Text 1',
+            ],
 
         ],
 
@@ -164,10 +230,19 @@ it('can store cta interactions', function () {
 
 it('can store quick_click interactions', function () {
     $animator = Animator::factory()->create();
+    $user = User::factory()->create([
+        'name' => fake()->name(),
+        'email' => fake()->email(),
+        'password' => Hash::make('animator'),
+        'roleable_id' => $animator->id,
+        'roleable_type' => get_class($animator),
+    ]);
     $reward = Reward::factory()->create();
     $cta = CallToAction::factory()->create();
 
-    $response = postJson('/interactions', [
+    $this->actingAs($user);
+
+    $response = postJson('/dashboard/interactions', [
         'title' => 'Test Interaction',
         'type' => 'quick_click',
         'call_to_action_id' => $cta->id,
@@ -175,10 +250,12 @@ it('can store quick_click interactions', function () {
         'reward_id' => $reward->id,
         'winners_count' => 10,
         'ended_at' => Carbon::now()->addMinutes(10)->format('Y-m-d H:i:s'),
-        'call_to_action_data' => [[
-            'description' => 'Description 1',
-            'link' => 'https://example.com',
-            'button_text' => 'Button Text 1', ],
+        'call_to_action_data' => [
+            [
+                'description' => 'Description 1',
+                'link' => 'https://example.com',
+                'button_text' => 'Button Text 1',
+            ],
 
         ],
     ]);
@@ -189,11 +266,20 @@ it('can store quick_click interactions', function () {
 
 it('can store an interactions when another interaction is finished', function () {
     $animator = Animator::factory()->create();
+    $user = User::factory()->create([
+        'name' => fake()->name(),
+        'email' => fake()->email(),
+        'password' => Hash::make('animator'),
+        'roleable_id' => $animator->id,
+        'roleable_type' => get_class($animator),
+    ]);
     $reward = Reward::factory()->create();
     $cta = CallToAction::factory()->create();
     $endedAt = Carbon::now()->addMilliseconds(1000)->format('Y-m-d H:i:s');
 
-    $response = postJson('/interactions', [
+    $this->actingAs($user);
+
+    $response = postJson('/dashboard/interactions', [
         'title' => 'Test Interaction',
         'type' => 'quick_click',
         'call_to_action_id' => $cta->id,
@@ -201,10 +287,12 @@ it('can store an interactions when another interaction is finished', function ()
         'animator_id' => $animator->id,
         'reward_id' => $reward->id,
         'winners_count' => 10,
-        'call_to_action_data' => [[
-            'description' => 'Description 1',
-            'link' => 'https://example.com',
-            'button_text' => 'Button Text 1', ],
+        'call_to_action_data' => [
+            [
+                'description' => 'Description 1',
+                'link' => 'https://example.com',
+                'button_text' => 'Button Text 1',
+            ],
 
         ],
     ]);
@@ -213,7 +301,7 @@ it('can store an interactions when another interaction is finished', function ()
 
     sleep(1);
 
-    $response = postJson('/interactions', [
+    $response = postJson('/dashboard/interactions', [
         'title' => 'Test Interaction 2',
         'type' => 'text',
         'animator_id' => $animator->id,
@@ -228,10 +316,19 @@ it('can store an interactions when another interaction is finished', function ()
 
 it('cannot store cta interactions with invalid cta id', function () {
     $animator = Animator::factory()->create();
+    $user = User::factory()->create([
+        'name' => fake()->name(),
+        'email' => fake()->email(),
+        'password' => Hash::make('animator'),
+        'roleable_id' => $animator->id,
+        'roleable_type' => get_class($animator),
+    ]);
     $reward = Reward::factory()->create();
     $cta = CallToAction::factory()->create();
 
-    $response = postJson('/interactions', [
+    $this->actingAs($user);
+
+    $response = postJson('/dashboard/interactions', [
         'title' => 'Test Interaction',
         'type' => 'cta',
         'call_to_action_id' => ($cta->id) + 1,
@@ -247,10 +344,19 @@ it('cannot store cta interactions with invalid cta id', function () {
 
 it('cannot store survey or mcq interactions with less than 1 choice', function () {
     $animator = Animator::factory()->create();
+    $user = User::factory()->create([
+        'name' => fake()->name(),
+        'email' => fake()->email(),
+        'password' => Hash::make('animator'),
+        'roleable_id' => $animator->id,
+        'roleable_type' => get_class($animator),
+    ]);
     $reward = Reward::factory()->create();
     $cta = CallToAction::factory()->create();
 
-    $response = postJson('/interactions', [
+    $this->actingAs($user);
+
+    $response = postJson('/dashboard/interactions', [
         'title' => 'Test Interaction',
         'type' => 'mcq',
         'call_to_action_id' => ($cta->id) + 1,
@@ -272,10 +378,19 @@ it('cannot store survey or mcq interactions with less than 1 choice', function (
 
 it('cannot store survey or mcq interactions with more than 4 choices', function () {
     $animator = Animator::factory()->create();
+    $user = User::factory()->create([
+        'name' => fake()->name(),
+        'email' => fake()->email(),
+        'password' => Hash::make('animator'),
+        'roleable_id' => $animator->id,
+        'roleable_type' => get_class($animator),
+    ]);
     $reward = Reward::factory()->create();
     $cta = CallToAction::factory()->create();
 
-    $response = postJson('/interactions', [
+    $this->actingAs($user);
+
+    $response = postJson('/dashboard/interactions', [
         'title' => 'Test Interaction',
         'type' => 'mcq',
         'call_to_action_id' => ($cta->id) + 1,
@@ -313,9 +428,18 @@ it('cannot store survey or mcq interactions with more than 4 choices', function 
 
 it('cannot store an interactions with invalid ended at', function () {
     $animator = Animator::factory()->create();
+    $user = User::factory()->create([
+        'name' => fake()->name(),
+        'email' => fake()->email(),
+        'password' => Hash::make('animator'),
+        'roleable_id' => $animator->id,
+        'roleable_type' => get_class($animator),
+    ]);
     $reward = Reward::factory()->create();
 
-    $response = postJson('/interactions', [
+    $this->actingAs($user);
+
+    $response = postJson('/dashboard/interactions', [
         'title' => 'Test Interaction',
         'type' => 'mcq',
         'animator_id' => $animator->id,
@@ -330,9 +454,18 @@ it('cannot store an interactions with invalid ended at', function () {
 
 it('cannot store random name interactions', function () {
     $animator = Animator::factory()->create();
+    $user = User::factory()->create([
+        'name' => fake()->name(),
+        'email' => fake()->email(),
+        'password' => Hash::make('animator'),
+        'roleable_id' => $animator->id,
+        'roleable_type' => get_class($animator),
+    ]);
     $reward = Reward::factory()->create();
 
-    $response = postJson('/interactions', [
+    $this->actingAs($user);
+
+    $response = postJson('/dashboard/interactions', [
         'title' => 'Test Interaction',
         'type' => 'sdahgsjhdg',
         'animator_id' => $animator->id,
@@ -347,9 +480,18 @@ it('cannot store random name interactions', function () {
 
 it('cannot store an interaction with another interaction running', function () {
     $animator = Animator::factory()->create();
+    $user = User::factory()->create([
+        'name' => fake()->name(),
+        'email' => fake()->email(),
+        'password' => Hash::make('animator'),
+        'roleable_id' => $animator->id,
+        'roleable_type' => get_class($animator),
+    ]);
     $reward = Reward::factory()->create();
 
-    $response = postJson('/interactions', [
+    $this->actingAs($user);
+
+    $response = postJson('/dashboard/interactions', [
         'title' => 'Test Interaction',
         'type' => 'text',
         'animator_id' => $animator->id,
@@ -360,17 +502,19 @@ it('cannot store an interaction with another interaction running', function () {
     $response->assertStatus(201);
     expect(Interaction::where('title', 'Test Interaction')->exists())->toBeTrue();
 
-    $response = postJson('/interactions', [
+    $response = postJson('/dashboard/interactions', [
         'title' => 'Test Interaction 2',
         'type' => 'mcq',
         'animator_id' => $animator->id,
         'reward_id' => $reward->id,
         'winners_count' => 10,
         'ended_at' => Carbon::now()->addMinutes(10)->format('Y-m-d H:i:s'),
-        'call_to_action_data' => [[
-            'description' => 'Description 1',
-            'link' => 'https://example.com',
-            'button_text' => 'Button Text 1', ],
+        'call_to_action_data' => [
+            [
+                'description' => 'Description 1',
+                'link' => 'https://example.com',
+                'button_text' => 'Button Text 1',
+            ],
 
         ],
     ]);
@@ -381,9 +525,18 @@ it('cannot store an interaction with another interaction running', function () {
 
 it('cannot store an interaction with no ended_at', function () {
     $animator = Animator::factory()->create();
+    $user = User::factory()->create([
+        'name' => fake()->name(),
+        'email' => fake()->email(),
+        'password' => Hash::make('animator'),
+        'roleable_id' => $animator->id,
+        'roleable_type' => get_class($animator),
+    ]);
     $reward = Reward::factory()->create();
 
-    $response = postJson('/interactions', [
+    $this->actingAs($user);
+
+    $response = postJson('/dashboard/interactions', [
         'title' => 'Test Interaction',
         'type' => 'text',
         'animator_id' => $animator->id,
