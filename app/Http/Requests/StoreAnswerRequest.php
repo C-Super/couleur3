@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\MediaType;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use App\Enums\MediaType;
 
 class StoreAnswerRequest extends FormRequest
 {
@@ -41,7 +41,7 @@ class StoreAnswerRequest extends FormRequest
         } elseif ($this->type === 'audio' || $this->type === 'video' || $this->type === 'picture') {
             $rules['type'] = 'required|in:text,picture,audio,video,mcq,survey|same:replyable_data.type';
             $rules['replyable_data.path'] = 'required|string';
-            $rules['replyable_data.type'] = 'required|in:' . implode(',', MediaType::getValues());
+            $rules['replyable_data.type'] = 'required|in:'.implode(',', MediaType::getValues());
         } elseif ($this->type === 'mcq' || $this->type === 'survey') {
             $rules['replyable_data.id'] = 'required|exists:question_choices,id';
         }

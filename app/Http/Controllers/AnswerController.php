@@ -2,18 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\AnimatorSent;
+use App\Events\AuditorSent;
 use App\Http\Requests\StoreAnswerRequest;
-use App\Http\Requests\UpdateAnswerRequest;
-
-use Inertia\Inertia;
-
 use App\Models\Answer;
-
 use App\Models\AnswerText;
 use App\Models\Media;
 use App\Models\QuestionChoice;
-use App\Events\AnimatorSent;
-use App\Events\AuditorSent;
+use Inertia\Inertia;
 
 class AnswerController extends Controller
 {

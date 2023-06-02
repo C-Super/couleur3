@@ -1,15 +1,12 @@
 <?php
 
-use App\Models\Animator;
 use App\Models\Answer;
 use App\Models\AnswerText;
 use App\Models\Auditor;
-use App\Models\CallToAction;
 use App\Models\Interaction;
 use App\Models\Media;
 use App\Models\QuestionChoice;
 use App\Models\User;
-use App\Enums\InteractionType;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Hash;
 use function Pest\Laravel\postJson;
@@ -27,12 +24,10 @@ it('can store text answer', function () {
     ]);
 
     $interaction = Interaction::factory()->create([
-        'type' => 'text'
+        'type' => 'text',
     ]);
 
-
     $this->actingAs($user);
-
 
     $response = postJson('/answer', [
         'auditor_id' => $auditor->id,
@@ -58,7 +53,7 @@ it('can store media picture answer', function () {
         'roleable_type' => get_class($auditor),
     ]);
     $interaction = Interaction::factory()->create([
-        'type' => 'picture'
+        'type' => 'picture',
     ]);
 
     $this->actingAs($user);
@@ -88,7 +83,7 @@ it('can store media audio answer', function () {
         'roleable_type' => get_class($auditor),
     ]);
     $interaction = Interaction::factory()->create([
-        'type' => 'audio'
+        'type' => 'audio',
     ]);
 
     $this->actingAs($user);
@@ -118,7 +113,7 @@ it('can store media video answer', function () {
         'roleable_type' => get_class($auditor),
     ]);
     $interaction = Interaction::factory()->create([
-        'type' => 'video'
+        'type' => 'video',
     ]);
 
     $this->actingAs($user);
@@ -148,7 +143,7 @@ it('can store mcq answer', function () {
         'roleable_type' => get_class($auditor),
     ]);
     $interaction = Interaction::factory()->create([
-        'type' => 'mcq'
+        'type' => 'mcq',
     ]);
     $questionChoice = QuestionChoice::factory()->create(['interaction_id' => $interaction->id]);
 
@@ -177,7 +172,7 @@ it('can store survey answer', function () {
         'roleable_type' => get_class($auditor),
     ]);
     $interaction = Interaction::factory()->create([
-        'type' => 'survey'
+        'type' => 'survey',
     ]);
     $questionChoice = QuestionChoice::factory()->create(['interaction_id' => $interaction->id]);
 
@@ -206,7 +201,7 @@ it('can not store answer for invalid type', function () {
         'roleable_type' => get_class($auditor),
     ]);
     $interaction = Interaction::factory()->create([
-        'type' => 'text'
+        'type' => 'text',
     ]);
 
     $this->actingAs($user);
@@ -234,7 +229,7 @@ it('can not store answer media picture for audio type', function () {
         'roleable_type' => get_class($auditor),
     ]);
     $interaction = Interaction::factory()->create([
-        'type' => 'audio'
+        'type' => 'audio',
     ]);
 
     $this->actingAs($user);
@@ -263,7 +258,7 @@ it('can not store answer for incorrect interaction type', function () {
         'roleable_type' => get_class($auditor),
     ]);
     $interaction = Interaction::factory()->create([
-        'type' => 'text'
+        'type' => 'text',
     ]);
 
     $this->actingAs($user);

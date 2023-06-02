@@ -1,11 +1,10 @@
 <?php
 
 use App\Http\Controllers\Animator\DashboardController as AnimatorDashboardController;
+use App\Http\Controllers\AnswerController;
 use App\Http\Controllers\Auditor\DashboardController as AuditorDashboardController;
 use App\Http\Controllers\InteractionController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\AnswerController;
-use App\Models\Answer;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Support\Facades\Route;
 
@@ -43,4 +42,4 @@ Route::middleware(['auth', 'auth.animator', HandlePrecognitiveRequests::class])-
     ])->only(['index', 'show', 'store']);
 });
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';
