@@ -45,6 +45,17 @@ npm-audit: ## Run security check for npm dependencies
 
 security: security-checker npm-audit ## Run all
 
+.PHONY: ziggy
+ziggy: ## Generate routes for Vue
+	php artisan ziggy:generate
+	npx prettier --write resources/js/ziggy.js
+
 .PHONY: zora
 zora: ## Generate translations keys for Vue
 	php artisan zora:generate
+	npx prettier --write resources/js/zora.js
+
+.PHONY: deploy
+deploy: ## Deploy app to pingouin server
+#git remote add pingouin daniel.mendesgo@pingouin.heig-vd.ch:/home/projart/2023/50/super/super-laravel
+	git push pingouin main

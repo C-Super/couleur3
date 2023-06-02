@@ -1,4 +1,6 @@
-### Informations utiles: 
+# Entretien animateurs
+
+## Informations utiles: 
 
 -   Quels supports/interfaces ils ont déjà face à eux? 
     
@@ -16,12 +18,12 @@
     
 -   Autres besoins? 
 
-### Entretien
+## Entretien
 
-Intro
-
+### Intro
 Bonjour et merci beaucoup de nous consacrer un peu de votre temps! Cet entretien vise à récolter des informations qui nous serviront à développer un nouvel outil destiné aux animateurs. Cet outil vise à faciliter les interactions pendant les émissions. Le but est que les animateurs puissent lancer des interactions diverses avec les auditeurs en générant rapidement une question, qui apparaît temporairement sous forme de popup sur le site web de Couleur3. 
 
+### Contenu
 Durant l’entretien, je vais souvent utiliser le mot interaction. J’entend par là tout engagement lancé par l’animateur qui encourage l’auditeur à renvoyer quelque chose qui sera ensuite réutilisé immédiatement par l’animateur ou plus tard par la plateforme. (Exemples: envoyer un fichier audio image ou texte, appeler, répondre à une question…)
 
 1.  Quel est votre nom?
@@ -61,6 +63,5 @@ Durant l’entretien, je vais souvent utiliser le mot interaction. J’entend pa
     
 17.  Est ce que vous aimeriez ajouter quelque chose? 
 
-Conclusion 
-
+### Conclusion
 Merci beaucoup d’avoir pris le temps de nous répondre! On se réjouit de vous présenter le résultat final.

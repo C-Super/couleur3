@@ -11,4 +11,10 @@ use Illuminate\Database\Eloquent\Model;
 class QuestionChoice extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'value',
+        'is_correct_answer',
+        'interaction_id',
+    ];
 }

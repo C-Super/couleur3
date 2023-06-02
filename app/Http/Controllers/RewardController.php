@@ -29,7 +29,10 @@ class RewardController extends Controller
      */
     public function store(StoreRewardRequest $request)
     {
-        //
+        $validated = $request->validated();
+        $reward = Reward::create($validated);
+
+        return response()->json($reward, 201);
     }
 
     /**
@@ -53,7 +56,10 @@ class RewardController extends Controller
      */
     public function update(UpdateRewardRequest $request, Reward $reward)
     {
-        //
+        $validated = $request->validated();
+        $reward->update($validated);
+
+        return response()->json($reward, 200);
     }
 
     /**
@@ -61,6 +67,8 @@ class RewardController extends Controller
      */
     public function destroy(Reward $reward)
     {
-        //
+        $reward->delete();
+
+        return response()->json(null, 204);
     }
 }

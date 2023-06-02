@@ -11,4 +11,10 @@ use Illuminate\Database\Eloquent\Model;
 class CallToAction extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'description',
+        'link',
+        'button_text',
+    ];
 }

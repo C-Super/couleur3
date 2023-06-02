@@ -25,6 +25,8 @@ class User extends Authenticatable implements MustVerifyEmailContract
         'name',
         'email',
         'password',
+        'roleable_id',
+        'roleable_type',
     ];
 
     /**
@@ -58,5 +60,29 @@ class User extends Authenticatable implements MustVerifyEmailContract
     public function hasVerifiedEmail()
     {
         return ! is_null($this->email_verified_at);
+    }
+
+    public function isAuditor(): bool
+    {
+        return $this->roleable_type === 'App\Models\Auditor';
+    }
+
+    public function isAnimator(): bool
+    {
+        return $this->roleable_type === 'App\Models\Animator';
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            if (! $model->roleable_id && ! $model->roleable_type) {
+                $auditor = Auditor::create();
+
+                $model->roleable_id = $auditor->id;
+                $model->roleable_type = get_class($auditor);
+            }
+        });
     }
 }
