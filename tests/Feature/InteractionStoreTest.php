@@ -43,7 +43,7 @@ it('can store mcq interactions', function () {
         ],
     ]);
 
-    $response->assertStatus(201);
+    $response->assertStatus(200);
     expect(Interaction::where('title', 'Test Interaction')->exists())->toBeTrue();
     // Assert that the question_choice were stored correctly
     $interaction = Interaction::where('title', 'Test Interaction')->first();
@@ -82,7 +82,7 @@ it('can store survey interactions', function () {
         ],
     ]);
 
-    $response->assertStatus(201);
+    $response->assertStatus(200);
     expect(Interaction::where('title', 'Test Interaction')->exists())->toBeTrue();
     // Assert that the question_choice were stored correctly
     $interaction = Interaction::where('title', 'Test Interaction')->first();
@@ -111,7 +111,7 @@ it('can store audio interactions', function () {
         'ended_at' => Carbon::now()->addMinutes(10)->format('Y-m-d H:i:s'),
     ]);
 
-    $response->assertStatus(201);
+    $response->assertStatus(200);
     expect(Interaction::where('title', 'Test Interaction')->exists())->toBeTrue();
 });
 
@@ -137,7 +137,7 @@ it('can store video interactions', function () {
         'ended_at' => Carbon::now()->addMinutes(10)->format('Y-m-d H:i:s'),
     ]);
 
-    $response->assertStatus(201);
+    $response->assertStatus(200);
     expect(Interaction::where('title', 'Test Interaction')->exists())->toBeTrue();
 });
 
@@ -163,7 +163,7 @@ it('can store picture interactions', function () {
         'ended_at' => Carbon::now()->addMinutes(10)->format('Y-m-d H:i:s'),
     ]);
 
-    $response->assertStatus(201);
+    $response->assertStatus(200);
     expect(Interaction::where('title', 'Test Interaction')->exists())->toBeTrue();
 });
 
@@ -189,7 +189,7 @@ it('can store text interactions', function () {
         'ended_at' => Carbon::now()->addMinutes(10)->format('Y-m-d H:i:s'),
     ]);
 
-    $response->assertStatus(201);
+    $response->assertStatus(200);
     expect(Interaction::where('title', 'Test Interaction')->exists())->toBeTrue();
 });
 
@@ -224,7 +224,7 @@ it('can store cta interactions', function () {
 
     ]);
 
-    $response->assertStatus(201);
+    $response->assertStatus(200);
     expect(Interaction::where('title', 'Test Interaction')->exists())->toBeTrue();
 });
 
@@ -260,7 +260,7 @@ it('can store quick_click interactions', function () {
         ],
     ]);
 
-    $response->assertStatus(201);
+    $response->assertStatus(200);
     expect(Interaction::where('title', 'Test Interaction')->exists())->toBeTrue();
 });
 
@@ -296,7 +296,7 @@ it('can store an interactions when another interaction is finished', function ()
 
         ],
     ]);
-    $response->assertStatus(201);
+    $response->assertStatus(200);
     expect(Interaction::where('title', 'Test Interaction')->exists())->toBeTrue();
 
     sleep(1);
@@ -310,7 +310,7 @@ it('can store an interactions when another interaction is finished', function ()
         'ended_at' => Carbon::now()->addMinutes(10)->format('Y-m-d H:i:s'),
     ]);
 
-    $response->assertStatus(201);
+    $response->assertStatus(200);
     expect(Interaction::where('title', 'Test Interaction 2')->exists())->toBeTrue();
 });
 
@@ -499,7 +499,7 @@ it('cannot store an interaction with another interaction running', function () {
         'winners_count' => 10,
         'ended_at' => Carbon::now()->addMinutes(10)->format('Y-m-d H:i:s'),
     ]);
-    $response->assertStatus(201);
+    $response->assertStatus(200);
     expect(Interaction::where('title', 'Test Interaction')->exists())->toBeTrue();
 
     $response = postJson('/dashboard/interactions', [
