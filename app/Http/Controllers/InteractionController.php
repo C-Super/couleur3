@@ -8,7 +8,6 @@ use App\Models\CallToAction;
 use App\Models\Interaction;
 use App\Models\QuestionChoice;
 use Inertia\Inertia;
-use Inertia\Response;
 
 class InteractionController extends Controller
 {
