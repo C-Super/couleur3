@@ -81,6 +81,17 @@
 | Mise en production               | 108h  |        Tous         |
 | Documentation                    | 102h  |       JB, MR        |
 ## Réseau d'activités
-## Gantt des livrables
-
-
+```mermaid
+flowchart TD
+	A[Début]-->D[Avant-Projet]
+	D-->C[Récherches UX]
+	D-->B[Spécification Back-end]
+	G-->E[Dévelopement Back-end]
+	G-->F[Conception graphique/UI]
+	B & C-->G[Planification]
+	F-->H[Dévelopement Front-end]
+	G-->I[Suivi Réalisation]
+	E & H --> J[Tests & Déploiement]
+	I & J --> K[Clôture]
+```
+## [Gantt des livrables](planificationGantt.md)
