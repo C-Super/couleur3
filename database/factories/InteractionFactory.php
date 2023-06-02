@@ -25,14 +25,10 @@ class InteractionFactory extends Factory
 
         switch ($randomType) {
             case 'mcq':
-                $typeable = QuestionChoice::factory()->count(4)->create();
-                break;
             case 'survey':
                 $typeable = QuestionChoice::factory()->count(4)->create();
                 break;
             case 'cta':
-                $typeable = CallToAction::factory()->create();
-                break;
             case 'quick_click':
                 $typeable = CallToAction::factory()->create();
                 break;
@@ -51,7 +47,6 @@ class InteractionFactory extends Factory
             'reward_id' => Reward::factory(),
             'winners_count' => $this->faker->numberBetween(1, 20),
             'ended_at' => $this->faker->dateTimeBetween('now', '+10 minutes'),
-            'click_to_action' => $typeable,
         ];
     }
 }

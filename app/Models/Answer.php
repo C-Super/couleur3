@@ -11,4 +11,11 @@ use Illuminate\Database\Eloquent\Model;
 class Answer extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'interaction_id',
+        'auditor_id',
+        'replyable_id',
+        'replyable_type',
+    ];
 }

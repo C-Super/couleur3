@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\InteractionSent;
+use App\Events\AuditorSent;
 use App\Http\Requests\StoreInteractionRequest;
 use App\Models\CallToAction;
 use App\Models\Interaction;
 use App\Models\QuestionChoice;
 use Inertia\Inertia;
-use Inertia\Response;
 
 class InteractionController extends Controller
 {
@@ -61,7 +60,7 @@ class InteractionController extends Controller
 
         $response = ['message' => 'Interaction created', 'interaction' => $interaction];
 
-        broadcast(new InteractionSent($response))->toOthers();
+        broadcast(new AuditorSent($response))->toOthers();
 
         return Inertia::render('Animator/Interaction/Show', $interaction);
     }

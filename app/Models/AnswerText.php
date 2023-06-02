@@ -11,4 +11,8 @@ use Illuminate\Database\Eloquent\Model;
 class AnswerText extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'content',
+    ];
 }

@@ -4,6 +4,8 @@ use App\Http\Controllers\Animator\DashboardController as AnimatorDashboardContro
 use App\Http\Controllers\Auditor\DashboardController as AuditorDashboardController;
 use App\Http\Controllers\InteractionController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AnswerController;
+use App\Models\Answer;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Support\Facades\Route;
 
@@ -28,6 +30,7 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth', 'auth.auditor', HandlePrecognitiveRequests::class])->group(function () {
     Route::post('/messages', [AuditorDashboardController::class, 'storeMessage'])->middleware('chat.enabled')->name('auditor.messages.store');
+    Route::post('/answer', [AnswerController::class, 'store'])->name('answer.store');
 });
 
 Route::middleware(['auth', 'auth.animator', HandlePrecognitiveRequests::class])->group(function () {
@@ -40,4 +43,4 @@ Route::middleware(['auth', 'auth.animator', HandlePrecognitiveRequests::class])-
     ])->only(['index', 'show', 'store']);
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

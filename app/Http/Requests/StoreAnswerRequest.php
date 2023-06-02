@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Enums\MediaType;
 
 class StoreAnswerRequest extends FormRequest
 {
@@ -21,11 +22,23 @@ class StoreAnswerRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'auditor_id' => 'required|exists:auditors,id',
             'interaction_id' => 'required|exists:interactions,id',
-            'replyable_id' => 'required',
-            'replyable_type' => 'required|in:App\Models\AnswerText,App\Models\QuestionChoice,App\Models\Media',
+            'type' => 'required|in:text,picture,audio,video,mcq,survey',
+            'replyable_data' => 'required|array',
         ];
+
+        if ($this->type === 'text') {
+            $rules['replyable_data.content'] = 'required|string';
+        } elseif ($this->type === 'audio' || $this->type === 'video' || $this->type === 'picture') {
+            $rules['type'] = 'required|in:text,picture,audio,video,mcq,survey|same:replyable_data.type';
+            $rules['replyable_data.path'] = 'required|string';
+            $rules['replyable_data.type'] = 'required|in:' . implode(',', MediaType::getValues());
+        } elseif ($this->type === 'mcq' || $this->type === 'survey') {
+            $rules['replyable_data.id'] = 'required|exists:question_choices,id';
+        }
+
+        return $rules;
     }
 }
