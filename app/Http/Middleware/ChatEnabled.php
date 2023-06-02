@@ -14,9 +14,9 @@ class ChatEnabled
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, GeneralSettings $settings): Response
+    public function handle(Request $request, Closure $next): Response
     {
-        if ($settings->is_chat_enabled) {
+        if (app(GeneralSettings::class)->is_chat_enabled) {
             return $next($request);
         }
 

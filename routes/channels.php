@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\Broadcast;
 |
 */
 
-Broadcast::channel('chat', function () {
-    return true;
+
+Route::middleware('chat.enabled')->group(function () {
+    Broadcast::channel('chat', function () {
+        return true;
+    });
 });
