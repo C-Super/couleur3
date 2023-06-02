@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 use App\Enums\MediaType;
 
 class StoreAnswerRequest extends FormRequest
@@ -24,7 +25,13 @@ class StoreAnswerRequest extends FormRequest
     {
         $rules = [
             'auditor_id' => 'required|exists:auditors,id',
-            'interaction_id' => 'required|exists:interactions,id',
+            'interaction_id' => [
+                'required',
+                'exists:interactions,id',
+                Rule::exists('interactions', 'id')->where(function ($query) {
+                    $query->where('type', $this->type);
+                }),
+            ],
             'type' => 'required|in:text,picture,audio,video,mcq,survey',
             'replyable_data' => 'required|array',
         ];

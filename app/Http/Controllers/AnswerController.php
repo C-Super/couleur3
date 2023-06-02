@@ -32,6 +32,7 @@ class AnswerController extends Controller
     {
         $answer = null;
         $validated = $request->validated();
+        dump($validated);
 
         if ($request->type === 'text') {
             $answerText = AnswerText::create($validated['replyable_data']);

@@ -252,3 +252,32 @@ it('can not store answer media picture for audio type', function () {
     $response->assertStatus(422);
     expect(Answer::where('auditor_id', $auditor->id)->exists())->toBeFalse();
 });
+
+it('can not store answer for incorrect interaction type', function () {
+    $auditor = Auditor::factory()->create();
+    $user = User::factory()->create([
+        'name' => 'test',
+        'email' => 'tescdt@example.com',
+        'password' => Hash::make('password'),
+        'roleable_id' => $auditor->id,
+        'roleable_type' => get_class($auditor),
+    ]);
+    $interaction = Interaction::factory()->create([
+        'type' => 'text'
+    ]);
+
+    $this->actingAs($user);
+
+    $response = postJson('/answer', [
+        'auditor_id' => $auditor->id,
+        'interaction_id' => $interaction->id,
+        'type' => 'picture',
+        'replyable_data' => [
+            'path' => 'path/to/media',
+            'type' => 'picture',
+        ],
+    ]);
+
+    $response->assertStatus(422);
+    expect(Answer::where('auditor_id', $auditor->id)->exists())->toBeFalse();
+});
