@@ -42,4 +42,4 @@ Route::middleware(['auth', 'auth.animator', HandlePrecognitiveRequests::class])-
     ])->only(['index', 'show', 'store']);
 });
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';

@@ -47,7 +47,10 @@ class DashboardController extends Controller
         $auditor = $user->roleable;
 
         if (! $auditor instanceof Auditor) {
-            abort(403);
+            return Inertia::render('Error', [
+                'status' => '403: '.__('http-statuses.403'),
+                'message' => "Vous n'êtes pas un auditeur.",
+            ])->toResponse($request)->setStatusCode(403);
         }
 
         $message = $auditor->messages()->create([
@@ -57,7 +60,5 @@ class DashboardController extends Controller
         $message['user_name'] = $user->name;
 
         broadcast(new MessageSent($message))->toOthers();
-
-        return back()->with('status', 'Message sent!');
     }
 }

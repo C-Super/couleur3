@@ -1,3 +1,53 @@
+<!-- eslint-disable no-undef -->
+<script setup>
+import { ref, onMounted } from "vue";
+import { useForm } from "laravel-precognition-vue-inertia";
+import MessageItem from "@/Components/MessageItem.vue";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
+import TextInput from "@/Components/TextInput.vue";
+import InputError from "@/Components/InputError.vue";
+
+const messageContainer = ref(null);
+
+const props = defineProps({
+    messages: {
+        type: Array,
+        required: true,
+    },
+});
+
+const form = useForm("post", route("auditor.messages.store"), {
+    message: "",
+});
+
+const submit = () => {
+    form.submit({
+        preserveScroll: true,
+        onSuccess: () => form.reset(),
+    });
+};
+
+onMounted(() => {
+    subscribeToPublicChannel();
+});
+
+function subscribeToPublicChannel() {
+    // Register and subscribe to events on the public channel.
+    window.Echo.channel("public")
+        .listen("MessageSent", (data) => {
+            addNewMessage(data);
+        })
+        .error((error) => {
+            console.error(error);
+        });
+}
+
+function addNewMessage(data) {
+    // eslint-disable-next-line vue/no-mutating-props
+    props.messages.push(data.message);
+}
+</script>
+
 <template>
     <div>
         <div id="myTabContent" class="tab-content mb-3">
@@ -49,64 +99,3 @@
         </div>
     </div>
 </template>
-
-<script setup>
-import { ref, onMounted, nextTick } from "vue";
-import { useForm } from "laravel-precognition-vue-inertia";
-import MessageItem from "@/Components/MessageItem.vue";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
-import TextInput from "@/Components/TextInput.vue";
-import InputError from "@/Components/InputError.vue";
-
-const channelName = "chat";
-const messageContainer = ref(null);
-
-const props = defineProps({
-    messages: {
-        type: Array,
-        required: true,
-    },
-});
-
-// eslint-disable-next-line no-undef
-const form = useForm("post", route("auditor.messages.store"), {
-    message: "",
-});
-
-const submit = () =>
-    form.submit({
-        preserveScroll: true,
-        onSuccess: () => form.reset(),
-    });
-
-onMounted(() => {
-    subscribeToPublicChannel();
-});
-
-function subscribeToPublicChannel() {
-    // Register and subscribe to events on the public channel.
-    window.Echo.channel(channelName)
-        .listen("MessageSent", (data) => {
-            addNewMessage(data);
-        })
-        .error((error) => {
-            console.error(error);
-        });
-}
-
-function addNewMessage(data) {
-    // eslint-disable-next-line vue/no-mutating-props
-    props.messages.push(data.message);
-
-    scrollToBottom();
-}
-
-function scrollToBottom() {
-    nextTick(() => {
-        if (messageContainer.value) {
-            messageContainer.value.scrollTop =
-                messageContainer.value.scrollHeight;
-        }
-    });
-}
-</script>

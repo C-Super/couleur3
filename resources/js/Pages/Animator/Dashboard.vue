@@ -1,9 +1,10 @@
+<!-- eslint-disable no-undef -->
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import MessageItem from "@/Components/MessageItem.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
-import { Head } from "@inertiajs/vue3";
-import { useForm } from "laravel-precognition-vue-inertia";
+import { onMounted } from "vue";
+import { Head, useForm } from "@inertiajs/vue3";
 
 const props = defineProps({
     messages: {
@@ -16,18 +17,40 @@ const props = defineProps({
     },
 });
 
-// eslint-disable-next-line no-undef
-const form = useForm("post", route("animator.chat.update"), {
+const form = useForm({
     is_chat_enabled: !props.isChatEnabled,
 });
 
-const submit = () =>
-    form.submit({
+const submit = () => {
+    form.post(route("animator.chat.update"), {
         preserveScroll: true,
         onSuccess: () => {
             form.is_chat_enabled = !props.isChatEnabled;
         },
     });
+};
+
+onMounted(() => {
+    console.log("mounted");
+    subscribeToPublicChannel();
+});
+
+function subscribeToPublicChannel() {
+    // Register and subscribe to events on the public channel.
+    window.Echo.channel("public")
+        .listen("MessageSent", (data) => {
+            console.log("message receive");
+            addNewMessage(data);
+        })
+        .error((error) => {
+            console.error(error);
+        });
+}
+
+function addNewMessage(data) {
+    // eslint-disable-next-line vue/no-mutating-props
+    props.messages.push(data.message);
+}
 </script>
 
 <template>
