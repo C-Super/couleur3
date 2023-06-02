@@ -3,7 +3,6 @@ FROM ubuntu:22.04
 LABEL maintainer="Taylor Otwell"
 
 ARG WWWGROUP
-ARG XDEBUG
 ARG NODE_VERSION=18
 ARG POSTGRES_VERSION=15
 
@@ -43,10 +42,6 @@ RUN apt-get update \
     && apt-get -y autoremove \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-RUN if [ ${XDEBUG}] ; then \
-    apt-get install -y php-xdebug; \
-fi;
 
 RUN setcap "cap_net_bind_service=+ep" /usr/bin/php8.2
 
