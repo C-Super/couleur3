@@ -56,6 +56,9 @@
  
  WC2_5-->WC2_6[Documentation animateurs]  
 ```
+
+<div style="page-break-after: always;"></div>
+
 ## Tableau des livrables
 ### Equipe
 **DM**: Daniel Mendes, ingénieur full-stack, administrateur système
@@ -80,6 +83,9 @@
 | Dashboard animateurs             | 158h  |       CF, DM        |
 | Mise en production               | 108h  |        Tous         |
 | Documentation                    | 102h  |       JB, MR        |
+
+<div style="page-break-after: always;"></div>
+
 ## Réseau d'activités
 ```mermaid
 flowchart TD
