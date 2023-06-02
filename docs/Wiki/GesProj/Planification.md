@@ -95,3 +95,4 @@ flowchart TD
 	I & J --> K[Clôture]
 ```
 ## [Gantt des livrables](planificationGantt.md)
+(voir annexe)
