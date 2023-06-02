@@ -7,6 +7,8 @@ use App\Http\Requests\StoreInteractionRequest;
 use App\Models\CallToAction;
 use App\Models\Interaction;
 use App\Models\QuestionChoice;
+use App\Jobs\CheckInteractionEnded;
+
 use Inertia\Inertia;
 
 class InteractionController extends Controller
@@ -57,6 +59,10 @@ class InteractionController extends Controller
             $validated = $request->validated();
             $interaction = Interaction::create($validated);
         }
+
+        // Planifie le job pour vérifier si l'interaction est terminée
+        CheckInteractionEnded::dispatch($interaction)->delay($interaction->ended_at);
+
 
         $response = ['message' => 'Interaction created', 'interaction' => $interaction];
 
