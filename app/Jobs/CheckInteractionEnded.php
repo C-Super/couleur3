@@ -8,7 +8,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-
 use Inertia\Inertia;
 
 class CheckInteractionEnded implements ShouldQueue
@@ -35,7 +34,6 @@ class CheckInteractionEnded implements ShouldQueue
     public function handle()
     {
         if ($this->interaction->ended_at <= now()) {
-            dump('Interaction ended at ' . $this->interaction->ended_at);
             // Collect all answers
             $answers = $this->interaction->answers()->with('auditor')->get();
 

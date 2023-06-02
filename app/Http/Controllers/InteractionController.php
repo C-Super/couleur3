@@ -4,11 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Events\InteractionSent;
 use App\Http\Requests\StoreInteractionRequest;
+use App\Jobs\CheckInteractionEnded;
+use DateTime;
 use App\Models\CallToAction;
 use App\Models\Interaction;
 use App\Models\QuestionChoice;
-use App\Jobs\CheckInteractionEnded;
-
 use Inertia\Inertia;
 
 class InteractionController extends Controller
@@ -60,9 +60,14 @@ class InteractionController extends Controller
             $interaction = Interaction::create($validated);
         }
 
-        // Planifie le job pour vérifier si l'interaction est terminée
-        CheckInteractionEnded::dispatch($interaction)->delay($interaction->ended_at);
+        if ($interaction->ended_at) {
+            $ended_at = new DateTime($interaction->ended_at);
+            $delay = $ended_at->getTimestamp() - now()->getTimestamp();
 
+            if ($delay > 0) {
+                CheckInteractionEnded::dispatch($interaction)->delay($delay);
+            }
+        }
 
         $response = ['message' => 'Interaction created', 'interaction' => $interaction];
 

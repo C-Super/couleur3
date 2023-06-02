@@ -3,10 +3,9 @@
 use App\Jobs\CheckInteractionEnded;
 use App\Models\Answer;
 use App\Models\Auditor;
-use App\Models\User;
 use App\Models\Interaction;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
 
 uses(DatabaseTransactions::class);
