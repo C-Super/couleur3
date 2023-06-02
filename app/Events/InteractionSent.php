@@ -4,19 +4,18 @@ namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class MessageSent implements ShouldBroadcast
+class InteractionSent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $message;
+    public $interaction;
 
-    public function __construct(array $message)
+    public function __construct(array $interaction)
     {
-        $this->message = $message;
+        $this->interaction = $interaction;
     }
 
     /**
@@ -24,6 +23,6 @@ class MessageSent implements ShouldBroadcast
      */
     public function broadcastOn(): Channel
     {
-        return new Channel('auditor');
+        return new Channel('interaction');
     }
 }
