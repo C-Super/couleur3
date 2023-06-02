@@ -21,9 +21,10 @@ it('ends the interaction when ended_at time is reached', function () {
         'ended_at' => now()->subMinute(),  // set the ended_at to a time in the past
     ]);
     Answer::factory()->count(3)->create([
-        'type' => 'text',
         'auditor_id' => $auditor->id,
         'interaction_id' => $interaction->id,
+        'replyable_type' => 'text',
+        'replyable_id' => 1,
     ]);
 
     // Assert: Check that the EndInteraction job is dispatched when the interaction ended_at time is reached

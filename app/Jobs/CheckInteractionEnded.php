@@ -35,6 +35,7 @@ class CheckInteractionEnded implements ShouldQueue
     public function handle()
     {
         if ($this->interaction->ended_at <= now()) {
+            dump('Interaction ended at ' . $this->interaction->ended_at);
             // Collect all answers
             $answers = $this->interaction->answers()->with('auditor')->get();
 
