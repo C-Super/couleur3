@@ -28,7 +28,7 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth', 'verified', 'auth.auditor'])->group(function () {
     Route::middleware('chat.enabled')->group(function () {
-        Route::post('/messages', [AuditorDashboardController::class, 'storeMessage'])->middleware(HandlePrecognitiveRequests::class)->name('auditor.messages.store');
+        Route::post('/messages', [AuditorDashboardController::class, 'storeMessage'])->name('auditor.messages.store');
     });
 });
 

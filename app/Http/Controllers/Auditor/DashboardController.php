@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Auditor;
 
 use App\Events\MessageSent;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreMessageRequest;
+use App\Http\Requests\Auditor\StoreMessageRequest;
 use App\Models\Auditor;
 use App\Models\Message;
 use App\Settings\GeneralSettings;
@@ -17,8 +17,9 @@ class DashboardController extends Controller
 {
     public function index(GeneralSettings $settings): Response
     {
-        if (! $settings->is_chat_enabled) {
+        if (! $settings->chat_enabled) {
             return Inertia::render('Auditor/Dashboard', [
+                'chatEnabled' => $settings->chat_enabled,
                 'messages' => [],
             ]);
         }
@@ -35,6 +36,7 @@ class DashboardController extends Controller
             ->toArray();
 
         return Inertia::render('Auditor/Dashboard', [
+            'chatEnabled' => $settings->chat_enabled,
             'messages' => array_reverse($lastMessages),
         ]);
     }
@@ -54,11 +56,11 @@ class DashboardController extends Controller
         }
 
         $message = $auditor->messages()->create([
-            'content' => $validated['message'],
+            'content' => $validated['content'],
         ])->toArray();
 
         $message['user_name'] = $user->name;
 
-        broadcast(new MessageSent($message))->toOthers();
+        MessageSent::dispatch($message);
     }
 }

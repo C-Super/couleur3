@@ -11,21 +11,21 @@ const props = defineProps({
         type: Array,
         required: true,
     },
-    isChatEnabled: {
+    chatEnabled: {
         type: Boolean,
         required: true,
     },
 });
 
 const form = useForm({
-    is_chat_enabled: !props.isChatEnabled,
+    chat_enabled: !props.chatEnabled,
 });
 
 const submit = () => {
     form.post(route("animator.chat.update"), {
         preserveScroll: true,
         onSuccess: () => {
-            form.is_chat_enabled = !props.isChatEnabled;
+            form.chat_enabled = !props.chatEnabled;
         },
     });
 };
@@ -73,9 +73,7 @@ function addNewMessage(data) {
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
                 >
-                    {{
-                        isChatEnabled ? "Désactiver le chat" : "Activer le chat"
-                    }}
+                    {{ chatEnabled ? "Désactiver le chat" : "Activer le chat" }}
                 </primary-button>
             </form>
 
