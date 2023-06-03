@@ -30,10 +30,6 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        $payload = precognitive(function () use ($request) {
-            return $request->validated();
-        });
-
         $request->authenticate();
 
         $request->session()->regenerate();

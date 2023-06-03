@@ -13,10 +13,10 @@ class DashboardController extends Controller
 {
     public function index(GeneralSettings $settings)
     {
-        if (! $settings->is_chat_enabled) {
+        if (!$settings->chat_enabled) {
             return Inertia::render('Animator/Dashboard', [
                 'messages' => [],
-                'isChatEnabled' => $settings->is_chat_enabled,
+                'chatEnabled' => $settings->chat_enabled,
             ]);
         }
 
@@ -33,7 +33,7 @@ class DashboardController extends Controller
 
         return Inertia::render('Animator/Dashboard', [
             'messages' => array_reverse($lastMessages),
-            'isChatEnabled' => $settings->is_chat_enabled,
+            'chatEnabled' => $settings->chat_enabled,
         ]);
     }
 
@@ -41,33 +41,33 @@ class DashboardController extends Controller
     {
         $validated = $request->validated();
 
-        if ($validated['is_chat_enabled'] === true && $settings->is_chat_enabled) {
+        if ($validated['chat_enabled'] === true && $settings->chat_enabled) {
             return back()->with([
                 'error', 'Le chat est déjà activé.',
-                'isChatEnabled' => $settings->is_chat_enabled,
+                'isChatEnabled' => $settings->chat_enabled,
             ]);
         }
 
-        if ($validated['is_chat_enabled'] === false && ! $settings->is_chat_enabled) {
+        if ($validated['chat_enabled'] === false && !$settings->chat_enabled) {
             return back()->with([
                 'error', 'Le chat est déjà désactivé.',
-                'isChatEnabled' => $settings->is_chat_enabled,
+                'isChatEnabled' => $settings->chat_enabled,
             ]);
         }
 
-        $settings->is_chat_enabled = $validated['is_chat_enabled'];
+        $settings->chat_enabled = $validated['chat_enabled'];
         $settings->save();
 
-        if ($settings->is_chat_enabled) {
+        if ($settings->chat_enabled) {
             return back()->with([
                 'success', 'Le chat a bien été activé.',
-                'isChatEnabled' => $settings->is_chat_enabled,
+                'isChatEnabled' => $settings->chat_enabled,
             ]);
         }
 
         return back()->with([
             'success', 'Le chat a bien été désactivé.',
-            'isChatEnabled' => $settings->is_chat_enabled,
+            'isChatEnabled' => $settings->chat_enabled,
             'messages' => [],
         ]);
     }

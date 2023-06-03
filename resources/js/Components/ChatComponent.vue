@@ -1,7 +1,7 @@
 <!-- eslint-disable no-undef -->
 <script setup>
-import { ref, onMounted } from "vue";
-import { useForm } from "laravel-precognition-vue-inertia";
+import { ref, onMounted, reactive } from "vue";
+import { router } from "@inertiajs/vue3";
 import MessageItem from "@/Components/MessageItem.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
@@ -10,21 +10,43 @@ import InputError from "@/Components/InputError.vue";
 const messageContainer = ref(null);
 
 const props = defineProps({
+    chatEnabled: {
+        type: Boolean,
+        required: true,
+    },
     messages: {
         type: Array,
         required: true,
     },
 });
 
-const form = useForm("post", route("auditor.messages.store"), {
+const form = reactive({
     message: "",
+    errors: {},
 });
 
-const submit = () => {
-    form.submit({
-        preserveScroll: true,
-        onSuccess: () => form.reset(),
-    });
+const submitMessage = () => {
+    form.processing = true;
+    router.post(
+        "/messages",
+        {
+            content: form.message,
+        },
+        {
+            preserveState: true,
+            preserveScroll: true,
+            only: ["chatEnabled"],
+            onSuccess: () => {
+                form.message = "";
+                form.processing = false;
+                form.errors = {};
+            },
+            onError: (errors) => {
+                form.errors = errors.errors;
+                form.processing = false;
+            },
+        }
+    );
 };
 
 onMounted(() => {
@@ -64,7 +86,7 @@ function addNewMessage(data) {
                     />
                 </div>
 
-                <form @submit.prevent="submit">
+                <form @submit.prevent="submitMessage">
                     <div>
                         <TextInput
                             id="message"
@@ -74,8 +96,8 @@ function addNewMessage(data) {
                             required
                             autofocus
                             placeholder="Message..."
-                            @change="form.validate('message')"
-                            @keyup.enter="submit"
+                            :disabled="form.processing || !chatEnabled"
+                            @keyup.enter="submitMessage"
                         />
 
                         <InputError
@@ -87,8 +109,19 @@ function addNewMessage(data) {
                     <div class="row mt-3 mb-2">
                         <div class="col-6 text-start">
                             <PrimaryButton
-                                :class="{ 'opacity-25': form.processing }"
-                                :disabled="form.processing"
+                                :class="{
+                                    'opacity-25':
+                                        form.processing ||
+                                        !form.message ||
+                                        form.message.length < 1 ||
+                                        !chatEnabled,
+                                }"
+                                :disabled="
+                                    form.processing ||
+                                    !form.message ||
+                                    form.message.length < 1 ||
+                                    !chatEnabled
+                                "
                             >
                                 Send message
                             </PrimaryButton>

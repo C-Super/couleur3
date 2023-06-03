@@ -4,6 +4,10 @@ import ChatComponent from "@/Components/ChatComponent.vue";
 import { Head } from "@inertiajs/vue3";
 
 defineProps({
+    chatEnabled: {
+        type: Boolean,
+        required: true,
+    },
     messages: {
         type: Array,
         required: true,
@@ -23,6 +27,6 @@ defineProps({
             {{ status }}
         </div>
 
-        <ChatComponent :messages="messages" />
+        <ChatComponent :messages="messages" :chat-enabled="chatEnabled" />
     </GuestLayout>
 </template>

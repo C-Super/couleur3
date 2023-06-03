@@ -19,7 +19,7 @@ class ChatEnabled
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (! app(GeneralSettings::class)->is_chat_enabled) {
+        if (! app(GeneralSettings::class)->chat_enabled) {
             throw ValidationException::withMessages([
                 'message' => 'Vous ne pouvez pas envoyé de message quand le chat est désactivé.',
             ]);
