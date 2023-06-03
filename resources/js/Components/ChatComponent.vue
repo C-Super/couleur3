@@ -1,6 +1,6 @@
 <!-- eslint-disable no-undef -->
 <script setup>
-import { ref, onMounted, reactive } from "vue";
+import { ref, reactive } from "vue";
 import { router } from "@inertiajs/vue3";
 import MessageItem from "@/Components/MessageItem.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
@@ -9,7 +9,7 @@ import InputError from "@/Components/InputError.vue";
 
 const messageContainer = ref(null);
 
-const props = defineProps({
+defineProps({
     chatEnabled: {
         type: Boolean,
         required: true,
@@ -48,26 +48,6 @@ const submitMessage = () => {
         }
     );
 };
-
-onMounted(() => {
-    subscribeToPublicChannel();
-});
-
-function subscribeToPublicChannel() {
-    // Register and subscribe to events on the public channel.
-    window.Echo.channel("public")
-        .listen("MessageSent", (data) => {
-            addNewMessage(data);
-        })
-        .error((error) => {
-            console.error(error);
-        });
-}
-
-function addNewMessage(data) {
-    // eslint-disable-next-line vue/no-mutating-props
-    props.messages.push(data.message);
-}
 </script>
 
 <template>
@@ -75,7 +55,7 @@ function addNewMessage(data) {
         <div id="myTabContent" class="tab-content mb-3">
             <div class="tab-pane fade show active">
                 <div
-                    v-if="messages"
+                    v-if="messages && chatEnabled"
                     ref="messageContainer"
                     class="messageContainer"
                 >
