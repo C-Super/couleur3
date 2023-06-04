@@ -31,13 +31,13 @@ onMounted(() => {
 function subscribeToPublicChannel() {
     window.Echo.channel("public")
         .listen("MessageSent", (event) => {
-            data.messages.value.push(event.message);
+            data.messages.push(event.message);
         })
         .listen("ChatUpdated", (event) => {
             data.chatEnabled = event.chatEnabled;
 
             if (!data.chatEnabled) {
-                data.messages.value = [];
+                data.messages = [];
             }
         })
         .error((error) => {
@@ -54,6 +54,9 @@ function subscribeToPublicChannel() {
             {{ status }}
         </div>
 
-        <ChatComponent :messages="messages" :chat-enabled="data.chatEnabled" />
+        <ChatComponent
+            :messages="data.messages"
+            :chat-enabled="data.chatEnabled"
+        />
     </GuestLayout>
 </template>

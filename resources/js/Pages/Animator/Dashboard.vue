@@ -43,7 +43,7 @@ onMounted(() => {
 function subscribeToPublicChannel() {
     window.Echo.channel("public")
         .listen("MessageSent", (event) => {
-            data.messages.value.push(event.message);
+            data.messages.push(event.message);
         })
         .error((error) => {
             console.error(error);
