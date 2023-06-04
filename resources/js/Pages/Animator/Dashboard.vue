@@ -3,8 +3,12 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import MessageItem from "@/Components/MessageItem.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
-import { onMounted } from "vue";
+import { reactive, onMounted } from "vue";
 import { Head, useForm } from "@inertiajs/vue3";
+
+const data = reactive({
+    messages: props.messages,
+});
 
 const props = defineProps({
     messages: {
@@ -24,32 +28,26 @@ const form = useForm({
 const submit = () => {
     form.post(route("animator.chat.update"), {
         preserveScroll: true,
+        only: ["chatEnabled"],
         onSuccess: () => {
             form.chat_enabled = !props.chatEnabled;
+            data.messages = [];
         },
     });
 };
 
 onMounted(() => {
-    console.log("mounted");
     subscribeToPublicChannel();
 });
 
 function subscribeToPublicChannel() {
-    // Register and subscribe to events on the public channel.
     window.Echo.channel("public")
-        .listen("MessageSent", (data) => {
-            console.log("message receive");
-            addNewMessage(data);
+        .listen("MessageSent", (event) => {
+            data.messages.push(event.message);
         })
         .error((error) => {
             console.error(error);
         });
-}
-
-function addNewMessage(data) {
-    // eslint-disable-next-line vue/no-mutating-props
-    props.messages.push(data.message);
 }
 </script>
 
@@ -77,7 +75,11 @@ function addNewMessage(data) {
                 </primary-button>
             </form>
 
-            <message-item v-for="msg in messages" :key="msg.id" :msg="msg" />
+            <message-item
+                v-for="msg in data.messages"
+                :key="msg.id"
+                :msg="msg"
+            />
         </div>
     </AuthenticatedLayout>
 </template>
