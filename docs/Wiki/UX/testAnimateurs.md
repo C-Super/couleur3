@@ -47,30 +47,30 @@ Certaines actions ont besoin d'être effectuées en une seule étape, afin de ga
 
 ### Écrans de tests
 
-![[UX_Test-ecrans.png]]
+![[UXTestEcrans.png]]
 
-![[Accueil 1.pdf]]
+![[accueil1.pdf]]
 
-![[Accueil 2.pdf]]
+![[accueil2.pdf]]
 
-![[Confirmation gagnants.pdf]]
+![[confirmationGagnants.pdf]]
 
-![[Question - Sondage.pdf]]
+![[questionSondage.pdf]]
 
-![[Question - texte.pdf]]
+![[questionTexte.pdf]]
 
-![[Réponses - Sondage.pdf]]
+![[reponsesSondage.pdf]]
 
-![[Réponses - texte-checked.pdf]]
+![[reponsesTexteChecked.pdf]]
 
-![[Réponses - texte.pdf]]
+![[reponsesTexte.pdf]]
 
-![[Réponses-détail - Sondage.pdf]]
+![[reponsesDétailSondage.pdf]]
 
-![[Sélection - texte aléatoire-genere.pdf]]
+![[selectionTexteAléatoireGenere.pdf]]
 
-![[Sélection - texte aléatoire.pdf]]
+![[selectionTexteAléatoire.pdf]]
 
-![[Sélection - texte manuelle-checked.pdf]]
+![[selectionTexteManuelleChecked.pdf]]
 
-![[Sélection - texte manuelle.pdf]]
+![[selectionTexteManuelle.pdf]]
