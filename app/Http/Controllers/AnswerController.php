@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
+
 use App\Events\AnswerQuestionChoiceSubmited;
 use App\Events\AnswerSubmitedToAnimator;
 use App\Http\Requests\StoreAnswerRequest;
@@ -26,8 +28,11 @@ class AnswerController extends Controller
      */
     public function store(StoreAnswerRequest $request)
     {
-        $$validated = $request->validated();
-        dump($validated);
+        $validated = $request->validated();
+
+        //get user id from auth
+        $user = Auth::user();
+        $auditor = $user->roleable;
 
         switch ($request->type) {
             case 'text':
@@ -47,7 +52,7 @@ class AnswerController extends Controller
         }
 
         $answer = Answer::create([
-            'auditor_id' => $validated['auditor_id'],
+            'auditor_id' => $auditor->id,
             'interaction_id' => $validated['interaction_id'],
             'replyable_id' => $answerable->id,
             'replyable_type' => get_class($answerable),

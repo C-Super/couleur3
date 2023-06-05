@@ -26,7 +26,13 @@ class StoreAnswerRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            // existing rules
+            'interaction_id' => [
+                'required',
+                'exists:interactions,id',
+                Rule::exists('interactions', 'id')->where(function ($query) {
+                    $query->where('type', $this->type);
+                }),
+            ]
         ];
 
         switch ($this->type) {

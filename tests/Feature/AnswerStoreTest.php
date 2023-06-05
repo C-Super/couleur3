@@ -36,7 +36,6 @@ it('can store text answer and fires correct event', function () {
     $this->actingAs($user);
 
     $response = postJson('/answer', [
-        'auditor_id' => $auditor->id,
         'interaction_id' => $interaction->id,
         'type' => 'text',
         'replyable_data' => [
@@ -55,7 +54,9 @@ it('can store text answer and fires correct event', function () {
     Event::assertNotDispatched(AnswerQuestionChoiceSubmited::class);
 });
 
-it('can store media picture answer', function () {
+it('can store media picture answer and fires correct events', function () {
+    Event::fake([AnswerSubmitedToAnimator::class, AnswerQuestionChoiceSubmited::class]);
+
     $auditor = Auditor::factory()->create();
     $user = User::factory()->create([
         'name' => 'test',
@@ -71,7 +72,6 @@ it('can store media picture answer', function () {
     $this->actingAs($user);
 
     $response = postJson('/answer', [
-        'auditor_id' => $auditor->id,
         'interaction_id' => $interaction->id,
         'type' => 'picture',
         'replyable_data' => [
@@ -83,9 +83,17 @@ it('can store media picture answer', function () {
     $response->assertStatus(200);
     expect(Answer::where('auditor_id', $auditor->id)->exists())->toBeTrue();
     expect(Media::where('path', 'path/to/media')->exists())->toBeTrue();
+
+    Event::assertDispatched(AnswerSubmitedToAnimator::class, function ($event) use ($auditor) {
+        return $event->answer->auditor_id === $auditor->id;
+    });
+
+    Event::assertNotDispatched(AnswerQuestionChoiceSubmited::class);
 });
 
-it('can store media audio answer', function () {
+it('can store media audio answer and fires correct events', function () {
+    Event::fake([AnswerSubmitedToAnimator::class, AnswerQuestionChoiceSubmited::class]);
+
     $auditor = Auditor::factory()->create();
     $user = User::factory()->create([
         'name' => 'test',
@@ -101,7 +109,6 @@ it('can store media audio answer', function () {
     $this->actingAs($user);
 
     $response = postJson('/answer', [
-        'auditor_id' => $auditor->id,
         'interaction_id' => $interaction->id,
         'type' => 'audio',
         'replyable_data' => [
@@ -113,9 +120,17 @@ it('can store media audio answer', function () {
     $response->assertStatus(200);
     expect(Answer::where('auditor_id', $auditor->id)->exists())->toBeTrue();
     expect(Media::where('path', 'path/to/media')->exists())->toBeTrue();
+
+    Event::assertDispatched(AnswerSubmitedToAnimator::class, function ($event) use ($auditor) {
+        return $event->answer->auditor_id === $auditor->id;
+    });
+
+    Event::assertNotDispatched(AnswerQuestionChoiceSubmited::class);
 });
 
-it('can store media video answer', function () {
+it('can store media video answer and fires correct events', function () {
+    Event::fake([AnswerSubmitedToAnimator::class, AnswerQuestionChoiceSubmited::class]);
+
     $auditor = Auditor::factory()->create();
     $user = User::factory()->create([
         'name' => 'test',
@@ -131,7 +146,6 @@ it('can store media video answer', function () {
     $this->actingAs($user);
 
     $response = postJson('/answer', [
-        'auditor_id' => $auditor->id,
         'interaction_id' => $interaction->id,
         'type' => 'video',
         'replyable_data' => [
@@ -143,17 +157,26 @@ it('can store media video answer', function () {
     $response->assertStatus(200);
     expect(Answer::where('auditor_id', $auditor->id)->exists())->toBeTrue();
     expect(Media::where('path', 'path/to/media')->exists())->toBeTrue();
+
+    Event::assertDispatched(AnswerSubmitedToAnimator::class, function ($event) use ($auditor) {
+        return $event->answer->auditor_id === $auditor->id;
+    });
+
+    Event::assertNotDispatched(AnswerQuestionChoiceSubmited::class);
 });
 
-it('can store mcq answer', function () {
+it('can store mcq answer and fires correct events', function () {
+    Event::fake([AnswerSubmitedToAnimator::class, AnswerQuestionChoiceSubmited::class]);
+
     $auditor = Auditor::factory()->create();
     $user = User::factory()->create([
         'name' => 'test',
-        'email' => 'test1@example.com',
+        'email' => 'testd@example.com',
         'password' => Hash::make('password'),
         'roleable_id' => $auditor->id,
         'roleable_type' => get_class($auditor),
     ]);
+
     $interaction = Interaction::factory()->create([
         'type' => 'mcq',
     ]);
@@ -162,7 +185,6 @@ it('can store mcq answer', function () {
     $this->actingAs($user);
 
     $response = postJson('/answer', [
-        'auditor_id' => $auditor->id,
         'interaction_id' => $interaction->id,
         'type' => 'mcq',
         'replyable_data' => [
@@ -172,17 +194,27 @@ it('can store mcq answer', function () {
 
     $response->assertStatus(200);
     expect(Answer::where('auditor_id', $auditor->id)->exists())->toBeTrue();
+    expect(QuestionChoice::where('id', $questionChoice->id)->exists())->toBeTrue();
+
+    Event::assertDispatched(AnswerSubmitedToAnimator::class, function ($event) use ($auditor) {
+        return $event->answer->auditor_id === $auditor->id;
+    });
+
+    Event::assertDispatched(AnswerQuestionChoiceSubmited::class);
 });
 
-it('can store survey answer', function () {
+it('can store survey answer and fires correct events', function () {
+    Event::fake([AnswerSubmitedToAnimator::class, AnswerQuestionChoiceSubmited::class]);
+
     $auditor = Auditor::factory()->create();
     $user = User::factory()->create([
         'name' => 'test',
-        'email' => 'testa@example.com',
+        'email' => 'testd@example.com',
         'password' => Hash::make('password'),
         'roleable_id' => $auditor->id,
         'roleable_type' => get_class($auditor),
     ]);
+
     $interaction = Interaction::factory()->create([
         'type' => 'survey',
     ]);
@@ -191,7 +223,6 @@ it('can store survey answer', function () {
     $this->actingAs($user);
 
     $response = postJson('/answer', [
-        'auditor_id' => $auditor->id,
         'interaction_id' => $interaction->id,
         'type' => 'survey',
         'replyable_data' => [
@@ -201,9 +232,18 @@ it('can store survey answer', function () {
 
     $response->assertStatus(200);
     expect(Answer::where('auditor_id', $auditor->id)->exists())->toBeTrue();
+    expect(QuestionChoice::where('id', $questionChoice->id)->exists())->toBeTrue();
+
+    Event::assertDispatched(AnswerSubmitedToAnimator::class, function ($event) use ($auditor) {
+        return $event->answer->auditor_id === $auditor->id;
+    });
+
+    Event::assertDispatched(AnswerQuestionChoiceSubmited::class);
 });
 
-it('can not store answer for invalid type', function () {
+it('can not store answer for invalid type and fires correct events', function () {
+    Event::fake([AnswerSubmitedToAnimator::class, AnswerQuestionChoiceSubmited::class]);
+
     $auditor = Auditor::factory()->create();
     $user = User::factory()->create([
         'name' => 'test',
@@ -219,7 +259,6 @@ it('can not store answer for invalid type', function () {
     $this->actingAs($user);
 
     $response = postJson('/answer', [
-        'auditor_id' => $auditor->id,
         'interaction_id' => $interaction->id,
         'type' => 'invalid_type',
         'replyable_data' => [
@@ -229,9 +268,17 @@ it('can not store answer for invalid type', function () {
 
     $response->assertStatus(422);
     expect(Answer::where('auditor_id', $auditor->id)->exists())->toBeFalse();
+
+    Event::assertNotDispatched(AnswerSubmitedToAnimator::class, function ($event) use ($auditor) {
+        return $event->answer->auditor_id === $auditor->id;
+    });
+
+    Event::assertNotDispatched(AnswerQuestionChoiceSubmited::class);
 });
 
-it('can not store answer media picture for audio type', function () {
+it('can not store answer media picture for audio type and fires correct events', function () {
+    Event::fake([AnswerSubmitedToAnimator::class, AnswerQuestionChoiceSubmited::class]);
+
     $auditor = Auditor::factory()->create();
     $user = User::factory()->create([
         'name' => 'test',
@@ -247,7 +294,6 @@ it('can not store answer media picture for audio type', function () {
     $this->actingAs($user);
 
     $response = postJson('/answer', [
-        'auditor_id' => $auditor->id,
         'interaction_id' => $interaction->id,
         'type' => 'audio',
         'replyable_data' => [
@@ -258,9 +304,18 @@ it('can not store answer media picture for audio type', function () {
 
     $response->assertStatus(422);
     expect(Answer::where('auditor_id', $auditor->id)->exists())->toBeFalse();
+    expect(Media::where('path', 'path/to/media')->exists())->toBeFalse();
+
+    Event::assertNotDispatched(AnswerSubmitedToAnimator::class, function ($event) use ($auditor) {
+        return $event->answer->auditor_id === $auditor->id;
+    });
+
+    Event::assertNotDispatched(AnswerQuestionChoiceSubmited::class);
 });
 
-it('can not store answer for incorrect interaction type', function () {
+it('can not store answer for incorrect interaction type and fires correct events', function () {
+    Event::fake([AnswerSubmitedToAnimator::class, AnswerQuestionChoiceSubmited::class]);
+
     $auditor = Auditor::factory()->create();
     $user = User::factory()->create([
         'name' => 'test',
@@ -276,7 +331,6 @@ it('can not store answer for incorrect interaction type', function () {
     $this->actingAs($user);
 
     $response = postJson('/answer', [
-        'auditor_id' => $auditor->id,
         'interaction_id' => $interaction->id,
         'type' => 'picture',
         'replyable_data' => [
@@ -287,4 +341,11 @@ it('can not store answer for incorrect interaction type', function () {
 
     $response->assertStatus(422);
     expect(Answer::where('auditor_id', $auditor->id)->exists())->toBeFalse();
+    expect(Media::where('path', 'path/to/media')->exists())->toBeFalse();
+
+    Event::assertNotDispatched(AnswerSubmitedToAnimator::class, function ($event) use ($auditor) {
+        return $event->answer->auditor_id === $auditor->id;
+    });
+
+    Event::assertNotDispatched(AnswerQuestionChoiceSubmited::class);
 });
