@@ -13,7 +13,13 @@ use function Pest\Laravel\postJson;
 
 uses(DatabaseTransactions::class);
 
-it('can store text answer', function () {
+use App\Events\AnswerQuestionChoiceSubmited;
+use App\Events\AnswerSubmitedToAnimator;
+use Illuminate\Support\Facades\Event;
+
+it('can store text answer and fires correct event', function () {
+    Event::fake([AnswerSubmitedToAnimator::class, AnswerQuestionChoiceSubmited::class]);
+
     $auditor = Auditor::factory()->create();
     $user = User::factory()->create([
         'name' => 'test',
@@ -41,6 +47,12 @@ it('can store text answer', function () {
     $response->assertStatus(200);
     expect(Answer::where('auditor_id', $auditor->id)->exists())->toBeTrue();
     expect(AnswerText::where('content', 'This is a text answer.')->exists())->toBeTrue();
+
+    Event::assertDispatched(AnswerSubmitedToAnimator::class, function ($event) use ($auditor) {
+        return $event->answer->auditor_id === $auditor->id;
+    });
+
+    Event::assertNotDispatched(AnswerQuestionChoiceSubmited::class);
 });
 
 it('can store media picture answer', function () {

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\AnimatorSent;
-use App\Events\AuditorSent;
+use App\Events\AnswerQuestionChoiceSubmited;
+use App\Events\AnswerSubmitedToAnimator;
 use App\Http\Requests\StoreAnswerRequest;
 use App\Models\Answer;
 use App\Models\AnswerText;
@@ -26,47 +26,40 @@ class AnswerController extends Controller
      */
     public function store(StoreAnswerRequest $request)
     {
-        $answer = null;
-        $validated = $request->validated();
+        $$validated = $request->validated();
         dump($validated);
 
-        if ($request->type === 'text') {
-            $answerText = AnswerText::create($validated['replyable_data']);
-            $answer = Answer::create([
-                'auditor_id' => $validated['auditor_id'],
-                'interaction_id' => $validated['interaction_id'],
-                'replyable_id' => $answerText->id,
-                'replyable_type' => get_class($answerText),
-            ]);
-        } elseif ($request->type === 'picture' || $request->type === 'video' || $request->type === 'audio') {
-            $answerMedia = Media::create($validated['replyable_data']);
-            $answer = Answer::create([
-                'auditor_id' => $validated['auditor_id'],
-                'interaction_id' => $validated['interaction_id'],
-                'replyable_id' => $answerMedia->id,
-                'replyable_type' => get_class($answerMedia),
-            ]);
-        } elseif ($request->type === 'mcq' || $request->type === 'survey') {
-            $questionChoice = QuestionChoice::find($validated['replyable_data']['id']);
-            $answer = Answer::create([
-                'auditor_id' => $validated['auditor_id'],
-                'interaction_id' => $validated['interaction_id'],
-                'replyable_id' => $questionChoice->id,
-                'replyable_type' => get_class($questionChoice),
-            ]);
-
-            //if question_choice linked interaction is survey, send broadcast to auditor
-            if ($request->type === 'survey') {
-                $response = ['message' => 'Interaction created', 'interaction' => $answer];
-                broadcast(new AuditorSent($response))->toOthers();
-            }
-        } else {
-            return response()->json(['message' => 'Invalid type'], 400);
+        switch ($request->type) {
+            case 'text':
+                $answerable = AnswerText::create($validated['replyable_data']);
+                break;
+            case 'audio':
+            case 'video':
+            case 'picture':
+                $answerable = Media::create($validated['replyable_data']);
+                break;
+            case 'mcq':
+            case 'survey':
+                $answerable = QuestionChoice::find($validated['replyable_data']['id']);
+                break;
+            default:
+                return response()->json(['message' => 'Invalid type'], 400);
         }
 
-        $response = ['message' => 'Interaction created', 'interaction' => $answer];
+        $answer = Answer::create([
+            'auditor_id' => $validated['auditor_id'],
+            'interaction_id' => $validated['interaction_id'],
+            'replyable_id' => $answerable->id,
+            'replyable_type' => get_class($answerable),
+        ]);
 
-        broadcast(new AnimatorSent($response))->toOthers();
+        // Broadcast AnswerSubmitedToAnimator event in all cases
+        broadcast(new AnswerSubmitedToAnimator($answer))->toOthers();
+
+        // For MCQ and Survey type, also broadcast AnswerQuestionChoiceSubmited event
+        if ($request->type === 'mcq' || $request->type === 'survey') {
+            broadcast(new AnswerQuestionChoiceSubmited($answer))->toOthers();
+        }
 
         return Inertia::render('Auditor/Answer', $answer);
     }

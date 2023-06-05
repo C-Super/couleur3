@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\InteractionType;
 use App\Enums\MediaType;
+use App\Models\Interaction;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -24,28 +26,47 @@ class StoreAnswerRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'auditor_id' => 'required|exists:auditors,id',
-            'interaction_id' => [
-                'required',
-                'exists:interactions,id',
-                Rule::exists('interactions', 'id')->where(function ($query) {
-                    $query->where('type', $this->type);
-                }),
-            ],
-            'type' => 'required|in:text,picture,audio,video,mcq,survey',
-            'replyable_data' => 'required|array',
+            // existing rules
         ];
 
-        if ($this->type === 'text') {
-            $rules['replyable_data.content'] = 'required|string';
-        } elseif ($this->type === 'audio' || $this->type === 'video' || $this->type === 'picture') {
-            $rules['type'] = 'required|in:text,picture,audio,video,mcq,survey|same:replyable_data.type';
-            $rules['replyable_data.path'] = 'required|string';
-            $rules['replyable_data.type'] = 'required|in:'.implode(',', MediaType::getValues());
-        } elseif ($this->type === 'mcq' || $this->type === 'survey') {
-            $rules['replyable_data.id'] = 'required|exists:question_choices,id';
+        switch ($this->type) {
+            case InteractionType::TEXT->value:
+                $rules = array_merge($rules, $this->textRules());
+                break;
+            case InteractionType::AUDIO->value:
+            case InteractionType::VIDEO->value:
+            case InteractionType::PICTURE->value:
+                $rules = array_merge($rules, $this->mediaRules());
+                break;
+            case InteractionType::MCQ->value:
+            case InteractionType::SURVEY->value:
+                $rules = array_merge($rules, $this->questionChoiceRules());
+                break;
         }
 
         return $rules;
+    }
+
+    private function textRules(): array
+    {
+        return [
+            'replyable_data.content' => 'required|string',
+        ];
+    }
+
+    private function mediaRules(): array
+    {
+        return [
+            'type' => 'required|in:' . implode(',', MediaType::getValues()) . '|same:replyable_data.type',
+            'replyable_data.path' => 'required|string',
+            'replyable_data.type' => 'required|in:' . implode(',', MediaType::getValues()),
+        ];
+    }
+
+    private function questionChoiceRules(): array
+    {
+        return [
+            'replyable_data.id' => 'required|exists:question_choices,id',
+        ];
     }
 }
