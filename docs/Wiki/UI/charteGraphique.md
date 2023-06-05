@@ -10,7 +10,7 @@ Dans un premier temps, nous avons rassemblé les différents éléments graphiqu
 
 Sur la base de ces premières réflexions, nous avons établi un Moodboard, composé de différentes images d'interfaces inspirantes, quelques mots-clés et typographies, ainsi que des éléments graphiques intéressants. 
 
-![[moodboard.png]]
+![[Moodboards.png]]
 
 ## Charte Graphique
 
@@ -23,6 +23,6 @@ Nous avons décidé d'utiliser un fond foncé, dans le but de limiter la sollici
 En plus des couleurs graphiques, nous avons également défini quatre couleurs fonctionnelles. Nous avons également effectué des vérifications de lisibilité pour les différentes formes de daltonisme, qui nous ont permis d'adapter les couleurs sélectionnées, notamment les fonctionnelles. Cela nous a également confirmé que les contrastes utilisés sont effectivement bien lisibles. Les couleurs "graphiques" n'ayant pas d'autre but que l'esthétisme, il est moins grave qu'elles se différencient moins aux yeux des personnes daltoniennes. 
 
 
-![[charteGraphique.jpg]]
+![[CharteGraphiques.jpg]]
 
 
