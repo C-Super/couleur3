@@ -16,4 +16,9 @@ class Media extends Model
         'path',
         'type',
     ];
+
+    public function answer()
+    {
+        return $this->morphOne(Answer::class, 'answerable');
+    }
 }

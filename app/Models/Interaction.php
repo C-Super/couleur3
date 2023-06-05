@@ -42,4 +42,14 @@ class Interaction extends Model
     {
         return $this->belongsTo(CallToAction::class);
     }
+
+    public function answers()
+    {
+        return $this->hasMany(Answer::class);
+    }
+
+    public function rewards()
+    {
+        return $this->belongsTo(Reward::class);
+    }
 }

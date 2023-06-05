@@ -2,28 +2,33 @@
 
 namespace App\Events;
 
+use App\Models\Interaction;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class AnimatorSent implements ShouldBroadcast
+class InteractionEndedEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $interaction;
 
-    public function __construct(array $interaction)
+    /**
+     * Create a new event instance.
+     */
+    public function __construct(Interaction $interaction)
     {
         $this->interaction = $interaction;
     }
 
     /**
-     * Get the channel the event should broadcast on.
+     * Get the channels the event should broadcast on.
+     *
+     * @return Channel|array
      */
-    public function broadcastOn(): Channel
+    public function broadcastOn()
     {
-        return new Channel('animator');
+        return new Channel('public');
     }
 }

@@ -15,4 +15,9 @@ class AnswerText extends Model
     protected $fillable = [
         'content',
     ];
+
+    public function answer()
+    {
+        return $this->morphOne(Answer::class, 'answerable');
+    }
 }

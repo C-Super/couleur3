@@ -12,7 +12,7 @@ class AuditorSent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $message;
+    public array $message;
 
     public function __construct(array $message)
     {
@@ -24,6 +24,6 @@ class AuditorSent implements ShouldBroadcast
      */
     public function broadcastOn(): Channel
     {
-        return new Channel('auditor');
+        return new Channel('public');
     }
 }

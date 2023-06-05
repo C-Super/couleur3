@@ -12,10 +12,18 @@ class Answer extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'interaction_id',
-        'auditor_id',
-        'replyable_id',
-        'replyable_type',
-    ];
+    public function interaction()
+    {
+        return $this->belongsTo(Interaction::class);
+    }
+
+    public function auditor()
+    {
+        return $this->belongsTo(Auditor::class);
+    }
+
+    public function answerable()
+    {
+        return $this->morphTo();
+    }
 }

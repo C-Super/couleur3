@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use App\Settings\GeneralSettings;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
 
 class ChatEnabled
@@ -13,13 +14,17 @@ class ChatEnabled
      * Handle an incoming request.
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     *
+     * @throws \Illuminate\Validation\ValidationException
      */
-    public function handle(Request $request, Closure $next, GeneralSettings $settings): Response
+    public function handle(Request $request, Closure $next): Response
     {
-        if ($settings->is_chat_enabled) {
-            return $next($request);
+        if (! app(GeneralSettings::class)->chat_enabled) {
+            throw ValidationException::withMessages([
+                'message' => 'Vous ne pouvez pas envoyé de message quand le chat est désactivé.',
+            ]);
         }
 
-        return back()->with('error', 'Chat is disabled.');
+        return $next($request);
     }
 }

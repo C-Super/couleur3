@@ -1,3 +1,10 @@
+# Questions
+
+Nous avons procéder de tel manière………………
+[Lien vers le sondage](https://forms.gle/abVphytb3sAKQpKp8)
+
+# Analyse
+
 1. Profil des participants : La majorité des participants ont entre 18 et 35 ans, avec quelques participants dans la tranche d'âge de 36 à 65 ans. Les participants écoutent principalement la radio dans leur voiture ou à la maison.
 2. Interaction avec les émissions radio : Une partie des participants écoute ou regarde des émissions radio, mais un grand nombre ne le fait pas.
 3. Supports d'écoute : Les participants qui écoutent des émissions radio utilisent principalement l'autoradio, le téléphone portable et la radio traditionnelle.
