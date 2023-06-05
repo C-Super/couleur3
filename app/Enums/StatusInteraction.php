@@ -2,13 +2,13 @@
 
 namespace App\Enums;
 
-enum StatusInteraction: string
+enum InteractionStatus: string
 {
     case PENDING = 'pending';
     case STOPPED = 'stopped';
 
     public static function getValues(): array
     {
-        return array_column(InteractionType::cases(), 'value');
+        return array_column(InteractionStatus::cases(), 'value');
     }
 }

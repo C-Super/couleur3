@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\StatusInteraction;
+use App\Enums\InteractionStatus;
 use App\Events\InteractionCreated;
 use App\Events\InteractionEndedEvent;
 use App\Events\InteractionEndedForAnimatorEvent;
@@ -106,7 +106,7 @@ class InteractionController extends Controller
      */
     public function endInteraction(Interaction $interaction)
     {
-        $interaction->update(['ended_at' => now(), 'status' => StatusInteraction::STOPPED]);
+        $interaction->update(['ended_at' => now(), 'status' => InteractionStatus::STOPPED]);
         $interaction->refresh();
 
         event(new InteractionEndedEvent($interaction));
