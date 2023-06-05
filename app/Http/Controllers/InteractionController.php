@@ -106,7 +106,7 @@ class InteractionController extends Controller
      */
     public function endInteraction(Interaction $interaction)
     {
-        $interaction->update(['ended_at' => now(), 'status' => InteractionStatus::STOPPED]);
+        $interaction->update(['ended_at' => now(), 'status' => InteractionStatus::PENDING->value]);
         $interaction->refresh();
 
         event(new InteractionEndedEvent($interaction));

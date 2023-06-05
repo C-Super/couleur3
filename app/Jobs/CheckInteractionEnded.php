@@ -37,12 +37,12 @@ class CheckInteractionEnded implements ShouldQueue
 
         $this->interaction->refresh();
 
-        if ($this->interaction->status != InteractionStatus::STOPPED && $this->interaction->ended_at <= now()) {
+        if ($this->interaction->status != InteractionStatus::PENDING->value && $this->interaction->ended_at <= now()) {
             // Collect all answers
             $answers = $this->interaction->answers()->with('auditor')->get();
 
             // Update the interaction status with enum StatusInteraction::STOPPED
-            $this->interaction->update(['status' => InteractionStatus::STOPPED]);
+            $this->interaction->update(['status' => InteractionStatus::PENDING->value]);
 
             // Get the rewards
             $rewards = Reward::all();
