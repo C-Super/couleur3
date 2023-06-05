@@ -14,10 +14,14 @@ class AnswerSubmitedToAnimator
 
     public $user;
 
+    /**
+     * @var \App\Models\Answer
+     */
     public $answer;
 
     /**
      * Create a new event instance.
+     * @param \App\Models\Answer $answer
      */
     public function __construct(Answer $answer)
     {

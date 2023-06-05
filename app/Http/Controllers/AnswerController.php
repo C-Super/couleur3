@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Auth;
-
 use App\Events\AnswerQuestionChoiceSubmited;
 use App\Events\AnswerSubmitedToAnimator;
 use App\Http\Requests\StoreAnswerRequest;
@@ -11,6 +9,7 @@ use App\Models\Answer;
 use App\Models\AnswerText;
 use App\Models\Media;
 use App\Models\QuestionChoice;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class AnswerController extends Controller

@@ -4,7 +4,6 @@ namespace App\Http\Requests;
 
 use App\Enums\InteractionType;
 use App\Enums\MediaType;
-use App\Models\Interaction;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -32,7 +31,7 @@ class StoreAnswerRequest extends FormRequest
                 Rule::exists('interactions', 'id')->where(function ($query) {
                     $query->where('type', $this->type);
                 }),
-            ]
+            ],
         ];
 
         switch ($this->type) {
@@ -63,9 +62,9 @@ class StoreAnswerRequest extends FormRequest
     private function mediaRules(): array
     {
         return [
-            'type' => 'required|in:' . implode(',', MediaType::getValues()) . '|same:replyable_data.type',
+            'type' => 'required|in:'.implode(',', MediaType::getValues()).'|same:replyable_data.type',
             'replyable_data.path' => 'required|string',
-            'replyable_data.type' => 'required|in:' . implode(',', MediaType::getValues()),
+            'replyable_data.type' => 'required|in:'.implode(',', MediaType::getValues()),
         ];
     }
 

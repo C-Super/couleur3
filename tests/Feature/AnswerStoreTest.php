@@ -1,5 +1,7 @@
 <?php
 
+use App\Events\AnswerQuestionChoiceSubmited;
+use App\Events\AnswerSubmitedToAnimator;
 use App\Models\Answer;
 use App\Models\AnswerText;
 use App\Models\Auditor;
@@ -8,14 +10,12 @@ use App\Models\Media;
 use App\Models\QuestionChoice;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Hash;
-use function Pest\Laravel\postJson;
 
 uses(DatabaseTransactions::class);
 
-use App\Events\AnswerQuestionChoiceSubmited;
-use App\Events\AnswerSubmitedToAnimator;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Hash;
+use function Pest\Laravel\postJson;
 
 it('can store text answer and fires correct event', function () {
     Event::fake([AnswerSubmitedToAnimator::class, AnswerQuestionChoiceSubmited::class]);

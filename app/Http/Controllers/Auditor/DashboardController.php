@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Auditor;
 
-use App\Events\AuditorSent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auditor\StoreMessageRequest;
 use App\Models\Auditor;
