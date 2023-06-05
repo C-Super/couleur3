@@ -21,4 +21,9 @@ class Answer extends Model
     {
         return $this->belongsTo(Auditor::class);
     }
+
+    public function answerable()
+    {
+        return $this->morphTo();
+    }
 }

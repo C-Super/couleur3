@@ -2,13 +2,14 @@
 
 namespace App\Jobs;
 
+use App\Events\InteractionEndedEvent;
+use App\Events\InteractionEndedForAnimatorEvent;
 use App\Models\Interaction;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Inertia\Inertia;
 
 class CheckInteractionEnded implements ShouldQueue
 {
@@ -18,8 +19,6 @@ class CheckInteractionEnded implements ShouldQueue
 
     /**
      * Create a new job instance.
-     *
-     * @return void
      */
     public function __construct(Interaction $interaction)
     {
@@ -37,11 +36,11 @@ class CheckInteractionEnded implements ShouldQueue
             // Collect all answers
             $answers = $this->interaction->answers()->with('auditor')->get();
 
-            // Return Inertia response with the interaction and its answers
-            return Inertia::render('InteractionEnd', [
-                'interaction' => $this->interaction,
-                'answers' => $answers,
-            ]);
+            // Trigger the InteractionEnded event for the auditors
+            event(new InteractionEndedEvent($this->interaction));
+
+            // Trigger the InteractionEndedForAnimator event for the animator
+            event(new InteractionEndedForAnimatorEvent($this->interaction, $answers));
         }
     }
 }

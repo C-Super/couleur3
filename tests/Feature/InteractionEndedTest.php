@@ -1,17 +1,17 @@
 <?php
 
+use App\Events\InteractionEndedEvent;
+use App\Events\InteractionEndedForAnimatorEvent;
 use App\Jobs\CheckInteractionEnded;
 use App\Models\Answer;
 use App\Models\Auditor;
 use App\Models\Interaction;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Facades\Event;
 
 uses(DatabaseTransactions::class);
 
 it('ends the interaction when ended_at time is reached', function () {
-    // Use RefreshDatabase trait to reset the database state before each test
 
     // Arrange: Create necessary objects and setup the state
     $auditor = Auditor::factory()->create();
@@ -26,11 +26,10 @@ it('ends the interaction when ended_at time is reached', function () {
         'replyable_id' => 1,
     ]);
 
-    // Assert: Check that the EndInteraction job is dispatched when the interaction ended_at time is reached
-    Queue::fake();
+    // Assert: Check that the InteractionEndedEvent and InteractionEndedForAnimatorEvent are dispatched when the interaction ended_at time is reached
+    Event::fake();
     $job = new CheckInteractionEnded($interaction);
     dispatch($job);
-    Queue::assertPushed(CheckInteractionEnded::class);
 
     // Act: Call the job's handle method
     $job->handle();
@@ -43,4 +42,13 @@ it('ends the interaction when ended_at time is reached', function () {
     foreach ($interaction->answers as $answer) {
         expect($answer->auditor_id)->toBe($auditor->id);
     }
+
+    // Assert that the correct events were dispatched
+    Event::assertDispatched(InteractionEndedEvent::class, function ($event) use ($interaction) {
+        return $event->interaction->id === $interaction->id;
+    });
+
+    Event::assertDispatched(InteractionEndedForAnimatorEvent::class, function ($event) use ($interaction, $auditor) {
+        return $event->interaction->id === $interaction->id && $event->answers[0]->auditor_id === $auditor->id;
+    });
 });

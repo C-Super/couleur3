@@ -5,10 +5,9 @@ namespace App\Http\Controllers;
 use App\Events\InteractionSent;
 use App\Http\Requests\StoreInteractionRequest;
 use App\Jobs\CheckInteractionEnded;
-use DateTime;
 use App\Models\CallToAction;
 use App\Models\Interaction;
-use App\Models\QuestionChoice;
+use DateTime;
 use Inertia\Inertia;
 
 class InteractionController extends Controller
@@ -45,7 +44,7 @@ class InteractionController extends Controller
             $validated = $request->validated();
             $interaction = Interaction::create($validated);
             foreach ($validated['question_choice_data'] as $questionChoiceData) {
-                QuestionChoice::create(array_merge($questionChoiceData, ['interaction_id' => $interaction->id]));
+                $interaction->question_choices()->create($questionChoiceData);
             }
             $interaction->load('question_choices');
         } elseif ($request->type === 'cta' || $request->type === 'quick_click') {
