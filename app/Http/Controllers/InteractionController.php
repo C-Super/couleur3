@@ -35,28 +35,45 @@ class InteractionController extends Controller
         return response()->json($interaction);
     }
 
+    /**
+     * Show current interaction
+     */
+    public function getCurrentInteraction()
+    {
+        // Récupérer l'interaction et la retourner
+        $interaction = Interaction::where('ended_at', '>', now())->first();
+
+        // get all rewards
+        $reward = Reward::all();
+
+        return Inertia::render('Animator/Interaction/Show', [
+            'interaction' => $interaction,
+            'rewards' => $reward,
+        ]);
+    }
+
     public function store(StoreInteractionRequest $request)
     {
         // Initialize $cta to null
         $cta = null;
 
+        $validated = $request->validated();
+
         // Then, depending on the type of interaction, create the call_to_action or question_choice
         if ($request->type === 'survey' || $request->type === 'mcq') {
-            $validated = $request->validated();
+
             $interaction = Interaction::create($validated);
             foreach ($validated['question_choice_data'] as $questionChoiceData) {
                 $interaction->question_choices()->create($questionChoiceData);
             }
             $interaction->load('question_choices');
         } elseif ($request->type === 'cta' || $request->type === 'quick_click') {
-            $validated = $request->validated();
             foreach ($request->call_to_action_data as $ctaData) {
                 $cta = CallToAction::create($ctaData);
             }
             $interaction = Interaction::create(array_merge($validated, ['call_to_action_id' => $cta->id]));
             $interaction->load('call_to_action');
         } else {
-            $validated = $request->validated();
             $interaction = Interaction::create($validated);
         }
 
