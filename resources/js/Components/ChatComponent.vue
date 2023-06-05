@@ -3,7 +3,7 @@
 import { ref, reactive } from "vue";
 import { router } from "@inertiajs/vue3";
 import MessageItem from "@/Components/MessageItem.vue";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
+import BaseButton from "@/Components/Bases/BaseButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import InputError from "@/Components/InputError.vue";
 
@@ -105,6 +105,20 @@ const submitMessage = () => {
                             >
                                 Send message
                             </PrimaryButton>
+
+                            <BaseButton>Bouton de basse</BaseButton>
+
+                            <BaseButton color="primary">
+                                Je test le bleu
+                            </BaseButton>
+
+                            <BaseButton color="accent">
+                                Je test le rose
+                            </BaseButton>
+
+                            <BaseButton color="secondary">
+                                Je test le jaune
+                            </BaseButton>
                         </div>
                     </div>
                 </form>
