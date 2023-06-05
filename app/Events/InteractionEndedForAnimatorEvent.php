@@ -3,6 +3,7 @@
 namespace App\Events;
 
 use App\Models\Interaction;
+use App\Models\Reward;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
@@ -16,6 +17,8 @@ class InteractionEndedForAnimatorEvent
 
     public $answers;
 
+    public $rewards;
+
     /**
      * Create a new event instance.
      */
@@ -23,6 +26,7 @@ class InteractionEndedForAnimatorEvent
     {
         $this->interaction = $interaction;
         $this->answers = $answers;
+        $this->rewards = Reward::all();
     }
 
     /**
@@ -32,6 +36,6 @@ class InteractionEndedForAnimatorEvent
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('interactions.animator.'.$this->interaction->animator_id);
+        return new PrivateChannel('interactions.animator.' . $this->interaction->animator_id);
     }
 }

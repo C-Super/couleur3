@@ -7,6 +7,7 @@ use App\Http\Requests\StoreInteractionRequest;
 use App\Jobs\CheckInteractionEnded;
 use App\Models\CallToAction;
 use App\Models\Interaction;
+use App\Models\Reward;
 use DateTime;
 use Inertia\Inertia;
 
@@ -72,6 +73,11 @@ class InteractionController extends Controller
 
         broadcast(new InteractionCreated($interaction))->toOthers();
 
-        return Inertia::render('Animator/Interaction/Show', $interaction);
+        $reward = Reward::all();
+
+        return Inertia::render('Animator/Interaction/Show', [
+            'interaction' => $interaction,
+            'rewards' => $reward,
+        ]);
     }
 }
