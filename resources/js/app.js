@@ -35,9 +35,9 @@ createInertiaApp({
         const VueApp = createApp({ render: () => h(App, props) });
 
         VueApp.use(plugin)
+            .use(i18n)
             .use(ZiggyVue, Ziggy)
             .use(ZoraVue, Zora)
-            .use(i18n)
             .mount(el);
     },
     progress: {

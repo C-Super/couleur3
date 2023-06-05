@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Auditor;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class GeneralSettingsRequest extends FormRequest
+class StoreMessageRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +22,7 @@ class GeneralSettingsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'is_chat_enabled' => 'required|boolean',
+            'content' => ['required', 'string', 'min:1', 'max:255'],
         ];
     }
 }

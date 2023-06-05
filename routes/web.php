@@ -26,8 +26,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::middleware(['auth', 'auth.auditor', HandlePrecognitiveRequests::class])->group(function () {
-    Route::post('/messages', [AuditorDashboardController::class, 'storeMessage'])->middleware('chat.enabled')->name('auditor.messages.store');
+Route::middleware(['auth', 'verified', 'auth.auditor'])->group(function () {
+    Route::middleware('chat.enabled')->group(function () {
+        Route::post('/messages', [AuditorDashboardController::class, 'storeMessage'])->name('auditor.messages.store');
+    });
 });
 
 Route::middleware(['auth', 'auth.animator', HandlePrecognitiveRequests::class])->group(function () {

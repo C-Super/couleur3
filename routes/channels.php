@@ -18,6 +18,6 @@ Broadcast::channel('animator', function (User $user) {
     return $user()->isAnimator();
 });
 
-Broadcast::channel('auditor', function (User $user) {
-    return $user->isAuditor();
+Broadcast::channel('public', function () {
+    return true;
 });
