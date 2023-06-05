@@ -32,9 +32,15 @@ class CheckInteractionEnded implements ShouldQueue
      */
     public function handle()
     {
-        if ($this->interaction->ended_at <= now()) {
+
+        $this->interaction->refresh();
+
+        if ($this->interaction->status != 'stopped' && $this->interaction->ended_at <= now()) {
             // Collect all answers
             $answers = $this->interaction->answers()->with('auditor')->get();
+
+            // Update the interaction status
+            $this->interaction->update(['status' => 'stopped']);
 
             // Trigger the InteractionEnded event for the auditors
             event(new InteractionEndedEvent($this->interaction));

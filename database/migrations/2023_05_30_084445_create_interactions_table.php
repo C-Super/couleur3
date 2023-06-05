@@ -22,6 +22,7 @@ return new class extends Migration
             $table->foreignId('animator_id')->constrained();
             $table->foreignId('reward_id')->constrained();
             $table->integer('winners_count')->nullable();
+            $table->enum('status', ['pending', 'stopped'])->default('pending');
         });
     }
 

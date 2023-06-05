@@ -36,6 +36,6 @@ class InteractionEndedForAnimatorEvent
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('interactions.animator.' . $this->interaction->animator_id);
+        return new PrivateChannel('interactions.animator.'.$this->interaction->animator_id);
     }
 }

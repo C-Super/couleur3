@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Events\InteractionCreated;
+use App\Events\InteractionEndedEvent;
+use App\Events\InteractionEndedForAnimatorEvent;
 use App\Http\Requests\StoreInteractionRequest;
 use App\Jobs\CheckInteractionEnded;
 use App\Models\CallToAction;
@@ -89,6 +91,29 @@ class InteractionController extends Controller
         $response = ['message' => 'Interaction created', 'interaction' => $interaction];
 
         broadcast(new InteractionCreated($interaction))->toOthers();
+
+        $reward = Reward::all();
+
+        return Inertia::render('Animator/Interaction/Show', [
+            'interaction' => $interaction,
+            'rewards' => $reward,
+        ]);
+    }
+
+    /**
+     * Manually end interaction
+     */
+    public function endInteraction(Interaction $interaction)
+    {
+        $interaction->update(['ended_at' => now(), 'status' => 'stopped']);
+        $interaction->refresh();
+
+        event(new InteractionEndedEvent($interaction));
+
+        // Collect all answers
+        $answers = $interaction->answers()->with('auditor')->get();
+
+        event(new InteractionEndedForAnimatorEvent($interaction, $answers));
 
         $reward = Reward::all();
 
