@@ -29,6 +29,6 @@ class InteractionEndedEvent
      */
     public function broadcastOn()
     {
-        return new Channel('interactions');
+        return new Channel('public');
     }
 }

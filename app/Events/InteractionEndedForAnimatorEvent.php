@@ -3,7 +3,6 @@
 namespace App\Events;
 
 use App\Models\Interaction;
-use App\Models\Reward;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
@@ -22,11 +21,11 @@ class InteractionEndedForAnimatorEvent
     /**
      * Create a new event instance.
      */
-    public function __construct(Interaction $interaction, $answers)
+    public function __construct(Interaction $interaction, $answers, $rewards)
     {
         $this->interaction = $interaction;
         $this->answers = $answers;
-        $this->rewards = Reward::all();
+        $this->rewards = $rewards;
     }
 
     /**

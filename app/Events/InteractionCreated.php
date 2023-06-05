@@ -33,26 +33,6 @@ class InteractionCreated implements ShouldBroadcast
     public function broadcastOn()
     {
         // This will broadcast to everyone, adjust this to your needs
-        return new Channel('interactions');
-    }
-
-    /**
-     * The event's broadcast name.
-     *
-     * @return string
-     */
-    public function broadcastAs()
-    {
-        return 'interaction.created';
-    }
-
-    /**
-     * The event's broadcast data.
-     *
-     * @return array
-     */
-    public function broadcastWith()
-    {
-        return ['interaction' => $this->interaction];
+        return new Channel('public');
     }
 }

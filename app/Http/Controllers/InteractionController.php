@@ -110,10 +110,11 @@ class InteractionController extends Controller
 
         event(new InteractionEndedEvent($interaction));
 
-        // Collect all answers
+        // Collect all answers && rewards
         $answers = $interaction->answers()->with('auditor')->get();
+        $rewards = Reward::all();
 
-        event(new InteractionEndedForAnimatorEvent($interaction, $answers));
+        event(new InteractionEndedForAnimatorEvent($interaction, $answers, $rewards));
 
         $reward = Reward::all();
 

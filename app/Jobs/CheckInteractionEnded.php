@@ -5,6 +5,7 @@ namespace App\Jobs;
 use App\Events\InteractionEndedEvent;
 use App\Events\InteractionEndedForAnimatorEvent;
 use App\Models\Interaction;
+use App\Models\Reward;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -42,11 +43,14 @@ class CheckInteractionEnded implements ShouldQueue
             // Update the interaction status
             $this->interaction->update(['status' => 'stopped']);
 
+            // Get the rewards
+            $rewards = Reward::all();
+
             // Trigger the InteractionEnded event for the auditors
             event(new InteractionEndedEvent($this->interaction));
 
             // Trigger the InteractionEndedForAnimator event for the animator
-            event(new InteractionEndedForAnimatorEvent($this->interaction, $answers));
+            event(new InteractionEndedForAnimatorEvent($this->interaction, $answers, $rewards));
         }
     }
 }
