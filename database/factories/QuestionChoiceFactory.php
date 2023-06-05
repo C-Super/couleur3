@@ -17,7 +17,8 @@ class QuestionChoiceFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'value' => $this->faker->sentence,
+            'is_correct_answer' => $this->faker->boolean,
         ];
     }
 }

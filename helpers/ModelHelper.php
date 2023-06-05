@@ -47,12 +47,6 @@ namespace App\Models{
      * @property int $id
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property \Illuminate\Support\Carbon|null $updated_at
-     * @property mixed $password
-     * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
-     * @property-read int|null $notifications_count
-     * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $roleable
-     * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
-     * @property-read int|null $tokens_count
      * @property-read \App\Models\User|null $user
      *
      * @method static \Database\Factories\AnimatorFactory factory($count = null, $state = [])
@@ -131,16 +125,13 @@ namespace App\Models{
      * App\Models\Auditor
      *
      * @property int $id
-     * @property string $phone
+     * @property string|null $phone
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property int|null $address_id
-     * @property mixed $password
-     * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
-     * @property-read int|null $notifications_count
-     * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $roleable
-     * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
-     * @property-read int|null $tokens_count
+     * @property-read \App\Models\Address|null $address
+     * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Message> $messages
+     * @property-read int|null $messages_count
      * @property-read \App\Models\User|null $user
      *
      * @method static \Database\Factories\AuditorFactory factory($count = null, $state = [])
@@ -196,26 +187,28 @@ namespace App\Models{
      * @property int $id
      * @property string $title
      * @property string $type
-     * @property string|null $typeable_type
-     * @property int|null $typeable_id
+     * @property int|null $call_to_action_id
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property \Illuminate\Support\Carbon|null $updated_at
+     * @property string|null $ended_at
      * @property int $animator_id
      * @property int $reward_id
      * @property int|null $winners_count
+     * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\QuestionChoice> $question_choices
+     * @property-read int|null $question_choices_count
      *
      * @method static \Database\Factories\InteractionFactory factory($count = null, $state = [])
      * @method static \Illuminate\Database\Eloquent\Builder|Interaction newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder|Interaction newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder|Interaction query()
      * @method static \Illuminate\Database\Eloquent\Builder|Interaction whereAnimatorId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder|Interaction whereCallToActionId($value)
      * @method static \Illuminate\Database\Eloquent\Builder|Interaction whereCreatedAt($value)
+     * @method static \Illuminate\Database\Eloquent\Builder|Interaction whereEndedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder|Interaction whereId($value)
      * @method static \Illuminate\Database\Eloquent\Builder|Interaction whereRewardId($value)
      * @method static \Illuminate\Database\Eloquent\Builder|Interaction whereTitle($value)
      * @method static \Illuminate\Database\Eloquent\Builder|Interaction whereType($value)
-     * @method static \Illuminate\Database\Eloquent\Builder|Interaction whereTypeableId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder|Interaction whereTypeableType($value)
      * @method static \Illuminate\Database\Eloquent\Builder|Interaction whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder|Interaction whereWinnersCount($value)
      *
@@ -231,6 +224,8 @@ namespace App\Models{
      * App\Models\Media
      *
      * @property int $id
+     * @property string $path
+     * @property string $type
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property \Illuminate\Support\Carbon|null $updated_at
      *
@@ -239,6 +234,8 @@ namespace App\Models{
      * @method static \Illuminate\Database\Eloquent\Builder|Media query()
      * @method static \Illuminate\Database\Eloquent\Builder|Media whereCreatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder|Media whereId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder|Media wherePath($value)
+     * @method static \Illuminate\Database\Eloquent\Builder|Media whereType($value)
      * @method static \Illuminate\Database\Eloquent\Builder|Media whereUpdatedAt($value)
      *
      * @mixin \Eloquent
@@ -257,6 +254,7 @@ namespace App\Models{
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property int $auditor_id
+     * @property-read \App\Models\Auditor $auditor
      *
      * @method static \Database\Factories\MessageFactory factory($count = null, $state = [])
      * @method static \Illuminate\Database\Eloquent\Builder|Message newModelQuery()
@@ -327,33 +325,6 @@ namespace App\Models{
      * @mixin \Eloquent
      */
     class IdeHelperReward
-    {
-    }
-}
-
-namespace App\Models{
-    /**
-     * App\Models\Setting
-     *
-     * @property int $id
-     * @property string $key
-     * @property array $value
-     * @property \Illuminate\Support\Carbon|null $created_at
-     * @property \Illuminate\Support\Carbon|null $updated_at
-     *
-     * @method static \Database\Factories\SettingFactory factory($count = null, $state = [])
-     * @method static \Illuminate\Database\Eloquent\Builder|Setting newModelQuery()
-     * @method static \Illuminate\Database\Eloquent\Builder|Setting newQuery()
-     * @method static \Illuminate\Database\Eloquent\Builder|Setting query()
-     * @method static \Illuminate\Database\Eloquent\Builder|Setting whereCreatedAt($value)
-     * @method static \Illuminate\Database\Eloquent\Builder|Setting whereId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder|Setting whereKey($value)
-     * @method static \Illuminate\Database\Eloquent\Builder|Setting whereUpdatedAt($value)
-     * @method static \Illuminate\Database\Eloquent\Builder|Setting whereValue($value)
-     *
-     * @mixin \Eloquent
-     */
-    class IdeHelperSetting
     {
     }
 }

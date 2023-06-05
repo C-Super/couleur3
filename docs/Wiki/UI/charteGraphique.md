@@ -1,4 +1,3 @@
-
 ### Figma
 Lien vers le fichier Figma contenant les différentes étapes du graphisme:
 https://www.figma.com/file/SIaos14aP3m9HE7jwyVLHs/Graphisme?type=design&node-id=0%3A1&t=vKarxY3YRis3zh5t-1
@@ -24,5 +23,3 @@ En plus des couleurs graphiques, nous avons également défini quatre couleurs f
 
 
 ![[charteGraphique.jpg]]
-
-

@@ -11,4 +11,14 @@ use Illuminate\Database\Eloquent\Model;
 class Media extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'path',
+        'type',
+    ];
+
+    public function answer()
+    {
+        return $this->morphOne(Answer::class, 'answerable');
+    }
 }

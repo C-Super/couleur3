@@ -11,4 +11,14 @@ use Illuminate\Database\Eloquent\Model;
 class Reward extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'name',
+        'description',
+    ];
+
+    public function interactions()
+    {
+        return $this->hasMany(Interaction::class);
+    }
 }

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('auditors', function (Blueprint $table) {
             $table->id();
-            $table->string('phone');
+            $table->string('phone')->nullable();
             $table->timestamps();
             $table->foreignId('address_id')->nullable()->constrained();
         });

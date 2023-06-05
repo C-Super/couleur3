@@ -5,9 +5,10 @@ import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
-import { Head, Link, useForm } from "@inertiajs/vue3";
+import { Head, Link } from "@inertiajs/vue3";
+import { useForm } from "laravel-precognition-vue-inertia";
 
-const form = useForm({
+const form = useForm("post", route("register"), {
     name: "",
     email: "",
     password: "",
@@ -15,7 +16,7 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post(route("register"), {
+    form.submit({
         onFinish: () => form.reset("password", "password_confirmation"),
     });
 };
@@ -37,6 +38,7 @@ const submit = () => {
                     required
                     autofocus
                     autocomplete="name"
+                    @change="form.validate('name')"
                 />
 
                 <InputError class="mt-2" :message="form.errors.name" />
@@ -52,6 +54,7 @@ const submit = () => {
                     class="mt-1 block w-full"
                     required
                     autocomplete="username"
+                    @change="form.validate('email')"
                 />
 
                 <InputError class="mt-2" :message="form.errors.email" />
@@ -67,6 +70,7 @@ const submit = () => {
                     class="mt-1 block w-full"
                     required
                     autocomplete="new-password"
+                    @change="form.validate('password')"
                 />
 
                 <InputError class="mt-2" :message="form.errors.password" />
@@ -85,6 +89,7 @@ const submit = () => {
                     class="mt-1 block w-full"
                     required
                     autocomplete="new-password"
+                    @change="form.validate('password_confirmation')"
                 />
 
                 <InputError

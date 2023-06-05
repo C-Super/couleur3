@@ -11,4 +11,14 @@ use Illuminate\Database\Eloquent\Model;
 class Winner extends Model
 {
     use HasFactory;
+
+    public function interaction()
+    {
+        return $this->belongsTo(Interaction::class);
+    }
+
+    public function auditor()
+    {
+        return $this->belongsTo(Auditor::class);
+    }
 }
