@@ -21,7 +21,6 @@ class AnswerSubmitedToAnimator
 
     /**
      * Create a new event instance.
-     * @param \App\Models\Answer $answer
      */
     public function __construct(Answer $answer)
     {
@@ -36,6 +35,6 @@ class AnswerSubmitedToAnimator
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('answers.animator.' . $this->answer->auditor_id);
+        return new PrivateChannel('answers.animator.'.$this->answer->auditor_id);
     }
 }
