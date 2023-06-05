@@ -35,6 +35,6 @@ class AnswerSubmitedToAnimator
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('answers.animator.'.$this->answer->auditor_id);
+        return new PrivateChannel('answers.auditors.'.$this->answer->auditor_id);
     }
 }
