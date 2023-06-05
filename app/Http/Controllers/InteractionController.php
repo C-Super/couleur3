@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\InteractionSent;
+use App\Events\InteractionCreated;
 use App\Http\Requests\StoreInteractionRequest;
 use App\Jobs\CheckInteractionEnded;
 use App\Models\CallToAction;
@@ -70,7 +70,7 @@ class InteractionController extends Controller
 
         $response = ['message' => 'Interaction created', 'interaction' => $interaction];
 
-        broadcast(new InteractionSent($response))->toOthers();
+        broadcast(new InteractionCreated($interaction))->toOthers();
 
         return Inertia::render('Animator/Interaction/Show', $interaction);
     }
