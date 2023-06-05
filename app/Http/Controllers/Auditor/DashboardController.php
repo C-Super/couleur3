@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Auditor;
 
 use App\Events\MessageSent;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreMessageRequest;
+use App\Http\Requests\Auditor\StoreMessageRequest;
 use App\Models\Auditor;
 use App\Models\Message;
 use App\Settings\GeneralSettings;
@@ -17,8 +17,9 @@ class DashboardController extends Controller
 {
     public function index(GeneralSettings $settings): Response
     {
-        if (! $settings->is_chat_enabled) {
+        if (! $settings->chat_enabled) {
             return Inertia::render('Auditor/Dashboard', [
+                'chatEnabled' => $settings->chat_enabled,
                 'messages' => [],
             ]);
         }
@@ -35,6 +36,7 @@ class DashboardController extends Controller
             ->toArray();
 
         return Inertia::render('Auditor/Dashboard', [
+            'chatEnabled' => $settings->chat_enabled,
             'messages' => array_reverse($lastMessages),
         ]);
     }
@@ -47,17 +49,18 @@ class DashboardController extends Controller
         $auditor = $user->roleable;
 
         if (! $auditor instanceof Auditor) {
-            abort(403);
+            return Inertia::render('Error', [
+                'status' => '403: '.__('http-statuses.403'),
+                'message' => "Vous n'êtes pas un auditeur.",
+            ])->toResponse($request)->setStatusCode(403);
         }
 
         $message = $auditor->messages()->create([
-            'content' => $validated['message'],
+            'content' => $validated['content'],
         ])->toArray();
 
         $message['user_name'] = $user->name;
 
-        broadcast(new MessageSent($message))->toOthers();
-
-        return back()->with('status', 'Message sent!');
+        MessageSent::dispatch($message);
     }
 }

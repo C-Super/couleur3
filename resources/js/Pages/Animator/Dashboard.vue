@@ -1,33 +1,54 @@
+<!-- eslint-disable no-undef -->
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import MessageItem from "@/Components/MessageItem.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
-import { Head } from "@inertiajs/vue3";
-import { useForm } from "laravel-precognition-vue-inertia";
+import { reactive, onMounted } from "vue";
+import { Head, useForm } from "@inertiajs/vue3";
+
+const data = reactive({
+    messages: props.messages,
+});
 
 const props = defineProps({
     messages: {
         type: Array,
         required: true,
     },
-    isChatEnabled: {
+    chatEnabled: {
         type: Boolean,
         required: true,
     },
 });
 
-// eslint-disable-next-line no-undef
-const form = useForm("post", route("animator.chat.update"), {
-    is_chat_enabled: !props.isChatEnabled,
+const form = useForm({
+    chat_enabled: !props.chatEnabled,
 });
 
-const submit = () =>
-    form.submit({
+const submit = () => {
+    form.post(route("animator.chat.update"), {
         preserveScroll: true,
+        only: ["chatEnabled"],
         onSuccess: () => {
-            form.is_chat_enabled = !props.isChatEnabled;
+            form.chat_enabled = !props.chatEnabled;
+            data.messages = [];
         },
     });
+};
+
+onMounted(() => {
+    subscribeToPublicChannel();
+});
+
+function subscribeToPublicChannel() {
+    window.Echo.channel("public")
+        .listen("MessageSent", (event) => {
+            data.messages.push(event.message);
+        })
+        .error((error) => {
+            console.error(error);
+        });
+}
 </script>
 
 <template>
@@ -50,13 +71,15 @@ const submit = () =>
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
                 >
-                    {{
-                        isChatEnabled ? "Désactiver le chat" : "Activer le chat"
-                    }}
+                    {{ chatEnabled ? "Désactiver le chat" : "Activer le chat" }}
                 </primary-button>
             </form>
 
-            <message-item v-for="msg in messages" :key="msg.id" :msg="msg" />
+            <message-item
+                v-for="msg in data.messages"
+                :key="msg.id"
+                :msg="msg"
+            />
         </div>
     </AuthenticatedLayout>
 </template>

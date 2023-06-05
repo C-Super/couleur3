@@ -6,6 +6,6 @@ return new class extends SettingsMigration
 {
     public function up(): void
     {
-        $this->migrator->add('general.is_chat_enabled', false);
+        $this->migrator->add('general.chat_enabled', false);
     }
 };
