@@ -1,0 +1,24 @@
+:root {
+    /* couleurs */
+    --fond-animator: #1c1354;
+    --fond-auditor: #000;
+    --neutre: #fff;
+    --neutre-50: #ffffff80;
+    --neutre-25: #ffffff3f;
+
+    --jaune: #faf99d;
+    --jaune-25: #faf99d3f;
+    --rose: #fd99fd;
+    --rose-25: #fd99fd3f;
+    --bleu: #9afefe;
+    --bleu-25: #9afefe3f;
+
+    --erreur: #ff7a7a;
+    --erreur-50: #ff7a7a80;
+    --succes: #8dff7a;
+    --succes-50: #8dff7a80;
+    --information: #7d7aff;
+    --information-50: #7d7aff80;
+    --avertissement: #ffca7a;
+    --avertissement-50: #ffca7a80;
+}
