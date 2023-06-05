@@ -37,7 +37,8 @@ class CheckInteractionEnded implements ShouldQueue
 
         $this->interaction->refresh();
 
-        if ($this->interaction->status != InteractionStatus::PENDING->value && $this->interaction->ended_at <= now()) {
+        if ($this->interaction->status == InteractionStatus::PENDING->value && $this->interaction->ended_at <= now()) {
+
             // Collect all answers
             $answers = $this->interaction->answers()->with('auditor')->get();
 

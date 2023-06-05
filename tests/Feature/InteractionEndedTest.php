@@ -13,6 +13,8 @@ uses(DatabaseTransactions::class);
 
 it('ends the interaction when ended_at time is reached', function () {
 
+    Event::fake();
+
     // Arrange: Create necessary objects and setup the state
     $auditor = Auditor::factory()->create();
     $interaction = Interaction::factory()->create([
@@ -26,12 +28,8 @@ it('ends the interaction when ended_at time is reached', function () {
         'replyable_id' => 1,
     ]);
 
-    // Assert: Check that the InteractionEndedEvent and InteractionEndedForAnimatorEvent are dispatched when the interaction ended_at time is reached
-    Event::fake();
-    $job = new CheckInteractionEnded($interaction);
-    dispatch($job);
-
     // Act: Call the job's handle method
+    $job = new CheckInteractionEnded($interaction);
     $job->handle();
 
     // Assert: Check the interaction and its answers

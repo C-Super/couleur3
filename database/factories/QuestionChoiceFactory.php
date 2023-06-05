@@ -17,13 +17,9 @@ class QuestionChoiceFactory extends Factory
      */
     public function definition(): array
     {
-        //get all interaction and get random id
-        $interaction = Interaction::all()->random();
-
         return [
             'value' => $this->faker->sentence,
             'is_correct_answer' => $this->faker->boolean,
-            'interaction_id' => $interaction->id,
         ];
     }
 }
