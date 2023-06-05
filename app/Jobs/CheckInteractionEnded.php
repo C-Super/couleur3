@@ -6,6 +6,7 @@ use App\Events\InteractionEndedEvent;
 use App\Events\InteractionEndedForAnimatorEvent;
 use App\Models\Interaction;
 use App\Models\Reward;
+use App\Enums\StatusInteraction;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -36,12 +37,12 @@ class CheckInteractionEnded implements ShouldQueue
 
         $this->interaction->refresh();
 
-        if ($this->interaction->status != 'stopped' && $this->interaction->ended_at <= now()) {
+        if ($this->interaction->status != StatusInteraction::STOPPED && $this->interaction->ended_at <= now()) {
             // Collect all answers
             $answers = $this->interaction->answers()->with('auditor')->get();
 
-            // Update the interaction status
-            $this->interaction->update(['status' => 'stopped']);
+            // Update the interaction status with enum StatusInteraction::STOPPED
+            $this->interaction->update(['status' => StatusInteraction::STOPPED]);
 
             // Get the rewards
             $rewards = Reward::all();
