@@ -198,7 +198,7 @@ namespace App\Models{
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property string|null $ended_at
      * @property int $animator_id
-     * @property int $reward_id
+     * @property int|null $reward_id
      * @property int|null $winners_count
      * @property string $status
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Answer> $answers

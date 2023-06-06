@@ -17,6 +17,7 @@ class Winner extends Model
         'interaction_id',
         'auditor_id',
     ];
+
     public function interaction(): BelongsTo
     {
         return $this->belongsTo(Interaction::class);
