@@ -10,6 +10,15 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 /**
  * @mixin IdeHelperAuditor
+ *
+ * @property int $id
+ * @property string $phone
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read Address $address
+ * @property-read \Illuminate\Database\Eloquent\Collection|Answer[] $answers
+ * @property-read \Illuminate\Database\Eloquent\Collection|Message[] $messages
+ * @property-read User $user
  */
 class Auditor extends Model
 {

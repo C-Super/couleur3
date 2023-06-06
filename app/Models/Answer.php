@@ -7,6 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @mixin IdeHelperAnswer
+ *
+ * @property int $id
+ * @property int $auditor_id
+ * @property int $interaction_id
+ * @property int $replyable_id
+ * @property string $replyable_type
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Auditor $auditor
+ * @property-read \App\Models\Interaction $interaction
+ * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $answerable
  */
 class Answer extends Model
 {
