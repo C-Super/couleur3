@@ -59,7 +59,20 @@ Vous pouvez maintenant ouvrir l'application dans votre navigateur à l'adresse [
 
 Voilàà ! Vous pouvez maintenant commencer à développer.
 
-### 4. (Attention) Avant de fermer VS Code
+### 4. Informations utiles
+
+#### Information de connexion phpMyAdmin
+
+Serveur: mysql   
+Username: root   
+Password: (aucun)   
+
+#### Information de connexion sur l'application
+
+Email: Voir le champs `email` dans la base de donnée.   
+Password: password (pour les comptes auditeurs et animateurs)
+
+### 5. (Attention) Avant de fermer VS Code
 
 Avant de fermer VS Code, il faut arrêter le conteneur.
 
