@@ -134,6 +134,8 @@ namespace App\Models{
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property int|null $address_id
      * @property-read \App\Models\Address|null $address
+     * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Answer> $answers
+     * @property-read int|null $answers_count
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Message> $messages
      * @property-read int|null $messages_count
      * @property-read \App\Models\User|null $user

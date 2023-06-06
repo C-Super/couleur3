@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Animator\DashboardController as AnimatorDashboardController;
+use App\Http\Controllers\AnswerController;
 use App\Http\Controllers\Auditor\DashboardController as AuditorDashboardController;
 use App\Http\Controllers\InteractionController;
 use App\Http\Controllers\ProfileController;
@@ -30,6 +31,7 @@ Route::middleware(['auth', 'verified', 'auth.auditor'])->group(function () {
     Route::middleware('chat.enabled')->group(function () {
         Route::post('/messages', [AuditorDashboardController::class, 'storeMessage'])->name('auditor.messages.store');
     });
+    Route::post('/answer', [AnswerController::class, 'store'])->name('answer.store');
 });
 
 Route::middleware(['auth', 'auth.animator', HandlePrecognitiveRequests::class])->group(function () {

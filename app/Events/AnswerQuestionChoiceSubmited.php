@@ -2,24 +2,24 @@
 
 namespace App\Events;
 
-use App\Models\Interaction;
+use App\Models\Answer;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class InteractionEndedEvent
+class AnswerQuestionChoiceSubmited
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $interaction;
+    public $answer;
 
     /**
      * Create a new event instance.
      */
-    public function __construct(Interaction $interaction)
+    public function __construct(Answer $answer)
     {
-        $this->interaction = $interaction;
+        $this->answer = $answer;
     }
 
     /**

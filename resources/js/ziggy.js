@@ -24,6 +24,7 @@ const Ziggy = {
         "profile.update": { uri: "profile", methods: ["PATCH"] },
         "profile.destroy": { uri: "profile", methods: ["DELETE"] },
         "auditor.messages.store": { uri: "messages", methods: ["POST"] },
+        "answer.store": { uri: "answer", methods: ["POST"] },
         "animator.index": { uri: "dashboard", methods: ["GET", "HEAD"] },
         "animator.chat.update": { uri: "dashboard/chat", methods: ["POST"] },
         "animator.interactions.index": {

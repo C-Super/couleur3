@@ -2,30 +2,28 @@
 
 namespace App\Events;
 
-use App\Models\Interaction;
+use App\Models\Answer;
+use App\Models\User;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class InteractionEndedForAnimatorEvent
+class AnswerSubmitedToAnimator
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $interaction;
+    public User $user;
 
-    public $answers;
-
-    public $rewards;
+    public Answer $answer;
 
     /**
      * Create a new event instance.
      */
-    public function __construct(Interaction $interaction, $answers, $rewards)
+    public function __construct(Answer $answer)
     {
-        $this->interaction = $interaction;
-        $this->answers = $answers;
-        $this->rewards = $rewards;
+        $this->answer = $answer;
+        $this->user = $answer->auditor->user;
     }
 
     /**
@@ -33,6 +31,6 @@ class InteractionEndedForAnimatorEvent
      */
     public function broadcastOn(): PrivateChannel
     {
-        return new PrivateChannel('interactions.animator.'.$this->interaction->animator_id);
+        return new PrivateChannel('answers.auditors.'.$this->answer->auditor_id);
     }
 }

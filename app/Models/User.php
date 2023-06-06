@@ -57,7 +57,7 @@ class User extends Authenticatable implements MustVerifyEmailContract
         return $this->morphTo();
     }
 
-    public function hasVerifiedEmail()
+    public function hasVerifiedEmail(): bool
     {
         return ! is_null($this->email_verified_at);
     }
