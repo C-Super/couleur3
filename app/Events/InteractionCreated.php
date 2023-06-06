@@ -27,10 +27,8 @@ class InteractionCreated implements ShouldBroadcast
 
     /**
      * Get the channels the event should broadcast on.
-     *
-     * @return Channel|array
      */
-    public function broadcastOn()
+    public function broadcastOn(): Channel
     {
         // This will broadcast to everyone, adjust this to your needs
         return new Channel('public');

@@ -4,20 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 /**
  * @mixin IdeHelperAnswer
- *
- * @property int $id
- * @property int $auditor_id
- * @property int $interaction_id
- * @property int $replyable_id
- * @property string $replyable_type
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Auditor $auditor
- * @property-read \App\Models\Interaction $interaction
- * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $answerable
  */
 class Answer extends Model
 {
@@ -30,17 +21,17 @@ class Answer extends Model
         'replyable_type',
     ];
 
-    public function interaction()
+    public function interaction(): BelongsTo
     {
         return $this->belongsTo(Interaction::class);
     }
 
-    public function auditor()
+    public function auditor(): BelongsTo
     {
         return $this->belongsTo(Auditor::class);
     }
 
-    public function answerable()
+    public function answerable(): MorphTo
     {
         return $this->morphTo();
     }

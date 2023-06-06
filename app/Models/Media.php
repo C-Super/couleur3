@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 /**
  * @mixin IdeHelperMedia
@@ -17,7 +18,7 @@ class Media extends Model
         'type',
     ];
 
-    public function answer()
+    public function answer(): MorphOne
     {
         return $this->morphOne(Answer::class, 'answerable');
     }

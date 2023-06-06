@@ -3,6 +3,7 @@
 namespace App\Events;
 
 use App\Models\Answer;
+use App\Models\User;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
@@ -12,12 +13,9 @@ class AnswerSubmitedToAnimator
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $user;
+    public User $user;
 
-    /**
-     * @var \App\Models\Answer
-     */
-    public $answer;
+    public Answer $answer;
 
     /**
      * Create a new event instance.
@@ -30,10 +28,8 @@ class AnswerSubmitedToAnimator
 
     /**
      * Get the channels the event should broadcast on.
-     *
-     * @return PrivateChannel
      */
-    public function broadcastOn()
+    public function broadcastOn(): PrivateChannel
     {
         return new PrivateChannel('answers.auditors.'.$this->answer->auditor_id);
     }
