@@ -12,6 +12,11 @@ class Winner extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'interaction_id',
+        'auditor_id',
+    ];
+
     public function interaction()
     {
         return $this->belongsTo(Interaction::class);
