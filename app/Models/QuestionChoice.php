@@ -15,6 +15,15 @@ class QuestionChoice extends Model
     protected $fillable = [
         'value',
         'is_correct_answer',
-        'interaction_id',
     ];
+
+    public function interaction()
+    {
+        return $this->belongsTo(Interaction::class);
+    }
+
+    public function answer()
+    {
+        return $this->morphOne(Answer::class, 'answerable');
+    }
 }

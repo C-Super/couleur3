@@ -34,4 +34,22 @@ class Interaction extends Model
     {
         return $this->hasMany(QuestionChoice::class);
     }
+
+    /**
+     * Get the call_to_action that owns the interaction.
+     */
+    public function call_to_action()
+    {
+        return $this->belongsTo(CallToAction::class);
+    }
+
+    public function answers()
+    {
+        return $this->hasMany(Answer::class);
+    }
+
+    public function rewards()
+    {
+        return $this->belongsTo(Reward::class);
+    }
 }

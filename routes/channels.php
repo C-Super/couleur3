@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Support\Facades\Broadcast;
 
 /*
@@ -13,6 +14,10 @@ use Illuminate\Support\Facades\Broadcast;
 |
 */
 
-Broadcast::channel('chat', function () {
+Broadcast::channel('animator', function (User $user) {
+    return $user()->isAnimator();
+});
+
+Broadcast::channel('public', function () {
     return true;
 });
