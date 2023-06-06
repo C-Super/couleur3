@@ -1,6 +1,6 @@
 # Test auditeurs
 
-Nous avons effectué un test *pensées à voix haute* avec le prototype papier de l'interface des auditeurs. Les pensées ont été décrites lors de l'exécution d'une interaction spécifique, afin de confirmer ou améliorer la logique de nos écrans. Ce test a été effectué par une personne dans le rôle d'un auditeur et dirigé par deux personnes de l'équipe. Une première s'est chargée de déplacer les prototypes papiers en fonction des actions du testeur, tandis que l'autre prenait des notes sur le déroulement.
+Nous avons effectué un test *pensées à voix haute* avec le prototype papier de l'interface des auditeurs. Les pensées ont été décrites lors de l'exécution d'une interaction spécifique, afin de confirmer ou améliorer la logique de nos écrans. Ce test a été effectué deux fois par deux personnes différentes dans le rôle d'un auditeur et dirigé par deux membres de l'équipe. Une première s'est chargée de déplacer les prototypes papiers en fonction des actions du testeur, tandis que l'autre prenait des notes sur le déroulement.
 
 ## Préparation du test
 
