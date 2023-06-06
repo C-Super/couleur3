@@ -4,7 +4,8 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "vite build"
+        "build": "vite build",
+        "prepare": "husky install"
     },
     "devDependencies": {
         "@inertiajs/vue3": "^1.0.0",
