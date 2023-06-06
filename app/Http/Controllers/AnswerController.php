@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\InteractionType;
 use App\Events\AnswerQuestionChoiceSubmited;
 use App\Events\AnswerSubmitedToAnimator;
 use App\Http\Requests\StoreAnswerRequest;
@@ -34,16 +35,16 @@ class AnswerController extends Controller
         $auditor = $user->roleable;
 
         switch ($request->type) {
-            case 'text':
+            case InteractionType::TEXT->value:
                 $answerable = AnswerText::create($validated['replyable_data']);
                 break;
-            case 'audio':
-            case 'video':
-            case 'picture':
+            case InteractionType::AUDIO->value:
+            case InteractionType::VIDEO->value:
+            case InteractionType::PICTURE->value:
                 $answerable = Media::create($validated['replyable_data']);
                 break;
-            case 'mcq':
-            case 'survey':
+            case InteractionType::MCQ->value:
+            case InteractionType::SURVEY->value:
                 $answerable = QuestionChoice::find($validated['replyable_data']['id']);
                 break;
             default:
@@ -61,7 +62,7 @@ class AnswerController extends Controller
         broadcast(new AnswerSubmitedToAnimator($answer))->toOthers();
 
         // For MCQ and Survey type, also broadcast AnswerQuestionChoiceSubmited event
-        if ($request->type === 'mcq' || $request->type === 'survey') {
+        if ($request->type === InteractionType::MCQ->value || $request->type === InteractionType::SURVEY->value) {
             broadcast(new AnswerQuestionChoiceSubmited($answer))->toOthers();
         }
 
