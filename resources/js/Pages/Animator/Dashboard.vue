@@ -54,23 +54,23 @@ function subscribeToPublicChannel() {
 <template>
     <Head title="Dashboard" />
 
-    <div id="animator-container" class="min-h-screen p-5 flex gap-5">
+    <div id="animator-container" class="h-screen p-5 flex gap-5">
         <div class="basis-1/3 flex flex-col gap-3">
-            <base-card class="flex-auto grow bg-primary">
+            <base-card class="flex-auto grow">
                 <template #title>Chat</template>
                 <template #content>
-                    <message-item
-                        v-for="msg in data.messages"
-                        :key="msg.id"
-                        :msg="msg"
-                    />
+                    <div class="overflow-hidden overflow-y-auto">
+                        <message-item
+                            v-for="msg in data.messages"
+                            :key="msg.id"
+                            :msg="msg"
+                            class="mb-2"
+                        />
+                    </div>
                 </template>
                 <template #actions>
                     <form @submit.prevent="submit">
-                        <base-button
-                            :class="{ 'opacity-25': form.processing }"
-                            :disabled="form.processing"
-                        >
+                        <base-button :disabled="form.processing">
                             {{
                                 chatEnabled
                                     ? "Désactiver le chat"
@@ -81,31 +81,33 @@ function subscribeToPublicChannel() {
                 </template>
             </base-card>
 
-            <base-button type="error" class="flex-initial btn-block btn-lg"
+            <base-button
+                type="error"
+                class="flex-initial btn-block bg-opacity-50 text-white btn-lg"
                 >Fin d'émission</base-button
             >
         </div>
 
         <div class="basis-2/3 flex flex-col justify-items-stretch gap-3">
-            <base-card type="primary" class="flex-auto">
-                <template #title>Créez une interaction</template>
-                <template #description></template>
+            <base-card type="primary" class="flex-auto basis-4/6">
+                <template #title>Créer une interaction</template>
+                <template #content></template>
                 <template #actions>
                     <base-button>Créer</base-button>
                 </template>
             </base-card>
-            <base-card type="secondary" class="flex-auto">
+            <base-card type="secondary" class="flex-auto basis-1/6">
                 <template #title>Envoyer un lien</template>
-                <template #description>
+                <template #content>
                     Envoyer un lien de redirection aux auditeurs
                 </template>
                 <template #actions>
                     <base-button type="secondary">Créer</base-button>
                 </template>
             </base-card>
-            <base-card type="accent" class="flex-auto">
+            <base-card type="accent" class="flex-auto basis-1/6">
                 <template #title>Envoyer bouton de participation</template>
-                <template #description>
+                <template #content>
                     Envoyer un bouton de participation de rapidité aux auditeurs
                 </template>
                 <template #actions>
