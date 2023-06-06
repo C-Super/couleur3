@@ -50,4 +50,3 @@ it('ends the interaction when ended_at time is reached', function () {
 
     Event::assertDispatched(InteractionEndedForAnimatorEvent::class);
 });
-
