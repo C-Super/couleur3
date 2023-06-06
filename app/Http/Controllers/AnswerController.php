@@ -2,9 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\InteractionType;
+use App\Events\AnswerQuestionChoiceSubmited;
+use App\Events\AnswerSubmitedToAnimator;
 use App\Http\Requests\StoreAnswerRequest;
-use App\Http\Requests\UpdateAnswerRequest;
 use App\Models\Answer;
+use App\Models\AnswerText;
+use App\Models\Media;
+use App\Models\QuestionChoice;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class AnswerController extends Controller
 {
@@ -17,58 +24,48 @@ class AnswerController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(StoreAnswerRequest $request)
     {
         $validated = $request->validated();
-        $answer = Answer::create($validated);
 
-        return response()->json($answer, 201);
-    }
+        //get user id from auth
+        $user = Auth::user();
+        $auditor = $user->roleable;
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Answer $answer)
-    {
-        //
-    }
+        switch ($request->type) {
+            case InteractionType::TEXT->value:
+                $answerable = AnswerText::create($validated['replyable_data']);
+                break;
+            case InteractionType::AUDIO->value:
+            case InteractionType::VIDEO->value:
+            case InteractionType::PICTURE->value:
+                $answerable = Media::create($validated['replyable_data']);
+                break;
+            case InteractionType::MCQ->value:
+            case InteractionType::SURVEY->value:
+                $answerable = QuestionChoice::find($validated['replyable_data']['id']);
+                break;
+            default:
+                return response()->json(['message' => 'Invalid type'], 400);
+        }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Answer $answer)
-    {
-        //
-    }
+        $answer = Answer::create([
+            'auditor_id' => $auditor->id,
+            'interaction_id' => $validated['interaction_id'],
+            'replyable_id' => $answerable->id,
+            'replyable_type' => get_class($answerable),
+        ]);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateAnswerRequest $request, Answer $answer)
-    {
-        $validated = $request->validated();
-        $answer->update($validated);
+        // Broadcast AnswerSubmitedToAnimator event in all cases
+        broadcast(new AnswerSubmitedToAnimator($answer))->toOthers();
 
-        return response()->json($answer, 200);
-    }
+        // For MCQ and Survey type, also broadcast AnswerQuestionChoiceSubmited event
+        if ($request->type === InteractionType::MCQ->value || $request->type === InteractionType::SURVEY->value) {
+            broadcast(new AnswerQuestionChoiceSubmited($answer))->toOthers();
+        }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Answer $answer)
-    {
-        $answer->delete();
-
-        return response()->json(null, 204);
+        return Inertia::render('Auditor/Answer', $answer);
     }
 }
