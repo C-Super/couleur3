@@ -11,4 +11,13 @@ use Illuminate\Database\Eloquent\Model;
 class AnswerText extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'content',
+    ];
+
+    public function answer()
+    {
+        return $this->morphOne(Answer::class, 'answerable');
+    }
 }

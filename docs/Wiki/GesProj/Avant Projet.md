@@ -48,6 +48,7 @@ Couleur3 a donc participé aux Hackdays de la RTS pour proposer cette question. 
 	- Déploiement : **36 heures** = 3 jours x 2 personnes x 6 heures
 	- Test : **72 heures** = 3 jours x 6 personnes x 4 heures
 ## Risques
+
 | Probabilité v - Impact > | 1 - 2 | 3 - 4 | 5 - 6 | 7 - 8 | 9 - 10 |
 | ------------------------:|:-----:|:-----:|:-----:|:-----:|:------:|
 |                    1 - 2 |  6.   |       |       |  7.   |   4.   |

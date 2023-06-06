@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\InteractionStatus;
 use App\Enums\InteractionType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -22,6 +23,7 @@ return new class extends Migration
             $table->foreignId('animator_id')->constrained();
             $table->foreignId('reward_id')->constrained();
             $table->integer('winners_count')->nullable();
+            $table->enum('status', InteractionStatus::getValues())->default(InteractionStatus::PENDING->value);
         });
     }
 
