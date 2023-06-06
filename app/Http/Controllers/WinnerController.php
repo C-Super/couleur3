@@ -18,7 +18,7 @@ class WinnerController extends Controller
     {
         $validated = $request->validated();
         $interaction_id = $validated['interaction_id'];
-        $winnersCount = $request->get('winners_count');
+        $winnersCount = $validated['winners_count'];
 
         // Récupérer les IDs de tous les auditeurs qui ont répondu à l'interaction et qui ne sont pas déjà des gagnants
         $auditorIds = Answer::where('interaction_id', $interaction_id)
@@ -46,7 +46,7 @@ class WinnerController extends Controller
     {
         $validated = $request->validated();
         $interaction_id = $validated['interaction_id'];
-        $winnersCount = $request->get('winners_count');
+        $winnersCount = $validated['winners_count'];
 
         // Récupérer les IDs des auditeurs les plus rapides qui ont répondu à l'interaction et qui ne sont pas déjà des gagnants
         $auditorIds = Answer::where('interaction_id', $interaction_id)
