@@ -5,6 +5,7 @@ use App\Http\Controllers\AnswerController;
 use App\Http\Controllers\Auditor\DashboardController as AuditorDashboardController;
 use App\Http\Controllers\InteractionController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\WinnerController;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Support\Facades\Route;
 
@@ -42,6 +43,11 @@ Route::middleware(['auth', 'auth.animator', HandlePrecognitiveRequests::class])-
         'show' => 'animator.interactions.show',
         'store' => 'animator.interactions.store',
     ])->only(['index', 'show', 'store']);
+
+    Route::post('/interactions/winner/random', [WinnerController::class, 'generateRandomList'])->name('interactions.winner.random');
+    Route::post('/interactions/winner/replace', [WinnerController::class, 'generate1Random'])->name('interactions.winner.replace');
+    Route::post('/interactions/winner/fastest', [WinnerController::class, 'generateFastestList'])->name('interactions.winner.fastest');
+    Route::post('/interactions/winner/confirm', [WinnerController::class, 'store'])->name('interactions.winner.confirm');
 });
 
 require __DIR__.'/auth.php';

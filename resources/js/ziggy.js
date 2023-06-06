@@ -40,6 +40,22 @@ const Ziggy = {
             methods: ["GET", "HEAD"],
             bindings: { interaction: "id" },
         },
+        "interactions.winner.random": {
+            uri: "interactions/winner/random",
+            methods: ["POST"],
+        },
+        "interactions.winner.replace": {
+            uri: "interactions/winner/replace",
+            methods: ["POST"],
+        },
+        "interactions.winner.fastest": {
+            uri: "interactions/winner/fastest",
+            methods: ["POST"],
+        },
+        "interactions.winner.confirm": {
+            uri: "interactions/winner/confirm",
+            methods: ["POST"],
+        },
         register: { uri: "register", methods: ["GET", "HEAD"] },
         login: { uri: "login", methods: ["GET", "HEAD"] },
         "password.request": {
