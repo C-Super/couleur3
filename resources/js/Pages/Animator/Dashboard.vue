@@ -1,8 +1,8 @@
 <!-- eslint-disable no-undef -->
 <script setup>
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import MessageItem from "@/Components/MessageItem.vue";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
+import BaseButton from "@/Components/Bases/BaseButton.vue";
+import BaseCard from "@/Components/Bases/BaseCard.vue";
 import { reactive, onMounted } from "vue";
 import { Head, useForm } from "@inertiajs/vue3";
 
@@ -54,32 +54,70 @@ function subscribeToPublicChannel() {
 <template>
     <Head title="Dashboard" />
 
-    <AuthenticatedLayout>
-        <template #header>
-            <h2
-                class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight"
+    <div id="animator-container" class="min-h-screen p-5 flex gap-5">
+        <div class="basis-1/3 flex flex-col gap-3">
+            <base-card class="flex-auto grow bg-primary">
+                <template #title>Chat</template>
+                <template #content>
+                    <message-item
+                        v-for="msg in data.messages"
+                        :key="msg.id"
+                        :msg="msg"
+                    />
+                </template>
+                <template #actions>
+                    <form @submit.prevent="submit">
+                        <base-button
+                            :class="{ 'opacity-25': form.processing }"
+                            :disabled="form.processing"
+                        >
+                            {{
+                                chatEnabled
+                                    ? "Désactiver le chat"
+                                    : "Activer le chat"
+                            }}
+                        </base-button>
+                    </form>
+                </template>
+            </base-card>
+
+            <base-button type="error" class="flex-initial btn-block btn-lg"
+                >Fin d'émission</base-button
             >
-                Dashboard
-            </h2>
-        </template>
-
-        <div
-            class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white dark:bg-gray-800 shadow-md overflow-hidden sm:rounded-lg"
-        >
-            <form @submit.prevent="submit">
-                <primary-button
-                    :class="{ 'opacity-25': form.processing }"
-                    :disabled="form.processing"
-                >
-                    {{ chatEnabled ? "Désactiver le chat" : "Activer le chat" }}
-                </primary-button>
-            </form>
-
-            <message-item
-                v-for="msg in data.messages"
-                :key="msg.id"
-                :msg="msg"
-            />
         </div>
-    </AuthenticatedLayout>
+
+        <div class="basis-2/3 flex flex-col justify-items-stretch gap-3">
+            <base-card type="primary" class="flex-auto">
+                <template #title>Créez une interaction</template>
+                <template #description></template>
+                <template #actions>
+                    <base-button>Créer</base-button>
+                </template>
+            </base-card>
+            <base-card type="secondary" class="flex-auto">
+                <template #title>Envoyer un lien</template>
+                <template #description>
+                    Envoyer un lien de redirection aux auditeurs
+                </template>
+                <template #actions>
+                    <base-button type="secondary">Créer</base-button>
+                </template>
+            </base-card>
+            <base-card type="accent" class="flex-auto">
+                <template #title>Envoyer bouton de participation</template>
+                <template #description>
+                    Envoyer un bouton de participation de rapidité aux auditeurs
+                </template>
+                <template #actions>
+                    <base-button type="accent">Créer</base-button>
+                </template>
+            </base-card>
+        </div>
+    </div>
 </template>
+
+<style scoped>
+#animator-container {
+    background-color: #1c1354;
+}
+</style>

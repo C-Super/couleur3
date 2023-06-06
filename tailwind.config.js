@@ -11,7 +11,25 @@ export default {
         "./resources/js/**/*.vue",
     ],
 
-    safelist: ["bg-primary", "bg-secondary", "bg-accent"],
+    safelist: [
+        "bg-primary",
+        "bg-secondary",
+        "bg-accent",
+        "bg-neutral",
+        "bg-info",
+        "bg-success",
+        "bg-warning",
+        "bg-error",
+        "btn-primary",
+        "btn-secondary",
+        "btn-accent",
+        "btn-neutral",
+        "btn-info",
+        "btn-success",
+        "btn-warning",
+        "btn-error",
+        "btn-white",
+    ],
 
     daisyui: {
         themes: [
@@ -25,7 +43,7 @@ export default {
 
                     neutral: "#2a323c",
 
-                    "base-100": "#1d232a",
+                    "base-100": "#ffffff",
 
                     info: "#3abff8",
 

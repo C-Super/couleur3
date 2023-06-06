@@ -1,14 +1,14 @@
-<script setup>
-defineProps({
-    color: {
-        type: String,
-        default: "",
-    },
-});
-</script>
-
 <template>
-    <button :class="`btn btn-${color} rounded-full`">
+    <button :class="`btn btn-${type} rounded-full`">
         <slot></slot>
     </button>
 </template>
+
+<script setup>
+defineProps({
+    type: {
+        type: String,
+        default: "white",
+    },
+});
+</script>
