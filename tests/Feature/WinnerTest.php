@@ -244,3 +244,47 @@ it('generates fastest winners list successfully', function () {
     // Assert event
     Event::assertDispatched(WinnersListGenerated::class);
 });
+
+it('requires reward field to store winners', function () {
+    Event::fake([WinnerSentResult::class]);
+
+    $animator = Animator::factory()->create();
+    $user = User::factory()->create([
+        'name' => fake()->name(),
+        'email' => fake()->email(),
+        'password' => Hash::make('animator'),
+        'roleable_id' => $animator->id,
+        'roleable_type' => get_class($animator),
+    ]);
+
+    $interaction = Interaction::factory(
+        [
+            'animator_id' => $animator->id,
+            'type' => 'text',
+        ]
+    )->create();
+
+    $auditors = Auditor::factory()->count(5)->create();
+
+    foreach ($auditors as $auditor) {
+        Answer::factory()->create([
+            'interaction_id' => $interaction->id,
+            'auditor_id' => $auditor->id,
+        ]);
+    }
+
+    $this->actingAs($user);
+
+    // Get first 3 auditors to be winners
+    $winners = $auditors->take(3)->pluck('id')->toArray();
+
+    // Send request to store the winners without providing reward_id
+    $response = postJson('/interactions/winner/confirm', [
+        'interaction_id' => $interaction->id,
+        'auditor_ids' => $winners,
+    ]);
+
+    // Assert response
+    $response->assertStatus(422); // HTTP 422 Unprocessable Entity indicates validation errors
+    $response->assertJsonValidationErrors('reward_id');
+});
