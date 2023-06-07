@@ -1,8 +1,9 @@
-### Figma
+## Figma
+
 Lien vers le fichier Figma contenant les différentes étapes du graphisme:
 https://www.figma.com/file/SIaos14aP3m9HE7jwyVLHs/Graphisme?type=design&node-id=0%3A1&t=vKarxY3YRis3zh5t-1
 
-## Moordboard
+## Moodboard
 
 Afin de créer notre Moodboard, nous sommes partis de la page web actuelle de Couleurs 3. 
 Dans un premier temps, nous avons rassemblé les différents éléments graphique ainsi que les typographies utilisées. Suite à cette étape, nous avons extrait les couleurs principales utilisées par Couleur3, ainsi que les diverses typographies et les types d'information qu'elles décrivent. Nous avons également défini quelques mots-clés qui nous permettent de décrire l'univers et la personnalité de Couleur 3. 
@@ -11,7 +12,7 @@ Sur la base de ces premières réflexions, nous avons établi un Moodboard, comp
 
 ![[moodboard.png]]
 
-## Charte Graphique
+## Concept
 
 Sur la base du Moodboard, nous avons établi notre charte graphique.
 
@@ -21,5 +22,7 @@ Nous avons décidé d'utiliser un fond foncé, dans le but de limiter la sollici
 
 En plus des couleurs graphiques, nous avons également défini quatre couleurs fonctionnelles. Nous avons également effectué des vérifications de lisibilité pour les différentes formes de daltonisme, qui nous ont permis d'adapter les couleurs sélectionnées, notamment les fonctionnelles. Cela nous a également confirmé que les contrastes utilisés sont effectivement bien lisibles. Les couleurs "graphiques" n'ayant pas d'autre but que l'esthétisme, il est moins grave qu'elles se différencient moins aux yeux des personnes daltoniennes. 
 
+
+## Charte graphique
 
 ![[charteGraphique.jpg]]
