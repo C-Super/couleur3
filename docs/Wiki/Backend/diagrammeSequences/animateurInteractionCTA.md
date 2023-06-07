@@ -1,6 +1,6 @@
 ```mermaid
 ---
-title: Diagramme de séquence Animateur crée une interaction audio
+title: Diagramme de séquence Animateur lance une interaction CTA
 ---
 sequenceDiagram
     Actor Auditeur
@@ -11,14 +11,14 @@ sequenceDiagram
     participant Backend as Backend (Laravel)
     participant DB as Base de données
 
-    Animateur->>FrontendAnimateur: Publie une interaction avec un audio
+    Animateur->>FrontendAnimateur: Demande de lancement d'une interaction de type "CALL_TO_ACTION"
     activate FrontendAnimateur
 
-    FrontendAnimateur->>+Backend: publishAudioInteraction()
+    FrontendAnimateur->>+Backend: launchCallToActionInteraction()
     activate Backend
 
     alt Animateur a les autorisations
-        Backend->>Backend: validateAndCleanAudioInput()
+        Backend->>Backend: validateURL()
 
         Backend->>+DB: getCurrentInteractions()
         activate DB
@@ -26,22 +26,22 @@ sequenceDiagram
         DB-->>-Backend: CurrentInteractions
         deactivate DB
 
-        Backend->>Backend: validateCurrentInteractions() and validateMediaType()
+        Backend->>Backend: validateCurrentInteractions()
 
-        Backend->>+DB: registerInteraction()
+        Backend->>+DB: createCallToActionInteraction()
         activate DB
 
-        DB-->>-Backend: RegisteredInteractionDetails
+        DB-->>-Backend: CreatedInteractionDetails
         deactivate DB
 
-        Backend-->>FrontendAnimateur: confirmInteractionPublication()
+        Backend-->>FrontendAnimateur: confirmInteractionCreation()
         deactivate Backend
         deactivate FrontendAnimateur
 
         Backend->>+Event: notifyNewInteraction()
         activate Event
 
-        Event-->>FrontendAuditeur: sendInteractionToAuditors()
+        Event-->>FrontendAuditeur: sendCallToActionInteraction()
         deactivate Event
 
         FrontendAuditeur->>Auditeur: Affiche l'interaction
@@ -49,3 +49,5 @@ sequenceDiagram
         Backend->>FrontendAnimateur: errorNotification("L'Animateur n'a pas les autorisations nécessaires")
         deactivate Backend
     end
+```
+

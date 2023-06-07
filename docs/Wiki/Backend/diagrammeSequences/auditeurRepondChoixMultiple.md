@@ -78,3 +78,5 @@ sequenceDiagram
     else Auditeur n'est pas authentifié
         FrontendAuditeur->>Auditeur: showAuthenticationRequiredMessage()
     end
+```
+

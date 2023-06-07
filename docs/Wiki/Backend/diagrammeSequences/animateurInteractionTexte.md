@@ -1,6 +1,6 @@
 ```mermaid
 ---
-title: Diagramme de séquence Animateur lance une interaction vidéo
+title: Diagramme de séquence Animateur lance une interaction texte
 ---
 sequenceDiagram
     Actor Auditeur
@@ -11,24 +11,23 @@ sequenceDiagram
     participant Backend as Backend (Laravel)
     participant DB as Base de données
 
-    Animateur->>FrontendAnimateur: Demande de lancement d'une interaction vidéo
+    Animateur->>FrontendAnimateur: Demande de lancement d'une interaction texte
     activate FrontendAnimateur
 
-    FrontendAnimateur->>+Backend: requestCreateVideoInteraction()
+    FrontendAnimateur->>+Backend: requestCreateTextInteraction()
     activate Backend
 
     alt Animateur a les autorisations
-        Backend->>Backend: validateAndCleanVideoInput()
-
         Backend->>+DB: getCurrentInteractions()
         activate DB
 
         DB-->>-Backend: CurrentInteractions
         deactivate DB
 
-        Backend->>Backend: validateCurrentInteractions() and validateMediaType()
+        Backend->>Backend: noOtherInteractionsInProgress()
+        Backend->>Backend: isTextContentValid()
 
-        Backend->>+DB: createVideoInteraction()
+        Backend->>+DB: createTextInteraction()
         activate DB
 
         DB-->>-Backend: InteractionDetails
@@ -38,14 +37,17 @@ sequenceDiagram
         deactivate Backend
         deactivate FrontendAnimateur
 
-        Backend->>+Event: notifyNewVideoInteraction()
+        Backend->>+Event: notifyNewTextInteraction()
         activate Event
 
-        Event-->>FrontendAuditeur: sendNewVideoInteraction()
+        Event-->>FrontendAuditeur: sendNewTextInteraction()
         deactivate Event
 
         FrontendAuditeur->>Auditeur: Affiche l'interaction
-    else Animateur n'a pas les autorisations
-        Backend->>FrontendAnimateur: errorNotification("L'Animateur n'a pas les autorisations nécessaires")
+
+    else Animateur n'a pas les autorisations ou le contenu du texte n'est pas valide
+        Backend->>FrontendAnimateur: errorNotification("Impossible de créer l'interaction")
         deactivate Backend
     end
+```
+

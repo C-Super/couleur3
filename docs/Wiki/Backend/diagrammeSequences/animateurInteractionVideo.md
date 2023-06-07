@@ -1,6 +1,6 @@
 ```mermaid
 ---
-title: Diagramme de séquence Animateur création d'une interaction photo
+title: Diagramme de séquence Animateur lance une interaction vidéo
 ---
 sequenceDiagram
     Actor Auditeur
@@ -11,41 +11,43 @@ sequenceDiagram
     participant Backend as Backend (Laravel)
     participant DB as Base de données
 
-    Animateur->>FrontendAnimateur: Publie une interaction avec une photo
+    Animateur->>FrontendAnimateur: Demande de lancement d'une interaction vidéo
     activate FrontendAnimateur
 
-    FrontendAnimateur->>+Backend: requestCreatePhotoInteraction()
+    FrontendAnimateur->>+Backend: requestCreateVideoInteraction()
     activate Backend
 
     alt Animateur a les autorisations
+        Backend->>Backend: validateAndCleanVideoInput()
+
         Backend->>+DB: getCurrentInteractions()
         activate DB
 
         DB-->>-Backend: CurrentInteractions
         deactivate DB
 
-        Backend->>Backend: noOtherInteractionsInProgress()
-        Backend->>Backend: isValidImageFile()
+        Backend->>Backend: validateCurrentInteractions() and validateMediaType()
 
-        Backend->>+DB: saveInteraction()
+        Backend->>+DB: createVideoInteraction()
         activate DB
 
         DB-->>-Backend: InteractionDetails
         deactivate DB
 
-        Backend-->>FrontendAnimateur: confirmInteractionPublication()
+        Backend-->>FrontendAnimateur: confirmInteractionCreation()
         deactivate Backend
         deactivate FrontendAnimateur
 
-        Backend->>+Event: notifyNewInteraction()
+        Backend->>+Event: notifyNewVideoInteraction()
         activate Event
 
-        Event-->>FrontendAuditeur: sendNewInteractionToAuditors()
+        Event-->>FrontendAuditeur: sendNewVideoInteraction()
         deactivate Event
 
         FrontendAuditeur->>Auditeur: Affiche l'interaction
-
-    else Animateur n'a pas les autorisations ou le fichier n'est pas une image valide
-        Backend->>FrontendAnimateur: errorNotification("Impossible de créer l'interaction")
+    else Animateur n'a pas les autorisations
+        Backend->>FrontendAnimateur: errorNotification("L'Animateur n'a pas les autorisations nécessaires")
         deactivate Backend
     end
+```
+

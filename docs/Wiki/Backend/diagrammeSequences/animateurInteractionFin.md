@@ -47,3 +47,5 @@ sequenceDiagram
         Backend->>FrontendAnimateur: errorNotification("Impossible de terminer l'interaction")
         deactivate Backend
     end
+```
+

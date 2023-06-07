@@ -1,6 +1,6 @@
 ```mermaid
 ---
-title: Diagramme de séquence Animateur lance une interaction CTA
+title: Diagramme de séquence Animateur création d'une interaction photo
 ---
 sequenceDiagram
     Actor Auditeur
@@ -11,41 +11,43 @@ sequenceDiagram
     participant Backend as Backend (Laravel)
     participant DB as Base de données
 
-    Animateur->>FrontendAnimateur: Demande de lancement d'une interaction de type "CALL_TO_ACTION"
+    Animateur->>FrontendAnimateur: Publie une interaction avec une photo
     activate FrontendAnimateur
 
-    FrontendAnimateur->>+Backend: launchCallToActionInteraction()
+    FrontendAnimateur->>+Backend: requestCreatePhotoInteraction()
     activate Backend
 
     alt Animateur a les autorisations
-        Backend->>Backend: validateURL()
-
         Backend->>+DB: getCurrentInteractions()
         activate DB
 
         DB-->>-Backend: CurrentInteractions
         deactivate DB
 
-        Backend->>Backend: validateCurrentInteractions()
+        Backend->>Backend: noOtherInteractionsInProgress()
+        Backend->>Backend: isValidImageFile()
 
-        Backend->>+DB: createCallToActionInteraction()
+        Backend->>+DB: saveInteraction()
         activate DB
 
-        DB-->>-Backend: CreatedInteractionDetails
+        DB-->>-Backend: InteractionDetails
         deactivate DB
 
-        Backend-->>FrontendAnimateur: confirmInteractionCreation()
+        Backend-->>FrontendAnimateur: confirmInteractionPublication()
         deactivate Backend
         deactivate FrontendAnimateur
 
         Backend->>+Event: notifyNewInteraction()
         activate Event
 
-        Event-->>FrontendAuditeur: sendCallToActionInteraction()
+        Event-->>FrontendAuditeur: sendNewInteractionToAuditors()
         deactivate Event
 
         FrontendAuditeur->>Auditeur: Affiche l'interaction
-    else Animateur n'a pas les autorisations
-        Backend->>FrontendAnimateur: errorNotification("L'Animateur n'a pas les autorisations nécessaires")
+
+    else Animateur n'a pas les autorisations ou le fichier n'est pas une image valide
+        Backend->>FrontendAnimateur: errorNotification("Impossible de créer l'interaction")
         deactivate Backend
     end
+```
+

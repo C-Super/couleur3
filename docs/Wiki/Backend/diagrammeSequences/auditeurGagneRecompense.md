@@ -71,3 +71,5 @@ sequenceDiagram
         Backend->>FrontendAuditeur: errorNotification("You must be authenticated to request a reward")
         deactivate Backend
     end
+```
+

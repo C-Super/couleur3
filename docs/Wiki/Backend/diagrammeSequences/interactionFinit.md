@@ -41,3 +41,4 @@ sequenceDiagram
     deactivate FrontendAnimateur
 
     Backend->>Backend: Disables Responses from Auditors
+```

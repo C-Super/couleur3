@@ -1,6 +1,6 @@
 ```mermaid
 ---
-title: Diagramme de séquence Auditeur répond à une interaction vidéo
+title: Diagramme de séquence Auditeur répond à une interaction de type "Texte"
 ---
 sequenceDiagram
     Actor Auditeur
@@ -11,26 +11,26 @@ sequenceDiagram
     participant Backend as Backend (Laravel)
     participant DB as Database
 
-    Auditeur->>FrontendAuditeur: Sends Video Response
+    Auditeur->>FrontendAuditeur: Responds to Text Interaction
     activate FrontendAuditeur
 
     FrontendAuditeur->>FrontendAuditeur: Checks if Interaction is Open
-    FrontendAuditeur->>FrontendAuditeur: Validates Media Type
+    FrontendAuditeur->>FrontendAuditeur: Validates Text
 
     alt Auditeur est authentifié
         FrontendAuditeur->>+Backend: Sends Response
         activate Backend
 
-        Backend->>+DB: Queries Interaction Details
+        Backend->>+DB: Queries Current Interaction Details
         activate DB
 
-        DB-->>-Backend: Returns Interaction Details
+        DB-->>-Backend: Returns Current Interaction Details
         deactivate DB
 
-        Backend->>Backend: Checks if Interaction is Open
-        Backend->>Backend: Validates Media Type
+        Backend->>Backend: Checks if Auditor is Allowed to Respond
+        Backend->>Backend: Validates Text
 
-        alt Interaction is Video type
+        alt Interaction is Text type
             Backend->>+DB: Records Response
             activate DB
 
@@ -43,17 +43,19 @@ sequenceDiagram
             FrontendAuditeur->>Auditeur: displayConfirmation()
             deactivate FrontendAuditeur
 
-            Backend->>+Event: notifyNewVideoResponse()
+            Backend->>+Event: emitNewResponseEvent()
             activate Event
 
-            Event-->>FrontendAnimateur: sendNewVideoResponse()
+            Event-->>FrontendAnimateur: newResponseEvent()
             deactivate Event
 
-            FrontendAnimateur->>Animateur: Displays New Response
-        else Interaction is not Video type
+            FrontendAnimateur->>Animateur: displayResponse()
+        else Interaction is not Text type
             Backend-->>FrontendAuditeur: showIncorrectInteractionTypeMessage()
             deactivate Backend
         end
     else Auditeur n'est pas authentifié
         FrontendAuditeur->>Auditeur: showAuthenticationRequiredMessage()
     end
+```
+
