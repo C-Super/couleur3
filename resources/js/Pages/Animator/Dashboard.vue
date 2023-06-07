@@ -3,7 +3,7 @@
 import MessageItem from "@/Components/MessageItem.vue";
 import BaseButton from "@/Components/Bases/BaseButton.vue";
 import BaseCard from "@/Components/Bases/BaseCard.vue";
-import InteractionRadioGroup from "@/Components/Bases/InteractionRadioGroup.vue";
+import InteractionRadioGroup from "@/Components/Animator/Bases/InteractionRadioGroup.vue";
 import { reactive, onMounted } from "vue";
 import { Head, useForm } from "@inertiajs/vue3";
 
