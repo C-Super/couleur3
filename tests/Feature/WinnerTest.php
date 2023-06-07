@@ -172,6 +172,7 @@ it('stores winners successfully', function () {
     $response = postJson('/interactions/winner/confirm', [
         'interaction_id' => $interaction->id,
         'auditor_ids' => $winners,
+        'reward_id' => $reward->id,
     ]);
 
     // Assert response
@@ -182,6 +183,9 @@ it('stores winners successfully', function () {
     $winnersInDb = Winner::where('interaction_id', $interaction->id)->pluck('auditor_id')->toArray();
     $this->assertCount(3, $winnersInDb);
     $this->assertEquals(sort($winners), sort($winnersInDb));
+
+    // Assert reward_id in interaction table
+    $this->assertEquals($reward->id, Interaction::find($interaction->id)->reward_id);
 
     // Assert event for each winner
     foreach ($winners as $winnerId) {
