@@ -3,6 +3,8 @@
 import MessageItem from "@/Components/MessageItem.vue";
 import BaseButton from "@/Components/Bases/BaseButton.vue";
 import BaseCard from "@/Components/Bases/BaseCard.vue";
+import BaseTabs from "@/Components/Animator/Bases/BaseTabs.vue";
+import BaseTab from "@/Components/Animator/Bases/BaseTab.vue";
 import { reactive, onMounted } from "vue";
 import { Head, useForm } from "@inertiajs/vue3";
 
@@ -91,7 +93,17 @@ function subscribeToPublicChannel() {
         <div class="basis-2/3 flex flex-col justify-items-stretch gap-3">
             <base-card type="primary" class="flex-auto basis-4/6">
                 <template #title>Créer une interaction</template>
-                <template #content></template>
+                <template #content>
+                    <base-tabs>
+                        <base-tab title="Réponses">Les réponses</base-tab>
+                        <base-tab title="Sélection aléatoire" :active="true"
+                            >Les selection aléatoire</base-tab
+                        >
+                        <base-tab title="Sélection rapidité"
+                            >Les séléection rapides</base-tab
+                        >
+                    </base-tabs>
+                </template>
                 <template #actions>
                     <base-button>Créer</base-button>
                 </template>
@@ -118,7 +130,7 @@ function subscribeToPublicChannel() {
     </div>
 </template>
 
-<style scoped>
+<style lang="postcss" scoped>
 #animator-container {
     background-color: #1c1354;
 }
