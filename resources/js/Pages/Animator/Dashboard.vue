@@ -3,12 +3,46 @@
 import MessageItem from "@/Components/MessageItem.vue";
 import BaseButton from "@/Components/Bases/BaseButton.vue";
 import BaseCard from "@/Components/Bases/BaseCard.vue";
+import InteractionRadioGroup from "@/Components/Bases/InteractionRadioGroup.vue";
 import { reactive, onMounted } from "vue";
 import { Head, useForm } from "@inertiajs/vue3";
 
 const data = reactive({
     messages: props.messages,
 });
+
+const interactions = [
+    {
+        icon: "bar_chart",
+        name: "Sondage",
+        "value ": "survey",
+    },
+    {
+        icon: "rule",
+        name: "QCM",
+        value: "mcq",
+    },
+    {
+        icon: "subject",
+        name: "Texte",
+        value: "text",
+    },
+    {
+        icon: "image",
+        name: "Image",
+        value: "picture",
+    },
+    {
+        icon: "mic",
+        name: "Audio",
+        value: "audio",
+    },
+    {
+        icon: "video_call",
+        name: "Vidéo",
+        value: "video",
+    },
+];
 
 const props = defineProps({
     messages: {
@@ -53,7 +87,6 @@ function subscribeToPublicChannel() {
 
 <template>
     <Head title="Dashboard" />
-
     <div id="animator-container" class="h-screen p-5 flex gap-5">
         <div class="basis-1/3 flex flex-col gap-3">
             <base-card class="flex-auto grow">
@@ -91,7 +124,12 @@ function subscribeToPublicChannel() {
         <div class="basis-2/3 flex flex-col justify-items-stretch gap-3">
             <base-card type="primary" class="flex-auto basis-4/6">
                 <template #title>Créer une interaction</template>
-                <template #content></template>
+                <template #content>
+                    <interaction-radio-group
+                        :interactions="interactions"
+                        name="interactionType"
+                    />
+                </template>
                 <template #actions>
                     <base-button>Créer</base-button>
                 </template>
