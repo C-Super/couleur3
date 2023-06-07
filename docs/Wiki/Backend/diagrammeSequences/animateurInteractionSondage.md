@@ -1,6 +1,6 @@
 ```mermaid
 ---
-title: Diagramme de séquence Animateur lance une interaction texte
+title: Diagramme de séquence Animateur lance une interaction sondage
 ---
 sequenceDiagram
     Actor Auditeur
@@ -11,10 +11,10 @@ sequenceDiagram
     participant Backend as Backend (Laravel)
     participant DB as Base de données
 
-    Animateur->>FrontendAnimateur: Demande de lancement d'une interaction texte
+    Animateur->>FrontendAnimateur: Demande de lancement d'une interaction de type sondage avec N choix (2 <= N <= 4)
     activate FrontendAnimateur
 
-    FrontendAnimateur->>+Backend: requestCreateTextInteraction()
+    FrontendAnimateur->>+Backend: requestCreateSurveyInteraction()
     activate Backend
 
     alt Animateur a les autorisations
@@ -25,9 +25,10 @@ sequenceDiagram
         deactivate DB
 
         Backend->>Backend: noOtherInteractionsInProgress()
-        Backend->>Backend: isTextContentValid()
+        Backend->>Backend: isValidChoiceNumber()
+        Backend->>Backend: isSurveyContentValid()
 
-        Backend->>+DB: createTextInteraction()
+        Backend->>+DB: createSurveyInteraction()
         activate DB
 
         DB-->>-Backend: InteractionDetails
@@ -37,15 +38,17 @@ sequenceDiagram
         deactivate Backend
         deactivate FrontendAnimateur
 
-        Backend->>+Event: notifyNewTextInteraction()
+        Backend->>+Event: notifyNewSurveyInteraction()
         activate Event
 
-        Event-->>FrontendAuditeur: sendNewTextInteraction()
+        Event-->>FrontendAuditeur: sendNewSurveyInteraction()
         deactivate Event
 
         FrontendAuditeur->>Auditeur: Affiche l'interaction
 
-    else Animateur n'a pas les autorisations ou le contenu du texte n'est pas valide
+    else Animateur n'a pas les autorisations ou le contenu du sondage n'est pas valide
         Backend->>FrontendAnimateur: errorNotification("Impossible de créer l'interaction")
         deactivate Backend
     end
+````
+

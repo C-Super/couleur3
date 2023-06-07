@@ -1,7 +1,4 @@
 ```mermaid
----
-title: Diagramme de séquence Auditeur répond à une interaction photo
----
 sequenceDiagram
     Actor Auditeur
     Actor Animateur
@@ -11,27 +8,27 @@ sequenceDiagram
     participant Backend as Backend (Laravel)
     participant DB as Database
 
-    Auditeur->>FrontendAuditeur: Sends Photo Response
+    Auditeur->>FrontendAuditeur: Sends Survey Response
     activate FrontendAuditeur
 
     FrontendAuditeur->>FrontendAuditeur: verifyInteractionOpen()
-    FrontendAuditeur->>FrontendAuditeur: Checks if Media Type Matches Interaction Type
+    FrontendAuditeur->>FrontendAuditeur: Checks if Response Type Matches Interaction Type
 
     alt Auditeur est authentifié
-        FrontendAuditeur->>+Backend: Sends Response
+        FrontendAuditeur->>+Backend: relaysResponse()
         activate Backend
 
-        Backend->>+DB: Queries Interaction Details
+        Backend->>+DB: fetchInteractionDetails()
         activate DB
 
         DB-->>-Backend: Returns Interaction Details
         deactivate DB
 
         Backend->>Backend: verifyInteractionOpen()
-        Backend->>Backend: Checks if Media Type Matches Interaction Type
+        Backend->>Backend: Checks if Response Type Matches Interaction Type
 
-        alt Interaction is Photo type
-            Backend->>+DB: Records Response
+        alt Interaction is Survey type
+            Backend->>+DB: recordResponse()
             activate DB
 
             DB-->>-Backend: Returns Recorded Response Details
@@ -47,13 +44,17 @@ sequenceDiagram
             activate Event
 
             Event->>FrontendAnimateur: newResponseEvent()
+            Event->>+FrontendAuditeur: sendSurveyResultsUpdate()
             deactivate Event
 
             FrontendAnimateur->>Animateur: displayResponse()
-        else Interaction is not Photo type
+            FrontendAuditeur->>Auditeur: updateSurveyPercentages()
+        else Interaction is not Survey type
             Backend-->>FrontendAuditeur: showIncorrectInteractionTypeMessage()
             deactivate Backend
         end
     else Auditeur n'est pas authentifié
         FrontendAuditeur->>Auditeur: showAuthenticationRequiredMessage()
     end
+```
+

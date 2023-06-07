@@ -1,4 +1,7 @@
 ```mermaid
+---
+title: Diagramme de séquence Auditeur répond à une interaction vidéo
+---
 sequenceDiagram
     Actor Auditeur
     Actor Animateur
@@ -8,27 +11,27 @@ sequenceDiagram
     participant Backend as Backend (Laravel)
     participant DB as Database
 
-    Auditeur->>FrontendAuditeur: Sends Survey Response
+    Auditeur->>FrontendAuditeur: Sends Video Response
     activate FrontendAuditeur
 
-    FrontendAuditeur->>FrontendAuditeur: verifyInteractionOpen()
-    FrontendAuditeur->>FrontendAuditeur: Checks if Response Type Matches Interaction Type
+    FrontendAuditeur->>FrontendAuditeur: Checks if Interaction is Open
+    FrontendAuditeur->>FrontendAuditeur: Validates Media Type
 
     alt Auditeur est authentifié
-        FrontendAuditeur->>+Backend: relaysResponse()
+        FrontendAuditeur->>+Backend: Sends Response
         activate Backend
 
-        Backend->>+DB: fetchInteractionDetails()
+        Backend->>+DB: Queries Interaction Details
         activate DB
 
         DB-->>-Backend: Returns Interaction Details
         deactivate DB
 
-        Backend->>Backend: verifyInteractionOpen()
-        Backend->>Backend: Checks if Response Type Matches Interaction Type
+        Backend->>Backend: Checks if Interaction is Open
+        Backend->>Backend: Validates Media Type
 
-        alt Interaction is Survey type
-            Backend->>+DB: recordResponse()
+        alt Interaction is Video type
+            Backend->>+DB: Records Response
             activate DB
 
             DB-->>-Backend: Returns Recorded Response Details
@@ -40,19 +43,19 @@ sequenceDiagram
             FrontendAuditeur->>Auditeur: displayConfirmation()
             deactivate FrontendAuditeur
 
-            Backend->>+Event: emitNewResponseEvent()
+            Backend->>+Event: notifyNewVideoResponse()
             activate Event
 
-            Event->>FrontendAnimateur: newResponseEvent()
-            Event->>+FrontendAuditeur: sendSurveyResultsUpdate()
+            Event-->>FrontendAnimateur: sendNewVideoResponse()
             deactivate Event
 
-            FrontendAnimateur->>Animateur: displayResponse()
-            FrontendAuditeur->>Auditeur: updateSurveyPercentages()
-        else Interaction is not Survey type
+            FrontendAnimateur->>Animateur: Displays New Response
+        else Interaction is not Video type
             Backend-->>FrontendAuditeur: showIncorrectInteractionTypeMessage()
             deactivate Backend
         end
     else Auditeur n'est pas authentifié
         FrontendAuditeur->>Auditeur: showAuthenticationRequiredMessage()
     end
+```
+

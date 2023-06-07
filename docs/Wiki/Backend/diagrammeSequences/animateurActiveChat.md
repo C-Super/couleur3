@@ -39,3 +39,4 @@ sequenceDiagram
         deactivate Backend
         deactivate FrontendAnimateur
     end
+```

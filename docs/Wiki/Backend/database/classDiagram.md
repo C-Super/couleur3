@@ -128,3 +128,4 @@ I   NTERACTION -- "0..*" WINNER : has et CI-14, CI-15 et CI-16
     ANSWER -- "1..1" MEDIA : responds_with et CI-9 et CI-13
     MEDIA -- "0..*" ANSWER : responds_to et CI-9 et CI-13
 ```
+

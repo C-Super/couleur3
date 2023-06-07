@@ -38,3 +38,5 @@ sequenceDiagram
         Backend->>FrontendAnimateur: errorNotification("L'Animateur n'a pas les autorisations nécessaires")
         deactivate Backend
     end
+```
+

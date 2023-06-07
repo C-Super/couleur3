@@ -46,3 +46,5 @@ participant DB as Database
         Backend->>FrontendAnimateur: errorNotification("The Host does not have the necessary permissions")
         deactivate Backend
     end
+```
+

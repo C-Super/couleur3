@@ -37,7 +37,7 @@ flowchart TB
 -   Cliquer sur le bouton `Code` et sélectionner l'onglet `Codespaces`
 -   Cliquer sur le bouton `Create codespace on main`
 
-![Créer un codespace](./screenshots/github-codespaces-create.png)
+![Créer un codespace](Backend/environnement/screenshots/github-codespaces-create.png)
 
 ### 2. Ouvrir le codespace dans VS Code ou PhpStorm
 
@@ -51,11 +51,11 @@ Quand le conteneur est prêt, vous devriez voir un icône (une petite antenne) d
 
 Cette vue liste tous les points d'entrée disponible.
 
-![Dev Container prêt](./screenshots/dev-container-ports.png)
+![Dev Container prêt](Backend/environnement/screenshots/dev-container-ports.png)
 
 Vous pouvez maintenant ouvrir l'application dans votre navigateur à l'adresse [http://localhost:80](http://localhost:80).
 
-![Laravel Welcome page](./screenshots/laravel-welcome.png)
+![Laravel Welcome page](Backend/environnement/screenshots/laravel-welcome.png)
 
 Voilàà ! Vous pouvez maintenant commencer à développer.
 
@@ -79,7 +79,7 @@ Avant de fermer VS Code, il faut arrêter le conteneur.
 -   En bas à gauche, cliquer sur l'icône `>< Codespaces` pour ouvrir le menu des codespaces
 -   Cliquer sur l'option `Stop Current Codespace`, sinon le conteneur va continuer de tourner et le temps sera décompté de votre forfait (60 heures gratuit par mois).
 
-![Close Codespaces](./screenshots/github-codespaces-close.png)
+![Close Codespaces](Backend/environnement/screenshots/github-codespaces-close.png)
 
 ## Configuration sur Windows
 
@@ -88,13 +88,13 @@ Avant de fermer VS Code, il faut arrêter le conteneur.
 -   [Docker](https://www.docker.com/)
 -   [WSL2](https://learn.microsoft.com/en-us/windows/wsl/about)
 -   [VS Code](https://code.visualstudio.com/)
--   [VS Code - Remote Development (Extension)](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack)
+-   [VS Code - Remote Development (Extension)](Extension))
 
 ### 1. Cloner le projet
 
 Ouvrir l'application _Terminal_ et sélectionner le sous-système Ubuntu.
 
-![Ouvrir l'environnement Ubuntu dans le Terminal](./screenshots/win-run-wsl.png)
+![Ouvrir l'environnement Ubuntu dans le Terminal](Backend/environnement/screenshots/win-run-wsl.png)
 
 ```bash
 git clone https://github.com/C-Super/couleur3.git
@@ -116,7 +116,7 @@ Et n'oubliez pas de lancer l'application Docker Desktop, avant !
 
 Vous devriez voir une fenêtre de sélection de l'environnement de développement s'ouvrir.
 
-![Fenêtre de sélection de l'environnement de développement](./screenshots/win-vscode-select-dev-container.png)
+![Fenêtre de sélection de l'environnement de développement](Backend/environnement/screenshots/win-vscode-select-dev-container.png)
 
 Si vous ne voyer pas la fenêtre de sélection de l'environnement de développement.
 
@@ -130,11 +130,11 @@ Cela peut prendre quelques minutes la première fois que vous ouvrez le projet d
 
 Quand le conteneur est prêt, vous devriez voir un icône (une petite antenne) dans la barre d'outils de VS Code.
 
-![Dev Container prêt](./screenshots/dev-container-ports.png)
+![Dev Container prêt](Backend/environnement/screenshots/dev-container-ports.png)
 
 Vous pouvez maintenant ouvrir l'application dans votre navigateur à l'adresse [http://localhost:8080](http://localhost:80).
 
-![Laravel Welcome page](./screenshots/laravel-welcome.png)
+![Laravel Welcome page](Backend/environnement/screenshots/laravel-welcome.png)
 
 Voilàà ! Vous pouvez maintenant commencer à développer.
 
