@@ -11,10 +11,15 @@ const buttons = ref([
 
 // Fonction appelée lorsqu'on clique sur un bouton
 function handleButtonClick(index) {
-    // Parcourir tous les boutons et les mettre à jour
-    buttons.value.forEach((button, i) => {
-        button.active = i === index;
-    });
+    if (buttons.value[index].name === "person") {
+        // Rediriger vers la page de profil
+        window.location.href = "/profile";
+    } else {
+        // Parcourir tous les boutons et les mettre à jour
+        buttons.value.forEach((button, i) => {
+            button.active = i === index;
+        });
+    }
 }
 </script>
 
