@@ -108,7 +108,7 @@ class WinnerController extends Controller
         $interaction_id = $validated['interaction_id'];
         $auditor_ids = $validated['auditor_ids'];
 
-        DB::transaction(function () use ($interaction_id, $auditor_ids) {
+        DB::transaction(function () use ($interaction_id, $auditor_ids, $validated) {
             // Delete all existing winners for the interaction
 
             Winner::where('interaction_id', $interaction_id)->delete();
@@ -120,6 +120,11 @@ class WinnerController extends Controller
                     'auditor_id' => $auditor_id,
                 ]);
             }
+
+            // Insert into interaction reward_id
+            DB::table('interactions')
+                ->where('id', $interaction_id)
+                ->update(['reward_id' => $validated['reward_id']]);
         });
 
         // Dispatch an event to notify the new winners
