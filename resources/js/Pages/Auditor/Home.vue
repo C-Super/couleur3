@@ -1,13 +1,20 @@
 <script setup>
 import Header from "@/Components/Bases/Auditor/Header.vue";
 import Navigation from "@/Components/Bases/Auditor/Navigation.vue";
-import Chat from "@/Components/Bases/Auditor/Chat.vue";
+import ChatComponent from "@/Components/ChatComponent.vue";
+
+defineProps({
+    chatEnabled: {
+        type: Boolean,
+        required: true,
+    },
+});
 </script>
 
 <template>
     <div class="bg-black text-base-100 relative">
         <Header />
-        <Chat />
+        <ChatComponent :chat-enabled="chatEnabled" />
         <Navigation />
     </div>
 </template>
