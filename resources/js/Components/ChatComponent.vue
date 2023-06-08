@@ -22,7 +22,7 @@ onMounted(() => {
 function subscribeToPublicChannel() {
     window.Echo.channel("public")
         .listen("MessageSent", (event) => {
-            data.messages.value.push(event.message);
+            data.messages.push(event.message);
         })
         .listen("ChatUpdated", (event) => {
             data.chatEnabled = event.chatEnabled;
