@@ -1,25 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Animator;
+namespace App\Http\Controllers;
 
 use App\Events\ChatUpdated;
-use App\Http\Controllers\Controller;
 use App\Http\Requests\Animator\UpdateChatRequest;
-use App\Models\Message;
 use App\Settings\GeneralSettings;
-use Illuminate\Support\Facades\DB;
-use Inertia\Inertia;
 
-class DashboardController extends Controller
+class SettingsController extends Controller
 {
-    public function index(GeneralSettings $settings)
-    {
-        return Inertia::render('Animator/Dashboard', [
-            'chatEnabled' => $settings->chat_enabled,
-        ]);
-    }
-
-    public function updateChatSetting(UpdateChatRequest $request, GeneralSettings $settings)
+    public function update(UpdateChatRequest $request, GeneralSettings $settings)
     {
         $validated = $request->validated();
 
@@ -30,7 +19,7 @@ class DashboardController extends Controller
             ]);
         }
 
-        if ($validated['chat_enabled'] === false && ! $settings->chat_enabled) {
+        if ($validated['chat_enabled'] === false && !$settings->chat_enabled) {
             return back()->with([
                 'error', 'Le chat est déjà désactivé.',
                 'chatEnabled' => $settings->chat_enabled,
