@@ -38,7 +38,7 @@ function changeTab(i) {
 
 <style lang="postcss" scoped>
 .tabs-boxed {
-    @apply bg-white bg-opacity-50 rounded-full gap-2;
+    @apply bg-white bg-opacity-50 rounded-full gap-1;
 }
 .tab {
     @apply tab-lg flex-auto font-bold text-white rounded-full border-2 border-transparent hover:border-white hover:bg-white hover:bg-opacity-50;
