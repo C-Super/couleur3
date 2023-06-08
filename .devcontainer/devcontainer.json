@@ -13,7 +13,8 @@
                 "Vue.volar",
                 "nhedger.inertia",
                 "dbaeumer.vscode-eslint",
-                "esbenp.prettier-vscode"
+                "esbenp.prettier-vscode",
+                "cpylua.language-postcss"
             ],
             "settings": {
                 "editor.formatOnSave": true,
@@ -31,13 +32,15 @@
         }
     },
     "remoteUser": "sail",
-    "postCreateCommand": "chown -R 1000:1000 /var/www/html && cp .env.example .env && composer install && php artisan key:generate && php artisan storage:link && php artisan migrate --force && npm install && npm run dev",
+    "postCreateCommand": "chown -R 1000:1000 /var/www/html && cp .env.example .env && composer install && php artisan key:generate && php artisan storage:link --force && php artisan migrate --force --seed && npm install",
+    "postStartCommand": "npm run dev",
     "forwardPorts": [
         80,
         8025,
         8080,
         6001,
-        5173
+        5173,
+        8900
     ],
     "portsAttributes": {
         "80": {
@@ -55,6 +58,9 @@
         },
         "6001": {
             "label": "Soketi"
+        },
+        "8900": {
+            "label": "Minio"
         }
     }
 }

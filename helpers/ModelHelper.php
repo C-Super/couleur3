@@ -75,6 +75,9 @@ namespace App\Models{
      * @property int $interaction_id
      * @property string $replyable_type
      * @property int $replyable_id
+     * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $answerable
+     * @property-read \App\Models\Auditor $auditor
+     * @property-read \App\Models\Interaction $interaction
      *
      * @method static \Database\Factories\AnswerFactory factory($count = null, $state = [])
      * @method static \Illuminate\Database\Eloquent\Builder|Answer newModelQuery()
@@ -103,6 +106,7 @@ namespace App\Models{
      * @property string $content
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property \Illuminate\Support\Carbon|null $updated_at
+     * @property-read \App\Models\Answer|null $answer
      *
      * @method static \Database\Factories\AnswerTextFactory factory($count = null, $state = [])
      * @method static \Illuminate\Database\Eloquent\Builder|AnswerText newModelQuery()
@@ -130,6 +134,8 @@ namespace App\Models{
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property int|null $address_id
      * @property-read \App\Models\Address|null $address
+     * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Answer> $answers
+     * @property-read int|null $answers_count
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Message> $messages
      * @property-read int|null $messages_count
      * @property-read \App\Models\User|null $user
@@ -192,10 +198,15 @@ namespace App\Models{
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property string|null $ended_at
      * @property int $animator_id
-     * @property int $reward_id
+     * @property int|null $reward_id
      * @property int|null $winners_count
+     * @property string $status
+     * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Answer> $answers
+     * @property-read int|null $answers_count
+     * @property-read \App\Models\CallToAction|null $call_to_action
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\QuestionChoice> $question_choices
      * @property-read int|null $question_choices_count
+     * @property-read \App\Models\Reward|null $rewards
      *
      * @method static \Database\Factories\InteractionFactory factory($count = null, $state = [])
      * @method static \Illuminate\Database\Eloquent\Builder|Interaction newModelQuery()
@@ -207,6 +218,7 @@ namespace App\Models{
      * @method static \Illuminate\Database\Eloquent\Builder|Interaction whereEndedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder|Interaction whereId($value)
      * @method static \Illuminate\Database\Eloquent\Builder|Interaction whereRewardId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder|Interaction whereStatus($value)
      * @method static \Illuminate\Database\Eloquent\Builder|Interaction whereTitle($value)
      * @method static \Illuminate\Database\Eloquent\Builder|Interaction whereType($value)
      * @method static \Illuminate\Database\Eloquent\Builder|Interaction whereUpdatedAt($value)
@@ -228,6 +240,7 @@ namespace App\Models{
      * @property string $type
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property \Illuminate\Support\Carbon|null $updated_at
+     * @property-read \App\Models\Answer|null $answer
      *
      * @method static \Illuminate\Database\Eloquent\Builder|Media newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder|Media newQuery()
@@ -283,6 +296,8 @@ namespace App\Models{
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property int $interaction_id
+     * @property-read \App\Models\Answer|null $answer
+     * @property-read \App\Models\Interaction $interaction
      *
      * @method static \Database\Factories\QuestionChoiceFactory factory($count = null, $state = [])
      * @method static \Illuminate\Database\Eloquent\Builder|QuestionChoice newModelQuery()
@@ -311,6 +326,8 @@ namespace App\Models{
      * @property string $description
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property \Illuminate\Support\Carbon|null $updated_at
+     * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Interaction> $interactions
+     * @property-read int|null $interactions_count
      *
      * @method static \Database\Factories\RewardFactory factory($count = null, $state = [])
      * @method static \Illuminate\Database\Eloquent\Builder|Reward newModelQuery()
@@ -380,6 +397,8 @@ namespace App\Models{
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property int $interaction_id
      * @property int $auditor_id
+     * @property-read \App\Models\Auditor $auditor
+     * @property-read \App\Models\Interaction $interaction
      *
      * @method static \Database\Factories\WinnerFactory factory($count = null, $state = [])
      * @method static \Illuminate\Database\Eloquent\Builder|Winner newModelQuery()

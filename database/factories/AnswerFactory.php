@@ -2,6 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\AnswerText;
+use App\Models\Auditor;
+use App\Models\Interaction;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,8 +19,14 @@ class AnswerFactory extends Factory
      */
     public function definition(): array
     {
+        $interaction = Interaction::factory()->create(['type' => 'text']);
+        $answerText = AnswerText::factory()->create();
+
         return [
-            //
+            'interaction_id' => $interaction->id,
+            'auditor_id' => Auditor::factory(),
+            'replyable_id' => $answerText->id,
+            'replyable_type' => AnswerText::class,
         ];
     }
 }

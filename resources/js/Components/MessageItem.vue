@@ -1,15 +1,15 @@
 <template>
     <div class="text-white">
-        <span> [{{ useLocaleTimeAgo(msg.created_at).value }}] </span>
-        <span>
-            <b>{{ msg.user_name }}</b
-            >: {{ msg.content }}
-        </span>
+        <span class="font-normal text-gray-300 mr-2">{{
+            formatDateToHoursMinutes(msg.created_at)
+        }}</span>
+        <span class="font-bold">{{ msg.user_name }}</span>
+        <p class="font-normal text-gray-200">{{ msg.content }}</p>
     </div>
 </template>
 
 <script setup>
-import { useLocaleTimeAgo } from "@/Composables/useLocaleTimeAgo";
+import formatDateToHoursMinutes from "@/Utils/date";
 
 defineProps({
     msg: {

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->timestamps();
             $table->foreignId('interaction_id')->constrained();
             $table->foreignId('auditor_id')->constrained();
+            $table->unique(['interaction_id', 'auditor_id']);
         });
     }
 

@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 use Symfony\Component\HttpFoundation\Response;
 
 class AuthenticateAsAnimator
@@ -15,10 +16,13 @@ class AuthenticateAsAnimator
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if ($request->user()->isAnimator()) {
-            return $next($request);
+        if (! $request->user()->isAnimator()) {
+            return Inertia::render('Error', [
+                'status' => '403: '.__('http-statuses.403'),
+                'message' => "Vous n'êtes pas un animateur.",
+            ])->toResponse($request)->setStatusCode(403);
         }
 
-        return back()->with('error', 'You are not an animator.');
+        return $next($request);
     }
 }

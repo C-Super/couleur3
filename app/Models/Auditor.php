@@ -49,4 +49,9 @@ class Auditor extends Model
     {
         return $this->hasMany(Message::class);
     }
+
+    public function answers(): HasMany
+    {
+        return $this->hasMany(Answer::class);
+    }
 }

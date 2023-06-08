@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @mixin IdeHelperInteraction
@@ -30,8 +32,26 @@ class Interaction extends Model
     /**
      * Get all question_choices for the interaction.
      */
-    public function question_choices()
+    public function question_choices(): HasMany
     {
         return $this->hasMany(QuestionChoice::class);
+    }
+
+    /**
+     * Get the call_to_action that owns the interaction.
+     */
+    public function call_to_action(): BelongsTo
+    {
+        return $this->belongsTo(CallToAction::class);
+    }
+
+    public function answers(): HasMany
+    {
+        return $this->hasMany(Answer::class);
+    }
+
+    public function rewards(): BelongsTo
+    {
+        return $this->belongsTo(Reward::class);
     }
 }

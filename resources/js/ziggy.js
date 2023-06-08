@@ -3,26 +3,6 @@ const Ziggy = {
     port: null,
     defaults: {},
     routes: {
-        "debugbar.openhandler": {
-            uri: "_debugbar/open",
-            methods: ["GET", "HEAD"],
-        },
-        "debugbar.clockwork": {
-            uri: "_debugbar/clockwork/{id}",
-            methods: ["GET", "HEAD"],
-        },
-        "debugbar.assets.css": {
-            uri: "_debugbar/assets/stylesheets",
-            methods: ["GET", "HEAD"],
-        },
-        "debugbar.assets.js": {
-            uri: "_debugbar/assets/javascript",
-            methods: ["GET", "HEAD"],
-        },
-        "debugbar.cache.delete": {
-            uri: "_debugbar/cache/{key}/{tags?}",
-            methods: ["DELETE"],
-        },
         "sanctum.csrf-cookie": {
             uri: "sanctum/csrf-cookie",
             methods: ["GET", "HEAD"],
@@ -44,6 +24,7 @@ const Ziggy = {
         "profile.update": { uri: "profile", methods: ["PATCH"] },
         "profile.destroy": { uri: "profile", methods: ["DELETE"] },
         "auditor.messages.store": { uri: "messages", methods: ["POST"] },
+        "answer.store": { uri: "answer", methods: ["POST"] },
         "animator.index": { uri: "dashboard", methods: ["GET", "HEAD"] },
         "animator.chat.update": { uri: "dashboard/chat", methods: ["POST"] },
         "animator.interactions.index": {
@@ -58,6 +39,22 @@ const Ziggy = {
             uri: "dashboard/interactions/{interaction}",
             methods: ["GET", "HEAD"],
             bindings: { interaction: "id" },
+        },
+        "interactions.winner.random": {
+            uri: "interactions/winner/random",
+            methods: ["POST"],
+        },
+        "interactions.winner.replace": {
+            uri: "interactions/winner/replace",
+            methods: ["POST"],
+        },
+        "interactions.winner.fastest": {
+            uri: "interactions/winner/fastest",
+            methods: ["POST"],
+        },
+        "interactions.winner.confirm": {
+            uri: "interactions/winner/confirm",
+            methods: ["POST"],
         },
         register: { uri: "register", methods: ["GET", "HEAD"] },
         login: { uri: "login", methods: ["GET", "HEAD"] },

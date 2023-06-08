@@ -17,7 +17,7 @@ class AnswerTextFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'content' => $this->faker->text,
         ];
     }
 }
