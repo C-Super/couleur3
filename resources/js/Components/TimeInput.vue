@@ -6,6 +6,7 @@ defineProps({
         type: String,
         required: true,
     },
+
     id: {
         type: String,
         required: true,
@@ -29,8 +30,8 @@ defineExpose({ focus: () => input.value.focus() });
     <input
         :id="`${id}`"
         ref="input"
-        type="text"
-        class="input input-md input-bordered border-white focus:border-2 focus:border-primary focus:ring-0 bg-transparent w-full rounded-full font-light text-white"
+        type="time"
+        class="input input-md input-bordered border-white focus:border-2 focus:border-primary focus:ring-0 bg-transparent rounded-full font-light text-white"
         :value="modelValue"
         @input="$emit('update:modelValue', $event.target.value)"
     />
