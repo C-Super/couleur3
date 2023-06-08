@@ -30,7 +30,7 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth', 'verified', 'auth.auditor'])->group(function () {
     Route::middleware('chat.enabled')->group(function () {
-        Route::post('/messages', [AuditorDashboardController::class, 'storeMessage'])->name('auditor.messages.store');
+        Route::post('/messages', [HomeController::class, 'storeMessage'])->name('auditor.messages.store');
     });
     Route::post('/answer', [AnswerController::class, 'store'])->name('answer.store');
 });
@@ -50,4 +50,4 @@ Route::middleware(['auth', 'auth.animator', HandlePrecognitiveRequests::class])-
     Route::post('/interactions/winner/confirm', [WinnerController::class, 'store'])->name('interactions.winner.confirm');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

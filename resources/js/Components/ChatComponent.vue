@@ -1,21 +1,44 @@
 <!-- eslint-disable no-undef -->
 <script setup>
-import { ref, reactive } from "vue";
+import { ref, reactive, onMounted } from "vue";
 import { router } from "@inertiajs/vue3";
 import MessageItem from "@/Components/MessageItem.vue";
 import BaseButton from "@/Components/Bases/BaseButton.vue";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import InputError from "@/Components/InputError.vue";
 
 const messageContainer = ref(null);
 
-defineProps({
+const data = reactive({
+    chatEnabled: props.chatEnabled,
+    messages: [],
+});
+
+onMounted(() => {
+    subscribeToPublicChannel();
+});
+
+function subscribeToPublicChannel() {
+    window.Echo.channel("public")
+        .listen("MessageSent", (event) => {
+            data.messages.push(event.message);
+        })
+        .listen("ChatUpdated", (event) => {
+            data.chatEnabled = event.chatEnabled;
+
+            if (!data.chatEnabled) {
+                data.messages = [];
+            }
+        })
+        .error((error) => {
+            console.error(error);
+        });
+}
+
+const props = defineProps({
     chatEnabled: {
         type: Boolean,
-        required: true,
-    },
-    messages: {
-        type: Array,
         required: true,
     },
 });
@@ -55,12 +78,12 @@ const submitMessage = () => {
         <div id="myTabContent" class="tab-content mb-3">
             <div class="tab-pane fade show active">
                 <div
-                    v-if="messages && chatEnabled"
+                    v-if="data.messages && data.chatEnabled"
                     ref="messageContainer"
                     class="messageContainer"
                 >
                     <message-item
-                        v-for="msg in messages"
+                        v-for="msg in data.messages"
                         :key="msg.id"
                         :msg="msg"
                     />
@@ -76,7 +99,7 @@ const submitMessage = () => {
                             required
                             autofocus
                             placeholder="Message..."
-                            :disabled="form.processing || !chatEnabled"
+                            :disabled="form.processing || !data.chatEnabled"
                             @keyup.enter="submitMessage"
                         />
 
@@ -94,13 +117,13 @@ const submitMessage = () => {
                                         form.processing ||
                                         !form.message ||
                                         form.message.length < 1 ||
-                                        !chatEnabled,
+                                        !data.chatEnabled,
                                 }"
                                 :disabled="
                                     form.processing ||
                                     !form.message ||
                                     form.message.length < 1 ||
-                                    !chatEnabled
+                                    !data.chatEnabled
                                 "
                             >
                                 Send message
