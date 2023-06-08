@@ -2,7 +2,7 @@
 
 <template>
     <div class="bg-black text-base-100 px-3.5">
-        <div class="flex items-center">
+        <div id="recomandation-1" class="flex items-center">
             <img
                 class="h-[80px] w-[80px] mt-[40px] mr-3"
                 src="images/recommandation.png"
@@ -21,7 +21,7 @@
             </p>
         </div>
 
-        <div class="flex items-center">
+        <div id="recomandation-2" class="flex items-center">
             <img
                 class="h-[80px] w-[80px] mt-[25px] mr-3"
                 src="images/recommandation.png"
@@ -41,7 +41,7 @@
             </p>
         </div>
 
-        <div class="flex items-center">
+        <div id="recomandation-3" class="flex items-center">
             <img
                 class="h-[80px] w-[80px] mt-[25px] mr-3"
                 src="images/recommandation.png"
@@ -60,7 +60,7 @@
                 <span class="font-semibold text-2xl">Pili Pili</span>
             </p>
         </div>
-        <div class="flex items-center">
+        <div id="recomandation-4" class="flex items-center">
             <img
                 class="h-[80px] w-[80px] mt-[25px] mr-3"
                 src="images/recommandation.png"
@@ -79,7 +79,7 @@
                 <span class="font-semibold text-2xl">Pili Pili</span>
             </p>
         </div>
-        <div class="flex items-center">
+        <div id="recomandation-5" class="flex items-center">
             <img
                 class="h-[80px] w-[80px] mt-[25px] mr-3"
                 src="images/recommandation.png"
@@ -98,7 +98,7 @@
                 <span class="font-semibold text-2xl">Pili Pili</span>
             </p>
         </div>
-        <div class="flex items-center">
+        <div id="recomandation-6" class="flex items-center">
             <img
                 class="h-[80px] w-[80px] mt-[25px] mr-3"
                 src="images/recommandation.png"

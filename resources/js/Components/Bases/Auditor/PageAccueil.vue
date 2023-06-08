@@ -29,11 +29,15 @@ onMounted(() => {
 
 <template>
     <div class="bg-black text-base-100 px-3.5">
-        <p class="text-3xl mt-5 font-semibold">La chose publique</p>
+        <p id="titre-emission" class="text-3xl mt-5 font-semibold">
+            La chose publique
+        </p>
 
-        <p class="text-base font-bold mt-1">de 11h00 à 12h00</p>
+        <p id="heure-emission" class="text-base font-bold mt-1">
+            de 11h00 à 12h00
+        </p>
 
-        <p class="text-base font-light mt-1">
+        <p id="presentation-emission" class="text-base font-light mt-1">
             Présenté par <span class="text-primary">Patrick Dujany</span>
         </p>
 
