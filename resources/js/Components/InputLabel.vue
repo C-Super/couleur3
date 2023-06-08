@@ -1,6 +1,6 @@
 <script setup>
 defineProps({
-    value: {
+    id: {
         type: String,
         default: "",
     },
@@ -8,8 +8,7 @@ defineProps({
 </script>
 
 <template>
-    <label class="block font-medium text-sm text-gray-700 dark:text-gray-300">
-        <span v-if="value">{{ value }}</span>
-        <span v-else><slot /></span>
+    <label :for="`${id}`" class="block font-medium text-white text-lg">
+        <slot></slot>
     </label>
 </template>
