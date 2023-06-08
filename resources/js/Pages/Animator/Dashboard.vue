@@ -3,12 +3,26 @@
 import MessageItem from "@/Components/MessageItem.vue";
 import BaseButton from "@/Components/Bases/BaseButton.vue";
 import BaseCard from "@/Components/Bases/BaseCard.vue";
+import TextInput from "@/Components/TextInput.vue";
+import TimeInput from "@/Components/TimeInput.vue";
+import InputGroup from "@/Components/InputGroup.vue";
 import BaseTabs from "@/Components/Animator/Bases/BaseTabs.vue";
 import BaseTab from "@/Components/Animator/Bases/BaseTab.vue";
 import InteractionRadioGroup from "@/Components/Animator/Bases/InteractionRadioGroup.vue";
-import { reactive, onMounted } from "vue";
+import { reactive, onMounted, ref } from "vue";
 import { Head, useForm } from "@inertiajs/vue3";
 
+let isCreating = ref(null);
+
+const forms = reactive({
+    question: {},
+
+    cta: {},
+
+    rapidity: {
+        title: "Sois le premier à cliquer !",
+    },
+});
 const data = reactive({
     messages: props.messages,
 });
@@ -85,6 +99,17 @@ function subscribeToPublicChannel() {
             console.error(error);
         });
 }
+
+function creatingInteraction(type) {
+    if (type.length === 0) {
+        isCreating.value = null;
+    } else {
+        isCreating.value = type;
+    }
+}
+function cancelInteraction() {
+    isCreating.value = null;
+}
 </script>
 
 <template>
@@ -93,7 +118,7 @@ function subscribeToPublicChannel() {
         <div class="basis-1/3 flex flex-col gap-3">
             <base-card class="flex-auto grow">
                 <template #title>Chat</template>
-                <template #content>
+                <template #subtitle>
                     <div class="overflow-hidden overflow-y-auto">
                         <message-item
                             v-for="msg in data.messages"
@@ -103,6 +128,7 @@ function subscribeToPublicChannel() {
                         />
                     </div>
                 </template>
+                <template #content></template>
                 <template #actions>
                     <form @submit.prevent="submit">
                         <base-button :disabled="form.processing">
@@ -124,8 +150,12 @@ function subscribeToPublicChannel() {
         </div>
 
         <div class="basis-2/3 flex flex-col justify-items-stretch gap-3">
-            <base-card type="primary" class="flex-auto basis-4/6">
-                <template #title>Créer une interaction</template>
+            <base-card
+                v-if="!isCreating || isCreating === 'question'"
+                type="primary"
+                class="flex-auto basis-4/6"
+            >
+                <template #title>Question</template>
                 <template #content>
                     <base-tabs>
                         <base-tab title="Réponses">Les réponses</base-tab>
@@ -143,25 +173,92 @@ function subscribeToPublicChannel() {
                     />
                 </template>
                 <template #actions>
-                    <base-button>Créer</base-button>
+                    <div v-if="isCreating" class="flex flex-row gap-3">
+                        <base-button
+                            class="bg-opacity-50"
+                            @click="cancelInteraction()"
+                            >Annuler</base-button
+                        >
+                        <base-button type="primary">Envoyer</base-button>
+                    </div>
                 </template>
             </base-card>
-            <base-card type="secondary" class="flex-auto basis-1/6">
-                <template #title>Envoyer un lien</template>
-                <template #content>
+            <base-card
+                v-if="!isCreating || isCreating === 'cta'"
+                type="secondary"
+                class="flex-auto basis-1/6"
+            >
+                <template #title>Lien</template>
+                <template v-if="!isCreating" #subtitle>
                     Envoyer un lien de redirection aux auditeurs
                 </template>
+                <template v-if="isCreating === 'cta'" #content>
+                    <input-group id="title" label="Titre">
+                        <text-input id="title"></text-input>
+                    </input-group>
+                    <input-group id="link" label="Lien">
+                        <text-input id="link"></text-input>
+                    </input-group>
+                    <input-group id="ended_at" label="Durée d'interaction">
+                        <time-input id="ended_at"></time-input>
+                    </input-group>
+                </template>
                 <template #actions>
-                    <base-button type="secondary">Créer</base-button>
+                    <div v-if="isCreating" class="flex flex-row gap-3">
+                        <base-button
+                            class="bg-opacity-50"
+                            @click="cancelInteraction()"
+                            >Annuler</base-button
+                        >
+                        <base-button type="secondary">Envoyer</base-button>
+                    </div>
+                    <base-button
+                        v-else
+                        type="secondary"
+                        @click="creatingInteraction('cta')"
+                        >Créer</base-button
+                    >
                 </template>
             </base-card>
-            <base-card type="accent" class="flex-auto basis-1/6">
-                <template #title>Envoyer bouton de participation</template>
-                <template #content>
+            <base-card
+                v-if="!isCreating || isCreating === 'rapidity'"
+                type="accent"
+                class="flex-auto basis-1/6"
+            >
+                <template #title>Rapidité</template>
+                <template v-if="!isCreating" #subtitle>
                     Envoyer un bouton de participation de rapidité aux auditeurs
                 </template>
+                <template v-else #subtitle>
+                    Le but est de tester la rapidité des auditeurs. Puis de
+                    sélectionner automatiquement un nombre de participants qui
+                    ont cliqué le plus rapidement sur un bouton affiché à leur
+                    écran, afin de les récompenser.
+                </template>
+                <template v-if="isCreating === 'rapidity'" #content>
+                    <input-group id="title" label="Titre">
+                        <text-input id="title" v-model="forms.rapidity.title" />
+                    </input-group>
+
+                    <input-group id="ended_at" label="Durée d'interaction">
+                        <time-input id="ended_at"></time-input>
+                    </input-group>
+                </template>
                 <template #actions>
-                    <base-button type="accent">Créer</base-button>
+                    <div v-if="isCreating" class="flex flex-row gap-3">
+                        <base-button
+                            class="bg-opacity-50"
+                            @click="cancelInteraction()"
+                            >Annuler</base-button
+                        >
+                        <base-button type="accent">Envoyer</base-button>
+                    </div>
+                    <base-button
+                        v-else
+                        type="accent"
+                        @click="creatingInteraction('rapidity')"
+                        >Créer</base-button
+                    >
                 </template>
             </base-card>
         </div>
