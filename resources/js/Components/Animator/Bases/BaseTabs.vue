@@ -44,6 +44,6 @@ function changeTab(i) {
     @apply tab-lg flex-auto font-bold text-white rounded-full border-2 border-transparent hover:border-white hover:bg-white hover:bg-opacity-50;
 }
 .tab-active {
-    @apply bg-opacity-50 border-primary border-2 text-white !important;
+    @apply bg-[#6BA5BE] border-primary border-2 text-white !important;
 }
 </style>

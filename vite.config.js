@@ -24,6 +24,9 @@ export default defineConfig({
                     includeAbsolute: false,
                 },
             },
+            script: {
+                defineModel: true,
+            },
         }),
         eslintPlugin(),
         VueI18nPlugin(),
