@@ -23,7 +23,7 @@ const form = useForm({
     ended_at: "",
 });
 
-const submit =() => {
+const submit = () => {
     form.post(route("interactions.store"), {
         preserveScroll: true,
         onSuccess: () => {
@@ -47,10 +47,18 @@ const submit =() => {
             </template>
             <template v-if="isCreating === 'cta'" #content>
                 <input-group id="title" label="Titre">
-                    <text-input id="title" v-model="form.title" color="secondary" />
+                    <text-input
+                        id="title"
+                        v-model="form.title"
+                        color="secondary"
+                    />
                 </input-group>
                 <input-group id="link" label="Lien">
-                    <text-input id="link" v-model="form.link" color="secondary" />
+                    <text-input
+                        id="link"
+                        v-model="form.link"
+                        color="secondary"
+                    />
                 </input-group>
                 <base-countdown />
                 <input-group id="duration" label="Durée d'interaction">
@@ -67,9 +75,14 @@ const submit =() => {
                     <base-button class="bg-opacity-50" @click="$emit('cancel')"
                         >Annuler</base-button
                     >
-                    <base-button color="secondary" type="submit">Envoyer</base-button>
+                    <base-button color="secondary" type="submit"
+                        >Envoyer</base-button
+                    >
                 </div>
-                <base-button v-else color="secondary" @click="$emit('create', 'cta')"
+                <base-button
+                    v-else
+                    color="secondary"
+                    @click="$emit('create', 'cta')"
                     >Créer</base-button
                 >
             </template>
