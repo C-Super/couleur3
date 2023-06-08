@@ -1,6 +1,13 @@
 <script setup>
 import { ref } from "vue";
 
+defineProps({
+    authInf: {
+        type: Object,
+        required: true,
+    },
+});
+
 // Créer une référence aux boutons de navigation
 const buttons = ref([
     { name: "home", active: false },
@@ -34,6 +41,13 @@ function handleButtonClick(index) {
             <span class="material-symbols-rounded text-3xl">{{
                 button.name
             }}</span>
+        </button>
+        <button v-if="authInf !== null">
+            <span
+                class="bg-base-100 text-black font-medium h-9 w-9 flex items-center justify-center rounded-full"
+            >
+                <span>{{ authInf.name[0] }}</span>
+            </span>
         </button>
     </div>
 </template>
