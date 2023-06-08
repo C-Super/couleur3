@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\Auditor\HomeController;
 use App\Http\Controllers\Animator\DashboardController as AnimatorDashboardController;
 use App\Http\Controllers\AnswerController;
+use App\Http\Controllers\Auditor\HomeController;
 use App\Http\Controllers\InteractionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WinnerController;
