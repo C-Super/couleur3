@@ -136,12 +136,11 @@ function subscribeToPublicChannel() {
                             >Les séléection rapides</base-tab
                         >
                     </base-tabs>
-                    
+
                     <interaction-radio-group
                         :interactions="interactions"
                         name="interactionType"
                     />
-
                 </template>
                 <template #actions>
                     <base-button>Créer</base-button>

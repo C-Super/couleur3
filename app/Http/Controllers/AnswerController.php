@@ -8,6 +8,7 @@ use App\Events\AnswerSubmitedToAnimator;
 use App\Http\Requests\StoreAnswerRequest;
 use App\Models\Answer;
 use App\Models\AnswerText;
+use App\Models\Auditor;
 use App\Models\Media;
 use App\Models\QuestionChoice;
 use Illuminate\Support\Facades\Auth;
@@ -33,6 +34,13 @@ class AnswerController extends Controller
         //get user id from auth
         $user = Auth::user();
         $auditor = $user->roleable;
+
+        if (! $auditor instanceof Auditor) {
+            return Inertia::render('Error', [
+                'status' => '403: '.__('http-statuses.403'),
+                'message' => "Vous n'êtes pas un auditeur.",
+            ])->toResponse($request)->setStatusCode(403);
+        }
 
         switch ($request->type) {
             case InteractionType::TEXT->value:
