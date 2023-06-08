@@ -4,6 +4,7 @@ import forms from "@tailwindcss/forms";
 
 /** @type {import('tailwindcss').Config} */
 export default {
+    mode: "jit",
     content: [
         "./vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php",
         "./storage/framework/views/*.php",
@@ -12,23 +13,22 @@ export default {
     ],
 
     safelist: [
-        "bg-primary",
-        "bg-secondary",
-        "bg-accent",
-        "bg-neutral",
-        "bg-info",
-        "bg-success",
-        "bg-warning",
-        "bg-error",
-        "btn-primary",
-        "btn-secondary",
-        "btn-accent",
-        "btn-neutral",
-        "btn-info",
-        "btn-success",
-        "btn-warning",
-        "btn-error",
-        "btn-white",
+        {
+            pattern: /bg-(primary|secondary|accent|white)/,
+            variants: ["hover", "focus"],
+        },
+        {
+            pattern: /btn-(primary|secondary|accent|white)/,
+            variants: ["hover", "focus"],
+        },
+        {
+            pattern: /border-(primary|secondary|accent|white)/,
+            variants: ["hover", "focus"],
+        },
+        {
+            pattern: /range-(primary|secondary|accent|white)/,
+            variants: ["hover", "focus"],
+        },
     ],
 
     daisyui: {

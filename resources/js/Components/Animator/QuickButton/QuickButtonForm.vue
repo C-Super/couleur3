@@ -3,7 +3,7 @@ import { reactive } from "vue";
 import BaseCard from "@/Components/Bases/BaseCard.vue";
 import BaseButton from "@/Components/Bases/BaseButton.vue";
 import TextInput from "@/Components/TextInput.vue";
-import TimeInput from "@/Components/TimeInput.vue";
+import TimeInput from "@/Components/Animator/Bases/BaseTimeInput.vue";
 import InputGroup from "@/Components/InputGroup.vue";
 
 defineEmits(["create", "cancel"]);

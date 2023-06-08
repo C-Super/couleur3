@@ -5,17 +5,20 @@ namespace App\Http\Controllers\Animator;
 use App\Events\ChatUpdated;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Animator\UpdateChatRequest;
-use App\Models\Message;
+use App\Models\Interaction;
 use App\Settings\GeneralSettings;
-use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class DashboardController extends Controller
 {
     public function index(GeneralSettings $settings)
     {
+        // Récupérer l'interaction en cours
+        $interaction = Interaction::where('ended_at', '>', now())->first();
+
         return Inertia::render('Animator/Dashboard', [
             'chatEnabled' => $settings->chat_enabled,
+            'interaction' => $interaction,
         ]);
     }
 
@@ -30,7 +33,7 @@ class DashboardController extends Controller
             ]);
         }
 
-        if ($validated['chat_enabled'] === false && ! $settings->chat_enabled) {
+        if ($validated['chat_enabled'] === false && !$settings->chat_enabled) {
             return back()->with([
                 'error', 'Le chat est déjà désactivé.',
                 'chatEnabled' => $settings->chat_enabled,

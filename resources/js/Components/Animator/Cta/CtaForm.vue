@@ -3,8 +3,9 @@ import { reactive } from "vue";
 import BaseCard from "@/Components/Bases/BaseCard.vue";
 import BaseButton from "@/Components/Bases/BaseButton.vue";
 import TextInput from "@/Components/TextInput.vue";
-import TimeInput from "@/Components/TimeInput.vue";
+import BaseDurationRange from "@/Components/Animator/Bases/BaseDurationRange.vue";
 import InputGroup from "@/Components/InputGroup.vue";
+import BaseCountdown from "@/Components/Animator/Bases/BaseCountdown.vue";
 
 defineEmits(["create", "cancel"]);
 
@@ -19,7 +20,7 @@ defineProps({
 const form = reactive({
     title: "",
     link: "",
-    ended_at: "",
+    duration: 300,
 });
 </script>
 
@@ -31,13 +32,18 @@ const form = reactive({
         </template>
         <template v-if="isCreating === 'cta'" #content>
             <input-group id="title" label="Titre">
-                <text-input id="title" v-model="form.title"></text-input>
+                <text-input id="title" v-model="form.title" color="secondary" />
             </input-group>
             <input-group id="link" label="Lien">
-                <text-input id="link" v-model="form.link"></text-input>
+                <text-input id="link" v-model="form.link" color="secondary" />
             </input-group>
-            <input-group id="ended_at" label="Durée d'interaction">
-                <time-input id="ended_at" v-model="form.ended_at"></time-input>
+            <base-countdown />
+            <input-group id="duration" label="Durée d'interaction">
+                <base-duration-range
+                    id="duration"
+                    v-model="form.duration"
+                    color="secondary"
+                />
             </input-group>
         </template>
         <template #actions>
