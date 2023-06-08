@@ -10,7 +10,7 @@ Un autre enjeu réside dans l'utilisation du site web par l'auditeur, pour laque
 
 2. L'auditeur écoute la radio via le site web de Couleur 3 et se trouve donc sur une page d'écoute en direct.
 
-Nous avons donc décidé de maquetter la page d'écoute de la radio en direct. En effet, l'intégration de notre concept sur cette page d'écoute en direct, qui inclus une zone importante en haut d'écran pour le lecteur de la vidéo, nous semblait plus complexe que l'intégration sur la page d'accueil. Ainsi, le maquettage de cette page nous a permis de mener les bonnes réflexions quand à l'implantation et l'aspect UX de nos fonctionnalités des chat et de popup interactifs. 
+Nous avons donc décidé de maquetter la page d'écoute de la radio en direct. En effet, l'intégration de notre concept sur cette page d'écoute en direct, qui inclus une zone importante en haut d'écran pour le lecteur de la vidéo, nous semblait plus complexe que l'intégration sur la page d'accueil. Ainsi, le maquettage de cette page nous a permis de mener les bonnes réflexions quand à l'implantation et l'aspect UX de nos fonctionnalités des chats et de pop-ups interactifs. 
 
 D'autre part, il semble plus logique que les interactions directement issues d'une émission précise ne soient pas forcément affichées sur la page d'accueil du site, où quelqu'un qui n'est pas en train d'écouter l'émission ne désire pas forcément se retrouver "bombardé" d'appels à l'action sans le contexte de l'émission.
 
