@@ -18,7 +18,6 @@ defineProps({
 });
 
 function createInteraction(type) {
-    console.log("createInteraction", type);
     isCreating.value = type;
 }
 

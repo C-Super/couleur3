@@ -14,26 +14,7 @@ class DashboardController extends Controller
 {
     public function index(GeneralSettings $settings)
     {
-        if (! $settings->chat_enabled) {
-            return Inertia::render('Animator/Dashboard', [
-                'messages' => [],
-                'chatEnabled' => $settings->chat_enabled,
-            ]);
-        }
-
-        $lastMessages = Message::orderByDesc('messages.created_at')
-            ->take(10)
-            ->join('auditors', 'auditors.id', '=', 'messages.auditor_id')
-            ->join('users', function ($join) {
-                $join->on('users.roleable_type', '=', DB::raw('"App\\\Models\\\Auditor"'))
-                    ->on('users.roleable_id', '=', 'auditors.id');
-            })
-            ->select('messages.*', 'users.name as user_name')
-            ->get()
-            ->toArray();
-
         return Inertia::render('Animator/Dashboard', [
-            'messages' => array_reverse($lastMessages),
             'chatEnabled' => $settings->chat_enabled,
         ]);
     }
