@@ -7,6 +7,7 @@ use App\Models\Animator;
 use App\Models\Answer;
 use App\Models\Auditor;
 use App\Models\Interaction;
+use App\Models\QuestionChoice;
 use App\Models\Reward;
 use App\Models\User;
 use App\Models\Winner;
@@ -189,6 +190,116 @@ it('stores winners successfully', function () {
             return $event->auditorId === $winnerId;
         });
     }
+});
+
+it('stores winners for mcq successfully', function () {
+    Event::fake([WinnerSentResult::class]);
+
+    $animator = Animator::factory()->create();
+    $user = User::factory()->create([
+        'name' => fake()->name(),
+        'email' => fake()->email(),
+        'password' => Hash::make('animator'),
+        'roleable_id' => $animator->id,
+        'roleable_type' => get_class($animator),
+    ]);
+
+    $reward = Reward::factory()->create();
+
+    $interaction = Interaction::factory(
+        [
+            'animator_id' => $animator->id,
+            'type' => 'mcq',
+        ]
+    )->create();
+
+    $questionChoice = QuestionChoice::factory()->create(['interaction_id' => $interaction->id]);
+
+    $auditors = Auditor::factory()->count(5)->create();
+
+    foreach ($auditors as $auditor) {
+        Answer::factory()->create([
+            'interaction_id' => $interaction->id,
+            'auditor_id' => $auditor->id,
+            'replyable_id' => $questionChoice->id,
+            'replyable_type' => get_class($questionChoice),
+        ]);
+    }
+
+    $this->actingAs($user);
+
+    // Get first 3 auditors to be winners
+    $winners = $auditors->take(3)->pluck('id')->toArray();
+
+    // Send request to store the winners
+    $response = postJson('/interactions/winner/confirm', [
+        'interaction_id' => $interaction->id,
+        'auditor_ids' => $winners,
+    ]);
+
+    // Assert response
+    $response->assertStatus(200);
+    $response->assertJson(['message' => 'Winners stored successfully.']);
+
+    // Assert database winners with interaction_id
+    $winnersInDb = Winner::where('interaction_id', $interaction->id)->pluck('auditor_id')->toArray();
+    $this->assertCount(3, $winnersInDb);
+    $this->assertEquals(sort($winners), sort($winnersInDb));
+
+    // Assert event for each winner
+    foreach ($winners as $winnerId) {
+        Event::assertDispatched(WinnerSentResult::class, function ($event) use ($winnerId) {
+            return $event->auditorId === $winnerId;
+        });
+    }
+});
+
+it('cannot random generate winners for mcq', function () {
+
+    $animator = Animator::factory()->create();
+    $user = User::factory()->create([
+        'name' => fake()->name(),
+        'email' => fake()->email(),
+        'password' => Hash::make('animator'),
+        'roleable_id' => $animator->id,
+        'roleable_type' => get_class($animator),
+    ]);
+
+    $reward = Reward::factory()->create();
+
+    $interaction = Interaction::factory(
+        [
+            'animator_id' => $animator->id,
+            'type' => 'mcq',
+        ]
+    )->create();
+
+    $questionChoice = QuestionChoice::factory()->create(['interaction_id' => $interaction->id]);
+
+    $auditors = Auditor::factory()->count(5)->create();
+
+    foreach ($auditors as $auditor) {
+        Answer::factory()->create([
+            'interaction_id' => $interaction->id,
+            'auditor_id' => $auditor->id,
+            'replyable_id' => $questionChoice->id,
+            'replyable_type' => get_class($questionChoice),
+        ]);
+    }
+
+    $this->actingAs($user);
+
+    // Get first 3 auditors to be winners
+    $winners = $auditors->take(3)->pluck('id')->toArray();
+
+    // Send request to store the winners
+    $response = postJson('/interactions/winner/random', [
+        'interaction_id' => $interaction->id,
+        'winners_count' => 3,
+    ]);
+
+    // Assert response
+    $response->assertStatus(400);
 });
 
 it('generates fastest winners list successfully', function () {

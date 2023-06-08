@@ -9,6 +9,7 @@ use App\Http\Requests\GenerateWinnersRequest;
 use App\Http\Requests\ReplaceWinnerRequest;
 use App\Http\Requests\StoreWinnerRequest;
 use App\Models\Answer;
+use App\Models\Interaction;
 use App\Models\Winner;
 use DB;
 
@@ -19,6 +20,13 @@ class WinnerController extends Controller
         $validated = $request->validated();
         $interaction_id = $validated['interaction_id'];
         $winnersCount = $validated['winners_count'];
+
+        $interaction = Interaction::find($interaction_id);
+
+        // Retourner une erreur si le type d'interaction est MCQ
+        if ($interaction->type == 'mcq') {
+            return response()->json(['message' => 'The operation is not allowed for MCQ type interactions'], 400);
+        }
 
         // Récupérer les IDs de tous les auditeurs qui ont répondu à l'interaction et qui ne sont pas déjà des gagnants
         $auditorIds = Answer::where('interaction_id', $interaction_id)
