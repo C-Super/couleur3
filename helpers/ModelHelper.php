@@ -134,6 +134,8 @@ namespace App\Models{
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property int|null $address_id
      * @property-read \App\Models\Address|null $address
+     * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Answer> $answers
+     * @property-read int|null $answers_count
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Message> $messages
      * @property-read int|null $messages_count
      * @property-read \App\Models\User|null $user
@@ -196,7 +198,7 @@ namespace App\Models{
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property string|null $ended_at
      * @property int $animator_id
-     * @property int $reward_id
+     * @property int|null $reward_id
      * @property int|null $winners_count
      * @property string $status
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Answer> $answers

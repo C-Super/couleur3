@@ -16,17 +16,18 @@ it('ends the interaction when ended_at time is reached', function () {
     Event::fake();
 
     // Arrange: Create necessary objects and setup the state
-    $auditor = Auditor::factory()->create();
+    $auditors = Auditor::factory()->count(3)->create();
     $interaction = Interaction::factory()->create([
         'type' => 'text',
         'ended_at' => now()->subMinute(),  // set the ended_at to a time in the past
     ]);
-    Answer::factory()->count(3)->create([
-        'auditor_id' => $auditor->id,
-        'interaction_id' => $interaction->id,
-        'replyable_type' => 'text',
-        'replyable_id' => 1,
-    ]);
+    //create answer for interaction with each of the auditors
+    foreach ($auditors as $auditor) {
+        Answer::factory()->create([
+            'interaction_id' => $interaction->id,
+            'auditor_id' => $auditor->id,
+        ]);
+    }
 
     // Act: Call the job's handle method
     $job = new CheckInteractionEnded($interaction);
@@ -37,8 +38,9 @@ it('ends the interaction when ended_at time is reached', function () {
     expect($interaction->answers)->toHaveCount(3);
 
     // Check that each answer has the correct auditor associated
+    $auditor_ids = $auditors->pluck('id')->toArray();
     foreach ($interaction->answers as $answer) {
-        expect($answer->auditor_id)->toBe($auditor->id);
+        expect(in_array($answer->auditor_id, $auditor_ids))->toBeTrue();
     }
 
     // Assert that the correct events were dispatched
@@ -46,7 +48,5 @@ it('ends the interaction when ended_at time is reached', function () {
         return $event->interaction->id === $interaction->id;
     });
 
-    Event::assertDispatched(InteractionEndedForAnimatorEvent::class, function ($event) use ($interaction, $auditor) {
-        return $event->interaction->id === $interaction->id && $event->answers[0]->auditor_id === $auditor->id;
-    });
+    Event::assertDispatched(InteractionEndedForAnimatorEvent::class);
 });

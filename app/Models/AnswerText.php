@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 /**
  * @mixin IdeHelperAnswerText
@@ -16,7 +17,7 @@ class AnswerText extends Model
         'content',
     ];
 
-    public function answer()
+    public function answer(): MorphOne
     {
         return $this->morphOne(Answer::class, 'answerable');
     }

@@ -21,7 +21,7 @@ return new class extends Migration
             $table->timestamps();
             $table->timestamp('ended_at')->nullable();
             $table->foreignId('animator_id')->constrained();
-            $table->foreignId('reward_id')->constrained();
+            $table->foreignId('reward_id')->nullable()->constrained();
             $table->integer('winners_count')->nullable();
             $table->enum('status', InteractionStatus::getValues())->default(InteractionStatus::PENDING->value);
         });

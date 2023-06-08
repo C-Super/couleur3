@@ -6,7 +6,9 @@ import BaseCard from "@/Components/Bases/BaseCard.vue";
 import TextInput from "@/Components/TextInput.vue";
 import TimeInput from "@/Components/TimeInput.vue";
 import InputGroup from "@/Components/InputGroup.vue";
-//import MultipleInputGroup from "@/Components/MultipleInputGroup.vue";
+import BaseTabs from "@/Components/Animator/Bases/BaseTabs.vue";
+import BaseTab from "@/Components/Animator/Bases/BaseTab.vue";
+import InteractionRadioGroup from "@/Components/Animator/Bases/InteractionRadioGroup.vue";
 import { reactive, onMounted, ref } from "vue";
 import { Head, useForm } from "@inertiajs/vue3";
 
@@ -24,6 +26,39 @@ const forms = reactive({
 const data = reactive({
     messages: props.messages,
 });
+
+const interactions = [
+    {
+        icon: "bar_chart",
+        name: "Sondage",
+        "value ": "survey",
+    },
+    {
+        icon: "rule",
+        name: "QCM",
+        value: "mcq",
+    },
+    {
+        icon: "subject",
+        name: "Texte",
+        value: "text",
+    },
+    {
+        icon: "image",
+        name: "Image",
+        value: "picture",
+    },
+    {
+        icon: "mic",
+        name: "Audio",
+        value: "audio",
+    },
+    {
+        icon: "video_call",
+        name: "Vidéo",
+        value: "video",
+    },
+];
 
 const props = defineProps({
     messages: {
@@ -79,7 +114,6 @@ function cancelInteraction() {
 
 <template>
     <Head title="Dashboard" />
-
     <div id="animator-container" class="h-screen p-5 flex gap-5">
         <div class="basis-1/3 flex flex-col gap-3">
             <base-card class="flex-auto grow">
@@ -122,7 +156,22 @@ function cancelInteraction() {
                 class="flex-auto basis-4/6"
             >
                 <template #title>Question</template>
-                <template #content> </template>
+                <template #content>
+                    <base-tabs>
+                        <base-tab title="Réponses">Les réponses</base-tab>
+                        <base-tab title="Sélection aléatoire" :active="true"
+                            >Les selection aléatoire</base-tab
+                        >
+                        <base-tab title="Sélection rapidité"
+                            >Les séléection rapides</base-tab
+                        >
+                    </base-tabs>
+
+                    <interaction-radio-group
+                        :interactions="interactions"
+                        name="interactionType"
+                    />
+                </template>
                 <template #actions>
                     <div v-if="isCreating" class="flex flex-row gap-3">
                         <base-button
@@ -216,7 +265,7 @@ function cancelInteraction() {
     </div>
 </template>
 
-<style scoped>
+<style lang="postcss" scoped>
 #animator-container {
     background-color: #1c1354;
 }

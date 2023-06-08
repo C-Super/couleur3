@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\InteractionType;
+use App\Enums\MediaType;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreAnswerRequest extends FormRequest
 {
@@ -21,11 +24,54 @@ class StoreAnswerRequest extends FormRequest
      */
     public function rules(): array
     {
+        $rules = [
+            'interaction_id' => [
+                'required',
+                'exists:interactions,id',
+                Rule::exists('interactions', 'id')->where(function ($query) {
+                    $query->where('type', $this->type);
+                }),
+            ],
+        ];
+
+        switch ($this->type) {
+            case InteractionType::TEXT->value:
+                $rules = array_merge($rules, $this->textRules());
+                break;
+            case InteractionType::AUDIO->value:
+            case InteractionType::VIDEO->value:
+            case InteractionType::PICTURE->value:
+                $rules = array_merge($rules, $this->mediaRules());
+                break;
+            case InteractionType::MCQ->value:
+            case InteractionType::SURVEY->value:
+                $rules = array_merge($rules, $this->questionChoiceRules());
+                break;
+        }
+
+        return $rules;
+    }
+
+    private function textRules(): array
+    {
         return [
-            'auditor_id' => 'required|exists:auditors,id',
-            'interaction_id' => 'required|exists:interactions,id',
-            'replyable_id' => 'required',
-            'replyable_type' => 'required|in:App\Models\AnswerText,App\Models\QuestionChoice,App\Models\Media',
+            'replyable_data.content' => 'required|string',
+        ];
+    }
+
+    private function mediaRules(): array
+    {
+        return [
+            'type' => 'required|in:'.implode(',', MediaType::getValues()).'|same:replyable_data.type',
+            'replyable_data.path' => 'required|string',
+            'replyable_data.type' => 'required|in:'.implode(',', MediaType::getValues()),
+        ];
+    }
+
+    private function questionChoiceRules(): array
+    {
+        return [
+            'replyable_data.id' => 'required|exists:question_choices,id',
         ];
     }
 }

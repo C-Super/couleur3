@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 /**
  * @mixin IdeHelperQuestionChoice
@@ -17,12 +19,12 @@ class QuestionChoice extends Model
         'is_correct_answer',
     ];
 
-    public function interaction()
+    public function interaction(): BelongsTo
     {
         return $this->belongsTo(Interaction::class);
     }
 
-    public function answer()
+    public function answer(): MorphOne
     {
         return $this->morphOne(Answer::class, 'answerable');
     }
