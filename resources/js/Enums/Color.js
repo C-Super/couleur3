@@ -1,37 +1,37 @@
 export default class Color {
     static get PRIMARY() {
-        return 'primary';
+        return "primary";
     }
 
     static get SECONDARY() {
-        return 'secondary';
+        return "secondary";
     }
 
     static get ACCENT() {
-        return 'accent';
+        return "accent";
     }
 
     static get SUCCESS() {
-        return 'success';
+        return "success";
     }
 
     static get ERROR() {
-        return 'error';
+        return "error";
     }
 
     static get DANGER() {
-        return 'error';
+        return "error";
     }
 
     static get WARNING() {
-        return 'warning';
+        return "warning";
     }
 
     static get INFO() {
-        return 'info';
+        return "info";
     }
 
     static get WHITE() {
-        return 'white';
+        return "white";
     }
 }

@@ -26,7 +26,7 @@ class StoreCallToActionRequest extends FormRequest
             'title' => 'required|string|min:3|max:255',
             'link' => 'required|url',
             'duration' => 'required|integer|min:15|max:3600',
-            new NoActiveInteractions()
+            new NoActiveInteractions(),
         ];
     }
 }

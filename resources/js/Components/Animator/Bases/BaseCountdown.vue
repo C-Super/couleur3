@@ -4,9 +4,9 @@ import { ref } from "vue";
 defineProps({
     color: {
         type: String,
-        default: "primary"
-    }
-})
+        default: "primary",
+    },
+});
 
 const seconds = ref(10);
 const minutes = ref(0);

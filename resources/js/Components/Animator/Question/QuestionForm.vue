@@ -113,9 +113,7 @@ setTimeout(() => {
         </template>
         <template #actions>
             <div v-if="creatingInteraction" class="flex flex-row gap-3">
-                <base-button @click="$emit('cancel')"
-                    >Annuler</base-button
-                >
+                <base-button @click="$emit('cancel')">Annuler</base-button>
                 <base-button type="primary">Envoyer</base-button>
             </div>
         </template>

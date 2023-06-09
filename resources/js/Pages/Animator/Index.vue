@@ -55,7 +55,13 @@ function cancelInteraction() {
 
         <div class="basis-2/3 flex flex-col justify-items-stretch gap-3">
             <question-form
-                v-if="(!state.creatingInteraction && !state.currentInteraction) || InteractionType.isQuestion(state.creatingInteraction) || (state.currentInteraction && state.currentInteraction.type === InteractionType.QUESTION)"
+                v-if="
+                    (!state.creatingInteraction && !state.currentInteraction) ||
+                    InteractionType.isQuestion(state.creatingInteraction) ||
+                    (state.currentInteraction &&
+                        state.currentInteraction.type ===
+                            InteractionType.QUESTION)
+                "
                 class="flex-auto basis-4/6"
                 :creating-interaction="state.creatingInteraction"
                 :current-interaction="state.currentInteraction"
@@ -64,7 +70,12 @@ function cancelInteraction() {
             />
 
             <cta-form
-                v-if="(!state.creatingInteraction && !state.currentInteraction) || state.creatingInteraction === InteractionType.CTA || (state.currentInteraction && state.currentInteraction.type === InteractionType.CTA)"
+                v-if="
+                    (!state.creatingInteraction && !state.currentInteraction) ||
+                    state.creatingInteraction === InteractionType.CTA ||
+                    (state.currentInteraction &&
+                        state.currentInteraction.type === InteractionType.CTA)
+                "
                 class="flex-auto basis-1/6"
                 :creating-interaction="state.creatingInteraction"
                 :current-interaction="state.currentInteraction"
@@ -73,7 +84,13 @@ function cancelInteraction() {
             />
 
             <quick-click-form
-                v-if="(!state.creatingInteraction && !state.currentInteraction) || state.creatingInteraction === InteractionType.QUICK_CLICK || (state.currentInteraction && state.currentInteraction.type === InteractionType.QUICK_CLICK)"
+                v-if="
+                    (!state.creatingInteraction && !state.currentInteraction) ||
+                    state.creatingInteraction === InteractionType.QUICK_CLICK ||
+                    (state.currentInteraction &&
+                        state.currentInteraction.type ===
+                            InteractionType.QUICK_CLICK)
+                "
                 class="flex-auto basis-1/6"
                 :creating-interaction="state.creatingInteraction"
                 :current-interaction="state.currentInteraction"

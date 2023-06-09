@@ -55,7 +55,9 @@ const formatedSeconds = computed(() => {
                 <span>|</span>
             </div>
         </div>
-        <div class="flex justify-items-center gap-3 text-xs text-center text-white font-medium">
+        <div
+            class="flex justify-items-center gap-3 text-xs text-center text-white font-medium"
+        >
             <div
                 :class="`flex flex-col justify-items-center align-middle p-4 bg-${color} bg-opacity-25 rounded-[20px]`"
             >
@@ -69,7 +71,7 @@ const formatedSeconds = computed(() => {
                 :class="`flex flex-col justify-items-center align-middle p-4 bg-${color} bg-opacity-25 rounded-[20px]`"
             >
                 <span class="text-center text-base text-xl">
-                    <span>{{  formatedSeconds }}</span>
+                    <span>{{ formatedSeconds }}</span>
                 </span>
                 sec
             </div>

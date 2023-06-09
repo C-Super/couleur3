@@ -6,8 +6,8 @@ import TextInput from "@/Components/TextInput.vue";
 import InputGroup from "@/Components/InputGroup.vue";
 import BaseCountdown from "@/Components/Animator/Bases/BaseCountdown.vue";
 import BaseDurationRange from "@/Components/Animator/Bases/BaseDurationRange.vue";
-import InteractionType from "@/Enums/InteractionType.js"
-import Color from "@/Enums/Color.js";;
+import InteractionType from "@/Enums/InteractionType.js";
+import Color from "@/Enums/Color.js";
 import { reactive } from "vue";
 
 const emits = defineEmits(["create", "cancel"]);
@@ -25,7 +25,7 @@ const props = defineProps({
 
 const data = reactive({
     creatingInteraction: props.creatingInteraction,
-    currentInteraction: props.currentInteraction
+    currentInteraction: props.currentInteraction,
 });
 
 const form = reactive({
@@ -43,8 +43,8 @@ const submit = () => {
 
 const createCTA = () => {
     data.creatingInteraction = InteractionType.CTA;
-    emits('create', InteractionType.CTA);
-}
+    emits("create", InteractionType.CTA);
+};
 
 const cancelCTA = () => {
     data.creatingInteraction = null;
@@ -55,26 +55,29 @@ const cancelCTA = () => {
 <template>
     <div>
         <!-- Dashboard card -->
-        <base-card v-if="!data.creatingInteraction && !data.currentInteraction" :color="Color.SECONDARY">
+        <base-card
+            v-if="!data.creatingInteraction && !data.currentInteraction"
+            :color="Color.SECONDARY"
+        >
             <template #title>Lien</template>
             <template #subtitle>
                 Envoyer un lien de redirection aux auditeurs
             </template>
             <template #actions>
-                <base-button
-                    :color="Color.SECONDARY"
-                    @click="createCTA"
-                >
+                <base-button :color="Color.SECONDARY" @click="createCTA">
                     Créer
                 </base-button>
             </template>
         </base-card>
 
         <!-- Create form -->
-        <form v-if="data.creatingInteraction === InteractionType.CTA" @submit.prevent="submit" >
+        <form
+            v-if="data.creatingInteraction === InteractionType.CTA"
+            @submit.prevent="submit"
+        >
             <base-card :color="Color.SECONDARY">
                 <template #title>Lien</template>
-                <template  #content>
+                <template #content>
                     <input-group id="title" label="Titre">
                         <text-input
                             id="title"
@@ -101,9 +104,7 @@ const cancelCTA = () => {
                 </template>
                 <template #actions>
                     <div class="flex flex-row gap-3">
-                        <base-button @click="cancelCTA"
-                            >Annuler</base-button
-                        >
+                        <base-button @click="cancelCTA">Annuler</base-button>
                         <base-button :color="Color.SECONDARY" type="submit"
                             >Envoyer</base-button
                         >
@@ -113,7 +114,13 @@ const cancelCTA = () => {
         </form>
 
         <!-- Result pages -->
-        <base-card v-if="data.currentInteraction && data.currentInteraction.type === InteractionType.CTA" :color="Color.SECONDARY">
+        <base-card
+            v-if="
+                data.currentInteraction &&
+                data.currentInteraction.type === InteractionType.CTA
+            "
+            :color="Color.SECONDARY"
+        >
             <template #title>{{ data.currentInteraction.title }}</template>
             <template #content>
                 <base-countdown :color="Color.SECONDARY" />
