@@ -5,7 +5,7 @@ import TheNavigation from "@/Components/Auditor/TheNavigation.vue";
 defineProps({
     authInf: {
         type: Object,
-        required: true,
+        default: null,
     },
 });
 </script>
