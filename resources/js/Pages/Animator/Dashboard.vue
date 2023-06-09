@@ -9,6 +9,7 @@ import InputGroup from "@/Components/InputGroup.vue";
 import BaseTabs from "@/Components/Animator/Bases/BaseTabs.vue";
 import BaseTab from "@/Components/Animator/Bases/BaseTab.vue";
 import InteractionRadioGroup from "@/Components/Animator/Bases/InteractionRadioGroup.vue";
+import reponseTexte from "@/Components/Animator/Bases/ReponseTexte.vue";
 import { reactive, onMounted, ref } from "vue";
 import { Head, useForm } from "@inertiajs/vue3";
 
@@ -60,6 +61,20 @@ const interactions = [
     },
 ];
 
+const answers = reactive([
+    {
+        name: "Rachel",
+        response: "Hello World",
+    },
+]);
+
+const pinnedAnswers = reactive([
+    {
+        name: "Miguel",
+        response: "Hola que tal?",
+    },
+]);
+
 const props = defineProps({
     messages: {
         type: Array,
@@ -109,6 +124,14 @@ function creatingInteraction(type) {
 }
 function cancelInteraction() {
     isCreating.value = null;
+}
+
+function addPinned(answer) {
+    pinnedAnswers.push(answer);
+}
+
+function removePinned(answer) {
+    pinnedAnswers.splice(pinnedAnswers.indexOf(answer), 1);
 }
 </script>
 
@@ -170,6 +193,12 @@ function cancelInteraction() {
                     <interaction-radio-group
                         :interactions="interactions"
                         name="interactionType"
+                    />
+                    <reponse-texte
+                        :pinned-answers="pinnedAnswers"
+                        :answers="answers"
+                        @add:pinned="addPinned"
+                        @remove:pinned="removePinned"
                     />
                 </template>
                 <template #actions>

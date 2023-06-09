@@ -1,23 +1,14 @@
 <script setup>
-import { ref, computed } from "vue";
-const props = defineProps({
-    responses: {
+defineProps({
+    pinnedAnswers: {
+        type: Array,
+        required: true,
+    },
+    answers: {
         type: Array,
         required: true,
     },
 });
-const pinnedResponses = ref([]);
-const notPinnedResponses = computed(() =>
-    props.responses.filter(
-        (response) => !pinnedResponses.value.includes(response)
-    )
-);
-function functionPinned(el) {
-    pinnedResponses.value.push(el);
-}
-function functionUnpinned(el) {
-    pinnedResponses.value.splice(pinnedResponses.value.indexOf(el), 1);
-}
 </script>
 <template>
     <p class="text-2xl font-semibold">Réponse obtenues</p>
@@ -30,9 +21,9 @@ function functionUnpinned(el) {
             <!-- Array pinned -->
             <table class="table table-auto w-auto">
                 <tbody
-                    v-for="pinnedResponse of pinnedResponses"
-                    :key="pinnedResponse.value"
-                    :for="pinnedResponse.value"
+                    v-for="pinnedAnswer of pinnedAnswers"
+                    :key="pinnedAnswer.value"
+                    :for="pinnedAnswer.value"
                 >
                     <tr class="border-none">
                         <th>
@@ -42,18 +33,17 @@ function functionUnpinned(el) {
                                 <span
                                     id="fill"
                                     class="fill-current material-symbols-rounded text-5xl text-primary"
-                                    @click="functionUnpinned(pinnedResponse)"
                                 >
                                     push_pin
                                 </span>
                             </label>
                         </th>
                         <td class="font-bold text-base">
-                            <slot>{{ pinnedResponse.name }}</slot>
+                            <slot>{{ pinnedAnswer.name }}</slot>
                         </td>
                         <td>
                             <slot class="text-base">{{
-                                pinnedResponse.response
+                                pinnedAnswer.response
                             }}</slot>
                         </td>
                     </tr>
@@ -64,9 +54,9 @@ function functionUnpinned(el) {
             <!-- Array not pinned -->
             <table class="table table-auto w-auto">
                 <tbody
-                    v-for="notPinnedResponse of notPinnedResponses"
-                    :key="notPinnedResponse.value"
-                    :for="notPinnedResponse.value"
+                    v-for="answer of answers"
+                    :key="answer.value"
+                    :for="answer.value"
                 >
                     <tr class="border-none">
                         <th>
@@ -75,19 +65,16 @@ function functionUnpinned(el) {
                                 <!-- icon off -->
                                 <span
                                     class="fill-current material-symbols-rounded text-5xl"
-                                    @click="functionPinned(notPinnedResponse)"
                                 >
                                     push_pin
                                 </span>
                             </label>
                         </th>
                         <td class="font-bold text-base">
-                            <slot>{{ notPinnedResponse.name }}</slot>
+                            <slot>{{ answer.name }}</slot>
                         </td>
                         <td>
-                            <slot class="text-base">{{
-                                notPinnedResponse.response
-                            }}</slot>
+                            <slot class="text-base">{{ answer.response }}</slot>
                         </td>
                     </tr>
                 </tbody>
