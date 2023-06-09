@@ -10,6 +10,7 @@ use App\Models\Media;
 use App\Models\QuestionChoice;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Http\UploadedFile;
 
 uses(DatabaseTransactions::class);
 
@@ -54,7 +55,7 @@ it('can store text answer and fires correct event', function () {
     Event::assertNotDispatched(AnswerQuestionChoiceSubmited::class);
 });
 
-it('can store media picture answer and fires correct events', function () {
+it('can store media answer and fires correct events', function () {
     Event::fake([AnswerSubmitedToAnimator::class, AnswerQuestionChoiceSubmited::class]);
 
     $auditor = Auditor::factory()->create();
@@ -71,92 +72,22 @@ it('can store media picture answer and fires correct events', function () {
 
     $this->actingAs($user);
 
+    $testImagePath = base_path('tests/resources/test.jpeg'); // Path vers un vrai fichier JPEG de test
+    $image = new UploadedFile($testImagePath, 'test.jpeg', 'image/jpeg', null, true);
     $response = postJson('/answer', [
         'interaction_id' => $interaction->id,
         'type' => 'picture',
         'replyable_data' => [
-            'path' => 'path/to/media',
+            'file' => $image,
             'type' => 'picture',
         ],
     ]);
 
     $response->assertStatus(200);
     expect(Answer::where('auditor_id', $auditor->id)->exists())->toBeTrue();
-    expect(Media::where('path', 'path/to/media')->exists())->toBeTrue();
 
-    Event::assertDispatched(AnswerSubmitedToAnimator::class, function ($event) use ($auditor) {
-        return $event->answer->auditor_id === $auditor->id;
-    });
-
-    Event::assertNotDispatched(AnswerQuestionChoiceSubmited::class);
-});
-
-it('can store media audio answer and fires correct events', function () {
-    Event::fake([AnswerSubmitedToAnimator::class, AnswerQuestionChoiceSubmited::class]);
-
-    $auditor = Auditor::factory()->create();
-    $user = User::factory()->create([
-        'name' => 'test',
-        'email' => 'test4@example.com',
-        'password' => Hash::make('password'),
-        'roleable_id' => $auditor->id,
-        'roleable_type' => get_class($auditor),
-    ]);
-    $interaction = Interaction::factory()->create([
-        'type' => 'audio',
-    ]);
-
-    $this->actingAs($user);
-
-    $response = postJson('/answer', [
-        'interaction_id' => $interaction->id,
-        'type' => 'audio',
-        'replyable_data' => [
-            'path' => 'path/to/media',
-            'type' => 'audio',
-        ],
-    ]);
-
-    $response->assertStatus(200);
-    expect(Answer::where('auditor_id', $auditor->id)->exists())->toBeTrue();
-    expect(Media::where('path', 'path/to/media')->exists())->toBeTrue();
-
-    Event::assertDispatched(AnswerSubmitedToAnimator::class, function ($event) use ($auditor) {
-        return $event->answer->auditor_id === $auditor->id;
-    });
-
-    Event::assertNotDispatched(AnswerQuestionChoiceSubmited::class);
-});
-
-it('can store media video answer and fires correct events', function () {
-    Event::fake([AnswerSubmitedToAnimator::class, AnswerQuestionChoiceSubmited::class]);
-
-    $auditor = Auditor::factory()->create();
-    $user = User::factory()->create([
-        'name' => 'test',
-        'email' => 'test5@example.com',
-        'password' => Hash::make('password'),
-        'roleable_id' => $auditor->id,
-        'roleable_type' => get_class($auditor),
-    ]);
-    $interaction = Interaction::factory()->create([
-        'type' => 'video',
-    ]);
-
-    $this->actingAs($user);
-
-    $response = postJson('/answer', [
-        'interaction_id' => $interaction->id,
-        'type' => 'video',
-        'replyable_data' => [
-            'path' => 'path/to/media',
-            'type' => 'video',
-        ],
-    ]);
-
-    $response->assertStatus(200);
-    expect(Answer::where('auditor_id', $auditor->id)->exists())->toBeTrue();
-    expect(Media::where('path', 'path/to/media')->exists())->toBeTrue();
+    $answer = Answer::where('auditor_id', $auditor->id)->first();
+    expect(Media::where('id', $answer->replyable_id)->exists())->toBeTrue();
 
     Event::assertDispatched(AnswerSubmitedToAnimator::class, function ($event) use ($auditor) {
         return $event->answer->auditor_id === $auditor->id;

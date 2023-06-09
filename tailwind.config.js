@@ -12,23 +12,22 @@ export default {
     ],
 
     safelist: [
-        "bg-primary",
-        "bg-secondary",
-        "bg-accent",
-        "bg-neutral",
-        "bg-info",
-        "bg-success",
-        "bg-warning",
-        "bg-error",
-        "btn-primary",
-        "btn-secondary",
-        "btn-accent",
-        "btn-neutral",
-        "btn-info",
-        "btn-success",
-        "btn-warning",
-        "btn-error",
-        "btn-white",
+        {
+            pattern: /bg-(primary|secondary|accent|white)/,
+            variants: ["hover", "focus"],
+        },
+        {
+            pattern: /btn-(primary|secondary|accent|white|error)/,
+            variants: ["hover", "focus"],
+        },
+        {
+            pattern: /border-(primary|secondary|accent|white)/,
+            variants: ["hover", "focus"],
+        },
+        {
+            pattern: /range-(primary|secondary|accent|white)/,
+            variants: ["hover", "focus"],
+        },
     ],
 
     daisyui: {

@@ -1,6 +1,6 @@
 <script setup>
 defineProps({
-    interactions: {
+    choices: {
         type: Array,
         required: true,
     },
@@ -13,21 +13,21 @@ defineProps({
 <template class="">
     <div class="grid grid-cols-3 gap-3 grid-rows-2">
         <label
-            v-for="interaction of interactions"
-            :key="interaction.value"
-            :for="interaction.value"
-            class="btn btn-lg btn-white text-white text-2xl bg-opacity-50 border-2 border-transparent rounded-[20px] gap-5"
+            v-for="choice of choices"
+            :key="choice.value"
+            :for="choice.value"
+            class="btn btn-md btn-white text-white text-2xl bg-opacity-50 border-2 border-transparent rounded-[10px] gap-5"
         >
             <span class="material-symbols-rounded text-4xl">
-                {{ interaction.icon }}
+                {{ choice.icon }}
             </span>
             <input
-                :id="interaction.value"
+                :id="choice.value"
                 :name="name"
                 type="radio"
                 class="hidden"
             />
-            {{ interaction.name }}
+            {{ choice.name }}
         </label>
     </div>
 </template>
