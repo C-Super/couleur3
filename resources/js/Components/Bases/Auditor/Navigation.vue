@@ -1,6 +1,14 @@
 <script setup>
 import { ref } from "vue";
 
+// permet de récupérer la personne authentifiée si elle existe
+defineProps({
+    authInf: {
+        type: Object,
+        required: true,
+    },
+});
+
 // Créer une référence aux boutons de navigation
 const buttons = ref([
     { name: "home", active: false },
@@ -31,9 +39,24 @@ function handleButtonClick(index) {
             :class="['bg-black', { active: button.active }]"
             @click="handleButtonClick(index)"
         >
-            <span class="material-symbols-rounded text-3xl">{{
-                button.name
-            }}</span>
+            <span
+                v-if="button.name !== 'person'"
+                class="material-symbols-rounded text-3xl"
+            >
+                {{ button.name }}
+            </span>
+            <span
+                v-if="button.name === 'person' && authInf === null"
+                class="material-symbols-rounded text-3xl"
+            >
+                {{ button.name }}
+            </span>
+            <span
+                v-if="button.name === 'person' && authInf !== null"
+                class="bg-base-100 text-black font-bold h-9 w-9 flex items-center justify-center rounded-full"
+            >
+                <span>{{ authInf.name[0] }}</span>
+            </span>
         </button>
     </div>
 </template>
