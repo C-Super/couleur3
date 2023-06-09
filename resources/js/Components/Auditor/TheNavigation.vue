@@ -5,7 +5,7 @@ import { ref } from "vue";
 defineProps({
     authInf: {
         type: Object,
-        required: true,
+        default: null,
     },
 });
 
