@@ -13,6 +13,7 @@ use App\Models\Media;
 use App\Models\QuestionChoice;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use Storage;
 
 class AnswerController extends Controller
 {
@@ -49,7 +50,20 @@ class AnswerController extends Controller
             case InteractionType::AUDIO->value:
             case InteractionType::VIDEO->value:
             case InteractionType::PICTURE->value:
-                $answerable = Media::create($validated['replyable_data']);
+                // Récupérez le fichier de la requête
+                $file = $request->file('replyable_data.file');
+
+                // Générer un nom de fichier unique
+                $fileName = time().'_'.$file->getClientOriginalName();
+
+                // Envoyez le fichier au disque minio
+                Storage::disk('s3')->put($fileName, file_get_contents($file));
+
+                // Créez le modèle Media avec le chemin du fichier dans MinIO
+                $answerable = Media::create([
+                    'type' => $validated['replyable_data']['type'],
+                    'path' => $fileName,  // Utilisez le nom de fichier généré comme chemin
+                ]);
                 break;
             case InteractionType::MCQ->value:
             case InteractionType::SURVEY->value:

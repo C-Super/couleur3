@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted } from "vue";
-import Recommandation from "@/Components/Bases/Auditor/Recommandation.vue";
+import Recommandation from "@/Components/Auditor/Home/Recommandation.vue";
 defineProps({
     type: {
         type: String,
@@ -60,4 +60,3 @@ onMounted(() => {
     font-variation-settings: "wght" 200;
 }
 </style>
-```

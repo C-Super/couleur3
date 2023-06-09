@@ -48,11 +48,11 @@ const form = reactive({
                 <base-button class="bg-opacity-50" @click="$emit('cancel')"
                     >Annuler</base-button
                 >
-                <base-button type="accent">Envoyer</base-button>
+                <base-button color="accent">Envoyer</base-button>
             </div>
             <base-button
                 v-else
-                type="accent"
+                color="accent"
                 @click="$emit('create', 'rapidity')"
                 >Créer</base-button
             >
