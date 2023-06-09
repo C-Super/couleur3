@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Broadcast;
 |
 */
 
-Broadcast::channel('animator', function (User $user) {
+Broadcast::channel('interaction.{id}', function (User $user) {
     return $user()->isAnimator();
 });
 

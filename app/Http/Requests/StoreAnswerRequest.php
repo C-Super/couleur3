@@ -63,7 +63,7 @@ class StoreAnswerRequest extends FormRequest
     {
         return [
             'type' => 'required|in:'.implode(',', MediaType::getValues()).'|same:replyable_data.type',
-            'replyable_data.path' => 'required|string',
+            'replyable_data.file' => 'required|file',
             'replyable_data.type' => 'required|in:'.implode(',', MediaType::getValues()),
         ];
     }

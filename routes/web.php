@@ -1,12 +1,12 @@
 <?php
 
-use App\Http\Controllers\Auditor\HomeController;
-use App\Http\Controllers\Animator\DashboardController as AnimatorDashboardController;
+use App\Http\Controllers\AnimatorController;
 use App\Http\Controllers\AnswerController;
+use App\Http\Controllers\AuditorController;
 use App\Http\Controllers\InteractionController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\WinnerController;
-use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [HomeController::class, 'index'])->name('auditor.index');
+Route::get('/', [AuditorController::class, 'index'])->name('auditor.index');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -30,19 +30,17 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth', 'verified', 'auth.auditor'])->group(function () {
     Route::middleware('chat.enabled')->group(function () {
-        Route::post('/messages', [HomeController::class, 'storeMessage'])->name('auditor.messages.store');
+        Route::post('/messages', [MessageController::class, 'store'])->name('messages.store');
     });
-    Route::post('/answer', [AnswerController::class, 'store'])->name('answer.store');
+    Route::post('/answers', [AnswerController::class, 'store'])->name('answers.store');
 });
 
-Route::middleware(['auth', 'auth.animator', HandlePrecognitiveRequests::class])->group(function () {
-    Route::get('/dashboard', [AnimatorDashboardController::class, 'index'])->name('animator.index');
-    Route::post('/dashboard/chat', [AnimatorDashboardController::class, 'updateChatSetting'])->name('animator.chat.update');
-    Route::resource('/dashboard/interactions', InteractionController::class)->names([
-        'index' => 'animator.interactions.index',
-        'show' => 'animator.interactions.show',
-        'store' => 'animator.interactions.store',
-    ])->only(['index', 'show', 'store']);
+Route::middleware(['auth', 'auth.animator'])->group(function () {
+    Route::get('/dashboard', [AnimatorController::class, 'index'])->name('animator.index');
+    Route::post('/settings', [SettingsController::class, 'update'])->name('settings.update');
+    Route::resource('/interactions', InteractionController::class)->names([
+        'store' => 'interactions.store',
+    ])->only(['store']);
 
     Route::post('/interactions/winner/random', [WinnerController::class, 'generateRandomList'])->name('interactions.winner.random');
     Route::post('/interactions/winner/replace', [WinnerController::class, 'generate1Random'])->name('interactions.winner.replace');
@@ -50,4 +48,4 @@ Route::middleware(['auth', 'auth.animator', HandlePrecognitiveRequests::class])-
     Route::post('/interactions/winner/confirm', [WinnerController::class, 'store'])->name('interactions.winner.confirm');
 });
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';

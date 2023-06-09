@@ -23,23 +23,11 @@ const Ziggy = {
         "profile.edit": { uri: "profile", methods: ["GET", "HEAD"] },
         "profile.update": { uri: "profile", methods: ["PATCH"] },
         "profile.destroy": { uri: "profile", methods: ["DELETE"] },
-        "auditor.messages.store": { uri: "messages", methods: ["POST"] },
-        "answer.store": { uri: "answer", methods: ["POST"] },
+        "messages.store": { uri: "messages", methods: ["POST"] },
+        "answers.store": { uri: "answers", methods: ["POST"] },
         "animator.index": { uri: "dashboard", methods: ["GET", "HEAD"] },
-        "animator.chat.update": { uri: "dashboard/chat", methods: ["POST"] },
-        "animator.interactions.index": {
-            uri: "dashboard/interactions",
-            methods: ["GET", "HEAD"],
-        },
-        "animator.interactions.store": {
-            uri: "dashboard/interactions",
-            methods: ["POST"],
-        },
-        "animator.interactions.show": {
-            uri: "dashboard/interactions/{interaction}",
-            methods: ["GET", "HEAD"],
-            bindings: { interaction: "id" },
-        },
+        "settings.update": { uri: "settings", methods: ["POST"] },
+        "interactions.store": { uri: "interactions", methods: ["POST"] },
         "interactions.winner.random": {
             uri: "interactions/winner/random",
             methods: ["POST"],

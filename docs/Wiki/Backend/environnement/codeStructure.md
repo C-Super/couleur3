@@ -73,3 +73,21 @@ L'intérêt du polymorphisme réside dans sa flexibilité et sa réutilisabilit�
 1. **Flexibilité** : Il permet à une entité d'appartenir à plusieurs autres entités. Par exemple, dans une application de blog, un commentaire pourrait être lié à un post, mais aussi à une vidéo ou à un produit. Sans le polymorphisme, il serait nécessaire de créer une table de liaison pour chaque type d'entité, ce qui pourrait rapidement devenir encombrant et difficile à maintenir.
 
 2. **Réutilisabilité** : Il permet de réutiliser le code et de minimiser la redondance. En utilisant des relations polymorphiques, il est possible d'écrire une seule méthode qui peut être utilisée pour tous les types d'entités associées.
+
+## S3
+Pour stocker les différents médias, le choix s'est porté sur S3 afin de séparer le stockage et les fichiers de l'application.
+**Amazon S3** est un service de stockage d'objets proposé par Amazon Web Services (AWS) qui offre une échelle, une durabilité et une disponibilité élevées. Il permet de stocker et de récupérer n'importe quelle quantité de données à tout moment, de n'importe où sur le web.
+
+L'intérêt de stocker des médias sur S3 réside dans sa fiabilité, sa scalabilité, et son intégration aisée :
+1. **Fiabilité** : S3 est conçu pour garantir une durabilité de 99,999999999%, ce qui signifie que les données stockées sont pratiquement indestructibles. Il offre également une grande disponibilité, assurant que les médias sont toujours accessibles lorsque nécessaire.
+    
+2. **Scalabilité** : S3 peut stocker une quantité illimitée de données. Cela le rend particulièrement utile pour les applications qui ont des besoins de stockage évolutifs et ce qui sera le cas pour ce projet.
+    
+3. **Sécurité** : S3 fournit des mécanismes de contrôle d'accès robustes pour garantir que seules les personnes autorisées peuvent accéder à vos médias. Il prend également en charge le chiffrement des données en repos et en transit.
+    
+4. **Economique** : S3 utilise un modèle de tarification à l'utilisation. Il offre également plusieurs classes de stockage pour optimiser les coûts en fonction de la fréquence d'accès aux médias.
+    
+5. **Intégration** : S3 s'intègre facilement avec d'autres services AWS, et est largement pris en charge par de nombreux SDK et bibliothèques tiers, y compris ceux pour PHP et Laravel et est donc parfaitement indiqué pour ce projet.
+
+## Codespace
+GitHub Codespaces est un environnement de développement en ligne qui permet de coder directement dans le navigateur. Il offre un environnement de développement complet et personnalisable, basé sur Visual Studio Code, qui est accessible de n'importe où. L'intérêt principal de Codespaces réside dans sa facilité d'accès et sa portabilité, permettant aux développeurs de travailler sur leurs projets sans avoir à configurer un environnement de développement local, ce qui facilite la collaboration et l'onboarding des nouveaux membres de l'équipe. Le choix s'est porté sur Codespaces, car GitHub offre 180h aux étudiant et cela permettais également de ne pas à avoir à installer docker sur tous les ordinateurs
