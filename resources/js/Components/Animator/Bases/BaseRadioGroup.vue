@@ -1,4 +1,7 @@
 <script setup>
+defineEmits(['update:modelValue'])
+
+
 defineProps({
     choices: {
         type: Array,
@@ -9,6 +12,8 @@ defineProps({
         required: true,
     },
 });
+
+
 </script>
 <template class="">
     <div class="grid grid-cols-3 gap-3 grid-rows-2">
@@ -23,9 +28,11 @@ defineProps({
             </span>
             <input
                 :id="choice.value"
+                :value="modelValue"
                 :name="name"
                 type="radio"
                 class="hidden"
+                @input="$emit('update:modelValue', choice.value)"
             />
             {{ choice.name }}
         </label>
