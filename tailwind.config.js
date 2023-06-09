@@ -18,7 +18,7 @@ export default {
             variants: ["hover", "focus"],
         },
         {
-            pattern: /btn-(primary|secondary|accent|white)/,
+            pattern: /btn-(primary|secondary|accent|white|error)/,
             variants: ["hover", "focus"],
         },
         {

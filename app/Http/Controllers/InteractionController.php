@@ -17,28 +17,6 @@ use Inertia\Inertia;
 class InteractionController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        // Récupérer toutes les interactions et les retourner
-        $interactions = Interaction::all();
-
-        return response()->json($interactions);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function show(Interaction $interaction)
-    {
-        // Récupérer l'interaction et la retourner
-        $interaction = Interaction::findOrFail($interaction->id);
-
-        return response()->json($interaction);
-    }
-
-    /**
      * Show current interaction
      */
     public function getCurrentInteraction()

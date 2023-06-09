@@ -38,7 +38,7 @@ function cancelInteraction() {
             <chat-view :chat-enabled="chatEnabled" />
 
             <base-button
-                type="error"
+                color="error"
                 class="flex-initial btn-block bg-opacity-50 text-white btn-lg"
                 >Fin d'émission</base-button
             >

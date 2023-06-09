@@ -33,7 +33,7 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post(route("animator.chat.update"), {
+    form.post(route("settings.update"), {
         preserveScroll: true,
         only: ["chatEnabled"],
         onSuccess: () => {
