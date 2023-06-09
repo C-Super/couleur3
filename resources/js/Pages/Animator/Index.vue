@@ -15,6 +15,11 @@ defineProps({
         type: Boolean,
         required: true,
     },
+    interaction: {
+        type: Object,
+        required: false,
+        default: null,
+    },
 });
 
 function createInteraction(type) {

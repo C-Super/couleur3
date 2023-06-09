@@ -1,33 +1,30 @@
 <script setup>
-let counterSec = 10;
-let counterMin = 1;
+import { ref } from "vue";
+
+const seconds = ref(10);
+const minutes = ref(0);
+
 setInterval(() => {
-    if (counterSec > 0) {
-        counterSec--;
+    if (seconds.value > 0) {
+        seconds.value--;
     }
-    if (counterSec == 0 && !counterMin == 0) {
-        counterMin--;
-        counterSec = 60;
+    if (seconds.value == 0 && !minutes.value == 0) {
+        minutes.value--;
+        seconds.value = 60;
     }
-    document
-        .getElementById("counterSec")
-        .style.setProperty("--value", counterSec);
-    document
-        .getElementById("counterMin")
-        .style.setProperty("--value", counterMin);
 }, 1000);
 </script>
 <template>
     <div class="items-center w-200 inline-block font-medium">
         <p class="text-center mb-3">Temps restant</p>
         <div
-            class="items-center grid grid-flow-col gap-5 text-xs text-center auto-cols-max txte-white"
+            class="items-center grid grid-flow-col gap-3 text-xs text-center auto-cols-max text-white"
         >
             <div
                 class="flex flex-col p-4 bg-primary bg-opacity-25 rounded-[20px]"
             >
                 <span class="countdown text-center text-base text-xl">
-                    <span id="counterMin" style="--value: 1"></span>
+                    <span :style="`--value: ${minutes}`"></span>
                 </span>
                 min
             </div>
@@ -36,7 +33,7 @@ setInterval(() => {
                 class="flex flex-col p-4 bg-primary bg-opacity-25 rounded-[20px]"
             >
                 <span class="countdown text-xl text-base">
-                    <span id="counterSec" style="--value: 10"></span>
+                    <span :style="`--value: ${seconds}`"></span>
                 </span>
                 sec
             </div>

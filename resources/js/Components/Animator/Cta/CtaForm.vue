@@ -20,7 +20,7 @@ defineProps({
 const form = useForm({
     title: "",
     link: "",
-    ended_at: "",
+    duration: 300,
 });
 
 const submit = () => {
