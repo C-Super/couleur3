@@ -5,6 +5,7 @@ import BaseRadioGroup from "@/Components/Animator/Bases/BaseRadioGroup.vue";
 import BaseBarChart from "@/Components/Animator/Bases/BaseBarChart.vue";
 import BaseTabs from "@/Components/Animator/Bases/BaseTabs.vue";
 import BaseTab from "@/Components/Animator/Bases/BaseTab.vue";
+import BaseAnswers from "@/Components/Animator/Bases/BaseAnswers.vue";
 import { onMounted, reactive } from "vue";
 
 defineProps({
@@ -55,19 +56,27 @@ const answers = reactive([
         id: 1,
         label: "Réponse 1",
         value: 10,
+        name: "Rachel",
+        response: "Hello World!",
     },
     {
         id: 2,
         label: "Réponse 2",
         value: 5,
+        name: "Miguel",
+        response: "Hola que tal?",
     },
 
     {
         id: 3,
         label: "Réponse 3",
         value: 1,
+        name: "Hugo",
+        response: "Salut ça va?",
     },
 ]);
+
+const pinnedAnswers = reactive([]);
 
 onMounted(() => {
     subscribeToPublicChannel();
@@ -87,8 +96,18 @@ setTimeout(() => {
         id: 4,
         label: "Réponse 4",
         value: 4,
+        name: "Fabrice",
+        response: "Yo",
     });
 }, 3000);
+
+function addPinned(answer) {
+    pinnedAnswers.push(answer);
+}
+
+function removePinned(answer) {
+    pinnedAnswers.splice(pinnedAnswers.indexOf(answer), 1);
+}
 </script>
 
 <template>
@@ -106,6 +125,12 @@ setTimeout(() => {
             </base-tabs>
             <base-bar-chart :data="answers" correct="2"></base-bar-chart>
             <base-radio-group :choices="questionTypes" name="questionTypes" />
+            <base-answers
+                :pinned-answers="pinnedAnswers"
+                :answers="answers"
+                @add:pinned="addPinned"
+                @remove:pinned="removePinned"
+            />
         </template>
         <template #actions>
             <div v-if="isCreating" class="flex flex-row gap-3">

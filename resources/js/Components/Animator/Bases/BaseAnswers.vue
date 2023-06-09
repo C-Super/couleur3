@@ -1,4 +1,6 @@
 <script setup>
+defineEmits(["add:pinned", "remove:pinned"]);
+
 defineProps({
     pinnedAnswers: {
         type: Array,
@@ -33,6 +35,9 @@ defineProps({
                                 <span
                                     id="fill"
                                     class="fill-current material-symbols-rounded text-5xl text-primary"
+                                    @click="
+                                        $emit('remove:pinned', pinnedAnswer)
+                                    "
                                 >
                                     push_pin
                                 </span>
@@ -65,6 +70,7 @@ defineProps({
                                 <!-- icon off -->
                                 <span
                                     class="fill-current material-symbols-rounded text-5xl"
+                                    @click="$emit('add:pinned', answer)"
                                 >
                                     push_pin
                                 </span>
