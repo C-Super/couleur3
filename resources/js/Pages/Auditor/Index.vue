@@ -1,10 +1,9 @@
 <script setup>
-import Header from "@/Components/Bases/Auditor/Header.vue";
-import Navigation from "@/Components/Bases/Auditor/Navigation.vue";
-import PageAccueil from "@/Components/Bases/Auditor/PageAccueil.vue";
+import AuditorLayout from "@/Layouts/AuditorLayout.vue";
+import Player from "@/Components/Auditor/Player.vue";
+import DescriptionLive from "@/Components/Auditor/Home/DescriptionLive.vue";
 import ChatComponent from "@/Components/ChatComponent.vue";
-import Chat from "@/Components/Bases/Auditor/Chat.vue";
-import Player from "@/Components/Bases/Auditor/Player.vue";
+// import Chat from "@/Components/Auditor/Home/Chat.vue";
 
 defineProps({
     chatEnabled: {
@@ -19,13 +18,10 @@ defineProps({
 </script>
 
 <template>
-    <div class="bg-black text-base-100 relative">
-        <Header />
-        
+    <AuditorLayout :auth-inf="auth.user">
         <Player />
-        <PageAccueil />
+        <DescriptionLive />
         <ChatComponent :chat-enabled="chatEnabled" />
         <!-- <Chat /> -->
-        <Navigation :auth-inf="auth.user" />
-    </div>
+    </AuditorLayout>
 </template>
