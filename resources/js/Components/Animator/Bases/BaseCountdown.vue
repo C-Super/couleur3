@@ -1,6 +1,13 @@
 <script setup>
 import { ref } from "vue";
 
+defineProps({
+    color: {
+        type: String,
+        default: "primary"
+    }
+})
+
 const seconds = ref(10);
 const minutes = ref(0);
 
@@ -18,10 +25,10 @@ setInterval(() => {
     <div class="items-center w-200 inline-block font-medium">
         <p class="text-center mb-3">Temps restant</p>
         <div
-            class="items-center grid grid-flow-col gap-3 text-xs text-center auto-cols-max text-white"
+            class="items-center grid grid-flow-col gap-3 text-center text-xs auto-cols-max text-white"
         >
             <div
-                class="flex flex-col p-4 bg-primary bg-opacity-25 rounded-[20px]"
+                :class="`flex flex-col p-4 bg-${color} bg-opacity-25 rounded-[20px]`"
             >
                 <span class="countdown text-center text-base text-xl">
                     <span :style="`--value: ${minutes}`"></span>
@@ -30,7 +37,7 @@ setInterval(() => {
             </div>
             <p class="text-xl">:</p>
             <div
-                class="flex flex-col p-4 bg-primary bg-opacity-25 rounded-[20px]"
+                :class="`flex flex-col p-4 bg-${color} bg-opacity-25 rounded-[20px]`"
             >
                 <span class="countdown text-xl text-base">
                     <span :style="`--value: ${seconds}`"></span>

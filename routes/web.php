@@ -3,6 +3,7 @@
 use App\Http\Controllers\AnimatorController;
 use App\Http\Controllers\AnswerController;
 use App\Http\Controllers\AuditorController;
+use App\Http\Controllers\CallToActionController;
 use App\Http\Controllers\InteractionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SettingsController;
@@ -38,9 +39,14 @@ Route::middleware(['auth', 'verified', 'auth.auditor'])->group(function () {
 Route::middleware(['auth', 'auth.animator'])->group(function () {
     Route::get('/dashboard', [AnimatorController::class, 'index'])->name('animator.index');
     Route::post('/settings', [SettingsController::class, 'update'])->name('settings.update');
-    Route::resource('/interactions', InteractionController::class)->names([
-        'store' => 'interactions.store',
-    ])->only(['store']);
+
+    Route::post('/interactions/cta', [CallToActionController::class, 'store'])->name('interactions.cta.store');
+    Route::post('/interactions/quick_click', [InteractionController::class, 'store'])->name('interactions.quick_click.store');
+    Route::post('/interactions/survey', [InteractionController::class, 'store'])->name('interactions.survey.store');
+    Route::post('/interactions/mcq', [InteractionController::class, 'store'])->name('interactions.mcq.store');
+    Route::post('/interactions/audio', [InteractionController::class, 'store'])->name('interactions.audio.store');
+    Route::post('/interactions/video', [InteractionController::class, 'store'])->name('interactions.video.store');
+    Route::post('/interactions/picture', [InteractionController::class, 'store'])->name('interactions.picture.store');
 
     Route::post('/interactions/winner/random', [WinnerController::class, 'generateRandomList'])->name('interactions.winner.random');
     Route::post('/interactions/winner/replace', [WinnerController::class, 'generate1Random'])->name('interactions.winner.replace');
@@ -48,4 +54,4 @@ Route::middleware(['auth', 'auth.animator'])->group(function () {
     Route::post('/interactions/winner/confirm', [WinnerController::class, 'store'])->name('interactions.winner.confirm');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

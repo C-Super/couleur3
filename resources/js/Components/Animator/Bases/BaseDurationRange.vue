@@ -55,9 +55,9 @@ const formatedSeconds = computed(() => {
                 <span>|</span>
             </div>
         </div>
-        <div class="flex gap-3">
+        <div class="flex justify-items-center gap-3 text-xs text-center text-white font-medium">
             <div
-                class="flex flex-col justify-items-center align-middle p-4 bg-primary bg-opacity-25 rounded-[20px]"
+                :class="`flex flex-col justify-items-center align-middle p-4 bg-${color} bg-opacity-25 rounded-[20px]`"
             >
                 <span class="countdown text-center text-base text-xl">
                     <span :style="`--value: ${formatedMinutes}`"></span>
@@ -66,9 +66,9 @@ const formatedSeconds = computed(() => {
             </div>
             <p class="text-xl">:</p>
             <div
-                class="flex flex-col p-4 bg-primary bg-opacity-25 rounded-[20px]"
+                :class="`flex flex-col justify-items-center align-middle p-4 bg-${color} bg-opacity-25 rounded-[20px]`"
             >
-                <span class="countdown text-xl text-base">
+                <span class="countdown text-center text-base text-xl">
                     <span :style="`--value: ${formatedSeconds}`"></span>
                 </span>
                 sec

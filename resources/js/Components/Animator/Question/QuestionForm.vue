@@ -1,7 +1,6 @@
 <script setup>
-import { onMounted, reactive } from "vue";
-import BaseCard from "@/Components/Bases/BaseCard.vue";
-import BaseButton from "@/Components/Bases/BaseButton.vue";
+import BaseCard from "@/Components/Animator/Bases/BaseCard.vue";
+import BaseButton from "@/Components/Animator/Bases/BaseButton.vue";
 import BaseRadioGroup from "@/Components/Animator/Bases/BaseRadioGroup.vue";
 import BaseBarChart from "@/Components/Animator/Bases/BaseBarChart.vue";
 import BaseTabs from "@/Components/Animator/Bases/BaseTabs.vue";
@@ -109,7 +108,7 @@ setTimeout(() => {
         </template>
         <template #actions>
             <div v-if="isCreating" class="flex flex-row gap-3">
-                <base-button class="bg-opacity-50" @click="$emit('cancel')"
+                <base-button @click="$emit('cancel')"
                     >Annuler</base-button
                 >
                 <base-button type="primary">Envoyer</base-button>
