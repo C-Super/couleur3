@@ -29,12 +29,12 @@
         <div
             class="chat-bubble gradient-auditor text-black font-bold text-lg relative"
         >
-            <div class="flex items-center">
-                <span class="mr-2">Texte de l’animateur</span>
-                <span id="link" class="material-symbols-rounded"
+            <span class="mr-2"
+                >Texte de l’animateur
+                <span id="link" class="material-symbols-rounded align-middle"
                     >open_in_new</span
-                >
-            </div>
+                ></span
+            >
 
             <div class="indicator absolute top-0 right-0 mt-1 mr-1">
                 <span
