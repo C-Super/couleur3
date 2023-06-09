@@ -1,13 +1,11 @@
 <script setup>
 import { ref, computed } from "vue";
-//Fonctionne avec un tableau qui contient des pseudos et des réponses textuels
 const props = defineProps({
     responses: {
         type: Array,
         required: true,
     },
 });
-
 const pinnedResponses = ref([]);
 const notPinnedResponses = computed(() =>
     props.responses.filter(
@@ -18,7 +16,7 @@ function functionPinned(el) {
     pinnedResponses.value.push(el);
 }
 function functionUnpinned(el) {
-    console.log(el);
+    pinnedResponses.value.splice(pinnedResponses.value.indexOf(el), 1);
 }
 </script>
 <template>
@@ -40,28 +38,22 @@ function functionUnpinned(el) {
                         <th>
                             <label class="swap">
                                 <input type="checkbox" class="hidden" />
-                                <!-- icon off -->
-                                <span
-                                    class="swap-on fill-current material-symbols-rounded text-5xl"
-                                    @click="functionUnpinned(pinnedResponse)"
-                                >
-                                    push_pin
-                                </span>
                                 <!-- icon on -->
                                 <span
                                     id="fill"
-                                    class="swap-off fill-current material-symbols-rounded text-5xl text-primary"
+                                    class="fill-current material-symbols-rounded text-5xl text-primary"
+                                    @click="functionUnpinned(pinnedResponse)"
                                 >
                                     push_pin
                                 </span>
                             </label>
                         </th>
                         <td class="font-bold text-base">
-                            <slot>{{ pinnedResponse.pseudo }}</slot>
+                            <slot>{{ pinnedResponse.name }}</slot>
                         </td>
                         <td>
                             <slot class="text-base">{{
-                                pinnedResponse.reponseTxt
+                                pinnedResponse.response
                             }}</slot>
                         </td>
                     </tr>
@@ -82,14 +74,7 @@ function functionUnpinned(el) {
                                 <input type="checkbox" class="hidden" />
                                 <!-- icon off -->
                                 <span
-                                    class="swap-off fill-current material-symbols-rounded text-5xl"
-                                >
-                                    push_pin
-                                </span>
-                                <!-- icon on -->
-                                <span
-                                    id="fill"
-                                    class="swap-on fill-current material-symbols-rounded text-5xl text-primary"
+                                    class="fill-current material-symbols-rounded text-5xl"
                                     @click="functionPinned(notPinnedResponse)"
                                 >
                                     push_pin
@@ -97,11 +82,11 @@ function functionUnpinned(el) {
                             </label>
                         </th>
                         <td class="font-bold text-base">
-                            <slot>{{ notPinnedResponse.pseudo }}</slot>
+                            <slot>{{ notPinnedResponse.name }}</slot>
                         </td>
                         <td>
                             <slot class="text-base">{{
-                                notPinnedResponse.reponseTxt
+                                notPinnedResponse.response
                             }}</slot>
                         </td>
                     </tr>

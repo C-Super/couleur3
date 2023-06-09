@@ -9,7 +9,6 @@ import InputGroup from "@/Components/InputGroup.vue";
 import BaseTabs from "@/Components/Animator/Bases/BaseTabs.vue";
 import BaseTab from "@/Components/Animator/Bases/BaseTab.vue";
 import InteractionRadioGroup from "@/Components/Animator/Bases/InteractionRadioGroup.vue";
-import ReponseTexte from "@/Components/Animator/Bases/ReponseTexte.vue";
 import { reactive, onMounted, ref } from "vue";
 import { Head, useForm } from "@inertiajs/vue3";
 
@@ -58,29 +57,6 @@ const interactions = [
         icon: "video_call",
         name: "Vidéo",
         value: "video",
-    },
-];
-
-const reponsesRecues = [
-    {
-        pseudo: "Charle",
-        reponseTxt: "Hello World",
-    },
-    {
-        pseudo: "Magie",
-        reponseTxt: "Hello World",
-    },
-    {
-        pseudo: "Jane",
-        reponseTxt: "Hello World",
-    },
-    {
-        pseudo: "Miguel",
-        reponseTxt: "Hello World",
-    },
-    {
-        pseudo: "Hugo",
-        reponseTxt: "Hello World",
     },
 ];
 
@@ -194,10 +170,6 @@ function cancelInteraction() {
                     <interaction-radio-group
                         :interactions="interactions"
                         name="interactionType"
-                    />
-                    <reponse-texte
-                        :responses="reponsesRecues"
-                        name="reponseRecuesTexte"
                     />
                 </template>
                 <template #actions>
