@@ -31,7 +31,7 @@
         >
             <span class="mr-2"
                 >Texte de l’animateur
-                <span id="link" class="material-symbols-rounded align-middle"
+                <span id="link" class="material-symbols-rounded align-middle text-xl	"
                     >open_in_new</span
                 ></span
             >
