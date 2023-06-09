@@ -13,11 +13,13 @@
 @import 'Animator/base.css';
 
 .gradient-auditor {
-    background-color: linear-gradient(125deg, #FF67FF 10%, #FFE27C 85%);
+    background-image: linear-gradient(125deg, #FF67FF 10%, #FFE27C 85%);
 }
+
 .bg-blue-audior {
     background-color: #1C1354;
 }
+
 .text-blue-audior {
     color: #1C1354;
 }
