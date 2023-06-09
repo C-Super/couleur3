@@ -1,10 +1,11 @@
 <!-- eslint-disable no-undef -->
 <script setup>
-import BaseCard from "@/Components/Bases/BaseCard.vue";
-import BaseButton from "@/Components/Bases/BaseButton.vue";
+import BaseCard from "@/Components/Animator/Bases/BaseCard.vue";
+import BaseButton from "@/Components/Animator/Bases/BaseButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import InputGroup from "@/Components/InputGroup.vue";
 import BaseCountdown from "@/Components/Animator/Bases/BaseCountdown.vue";
+import BaseDurationRange from "@/Components/Animator/Bases/BaseDurationRange.vue";
 import { useForm } from "@inertiajs/vue3";
 
 defineEmits(["create", "cancel"]);
@@ -18,13 +19,14 @@ defineProps({
 });
 
 const form = useForm({
+    type: "cta",
     title: "",
     link: "",
-    ended_at: "",
+    duration: 300,
 });
 
 const submit = () => {
-    form.post(route("interactions.store"), {
+    form.post(route("interactions.cta.store"), {
         preserveScroll: true,
         onSuccess: () => {
             // Show responses page
@@ -53,6 +55,7 @@ const submit = () => {
                         color="secondary"
                     />
                 </input-group>
+
                 <input-group id="link" label="Lien">
                     <text-input
                         id="link"
@@ -60,7 +63,7 @@ const submit = () => {
                         color="secondary"
                     />
                 </input-group>
-                <base-countdown />
+                <base-countdown color="secondary" />
                 <input-group id="duration" label="Durée d'interaction">
                     <base-duration-range
                         id="duration"
@@ -72,7 +75,7 @@ const submit = () => {
             </template>
             <template #actions>
                 <div v-if="isCreating" class="flex flex-row gap-3">
-                    <base-button class="bg-opacity-50" @click="$emit('cancel')"
+                    <base-button @click="$emit('cancel')"
                         >Annuler</base-button
                     >
                     <base-button color="secondary" type="submit"

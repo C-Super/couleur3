@@ -1,6 +1,6 @@
 <!-- eslint-disable no-undef -->
 <script setup>
-import BaseButton from "@/Components/Bases/BaseButton.vue";
+import BaseButton from "@/Components/Animator/Bases/BaseButton.vue";
 import ChatView from "@/Components/Animator/Chat/ChatView.vue";
 import QuestionForm from "@/Components/Animator/Question/QuestionForm.vue";
 import CtaForm from "@/Components/Animator/Cta/CtaForm.vue";
@@ -14,6 +14,11 @@ defineProps({
     chatEnabled: {
         type: Boolean,
         required: true,
+    },
+    interaction: {
+        type: Object,
+        required: false,
+        default: null,
     },
 });
 
