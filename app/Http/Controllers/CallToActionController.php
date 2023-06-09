@@ -2,73 +2,34 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\InteractionType;
 use App\Http\Requests\StoreCallToActionRequest;
-use App\Http\Requests\UpdateCallToActionRequest;
 use App\Models\CallToAction;
+use App\Models\Interaction;
+use Inertia\Inertia;
 
 class CallToActionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
     /**
      * Store a newly created resource in storage.
      */
     public function store(StoreCallToActionRequest $request)
     {
         $validated = $request->validated();
-        $callToAction = CallToAction::create($validated);
 
-        return response()->json($callToAction, 201);
-    }
+        $cta = CallToAction::create($validated);
+        $interaction = new Interaction();
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(CallToAction $callToAction)
-    {
-        //
-    }
+        $interaction->title = $validated['title'];
+        $interaction->type = InteractionType::CTA;
+        $interaction->call_to_action_id = $cta->id;
+        $interaction->animator_id = auth()->user()->id;
+        $interaction->ended_at = now()->addSeconds($validated['duration']);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(CallToAction $callToAction)
-    {
-        //
-    }
+        $interaction->save();
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateCallToActionRequest $request, CallToAction $callToAction)
-    {
-        $validated = $request->validated();
-        $callToAction->update($validated);
-
-        return response()->json($callToAction, 200);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(CallToAction $callToAction)
-    {
-        $callToAction->delete();
-
-        return response()->json(null, 204);
+        return Inertia::render('Animator/Index', [
+            'interaction' => $interaction,
+        ]);
     }
 }

@@ -27,7 +27,34 @@ const Ziggy = {
         "answers.store": { uri: "answers", methods: ["POST"] },
         "animator.index": { uri: "dashboard", methods: ["GET", "HEAD"] },
         "settings.update": { uri: "settings", methods: ["POST"] },
-        "interactions.store": { uri: "interactions", methods: ["POST"] },
+        "interactions.cta.store": {
+            uri: "interactions/cta",
+            methods: ["POST"],
+        },
+        "interactions.quick_click.store": {
+            uri: "interactions/quick_click",
+            methods: ["POST"],
+        },
+        "interactions.survey.store": {
+            uri: "interactions/survey",
+            methods: ["POST"],
+        },
+        "interactions.mcq.store": {
+            uri: "interactions/mcq",
+            methods: ["POST"],
+        },
+        "interactions.audio.store": {
+            uri: "interactions/audio",
+            methods: ["POST"],
+        },
+        "interactions.video.store": {
+            uri: "interactions/video",
+            methods: ["POST"],
+        },
+        "interactions.picture.store": {
+            uri: "interactions/picture",
+            methods: ["POST"],
+        },
         "interactions.winner.random": {
             uri: "interactions/winner/random",
             methods: ["POST"],
