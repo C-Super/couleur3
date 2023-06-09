@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\NoActiveInteractions;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreCallToActionRequest extends FormRequest
@@ -11,7 +12,7 @@ class StoreCallToActionRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,11 +23,10 @@ class StoreCallToActionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'description' => 'required|string',
-            'link' => 'nullable|url',
-            'button_text' => 'required|string',
-            'interaction_id' => 'required|exists:interactions,id',
-            'media_id' => 'nullable|exists:medias,id',
+            'title' => 'required|string|min:3|max:255',
+            'link' => 'required|url',
+            'duration' => 'required|integer|min:15|max:3600',
+            new NoActiveInteractions(),
         ];
     }
 }

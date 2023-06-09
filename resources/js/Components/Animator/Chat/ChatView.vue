@@ -1,8 +1,9 @@
 <!-- eslint-disable no-undef -->
 <script setup>
 import MessageItem from "@/Components/MessageItem.vue";
-import BaseCard from "@/Components/Bases/BaseCard.vue";
-import BaseButton from "@/Components/Bases/BaseButton.vue";
+import BaseCard from "@/Components/Animator/Bases/BaseCard.vue";
+import BaseButton from "@/Components/Animator/Bases/BaseButton.vue";
+import Color from "@/Enums/Color.js";
 import { onMounted, ref } from "vue";
 import { useForm } from "@inertiajs/vue3";
 
@@ -45,7 +46,7 @@ const submit = () => {
 </script>
 
 <template>
-    <base-card class="flex-auto grow">
+    <base-card class="flex-auto grow" :color="Color.WHITE">
         <template #title>Chat</template>
         <template #subtitle>
             <div class="overflow-hidden overflow-y-auto">

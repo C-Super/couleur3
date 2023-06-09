@@ -1,16 +1,20 @@
 <script setup>
-import { onMounted, reactive } from "vue";
-import BaseCard from "@/Components/Bases/BaseCard.vue";
-import BaseButton from "@/Components/Bases/BaseButton.vue";
+import BaseCard from "@/Components/Animator/Bases/BaseCard.vue";
+import BaseButton from "@/Components/Animator/Bases/BaseButton.vue";
 import BaseRadioGroup from "@/Components/Animator/Bases/BaseRadioGroup.vue";
 import BaseBarChart from "@/Components/Animator/Bases/BaseBarChart.vue";
 import BaseTabs from "@/Components/Animator/Bases/BaseTabs.vue";
 import BaseTab from "@/Components/Animator/Bases/BaseTab.vue";
+import Color from "@/Enums/Color.js";
+import { onMounted, reactive } from "vue";
 
 defineProps({
-    isCreating: {
+    creatingInteraction: {
         type: String,
-        required: false,
+        default: null,
+    },
+    currentInteraction: {
+        type: Object,
         default: null,
     },
 });
@@ -92,7 +96,7 @@ setTimeout(() => {
 </script>
 
 <template>
-    <base-card type="primary">
+    <base-card :color="Color.PRIMARY">
         <template #title>Question</template>
         <template #content>
             <base-tabs>
@@ -108,10 +112,8 @@ setTimeout(() => {
             <base-radio-group :choices="questionTypes" name="questionTypes" />
         </template>
         <template #actions>
-            <div v-if="isCreating" class="flex flex-row gap-3">
-                <base-button class="bg-opacity-50" @click="$emit('cancel')"
-                    >Annuler</base-button
-                >
+            <div v-if="creatingInteraction" class="flex flex-row gap-3">
+                <base-button @click="$emit('cancel')">Annuler</base-button>
                 <base-button type="primary">Envoyer</base-button>
             </div>
         </template>

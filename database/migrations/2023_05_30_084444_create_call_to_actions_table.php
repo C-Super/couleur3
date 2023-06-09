@@ -13,9 +13,7 @@ return new class extends Migration
     {
         Schema::create('call_to_actions', function (Blueprint $table) {
             $table->id();
-            $table->string('description');
             $table->string('link')->nullable();
-            $table->string('button_text');
             $table->timestamps();
         });
     }
