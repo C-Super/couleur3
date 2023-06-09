@@ -13,7 +13,8 @@
                 "Vue.volar",
                 "nhedger.inertia",
                 "dbaeumer.vscode-eslint",
-                "esbenp.prettier-vscode"
+                "esbenp.prettier-vscode",
+                "cpylua.language-postcss"
             ],
             "settings": {
                 "editor.formatOnSave": true,

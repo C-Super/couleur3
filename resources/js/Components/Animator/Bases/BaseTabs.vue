@@ -38,12 +38,12 @@ function changeTab(i) {
 
 <style lang="postcss" scoped>
 .tabs-boxed {
-    @apply bg-white bg-opacity-50 rounded-full gap-2;
+    @apply bg-white bg-opacity-50 rounded-full gap-1;
 }
 .tab {
     @apply tab-lg flex-auto font-bold text-white rounded-full border-2 border-transparent hover:border-white hover:bg-white hover:bg-opacity-50;
 }
 .tab-active {
-    @apply bg-opacity-50 border-primary border-2 text-white !important;
+    @apply bg-[#6BA5BE] border-primary border-2 text-white !important;
 }
 </style>
