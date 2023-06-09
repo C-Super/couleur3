@@ -6,7 +6,7 @@ defineProps({
         type: Array,
         required: true,
     },
-    notPinnedResponses: {
+    notPinnedAnswers: {
         type: Array,
         required: true,
     },
@@ -59,9 +59,9 @@ defineProps({
             <!-- Array not pinned -->
             <table class="table table-auto w-auto">
                 <tbody
-                    v-for="notPinnedResponse of notPinnedResponses"
-                    :key="notPinnedResponse.value"
-                    :for="notPinnedResponse.value"
+                    v-for="notPinnedAnswer of notPinnedAnswers"
+                    :key="notPinnedAnswer.value"
+                    :for="notPinnedAnswer.value"
                 >
                     <tr class="border-none">
                         <th>
@@ -71,7 +71,7 @@ defineProps({
                                 <span
                                     class="fill-current material-symbols-rounded text-5xl"
                                     @click="
-                                        $emit('add:pinned', notPinnedResponse)
+                                        $emit('add:pinned', notPinnedAnswer)
                                     "
                                 >
                                     push_pin
@@ -79,11 +79,11 @@ defineProps({
                             </label>
                         </th>
                         <td class="font-bold text-base">
-                            <slot>{{ notPinnedResponse.name }}</slot>
+                            <slot>{{ notPinnedAnswer.name }}</slot>
                         </td>
                         <td>
                             <slot class="text-base">{{
-                                notPinnedResponse.response
+                                notPinnedAnswer.response
                             }}</slot>
                         </td>
                     </tr>
