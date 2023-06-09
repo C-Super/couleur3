@@ -4,11 +4,15 @@ import BaseButton from "@/Components/Animator/Bases/BaseButton.vue";
 import BaseRadioGroup from "@/Components/Animator/Bases/BaseRadioGroup.vue";
 import BaseTabs from "@/Components/Animator/Bases/BaseTabs.vue";
 import BaseTab from "@/Components/Animator/Bases/BaseTab.vue";
+import Color from "@/Enums/Color.js";
 
 defineProps({
-    isCreating: {
+    creatingInteraction: {
         type: String,
-        required: false,
+        default: null,
+    },
+    currentInteraction: {
+        type: Object,
         default: null,
     },
 });
@@ -50,7 +54,7 @@ const questionTypes = [
 </script>
 
 <template>
-    <base-card type="primary">
+    <base-card :color="Color.PRIMARY">
         <template #title>Question</template>
         <template #content>
             <base-tabs>
@@ -66,7 +70,7 @@ const questionTypes = [
             <base-radio-group :choices="questionTypes" name="questionTypes" />
         </template>
         <template #actions>
-            <div v-if="isCreating" class="flex flex-row gap-3">
+            <div v-if="creatingInteraction" class="flex flex-row gap-3">
                 <base-button @click="$emit('cancel')"
                     >Annuler</base-button
                 >

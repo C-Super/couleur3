@@ -4,30 +4,39 @@ import BaseButton from "@/Components/Animator/Bases/BaseButton.vue";
 import ChatView from "@/Components/Animator/Chat/ChatView.vue";
 import QuestionForm from "@/Components/Animator/Question/QuestionForm.vue";
 import CtaForm from "@/Components/Animator/Cta/CtaForm.vue";
-import QuickButtonForm from "@/Components/Animator/QuickButton/QuickButtonForm.vue";
-import { ref } from "vue";
+import QuickClickForm from "@/Components/Animator/QuickClick/QuickClickForm.vue";
+import InteractionType from "@/Enums/InteractionType.js";
+import { reactive, onBeforeMount } from "vue";
 import { Head } from "@inertiajs/vue3";
 
-const isCreating = ref(null);
+const state = reactive({
+    creatingInteraction: null,
+    currentInteraction: null,
+});
 
-defineProps({
+const props = defineProps({
     chatEnabled: {
         type: Boolean,
         required: true,
     },
     interaction: {
         type: Object,
-        required: false,
         default: null,
     },
 });
 
+onBeforeMount(() => {
+    if (props.interaction) {
+        state.currentInteraction = props.interaction;
+    }
+});
+
 function createInteraction(type) {
-    isCreating.value = type;
+    state.creatingInteraction = type;
 }
 
 function cancelInteraction() {
-    isCreating.value = null;
+    state.creatingInteraction = null;
 }
 </script>
 
@@ -46,25 +55,28 @@ function cancelInteraction() {
 
         <div class="basis-2/3 flex flex-col justify-items-stretch gap-3">
             <question-form
-                v-if="!isCreating || isCreating === 'question'"
+                v-if="(!state.creatingInteraction && !state.currentInteraction) || InteractionType.isQuestion(state.creatingInteraction) || (state.currentInteraction && state.currentInteraction.type === InteractionType.QUESTION)"
                 class="flex-auto basis-4/6"
-                :is-creating="isCreating"
+                :creating-interaction="state.creatingInteraction"
+                :current-interaction="state.currentInteraction"
                 @create="createInteraction"
                 @cancel="cancelInteraction"
             />
 
             <cta-form
-                v-if="!isCreating || isCreating === 'cta'"
+                v-if="(!state.creatingInteraction && !state.currentInteraction) || state.creatingInteraction === InteractionType.CTA || (state.currentInteraction && state.currentInteraction.type === InteractionType.CTA)"
                 class="flex-auto basis-1/6"
-                :is-creating="isCreating"
+                :creating-interaction="state.creatingInteraction"
+                :current-interaction="state.currentInteraction"
                 @create="createInteraction"
                 @cancel="cancelInteraction"
             />
 
-            <quick-button-form
-                v-if="!isCreating || isCreating === 'rapidity'"
+            <quick-click-form
+                v-if="(!state.creatingInteraction && !state.currentInteraction) || state.creatingInteraction === InteractionType.QUICK_CLICK || (state.currentInteraction && state.currentInteraction.type === InteractionType.QUICK_CLICK)"
                 class="flex-auto basis-1/6"
-                :is-creating="isCreating"
+                :creating-interaction="state.creatingInteraction"
+                :current-interaction="state.currentInteraction"
                 @create="createInteraction"
                 @cancel="cancelInteraction"
             />
