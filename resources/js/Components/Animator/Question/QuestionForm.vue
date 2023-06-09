@@ -6,7 +6,7 @@ import BaseBarChart from "@/Components/Animator/Bases/BaseBarChart.vue";
 import BaseTabs from "@/Components/Animator/Bases/BaseTabs.vue";
 import BaseTab from "@/Components/Animator/Bases/BaseTab.vue";
 import BaseAnswers from "@/Components/Animator/Bases/BaseAnswers.vue";
-import { onMounted, reactive } from "vue";
+import { onMounted, reactive, computed } from "vue";
 
 defineProps({
     isCreating: {
@@ -78,6 +78,10 @@ const answers = reactive([
 
 const pinnedAnswers = reactive([]);
 
+const notPinnedResponses = computed(() =>
+    answers.filter((answer) => !pinnedAnswers.includes(answer))
+);
+
 onMounted(() => {
     subscribeToPublicChannel();
 });
@@ -127,7 +131,7 @@ function removePinned(answer) {
             <base-radio-group :choices="questionTypes" name="questionTypes" />
             <base-answers
                 :pinned-answers="pinnedAnswers"
-                :answers="answers"
+                :not-pinned-responses="notPinnedResponses"
                 @add:pinned="addPinned"
                 @remove:pinned="removePinned"
             />
