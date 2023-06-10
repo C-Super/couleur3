@@ -1,4 +1,5 @@
 <script setup>
+// regarde si le tchat est ouvert ou non
 function check($event) {
     if ($event.target.checked) {
         const heightHeaderPlayer =
@@ -57,7 +58,11 @@ function check($event) {
         <div class="collapse-content px-3.5 flex flex-col gap-y-3.5">
             <div class="overflow-y-scroll h-2 grow flex flex-col-reverse">
                 <!-- Ajouter les nouveaux message ici-->
-                <p>hellodeb</p>
+                <p class="font-light">
+                    <span class="text-base-100 opacity-70">13:30</span
+                    ><span class="ml-2 font-bold">Hug90 : </span
+                    ><span>Trop bien on peut gagner un billet</span>
+                </p>
                 <p>hello</p>
                 <p>hello</p>
                 <p>hello</p>
@@ -95,14 +100,17 @@ function check($event) {
             </div>
             <div class="flex gap-x-5">
                 <input
-                    class="bg-blue-audior rounded-full border-base-100 focus:border-base-100 focus:outline-0 placeholder:font-extralight placeholder:text-base-100"
+                    class="bg-blue-audior rounded-full border-base-100 grow focus:border-base-100 focus:outline-0 placeholder:font-extralight"
                     type="text"
                     placeholder="Message"
+                    disabled
                 />
                 <button
-                    class="border border-base-100 flex items-center justify-center grow rounded-full"
+                    class="border border-base-100 flex items-center justify-center w-16 rounded-full bg-base-100"
                 >
-                    <span class="material-symbols-rounded align-middle">
+                    <span
+                        class="material-symbols-rounded align-middle text-blue-audior"
+                    >
                         send
                     </span>
                 </button>
@@ -117,5 +125,19 @@ input[type="checkbox"]:checked ~ div:first-of-type > span {
 }
 input[type="checkbox"]:checked ~ div:last-of-type {
     padding-bottom: 0.875rem;
+}
+input[type="text"]::placeholder {
+    color: #ffffffbf;
+}
+input[type="text"]:placeholder-shown + button {
+    background-color: transparent;
+}
+input[type="text"]:placeholder-shown + button span {
+    color: #ffffff;
+}
+input[type="text"]:disabled,
+input[type="text"]:disabled + button {
+    cursor: not-allowed;
+    opacity: 0.5;
 }
 </style>
