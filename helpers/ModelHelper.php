@@ -188,7 +188,7 @@ namespace App\Models{
      *
      * @property int $id
      * @property string $title
-     * @property string $type
+     * @property \App\Enums\InteractionType $type
      * @property int|null $call_to_action_id
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property \Illuminate\Support\Carbon|null $updated_at
@@ -196,7 +196,7 @@ namespace App\Models{
      * @property int $animator_id
      * @property int|null $reward_id
      * @property int|null $winners_count
-     * @property string $status
+     * @property \App\Enums\InteractionStatus $status
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Answer> $answers
      * @property-read int|null $answers_count
      * @property-read \App\Models\CallToAction|null $call_to_action
@@ -233,7 +233,7 @@ namespace App\Models{
      *
      * @property int $id
      * @property string $path
-     * @property string $type
+     * @property \App\Enums\MediaType $type
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property-read \App\Models\Answer|null $answer

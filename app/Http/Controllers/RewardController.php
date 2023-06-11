@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreRewardRequest;
-use App\Http\Requests\UpdateRewardRequest;
 use App\Models\Reward;
 
 class RewardController extends Controller

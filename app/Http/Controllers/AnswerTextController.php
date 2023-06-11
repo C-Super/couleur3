@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreAnswerTextRequest;
-use App\Http\Requests\UpdateAnswerTextRequest;
 use App\Models\AnswerText;
 
 class AnswerTextController extends Controller

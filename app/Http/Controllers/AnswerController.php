@@ -8,7 +8,6 @@ use App\Events\AnswerSubmitedToAnimator;
 use App\Http\Requests\StoreAnswerRequest;
 use App\Models\Answer;
 use App\Models\AnswerText;
-use App\Models\Auditor;
 use App\Models\Media;
 use App\Models\QuestionChoice;
 use Illuminate\Support\Facades\Auth;
@@ -40,7 +39,7 @@ class AnswerController extends Controller
                 $file = $request->file('replyable_data.file');
 
                 // Générer un nom de fichier unique
-                $fileName = time() . '_' . $file->getClientOriginalName();
+                $fileName = time().'_'.$file->getClientOriginalName();
 
                 // Envoyez le fichier au disque minio
                 Storage::disk('s3')->put($fileName, file_get_contents($file));

@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events\MessageSent;
 use App\Http\Requests\Auditor\StoreMessageRequest;
-use App\Models\Auditor;
 use Auth;
-use Inertia\Inertia;
 
 class MessageController extends Controller
 {

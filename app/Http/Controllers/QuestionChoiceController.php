@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreQuestionChoiceRequest;
-use App\Http\Requests\UpdateQuestionChoiceRequest;
 use App\Models\QuestionChoice;
 
 class QuestionChoiceController extends Controller
