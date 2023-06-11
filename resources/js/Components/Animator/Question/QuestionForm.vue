@@ -7,12 +7,16 @@ import BaseTabs from "@/Components/Animator/Bases/BaseTabs.vue";
 import BaseTab from "@/Components/Animator/Bases/BaseTab.vue";
 import BaseAnswers from "@/Components/Animator/Bases/BaseAnswers.vue";
 import BaseAnswersSelect from "@/Components/Animator/Bases/BaseAnswersSelect.vue";
+import Color from "@/Enums/Color.js";
 import { onMounted, reactive, computed } from "vue";
 
 defineProps({
-    isCreating: {
+    creatingInteraction: {
         type: String,
-        required: false,
+        default: null,
+    },
+    currentInteraction: {
+        type: Object,
         default: null,
     },
 });
@@ -123,7 +127,7 @@ function updateWinner(updatedCandidate) {
 </script>
 
 <template>
-    <base-card type="primary">
+    <base-card :color="Color.PRIMARY">
         <template #title>Question</template>
         <template #content>
             <base-tabs>
@@ -149,7 +153,7 @@ function updateWinner(updatedCandidate) {
             <base-radio-group :choices="questionTypes" name="questionTypes" />
         </template>
         <template #actions>
-            <div v-if="isCreating" class="flex flex-row gap-3">
+            <div v-if="creatingInteraction" class="flex flex-row gap-3">
                 <base-button @click="$emit('cancel')">Annuler</base-button>
                 <base-button type="primary">Envoyer</base-button>
             </div>

@@ -17,9 +17,9 @@ class MessageController extends Controller
         $user = Auth::user();
         $auditor = $user->roleable;
 
-        if (!$auditor instanceof Auditor) {
+        if (! $auditor instanceof Auditor) {
             return Inertia::render('Error', [
-                'status' => '403: ' . __('http-statuses.403'),
+                'status' => '403: '.__('http-statuses.403'),
                 'message' => "Vous n'êtes pas un auditeur.",
             ])->toResponse($request)->setStatusCode(403);
         }

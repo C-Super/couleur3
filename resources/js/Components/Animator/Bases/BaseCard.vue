@@ -1,5 +1,5 @@
 <template>
-    <div :class="`card bg-${type} bg-opacity-25 text-white`">
+    <div :class="`card bg-${color} bg-opacity-25 text-white`">
         <div class="card-body">
             <h2 class="card-title font-bold text-3xl">
                 <slot name="title"></slot>
@@ -16,10 +16,12 @@
 </template>
 
 <script setup>
+import Color from "@/Enums/Color.js";
+
 defineProps({
-    type: {
+    color: {
         type: String,
-        default: "white",
+        default: Color.WHITE,
     },
 });
 </script>

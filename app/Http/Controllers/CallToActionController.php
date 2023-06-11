@@ -6,7 +6,6 @@ use App\Enums\InteractionType;
 use App\Http\Requests\StoreCallToActionRequest;
 use App\Models\CallToAction;
 use App\Models\Interaction;
-use Inertia\Inertia;
 
 class CallToActionController extends Controller
 {
@@ -28,7 +27,8 @@ class CallToActionController extends Controller
 
         $interaction->save();
 
-        return Inertia::render('Animator/Index', [
+        return response()->json([
+            'message' => 'Call to action created successfully',
             'interaction' => $interaction,
         ]);
     }
