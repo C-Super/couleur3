@@ -14,15 +14,10 @@ class MessageController extends Controller
     {
         $validated = $request->validated();
 
+        /** @var \App\Models\User $user */
         $user = Auth::user();
+        /** @var \App\Models\Auditor $auditor */
         $auditor = $user->roleable;
-
-        if (! $auditor instanceof Auditor) {
-            return Inertia::render('Error', [
-                'status' => '403: '.__('http-statuses.403'),
-                'message' => "Vous n'êtes pas un auditeur.",
-            ])->toResponse($request)->setStatusCode(403);
-        }
 
         $message = $auditor->messages()->create([
             'content' => $validated['content'],

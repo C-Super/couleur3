@@ -162,9 +162,7 @@ namespace App\Models{
      * App\Models\CallToAction
      *
      * @property int $id
-     * @property string $description
      * @property string|null $link
-     * @property string $button_text
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property \Illuminate\Support\Carbon|null $updated_at
      *
@@ -172,9 +170,7 @@ namespace App\Models{
      * @method static \Illuminate\Database\Eloquent\Builder|CallToAction newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder|CallToAction newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder|CallToAction query()
-     * @method static \Illuminate\Database\Eloquent\Builder|CallToAction whereButtonText($value)
      * @method static \Illuminate\Database\Eloquent\Builder|CallToAction whereCreatedAt($value)
-     * @method static \Illuminate\Database\Eloquent\Builder|CallToAction whereDescription($value)
      * @method static \Illuminate\Database\Eloquent\Builder|CallToAction whereId($value)
      * @method static \Illuminate\Database\Eloquent\Builder|CallToAction whereLink($value)
      * @method static \Illuminate\Database\Eloquent\Builder|CallToAction whereUpdatedAt($value)

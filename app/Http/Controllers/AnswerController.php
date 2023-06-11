@@ -18,30 +18,16 @@ use Storage;
 class AnswerController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(StoreAnswerRequest $request)
     {
         $validated = $request->validated();
 
-        //get user id from auth
+        /** @var \App\Models\User $user */
         $user = Auth::user();
+        /** @var \App\Models\Auditor $auditor */
         $auditor = $user->roleable;
-
-        if (! $auditor instanceof Auditor) {
-            return Inertia::render('Error', [
-                'status' => '403: '.__('http-statuses.403'),
-                'message' => "Vous n'êtes pas un auditeur.",
-            ])->toResponse($request)->setStatusCode(403);
-        }
 
         switch ($request->type) {
             case InteractionType::TEXT->value:
@@ -54,7 +40,7 @@ class AnswerController extends Controller
                 $file = $request->file('replyable_data.file');
 
                 // Générer un nom de fichier unique
-                $fileName = time().'_'.$file->getClientOriginalName();
+                $fileName = time() . '_' . $file->getClientOriginalName();
 
                 // Envoyez le fichier au disque minio
                 Storage::disk('s3')->put($fileName, file_get_contents($file));
