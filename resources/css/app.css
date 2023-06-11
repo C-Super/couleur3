@@ -1,9 +1,3 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-
-/*@import 'normalize.css'; Tailwind a déjà le sien */
 @import 'Configuration/variables.css';
 @import 'Configuration/typography.css';
 /* Auditor */
@@ -11,6 +5,10 @@
 @import 'Auditor/header.css';
 /* Animator */
 @import 'Animator/base.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 .gradient-auditor {
     background-color: linear-gradient(125deg, #FF67FF 10%, #FFE27C 85%);
