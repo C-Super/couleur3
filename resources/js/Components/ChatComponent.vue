@@ -3,7 +3,7 @@
 import { ref, reactive, onMounted } from "vue";
 import { router } from "@inertiajs/vue3";
 import MessageItem from "@/Components/MessageItem.vue";
-import BaseButton from "@/Components/Bases/BaseButton.vue";
+import BaseButton from "@/Components/Animator/Bases/BaseButton.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import InputError from "@/Components/InputError.vue";

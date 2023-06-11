@@ -5,8 +5,10 @@ import BaseRadioGroup from "@/Components/Animator/Bases/BaseRadioGroup.vue";
 import BaseBarChart from "@/Components/Animator/Bases/BaseBarChart.vue";
 import BaseTabs from "@/Components/Animator/Bases/BaseTabs.vue";
 import BaseTab from "@/Components/Animator/Bases/BaseTab.vue";
+import BaseAnswers from "@/Components/Animator/Bases/BaseAnswers.vue";
+import BaseAnswersSelect from "@/Components/Animator/Bases/BaseAnswersSelect.vue";
 import Color from "@/Enums/Color.js";
-import { onMounted, reactive } from "vue";
+import { onMounted, reactive, computed } from "vue";
 
 defineProps({
     creatingInteraction: {
@@ -59,19 +61,33 @@ const answers = reactive([
         id: 1,
         label: "Réponse 1",
         value: 10,
+        name: "Rachel",
+        response: "Hello World!",
     },
     {
         id: 2,
         label: "Réponse 2",
         value: 5,
+        name: "Miguel",
+        response: "Hola que tal?",
     },
 
     {
         id: 3,
         label: "Réponse 3",
         value: 1,
+        name: "Hugo",
+        response: "Salut ça va?",
     },
 ]);
+
+const pinnedAnswers = reactive([]);
+
+const notPinnedAnswers = computed(() =>
+    answers.filter((answer) => !pinnedAnswers.includes(answer))
+);
+
+const winners = reactive([]);
 
 onMounted(() => {
     subscribeToPublicChannel();
@@ -91,8 +107,23 @@ setTimeout(() => {
         id: 4,
         label: "Réponse 4",
         value: 4,
+        name: "Fabrice",
+        response: "Yo",
     });
 }, 3000);
+
+function addPinned(answer) {
+    pinnedAnswers.push(answer);
+}
+
+function removePinned(answer) {
+    pinnedAnswers.splice(pinnedAnswers.indexOf(answer), 1);
+}
+function updateWinner(updatedCandidate) {
+    if (winners.indexOf(updatedCandidate) == -1) {
+        winners.push(updatedCandidate);
+    } else winners.splice(winners.indexOf(updatedCandidate), 1);
+}
 </script>
 
 <template>
@@ -100,10 +131,20 @@ setTimeout(() => {
         <template #title>Question</template>
         <template #content>
             <base-tabs>
-                <base-tab title="Réponses">Les réponses</base-tab>
+                <base-tab title="Réponses" :active="true"
+                    >Les réponses
+                    <base-answers
+                        :pinned-answers="pinnedAnswers"
+                        :not-pinned-answers="notPinnedAnswers"
+                        @add:pinned="addPinned"
+                        @remove:pinned="removePinned"
+                /></base-tab>
                 <base-tab title="Sélection aléatoire" :active="true"
-                    >Les selection aléatoire</base-tab
-                >
+                    >Les selection aléatoire<base-answers-select
+                        :pinned-candidates="pinnedAnswers"
+                        :candidates="notPinnedAnswers"
+                        @update:winner="updateWinner"
+                /></base-tab>
                 <base-tab title="Sélection rapidité"
                     >Les séléection rapides</base-tab
                 >
