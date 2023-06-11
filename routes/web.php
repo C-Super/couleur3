@@ -8,6 +8,7 @@ use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\WinnerController;
+use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -45,15 +46,18 @@ Route::middleware(['auth', 'verified', 'auth.auditor'])->group(function () {
 
 Route::middleware(['auth', 'auth.animator'])->group(function () {
     Route::get('/dashboard', [AnimatorController::class, 'index'])->name('animator.index');
+    Route::post('/endEmission', [AnimatorController::class, 'endEmission'])->name('animator.endEmission');
     Route::post('/settings', [SettingsController::class, 'update'])->name('settings.update');
 
-    Route::post('/interactions/cta', [InteractionController::class, 'storeCTA'])->name('interactions.cta.store');
-    Route::post('/interactions/quick_click', [InteractionController::class, 'storeQuickClick'])->name('interactions.quick_click.store');
-    Route::post('/interactions/survey', [InteractionController::class, 'storeSurvey'])->name('interactions.survey.store');
-    Route::post('/interactions/mcq', [InteractionController::class, 'storeMCQ'])->name('interactions.mcq.store');
-    Route::post('/interactions/audio', [InteractionController::class, 'storeAudio'])->name('interactions.audio.store');
-    Route::post('/interactions/video', [InteractionController::class, 'storeVideo'])->name('interactions.video.store');
-    Route::post('/interactions/picture', [InteractionController::class, 'storePicture'])->name('interactions.picture.store');
+    Route::middleware([HandlePrecognitiveRequests::class])->group(function () {
+        Route::post('/interactions/cta', [InteractionController::class, 'storeCTA'])->name('interactions.cta.store');
+        Route::post('/interactions/quick_click', [InteractionController::class, 'storeQuickClick'])->name('interactions.quick_click.store');
+        Route::post('/interactions/survey', [InteractionController::class, 'storeSurvey'])->name('interactions.survey.store');
+        Route::post('/interactions/mcq', [InteractionController::class, 'storeMCQ'])->name('interactions.mcq.store');
+        Route::post('/interactions/audio', [InteractionController::class, 'storeAudio'])->name('interactions.audio.store');
+        Route::post('/interactions/video', [InteractionController::class, 'storeVideo'])->name('interactions.video.store');
+        Route::post('/interactions/picture', [InteractionController::class, 'storePicture'])->name('interactions.picture.store');
+    });
 
     Route::post('/interactions/{interaction}/end', [InteractionController::class, 'endInteraction'])->name('interactions.end');
 
@@ -63,4 +67,4 @@ Route::middleware(['auth', 'auth.animator'])->group(function () {
     Route::post('/interactions/{interaction}/winners/confirm', [WinnerController::class, 'store'])->name('interactions.winners.confirm');
 });
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';

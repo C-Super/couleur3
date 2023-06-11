@@ -29,6 +29,9 @@ export default {
             pattern: /range-(primary|secondary|accent|white)/,
             variants: ["hover", "focus"],
         },
+        {
+            pattern: /tab-active-(primary|secondary|accent)/
+        },
     ],
 
     daisyui: {
@@ -45,13 +48,13 @@ export default {
 
                     "base-100": "#ffffff",
 
-                    info: "#3abff8",
+                    info: "#7d7aff",
 
-                    success: "#36d399",
+                    success: "#8dff7a",
 
-                    warning: "#fbbd23",
+                    warning: "#ffca7a",
 
-                    error: "#f87272",
+                    error: "#ff7a7a",
 
                     "--btn-text-case": "none",
                 },

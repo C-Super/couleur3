@@ -37,10 +37,6 @@ const submit = () => {
     form.post(route("settings.update"), {
         preserveScroll: true,
         only: ["chatEnabled"],
-        onSuccess: () => {
-            form.chat_enabled = !props.chatEnabled;
-            messages.value = [];
-        },
     });
 };
 </script>
@@ -50,12 +46,11 @@ const submit = () => {
         <template #title>Chat</template>
         <template #subtitle>
             <div class="overflow-hidden overflow-y-auto">
-                <message-item
-                    v-for="msg in messages"
-                    :key="msg.id"
-                    :msg="msg"
-                    class="mb-2"
-                />
+                <TransitionGroup tag="ul">
+                    <li v-for="msg in messages" :key="msg.id">
+                        <message-item :msg="msg" class="mb-2" />
+                    </li>
+                </TransitionGroup>
             </div>
         </template>
         <template #content></template>
@@ -68,3 +63,21 @@ const submit = () => {
         </template>
     </base-card>
 </template>
+
+<style scoped>
+.list-move,
+.list-enter-active,
+.list-leave-active {
+    transition: all 0.5s ease;
+}
+
+.list-enter-from,
+.list-leave-to {
+    opacity: 0;
+    transform: translateX(30px);
+}
+
+.list-leave-active {
+    position: absolute;
+}
+</style>

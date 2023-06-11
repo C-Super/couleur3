@@ -53,6 +53,7 @@ const Ziggy = {
             methods: ["POST"],
         },
         "animator.index": { uri: "dashboard", methods: ["GET", "HEAD"] },
+        "animator.endEmission": { uri: "endEmission", methods: ["POST"] },
         "settings.update": { uri: "settings", methods: ["POST"] },
         "interactions.cta.store": {
             uri: "interactions/cta",
@@ -85,6 +86,7 @@ const Ziggy = {
         "interactions.end": {
             uri: "interactions/{interaction}/end",
             methods: ["POST"],
+            bindings: { interaction: "id" },
         },
         "interactions.winners.random": {
             uri: "interactions/{interaction}/winners/random",

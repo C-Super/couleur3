@@ -204,6 +204,7 @@ namespace App\Models{
      * @property-read int|null $question_choices_count
      * @property-read \App\Models\Reward|null $rewards
      *
+     * @method static \Illuminate\Database\Eloquent\Builder|Interaction active()
      * @method static \Database\Factories\InteractionFactory factory($count = null, $state = [])
      * @method static \Illuminate\Database\Eloquent\Builder|Interaction newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder|Interaction newQuery()

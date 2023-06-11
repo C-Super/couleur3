@@ -22,24 +22,22 @@ setInterval(() => {
 }, 1000);
 </script>
 <template>
-    <div class="items-center w-200 inline-block font-medium">
+    <div class="w-200 inline-block text-base">
         <p class="text-center mb-3">Temps restant</p>
-        <div
-            class="items-center grid grid-flow-col gap-3 text-center text-xs auto-cols-max text-white"
-        >
+        <div class="flex flex-row items-center gap-3 auto-cols-max text-white">
             <div
-                :class="`flex flex-col p-4 bg-${color} bg-opacity-25 rounded-[20px]`"
+                :class="`flex flex-col items-center p-4 bg-${color} bg-opacity-25 rounded-[20px] font-normal`"
             >
-                <span class="countdown text-center text-base text-xl">
+                <span class="countdown font-medium">
                     <span :style="`--value: ${minutes}`"></span>
                 </span>
                 min
             </div>
-            <p class="text-xl">:</p>
+            <span>:</span>
             <div
-                :class="`flex flex-col p-4 bg-${color} bg-opacity-25 rounded-[20px]`"
+                :class="`flex flex-col items-center p-4 bg-${color} bg-opacity-25 rounded-[20px] font-normal`"
             >
-                <span class="countdown text-xl text-base">
+                <span class="countdown font-medium">
                     <span :style="`--value: ${seconds}`"></span>
                 </span>
                 sec
