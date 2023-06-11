@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\InteractionType;
 use App\Models\Animator;
 use App\Models\CallToAction;
 use App\Models\Interaction;
@@ -24,9 +25,9 @@ it('can store mcq interactions', function () {
 
     $this->actingAs($user);
 
-    $response = postJson('/dashboard/interactions', [
+    $response = postJson('/interactions/mcq', [
         'title' => 'Test Interaction',
-        'type' => 'mcq',
+        'type' => InteractionType::MCQ,
         'animator_id' => $animator->id,
         'reward_id' => $reward->id,
         'winners_count' => 10,
@@ -63,9 +64,9 @@ it('can store survey interactions', function () {
 
     $this->actingAs($user);
 
-    $response = postJson('/dashboard/interactions', [
+    $response = postJson('/interactions/survey', [
         'title' => 'Test Interaction',
-        'type' => 'survey',
+        'type' => InteractionType::SURVEY,
         'animator_id' => $animator->id,
         'reward_id' => $reward->id,
         'winners_count' => 10,
@@ -102,9 +103,9 @@ it('can store audio interactions', function () {
 
     $this->actingAs($user);
 
-    $response = postJson('/dashboard/interactions', [
+    $response = postJson('/interactions/audio', [
         'title' => 'Test Interaction',
-        'type' => 'audio',
+        'type' => InteractionType::AUDIO,
         'animator_id' => $animator->id,
         'reward_id' => $reward->id,
         'winners_count' => 10,
@@ -128,9 +129,9 @@ it('can store video interactions', function () {
 
     $this->actingAs($user);
 
-    $response = postJson('/dashboard/interactions', [
+    $response = postJson('/interactions/video', [
         'title' => 'Test Interaction',
-        'type' => 'video',
+        'type' => InteractionType::VIDEO,
         'animator_id' => $animator->id,
         'reward_id' => $reward->id,
         'winners_count' => 10,
@@ -154,9 +155,9 @@ it('can store picture interactions', function () {
 
     $this->actingAs($user);
 
-    $response = postJson('/dashboard/interactions', [
+    $response = postJson('/interactions/picture', [
         'title' => 'Test Interaction',
-        'type' => 'picture',
+        'type' => InteractionType::PICTURE,
         'animator_id' => $animator->id,
         'reward_id' => $reward->id,
         'winners_count' => 10,
@@ -180,9 +181,9 @@ it('can store text interactions', function () {
 
     $this->actingAs($user);
 
-    $response = postJson('/dashboard/interactions', [
+    $response = postJson('/interactions/text', [
         'title' => 'Test Interaction',
-        'type' => 'text',
+        'type' => InteractionType::TEXT,
         'animator_id' => $animator->id,
         'reward_id' => $reward->id,
         'winners_count' => 10,
@@ -206,9 +207,9 @@ it('can store cta interactions', function () {
 
     $this->actingAs($user);
 
-    $response = postJson('/dashboard/interactions', [
+    $response = postJson('/interactions/cta', [
         'title' => 'Test Interaction',
-        'type' => 'cta',
+        'type' => InteractionType::CTA,
         'animator_id' => $animator->id,
         'reward_id' => $reward->id,
         'winners_count' => 10,
@@ -242,9 +243,9 @@ it('can store quick_click interactions', function () {
 
     $this->actingAs($user);
 
-    $response = postJson('/dashboard/interactions', [
+    $response = postJson('/interactions/quick_click', [
         'title' => 'Test Interaction',
-        'type' => 'quick_click',
+        'type' => InteractionType::QUICK_CLICK,
         'call_to_action_id' => $cta->id,
         'animator_id' => $animator->id,
         'reward_id' => $reward->id,
@@ -279,9 +280,9 @@ it('can store an interactions when another interaction is finished', function ()
 
     $this->actingAs($user);
 
-    $response = postJson('/dashboard/interactions', [
+    $response = postJson('/interactions/quick_click', [
         'title' => 'Test Interaction',
-        'type' => 'quick_click',
+        'type' => InteractionType::QUICK_CLICK,
         'call_to_action_id' => $cta->id,
         'ended_at' => $endedAt,
         'animator_id' => $animator->id,
@@ -301,9 +302,9 @@ it('can store an interactions when another interaction is finished', function ()
 
     sleep(1);
 
-    $response = postJson('/dashboard/interactions', [
+    $response = postJson('/interactions', [
         'title' => 'Test Interaction 2',
-        'type' => 'text',
+        'type' => InteractionType::QUICK_CLICK,
         'animator_id' => $animator->id,
         'reward_id' => $reward->id,
         'winners_count' => 10,
@@ -328,9 +329,9 @@ it('cannot store cta interactions with invalid cta id', function () {
 
     $this->actingAs($user);
 
-    $response = postJson('/dashboard/interactions', [
+    $response = postJson('/interactions', [
         'title' => 'Test Interaction',
-        'type' => 'cta',
+        'type' => InteractionType::CTA,
         'call_to_action_id' => ($cta->id) + 1,
         'animator_id' => $animator->id,
         'reward_id' => $reward->id,
@@ -356,9 +357,9 @@ it('cannot store survey or mcq interactions with less than 1 choice', function (
 
     $this->actingAs($user);
 
-    $response = postJson('/dashboard/interactions', [
+    $response = postJson('/interactions/mcq', [
         'title' => 'Test Interaction',
-        'type' => 'mcq',
+        'type' => InteractionType::MCQ,
         'call_to_action_id' => ($cta->id) + 1,
         'animator_id' => $animator->id,
         'reward_id' => $reward->id,
@@ -390,9 +391,9 @@ it('cannot store survey or mcq interactions with more than 4 choices', function 
 
     $this->actingAs($user);
 
-    $response = postJson('/dashboard/interactions', [
+    $response = postJson('/interactions/mcq', [
         'title' => 'Test Interaction',
-        'type' => 'mcq',
+        'type' => InteractionType::MCQ,
         'call_to_action_id' => ($cta->id) + 1,
         'animator_id' => $animator->id,
         'reward_id' => $reward->id,
@@ -439,9 +440,9 @@ it('cannot store an interactions with invalid ended at', function () {
 
     $this->actingAs($user);
 
-    $response = postJson('/dashboard/interactions', [
+    $response = postJson('/interactions/mcq', [
         'title' => 'Test Interaction',
-        'type' => 'mcq',
+        'type' => InteractionType::MCQ,
         'animator_id' => $animator->id,
         'reward_id' => $reward->id,
         'winners_count' => 10,
@@ -465,7 +466,7 @@ it('cannot store random name interactions', function () {
 
     $this->actingAs($user);
 
-    $response = postJson('/dashboard/interactions', [
+    $response = postJson('/interactions', [
         'title' => 'Test Interaction',
         'type' => 'sdahgsjhdg',
         'animator_id' => $animator->id,
@@ -491,9 +492,9 @@ it('cannot store an interaction with another interaction running', function () {
 
     $this->actingAs($user);
 
-    $response = postJson('/dashboard/interactions', [
+    $response = postJson('/interactions/text', [
         'title' => 'Test Interaction',
-        'type' => 'text',
+        'type' => InteractionType::TEXT,
         'animator_id' => $animator->id,
         'reward_id' => $reward->id,
         'winners_count' => 10,
@@ -502,9 +503,9 @@ it('cannot store an interaction with another interaction running', function () {
     $response->assertStatus(200);
     expect(Interaction::where('title', 'Test Interaction')->exists())->toBeTrue();
 
-    $response = postJson('/dashboard/interactions', [
+    $response = postJson('/interactions/mcq', [
         'title' => 'Test Interaction 2',
-        'type' => 'mcq',
+        'type' => InteractionType::MCQ,
         'animator_id' => $animator->id,
         'reward_id' => $reward->id,
         'winners_count' => 10,
@@ -536,9 +537,9 @@ it('cannot store an interaction with no ended_at', function () {
 
     $this->actingAs($user);
 
-    $response = postJson('/dashboard/interactions', [
+    $response = postJson('/interactions/text', [
         'title' => 'Test Interaction',
-        'type' => 'text',
+        'type' => InteractionType::TEXT,
         'animator_id' => $animator->id,
         'reward_id' => $reward->id,
         'winners_count' => 10,
