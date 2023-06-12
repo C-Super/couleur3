@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import { defineStore } from "pinia";
-import { computed, ref } from "vue";
+import { onMounted, computed, ref } from "vue";
 import { usePage } from "@inertiajs/vue3";
 
 export const useInteractionStore = defineStore("interaction", () => {
