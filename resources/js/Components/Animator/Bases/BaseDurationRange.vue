@@ -6,22 +6,18 @@ const modelValue = defineModel();
 defineProps({
     min: {
         type: Number,
-        required: false,
         default: 0,
     },
     max: {
         type: Number,
-        required: false,
         default: 3600,
     },
     step: {
         type: Number,
-        required: false,
         default: 15,
     },
     color: {
         type: String,
-        required: false,
         default: "primary",
     },
 });
@@ -36,7 +32,7 @@ const formatedSeconds = computed(() => {
 </script>
 
 <template>
-    <div class="flex w-full gap-5">
+    <div class="flex w-full gap-8">
         <div class="flex flex-auto flex-col">
             <input
                 id="duration"
@@ -47,32 +43,53 @@ const formatedSeconds = computed(() => {
                 :max="max"
                 :step="step"
             />
-            <div class="w-full flex justify-between text-xs px-2">
-                <span>|</span>
-                <span>|</span>
-                <span>|</span>
-                <span>|</span>
-                <span>|</span>
-            </div>
-        </div>
-        <div class="flex justify-items-center gap-3 text-xs text-center text-white font-medium">
-            <div
-                :class="`flex flex-col justify-items-center align-middle p-4 bg-${color} bg-opacity-25 rounded-[20px]`"
+            <ul
+                id="range-labels"
+                class="w-full flex justify-between text-xs px-2"
             >
-                <span class="countdown text-center text-base text-xl">
-                    <span :style="`--value: ${formatedMinutes}`"></span>
+                <li>0min</li>
+                <li>15min</li>
+                <li>30min</li>
+                <li>45min</li>
+                <li>60min</li>
+            </ul>
+        </div>
+        <div
+            class="w-200 flex flex-row items-center gap-3 text-center text-white text-base"
+        >
+            <div
+                :class="`flex flex-col items-center p-4 bg-${color} bg-opacity-25 rounded-[20px] font-normal`"
+            >
+                <span class="font-medium">
+                    <span>{{ formatedMinutes }}</span>
                 </span>
                 min
             </div>
-            <p class="text-xl">:</p>
+            <span>:</span>
             <div
-                :class="`flex flex-col justify-items-center align-middle p-4 bg-${color} bg-opacity-25 rounded-[20px]`"
+                :class="`flex flex-col items-center p-4 bg-${color} bg-opacity-25 rounded-[20px] font-normal`"
             >
-                <span class="countdown text-center text-base text-xl">
-                    <span :style="`--value: ${formatedSeconds}`"></span>
+                <span class="font-medium">
+                    <span>{{ formatedSeconds }}</span>
                 </span>
                 sec
             </div>
         </div>
     </div>
 </template>
+
+<style scoped>
+#range-labels li {
+    position: relative;
+    margin-top: 2rem;
+}
+
+#range-labels li::before {
+    content: "|";
+    font-size: 1.2rem;
+    position: absolute;
+    top: -1.4rem;
+    left: 50%;
+    transform: translateX(-50%);
+}
+</style>

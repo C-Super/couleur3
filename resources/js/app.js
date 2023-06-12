@@ -2,6 +2,7 @@ import "./bootstrap";
 import "../css/app.css";
 
 import { createApp, h } from "vue";
+import { createPinia } from "pinia";
 import { createInertiaApp } from "@inertiajs/vue3";
 import fr from "./Locales/fr.json";
 import en from "./Locales/en.json";
@@ -24,6 +25,8 @@ const i18n = createI18n({
     },
 });
 
+const pinia = createPinia();
+
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
     resolve: (name) =>
@@ -36,6 +39,7 @@ createInertiaApp({
 
         VueApp.use(plugin)
             .use(i18n)
+            .use(pinia)
             .use(ZiggyVue, Ziggy)
             .use(ZoraVue, Zora)
             .mount(el);

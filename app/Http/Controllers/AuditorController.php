@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Interaction;
 use App\Settings\GeneralSettings;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -12,6 +13,7 @@ class AuditorController extends Controller
     {
         return Inertia::render('Auditor/Index', [
             'chatEnabled' => $settings->chat_enabled,
+            'interaction' => Interaction::active(),
         ]);
     }
 }

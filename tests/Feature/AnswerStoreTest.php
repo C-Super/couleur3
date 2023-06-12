@@ -1,5 +1,7 @@
 <?php
 
+use App\Enums\InteractionType;
+use App\Enums\MediaType;
 use App\Events\AnswerQuestionChoiceSubmited;
 use App\Events\AnswerSubmitedToAnimator;
 use App\Models\Answer;
@@ -31,14 +33,14 @@ it('can store text answer and fires correct event', function () {
     ]);
 
     $interaction = Interaction::factory()->create([
-        'type' => 'text',
+        'type' => InteractionType::TEXT,
     ]);
 
     $this->actingAs($user);
 
     $response = postJson('/answer', [
         'interaction_id' => $interaction->id,
-        'type' => 'text',
+        'type' => InteractionType::TEXT,
         'replyable_data' => [
             'content' => 'This is a text answer.',
         ],
@@ -67,7 +69,7 @@ it('can store media answer and fires correct events', function () {
         'roleable_type' => get_class($auditor),
     ]);
     $interaction = Interaction::factory()->create([
-        'type' => 'picture',
+        'type' => InteractionType::PICTURE,
     ]);
 
     $this->actingAs($user);
@@ -79,7 +81,7 @@ it('can store media answer and fires correct events', function () {
         'type' => 'picture',
         'replyable_data' => [
             'file' => $image,
-            'type' => 'picture',
+            'type' => InteractionType::PICTURE,
         ],
     ]);
 
@@ -109,7 +111,7 @@ it('can store mcq answer and fires correct events', function () {
     ]);
 
     $interaction = Interaction::factory()->create([
-        'type' => 'mcq',
+        'type' => InteractionType::MCQ,
     ]);
     $questionChoice = QuestionChoice::factory()->create(['interaction_id' => $interaction->id]);
 
@@ -117,7 +119,7 @@ it('can store mcq answer and fires correct events', function () {
 
     $response = postJson('/answer', [
         'interaction_id' => $interaction->id,
-        'type' => 'mcq',
+        'type' => InteractionType::MCQ,
         'replyable_data' => [
             'id' => $questionChoice->id,
         ],
@@ -147,7 +149,7 @@ it('can store survey answer and fires correct events', function () {
     ]);
 
     $interaction = Interaction::factory()->create([
-        'type' => 'survey',
+        'type' => InteractionType::SURVEY,
     ]);
     $questionChoice = QuestionChoice::factory()->create(['interaction_id' => $interaction->id]);
 
@@ -155,7 +157,7 @@ it('can store survey answer and fires correct events', function () {
 
     $response = postJson('/answer', [
         'interaction_id' => $interaction->id,
-        'type' => 'survey',
+        'type' => InteractionType::SURVEY,
         'replyable_data' => [
             'id' => $questionChoice->id,
         ],
@@ -184,7 +186,7 @@ it('can not store answer for invalid type and fires correct events', function ()
         'roleable_type' => get_class($auditor),
     ]);
     $interaction = Interaction::factory()->create([
-        'type' => 'text',
+        'type' => InteractionType::TEXT,
     ]);
 
     $this->actingAs($user);
@@ -219,17 +221,17 @@ it('can not store answer media picture for audio type and fires correct events',
         'roleable_type' => get_class($auditor),
     ]);
     $interaction = Interaction::factory()->create([
-        'type' => 'audio',
+        'type' => InteractionType::AUDIO,
     ]);
 
     $this->actingAs($user);
 
     $response = postJson('/answer', [
         'interaction_id' => $interaction->id,
-        'type' => 'audio',
+        'type' => InteractionType::AUDIO,
         'replyable_data' => [
             'path' => 'path/to/media',
-            'type' => 'video',
+            'type' => MediaType::VIDEO,
         ],
     ]);
 
@@ -256,17 +258,17 @@ it('can not store answer for incorrect interaction type and fires correct events
         'roleable_type' => get_class($auditor),
     ]);
     $interaction = Interaction::factory()->create([
-        'type' => 'text',
+        'type' => InteractionType::TEXT,
     ]);
 
     $this->actingAs($user);
 
     $response = postJson('/answer', [
         'interaction_id' => $interaction->id,
-        'type' => 'picture',
+        'type' => InteractionType::PICTURE,
         'replyable_data' => [
             'path' => 'path/to/media',
-            'type' => 'picture',
+            'type' => MediaType::PICTURE,
         ],
     ]);
 

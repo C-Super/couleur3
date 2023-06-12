@@ -4,14 +4,14 @@ namespace App\Enums;
 
 enum InteractionType: string
 {
-    case MCQ = 'mcq';
-    case SURVEY = 'survey';
-    case TEXT = 'text';
-    case AUDIO = 'audio';
-    case VIDEO = 'video';
-    case PICTURE = 'picture';
-    case CTA = 'cta';
-    case QUICK_CLICK = 'quick_click';
+    case MCQ = 'MCQ';
+    case SURVEY = 'SURVEY';
+    case TEXT = 'TEXT';
+    case AUDIO = 'AUDIO';
+    case VIDEO = 'VIDEO';
+    case PICTURE = 'PICTURE';
+    case CTA = 'CTA';
+    case QUICK_CLICK = 'QUICK_CLICK';
 
     public static function getValues(): array
     {

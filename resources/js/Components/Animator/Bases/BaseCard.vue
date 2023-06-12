@@ -1,25 +1,32 @@
 <template>
-    <div :class="`card bg-${type} bg-opacity-25 text-white`">
+    <div :class="`card bg-${color} bg-opacity-25 text-white`">
         <div class="card-body">
-            <h2 class="card-title font-bold text-3xl">
-                <slot name="title"></slot>
+            <h2 v-if="$slots.title" class="card-title font-bold text-3xl">
+                <slot name="title" />
             </h2>
-            <div class="font-light mt-1"><slot name="subtitle"></slot></div>
-            <div class="h-full flex flex-col gap-3">
-                <slot name="content"></slot>
+            <div v-if="$slots.subtitle" class="font-light mt-1">
+                <slot name="subtitle" />
             </div>
-            <div class="card-actions justify-center">
-                <slot name="actions"> </slot>
+            <div v-if="$slots.content" class="h-full flex flex-col gap-3 mt-10">
+                <slot name="content" />
+            </div>
+            <div
+                v-if="$slots.actions"
+                class="card-actions justify-center mt-10"
+            >
+                <slot name="actions" />
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
+import Color from "@/Enums/Color.js";
+
 defineProps({
-    type: {
+    color: {
         type: String,
-        default: "white",
+        default: Color.WHITE,
     },
 });
 </script>

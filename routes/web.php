@@ -3,11 +3,12 @@
 use App\Http\Controllers\AnimatorController;
 use App\Http\Controllers\AnswerController;
 use App\Http\Controllers\AuditorController;
-use App\Http\Controllers\CallToActionController;
 use App\Http\Controllers\InteractionController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\WinnerController;
+use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -33,25 +34,37 @@ Route::middleware(['auth', 'verified', 'auth.auditor'])->group(function () {
     Route::middleware('chat.enabled')->group(function () {
         Route::post('/messages', [MessageController::class, 'store'])->name('messages.store');
     });
-    Route::post('/answers', [AnswerController::class, 'store'])->name('answers.store');
+
+    Route::post('/interactions/{interaction}/answers/cta', [AnswerController::class, 'storeCTA'])->name('interactions.answers.cta.store');
+    Route::post('/interactions/{interaction}/answers/quick_click', [AnswerController::class, 'storeQuickClick'])->name('interactions.answers.quick_click.store');
+    Route::post('/interactions/{interaction}/answers/survey', [AnswerController::class, 'storeSurvey'])->name('interactions.answers.survey.store');
+    Route::post('/interactions/{interaction}/answers/mcq', [AnswerController::class, 'storeMCQ'])->name('interactions.answers.mcq.store');
+    Route::post('/interactions/{interaction}/answers/audio', [AnswerController::class, 'storeAudio'])->name('interactions.answers.audio.store');
+    Route::post('/interactions/{interaction}/answers/video', [AnswerController::class, 'storeVideo'])->name('interactions.answers.video.store');
+    Route::post('/interactions/{interaction}/answers/picture', [AnswerController::class, 'storePicture'])->name('interactions.answers.picture.store');
 });
 
 Route::middleware(['auth', 'auth.animator'])->group(function () {
     Route::get('/dashboard', [AnimatorController::class, 'index'])->name('animator.index');
+    Route::post('/endEmission', [AnimatorController::class, 'endEmission'])->name('animator.endEmission');
     Route::post('/settings', [SettingsController::class, 'update'])->name('settings.update');
 
-    Route::post('/interactions/cta', [CallToActionController::class, 'store'])->name('interactions.cta.store');
-    Route::post('/interactions/quick_click', [InteractionController::class, 'store'])->name('interactions.quick_click.store');
-    Route::post('/interactions/survey', [InteractionController::class, 'store'])->name('interactions.survey.store');
-    Route::post('/interactions/mcq', [InteractionController::class, 'store'])->name('interactions.mcq.store');
-    Route::post('/interactions/audio', [InteractionController::class, 'store'])->name('interactions.audio.store');
-    Route::post('/interactions/video', [InteractionController::class, 'store'])->name('interactions.video.store');
-    Route::post('/interactions/picture', [InteractionController::class, 'store'])->name('interactions.picture.store');
+    Route::middleware([HandlePrecognitiveRequests::class])->group(function () {
+        Route::post('/interactions/cta', [InteractionController::class, 'storeCTA'])->name('interactions.cta.store');
+        Route::post('/interactions/quick_click', [InteractionController::class, 'storeQuickClick'])->name('interactions.quick_click.store');
+        Route::post('/interactions/survey', [InteractionController::class, 'storeSurvey'])->name('interactions.survey.store');
+        Route::post('/interactions/mcq', [InteractionController::class, 'storeMCQ'])->name('interactions.mcq.store');
+        Route::post('/interactions/audio', [InteractionController::class, 'storeAudio'])->name('interactions.audio.store');
+        Route::post('/interactions/video', [InteractionController::class, 'storeVideo'])->name('interactions.video.store');
+        Route::post('/interactions/picture', [InteractionController::class, 'storePicture'])->name('interactions.picture.store');
+    });
 
-    Route::post('/interactions/winner/random', [WinnerController::class, 'generateRandomList'])->name('interactions.winner.random');
-    Route::post('/interactions/winner/replace', [WinnerController::class, 'generate1Random'])->name('interactions.winner.replace');
-    Route::post('/interactions/winner/fastest', [WinnerController::class, 'generateFastestList'])->name('interactions.winner.fastest');
-    Route::post('/interactions/winner/confirm', [WinnerController::class, 'store'])->name('interactions.winner.confirm');
+    Route::post('/interactions/{interaction}/end', [InteractionController::class, 'endInteraction'])->name('interactions.end');
+
+    Route::post('/interactions/{interaction}/winners/random', [WinnerController::class, 'generateRandomList'])->name('interactions.winners.random');
+    Route::post('/interactions/{interaction}/winners/replace', [WinnerController::class, 'generate1Random'])->name('interactions.winners.replace');
+    Route::post('/interactions/{interaction}/winners/fastest', [WinnerController::class, 'generateFastestList'])->name('interactions.winners.fastest');
+    Route::post('/interactions/{interaction}/winners/confirm', [WinnerController::class, 'store'])->name('interactions.winners.confirm');
 });
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';

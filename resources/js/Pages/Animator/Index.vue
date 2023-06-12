@@ -2,78 +2,82 @@
 <script setup>
 import BaseButton from "@/Components/Animator/Bases/BaseButton.vue";
 import ChatView from "@/Components/Animator/Chat/ChatView.vue";
-import QuestionForm from "@/Components/Animator/Question/QuestionForm.vue";
-import CtaForm from "@/Components/Animator/Cta/CtaForm.vue";
-import QuickButtonForm from "@/Components/Animator/QuickButton/QuickButtonForm.vue";
-import { ref } from "vue";
-import { Head } from "@inertiajs/vue3";
+import QuickClickIndex from "@/Components/Animator/QuickClick/QuickClickIndex.vue";
+import QuickClickCreate from "@/Components/Animator/QuickClick/QuickClickCreate.vue";
+import QuickClickShow from "@/Components/Animator/QuickClick/QuickClickShow.vue";
+import CtaIndex from "@/Components/Animator/Cta/CtaIndex.vue";
+import CtaCreate from "@/Components/Animator/Cta/CtaCreate.vue";
+import CtaShow from "@/Components/Animator/Cta/CtaShow.vue";
+import InteractionType from "@/Enums/InteractionType.js";
+import { Head, router } from "@inertiajs/vue3";
+import { useInteractionStore } from "@/Stores/useInteractionStore.js";
+import { storeToRefs } from "pinia";
 
-const isCreating = ref(null);
+const interactionStore = useInteractionStore();
+const { isCreatingInteraction, currentInteraction } =
+    storeToRefs(interactionStore);
 
-defineProps({
-    chatEnabled: {
-        type: Boolean,
-        required: true,
-    },
-    interaction: {
-        type: Object,
-        required: false,
-        default: null,
-    },
-});
-
-function createInteraction(type) {
-    isCreating.value = type;
-}
-
-function cancelInteraction() {
-    isCreating.value = null;
-}
+const endEmission = () => {
+    router.post(route("animator.endEmission"));
+};
 </script>
 
 <template>
     <Head title="Dashboard" />
     <div id="animator-container" class="h-screen p-5 flex gap-5">
         <div class="basis-1/3 flex flex-col gap-3">
-            <chat-view :chat-enabled="chatEnabled" />
+            <chat-view />
 
             <base-button
                 color="error"
                 class="flex-initial btn-block bg-opacity-50 text-white btn-lg"
-                >Fin d'émission</base-button
+                @click="endEmission"
             >
+                Fin d'émission
+            </base-button>
         </div>
 
-        <div class="basis-2/3 flex flex-col justify-items-stretch gap-3">
-            <question-form
-                v-if="!isCreating || isCreating === 'question'"
-                class="flex-auto basis-4/6"
-                :is-creating="isCreating"
-                @create="createInteraction"
-                @cancel="cancelInteraction"
-            />
+        <div class="basis-2/3 flex flex-col gap-3">
+            <template v-if="!isCreatingInteraction && !currentInteraction">
+                <cta-index />
+                <quick-click-index />
+            </template>
 
-            <cta-form
-                v-if="!isCreating || isCreating === 'cta'"
-                class="flex-auto basis-1/6"
-                :is-creating="isCreating"
-                @create="createInteraction"
-                @cancel="cancelInteraction"
+            <quick-click-create
+                v-if="isCreatingInteraction == InteractionType.QUICK_CLICK"
             />
+            <cta-create v-if="isCreatingInteraction === InteractionType.CTA" />
 
-            <quick-button-form
-                v-if="!isCreating || isCreating === 'rapidity'"
-                class="flex-auto basis-1/6"
-                :is-creating="isCreating"
-                @create="createInteraction"
-                @cancel="cancelInteraction"
+            <quick-click-show
+                v-if="
+                    currentInteraction &&
+                    currentInteraction.type === InteractionType.QUICK_CLICK
+                "
+            />
+            <cta-show
+                v-if="
+                    currentInteraction &&
+                    currentInteraction.type === InteractionType.CTA
+                "
             />
         </div>
     </div>
 </template>
 
 <style lang="postcss" scoped>
+.v-enter-active,
+.v-leave-active {
+    transition: all 0.4s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+    transform: translateX(100px);
+    opacity: 0;
+}
+
 #animator-container {
+    overflow-x: hidden;
     background-color: #1c1354;
 }
 </style>

@@ -4,8 +4,8 @@ namespace App\Enums;
 
 enum InteractionStatus: string
 {
-    case PENDING = 'pending';
-    case STOPPED = 'stopped';
+    case PENDING = 'PENDING';
+    case STOPPED = 'STOPPED';
 
     public static function getValues(): array
     {

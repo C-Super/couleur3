@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\InteractionType;
 use App\Events\InteractionEndedEvent;
 use App\Events\InteractionEndedForAnimatorEvent;
 use App\Jobs\CheckInteractionEnded;
@@ -18,7 +19,7 @@ it('ends the interaction when ended_at time is reached', function () {
     // Arrange: Create necessary objects and setup the state
     $auditors = Auditor::factory()->count(3)->create();
     $interaction = Interaction::factory()->create([
-        'type' => 'text',
+        'type' => InteractionType::TEXT,
         'ended_at' => now()->subMinute(),  // set the ended_at to a time in the past
     ]);
     //create answer for interaction with each of the auditors
