@@ -15,8 +15,11 @@ defineProps({
 </script>
 
 <template>
-    <div class="flex flex-row items-center gap-8">
+    <div class="flex flex-col gap-2">
         <input-label :id="`${id}`">{{ label }}</input-label>
-        <slot></slot>
+
+        <div class="flex flex-col flex-auto">
+            <slot></slot>
+        </div>
     </div>
 </template>

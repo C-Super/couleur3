@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\InteractionType;
 use App\Events\NewWinnerGenerated;
 use App\Events\WinnerSentResult;
 use App\Events\WinnersListGenerated;
@@ -34,7 +35,7 @@ it('generates random winners list successfully', function () {
     $interaction = Interaction::factory(
         [
             'animator_id' => $animator->id,
-            'type' => 'text',
+            'type' => InteractionType::TEXT,
         ]
     )->create();
 
@@ -84,7 +85,7 @@ it('replaces a winner successfully', function () {
     $interaction = Interaction::factory(
         [
             'animator_id' => $animator->id,
-            'type' => 'text',
+            'type' => InteractionType::TEXT,
         ]
     )->create();
 
@@ -150,7 +151,7 @@ it('stores winners successfully', function () {
     $interaction = Interaction::factory(
         [
             'animator_id' => $animator->id,
-            'type' => 'text',
+            'type' => InteractionType::TEXT,
         ]
     )->create();
 
@@ -212,7 +213,7 @@ it('generates fastest winners list successfully', function () {
     $interaction = Interaction::factory(
         [
             'animator_id' => $animator->id,
-            'type' => 'text',
+            'type' => InteractionType::TEXT,
         ]
     )->create();
 
@@ -260,7 +261,7 @@ it('requires reward field to store winners', function () {
     $interaction = Interaction::factory(
         [
             'animator_id' => $animator->id,
-            'type' => 'text',
+            'type' => InteractionType::TEXT,
         ]
     )->create();
 

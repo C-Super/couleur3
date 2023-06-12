@@ -162,9 +162,7 @@ namespace App\Models{
      * App\Models\CallToAction
      *
      * @property int $id
-     * @property string $description
      * @property string|null $link
-     * @property string $button_text
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property \Illuminate\Support\Carbon|null $updated_at
      *
@@ -172,9 +170,7 @@ namespace App\Models{
      * @method static \Illuminate\Database\Eloquent\Builder|CallToAction newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder|CallToAction newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder|CallToAction query()
-     * @method static \Illuminate\Database\Eloquent\Builder|CallToAction whereButtonText($value)
      * @method static \Illuminate\Database\Eloquent\Builder|CallToAction whereCreatedAt($value)
-     * @method static \Illuminate\Database\Eloquent\Builder|CallToAction whereDescription($value)
      * @method static \Illuminate\Database\Eloquent\Builder|CallToAction whereId($value)
      * @method static \Illuminate\Database\Eloquent\Builder|CallToAction whereLink($value)
      * @method static \Illuminate\Database\Eloquent\Builder|CallToAction whereUpdatedAt($value)
@@ -192,7 +188,7 @@ namespace App\Models{
      *
      * @property int $id
      * @property string $title
-     * @property string $type
+     * @property \App\Enums\InteractionType $type
      * @property int|null $call_to_action_id
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property \Illuminate\Support\Carbon|null $updated_at
@@ -200,7 +196,7 @@ namespace App\Models{
      * @property int $animator_id
      * @property int|null $reward_id
      * @property int|null $winners_count
-     * @property string $status
+     * @property \App\Enums\InteractionStatus $status
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Answer> $answers
      * @property-read int|null $answers_count
      * @property-read \App\Models\CallToAction|null $call_to_action
@@ -208,6 +204,7 @@ namespace App\Models{
      * @property-read int|null $question_choices_count
      * @property-read \App\Models\Reward|null $rewards
      *
+     * @method static \Illuminate\Database\Eloquent\Builder|Interaction active()
      * @method static \Database\Factories\InteractionFactory factory($count = null, $state = [])
      * @method static \Illuminate\Database\Eloquent\Builder|Interaction newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder|Interaction newQuery()
@@ -237,7 +234,7 @@ namespace App\Models{
      *
      * @property int $id
      * @property string $path
-     * @property string $type
+     * @property \App\Enums\MediaType $type
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property-read \App\Models\Answer|null $answer

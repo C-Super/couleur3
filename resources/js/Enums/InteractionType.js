@@ -1,18 +1,18 @@
 export default class InteractionType {
     static get QUICK_CLICK() {
-        return "quick_click";
+        return "QUICK_CLICK";
     }
 
     static get CTA() {
-        return "cta";
+        return "CTA";
     }
 
     static get SURVEY() {
-        return "survey";
+        return "SURVEY";
     }
 
     static get MCQ() {
-        return "mcq";
+        return "MCQ";
     }
 
     static isQuestion(type) {

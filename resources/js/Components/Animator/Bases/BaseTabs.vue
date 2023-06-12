@@ -1,5 +1,14 @@
 <script setup>
-import { reactive, computed, provide } from "vue";
+import { reactive, computed, provide, defineModel } from "vue";
+
+const modelValue = defineModel();
+
+defineProps({
+    color: {
+        type: String,
+        default: "primary",
+    },
+});
 
 const tabs = reactive({
     labels: [],
@@ -21,15 +30,22 @@ function changeTab(i) {
 <template>
     <div>
         <ul class="tabs tabs-boxed">
-            <li
+            <label
                 v-for="(label, index) in tabs.labels"
                 :key="index"
-                class="tab"
-                :class="{ 'tab-active': index === active }"
+                :class="`tab ${
+                    index === active ? `tab-active tab-active-${color}` : ''
+                }`"
                 @click="changeTab(index)"
             >
+                <input
+                    v-model="modelValue"
+                    :value="label"
+                    type="radio"
+                    class="hidden"
+                />
                 {{ label }}
-            </li>
+            </label>
         </ul>
 
         <slot />
@@ -43,7 +59,20 @@ function changeTab(i) {
 .tab {
     @apply tab-lg flex-auto font-bold text-white rounded-full border-2 border-transparent hover:border-white hover:bg-white hover:bg-opacity-50;
 }
+
+.tab-active-primary {
+    @apply border-primary bg-[#6BA5BE];
+}
+
+.tab-active-secondary {
+    @apply border-secondary bg-[#A7A282] !important;
+}
+
+.tab-active-accent {
+    @apply border-accent bg-[#A766BB] !important;
+}
+
 .tab-active {
-    @apply bg-[#6BA5BE] border-primary border-2 text-white !important;
+    @apply border-2 text-white !important;
 }
 </style>

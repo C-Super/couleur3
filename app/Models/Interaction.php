@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Enums\InteractionStatus;
+use App\Enums\InteractionType;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -27,6 +30,17 @@ class Interaction extends Model
         'animator_id',
         'reward_id',
         'winners_count',
+        'status',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'type' => InteractionType::class,
+        'status' => InteractionStatus::class,
     ];
 
     /**
@@ -53,5 +67,13 @@ class Interaction extends Model
     public function rewards(): BelongsTo
     {
         return $this->belongsTo(Reward::class);
+    }
+
+    /**
+     * Scope a query to only include active interactions.
+     */
+    public function scopeActive(Builder $query): void
+    {
+        $query->where('ended_at', '>', now())->where('status', InteractionStatus::PENDING);
     }
 }

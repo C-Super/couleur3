@@ -32,6 +32,6 @@ defineExpose({ focus: () => input.value.focus() });
         ref="input"
         v-model="modelValue"
         type="text"
-        :class="`input input-md input-bordered border-white focus:border-2 focus:border-${color} focus:ring-0 bg-transparent w-full rounded-full font-light text-white`"
+        :class="`input input-md input-bordered border-white focus:invalid:border-error invalid:text-error focus:invalid:text-error invalid:border-error focus:border-2 focus:border-${color} focus:ring-0 bg-transparent w-full rounded-full font-light text-white`"
     />
 </template>
