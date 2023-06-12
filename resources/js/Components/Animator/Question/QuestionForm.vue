@@ -103,6 +103,7 @@ function cancelQuestionType() {
     form.type = "";
     console.log("updated question type:" + form.type);
     emits("cancel");
+    //enlever la couleur de selection
 }
 </script>
 
@@ -113,7 +114,15 @@ function cancelQuestionType() {
             <base-radio-group v-model="form.type" :choices="questionTypes" name="questionTypes" @input="$emit('create', 'question')"/>
 
             <div v-if="isCreating || form.type.length > 0" class="flex flex-col gap-6 mt-5">
-                <input-group id="title" label="Titre">
+                <input-group v-if="form.type==='mcq'|| form.type==='survey' || form.type==='test'" id="question" label="Question">
+                    <text-input
+                        id="question"
+                        v-model="form.inputs.title"
+                        color="primary"
+                    />
+                </input-group>
+
+                <input-group v-else id="title" label="Titre">
                     <text-input
                         id="title"
                         v-model="form.inputs.title"
