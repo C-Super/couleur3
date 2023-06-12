@@ -14,7 +14,9 @@ export const useInteractionStore = defineStore("interaction", () => {
     });
 
     const notPinnedAnswers = computed(() =>
-        state.currentInteraction.answers.filter((answer) => !state.pinnedAnswers.includes(answer))
+        state.currentInteraction.answers.filter(
+            (answer) => !state.pinnedAnswers.includes(answer)
+        )
     );
 
     watchEffect(() => {
@@ -28,7 +30,7 @@ export const useInteractionStore = defineStore("interaction", () => {
     const subscribeToPublicChannel = () => {
         window.Echo.channel("public")
             .listen("InteractionCreated", (event) => {
-                console.log(event)
+                console.log(event);
                 state.currentInteraction = event.interaction;
             })
             .listen("AnswerSubmitedToAnimator", (event) => {
@@ -52,16 +54,13 @@ export const useInteractionStore = defineStore("interaction", () => {
     };
 
     const endInteraction = () => {
-        router.post(
-            route("interactions.end", state.currentInteraction.id),
-            {
-                preserveScroll: true,
-                only: ["interaction"],
-                onSuccess: () => {
-                    cancelInteraction();
-                },
-            }
-        );
+        router.post(route("interactions.end", state.currentInteraction.id), {
+            preserveScroll: true,
+            only: ["interaction"],
+            onSuccess: () => {
+                cancelInteraction();
+            },
+        });
     };
 
     const addPinned = (answer) => {

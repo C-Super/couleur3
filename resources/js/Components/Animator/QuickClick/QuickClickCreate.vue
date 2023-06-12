@@ -21,7 +21,7 @@ const submit = () => {
     form.submit({
         preserveScroll: true,
         onSuccess: (response) => {
-            console.log(response)
+            console.log(response);
             form.reset();
             interactionStore.createdInteraction();
         },
@@ -65,10 +65,17 @@ const submit = () => {
 
             <template #actions>
                 <div class="flex flex-row gap-3">
-                    <base-button :disabled="form.processing" @click="interactionStore.cancelInteraction()"
+                    <base-button
+                        :disabled="form.processing"
+                        @click="interactionStore.cancelInteraction()"
                         >Annuler</base-button
                     >
-                    <base-button :color="Color.ACCENT" :disabled="form.processing" type="submit">Envoyer</base-button>
+                    <base-button
+                        :color="Color.ACCENT"
+                        :disabled="form.processing"
+                        type="submit"
+                        >Envoyer</base-button
+                    >
                 </div>
             </template>
         </base-card>

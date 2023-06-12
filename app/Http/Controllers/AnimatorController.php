@@ -20,12 +20,12 @@ class AnimatorController extends Controller
             'interaction' => Interaction::active()->with([
                 'answers' => [
                     'auditor' => [
-                        'user'
+                        'user',
                     ],
-                    'answerable'
+                    'answerable',
                 ],
                 'call_to_action',
-                'question_choices'
+                'question_choices',
             ])->first(),
         ]);
     }

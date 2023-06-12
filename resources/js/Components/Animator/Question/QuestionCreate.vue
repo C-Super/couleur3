@@ -101,19 +101,39 @@ const cancelQuestionType = () => {
                         répondre. Cocher la réponse correcte.</template
                     >
                     <template #input1>
-                        <input v-if="form.type === InteractionType.MCQ" type="radio" name="mcq" class="checkbox bg-transparent checkbox-primary checkbox-lg" />
+                        <input
+                            v-if="form.type === InteractionType.MCQ"
+                            type="radio"
+                            name="mcq"
+                            class="checkbox bg-transparent checkbox-primary checkbox-lg"
+                        />
                         <text-input id="input-1" color="primary" />
                     </template>
                     <template #input2>
-                        <input v-if="form.type === InteractionType.MCQ" type="radio" name="mcq" class="checkbox bg-transparent checkbox-primary checkbox-lg" />
+                        <input
+                            v-if="form.type === InteractionType.MCQ"
+                            type="radio"
+                            name="mcq"
+                            class="checkbox bg-transparent checkbox-primary checkbox-lg"
+                        />
                         <text-input id="input-2" color="primary" />
                     </template>
                     <template #input3>
-                        <input v-if="form.type === InteractionType.MCQ" type="radio" name="mcq" class="checkbox bg-transparent checkbox-primary checkbox-lg" />
+                        <input
+                            v-if="form.type === InteractionType.MCQ"
+                            type="radio"
+                            name="mcq"
+                            class="checkbox bg-transparent checkbox-primary checkbox-lg"
+                        />
                         <text-input id="input-3" color="primary" />
                     </template>
                     <template #input4>
-                        <input v-if="form.type === InteractionType.MCQ" type="radio" name="mcq" class="checkbox bg-transparent checkbox-primary checkbox-lg" />
+                        <input
+                            v-if="form.type === InteractionType.MCQ"
+                            type="radio"
+                            name="mcq"
+                            class="checkbox bg-transparent checkbox-primary checkbox-lg"
+                        />
                         <text-input id="input-4" color="primary" />
                     </template>
                 </multiple-input-group>
@@ -130,10 +150,14 @@ const cancelQuestionType = () => {
         </template>
         <template v-if="isCreatingInteraction" #actions>
             <div class="flex flex-row gap-3">
-                <base-button :disabled="form.processing" @click="cancelQuestionType"
+                <base-button
+                    :disabled="form.processing"
+                    @click="cancelQuestionType"
                     >Annuler</base-button
                 >
-                <base-button color="primary" :disabled="form.processing">Envoyer</base-button>
+                <base-button color="primary" :disabled="form.processing"
+                    >Envoyer</base-button
+                >
             </div>
         </template>
     </base-card>
