@@ -32,6 +32,13 @@ export default class InteractionType {
     }
 
     static isQuestion(type) {
-        return type === InteractionType.SURVEY || type === InteractionType.MCQ || type === InteractionType.TEXT || type === InteractionType.AUDIO || type === InteractionType.VIDEO || type === InteractionType.PICTURE;
+        return (
+            type === InteractionType.SURVEY ||
+            type === InteractionType.MCQ ||
+            type === InteractionType.TEXT ||
+            type === InteractionType.AUDIO ||
+            type === InteractionType.VIDEO ||
+            type === InteractionType.PICTURE
+        );
     }
 }

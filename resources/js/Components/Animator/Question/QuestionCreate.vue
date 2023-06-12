@@ -20,8 +20,8 @@ const { isCreatingInteraction } = storeToRefs(interactionStore);
 const form = useForm({
     type: "",
     inputs: {
-        title:"",
-        duration:300
+        title: "",
+        duration: 300,
     },
 });
 
@@ -46,7 +46,7 @@ const cancelQuestionType = () => {
     radioButtons.forEach((radioButton) => {
         radioButton.checked = false;
     });
-}
+};
 </script>
 
 <template>
@@ -54,10 +54,26 @@ const cancelQuestionType = () => {
     <base-card :color="Color.PRIMARY">
         <template #title>Question</template>
         <template #content>
-            <base-radio-group v-model="form.type" :choices="QuestionType.getAll()" name="questionTypes" @input="interactionStore.creatingInteraction(form.type)" />
+            <base-radio-group
+                v-model="form.type"
+                :choices="QuestionType.getAll()"
+                name="questionTypes"
+                @input="interactionStore.creatingInteraction(form.type)"
+            />
 
-            <div v-if="isCreatingInteraction || form.type.length > 0" class="flex flex-col gap-6 mt-5">
-                <input-group v-if="form.type === InteractionType.MCQ || form.type === InteractionType.SURVEY || form.type === InteractionType.TEXT" id="question" label="Question">
+            <div
+                v-if="isCreatingInteraction || form.type.length > 0"
+                class="flex flex-col gap-6 mt-5"
+            >
+                <input-group
+                    v-if="
+                        form.type === InteractionType.MCQ ||
+                        form.type === InteractionType.SURVEY ||
+                        form.type === InteractionType.TEXT
+                    "
+                    id="question"
+                    label="Question"
+                >
                     <text-input
                         id="question"
                         v-model="form.inputs.title"
@@ -73,8 +89,17 @@ const cancelQuestionType = () => {
                     />
                 </input-group>
 
-                <multiple-input-group v-if="form.type === InteractionType.MCQ | form.type === InteractionType.SURVEY" :form-type="form.type">
-                    <template #instructions>Entrer les réponses que les auditeurs pourraient répondre. Cocher la réponse correcte.</template>
+                <multiple-input-group
+                    v-if="
+                        (form.type === InteractionType.MCQ) |
+                            (form.type === InteractionType.SURVEY)
+                    "
+                    :form-type="form.type"
+                >
+                    <template #instructions
+                        >Entrer les réponses que les auditeurs pourraient
+                        répondre. Cocher la réponse correcte.</template
+                    >
                     <template #input1>
                         <input v-if="form.type === InteractionType.MCQ" type="radio" name="mcq" class="checkbox bg-transparent checkbox-primary checkbox-lg" />
                         <text-input id="input-1" color="primary" />

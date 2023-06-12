@@ -1,14 +1,14 @@
 <script setup>
-import { ref } from "vue";
-import InteractionType from "@/Enums/InteractionType.js";
-import { Axios } from "axios";
+//import { ref } from "vue";
+//import InteractionType from "@/Enums/InteractionType.js";
+//import { Axios } from "axios";
 import { useInteractionStore } from "@/Stores/useInteractionStore.js";
 import { storeToRefs } from "pinia";
 
 const interactionStore = useInteractionStore();
 const { currentInteraction } = storeToRefs(interactionStore);
 
-let openModal = ref(false);
+/*let openModal = ref(false);
 
 // Function to post an answer and hide the notification
 const postAnswerAndHideNotification = async () => {
@@ -35,11 +35,50 @@ const postAnswerAndHideNotification = async () => {
 // Function to navigate to CTA URL
 const navigateTo = (url) => {
     window.location.href = url;
-};
+};*/
+
+/*
+
+
+
+const props = defineProps({
+    interactionType: {
+        type: String,
+        required: true,
+    },
+});
+
+let notificationType = "";
+
+if (
+    props.interactionType === "TEXT" ||
+    props.interactionType === "MCQ" ||
+    props.interactionType === "SURVEY" ||
+    props.interactionType === "AUDIO" ||
+    props.interactionType === "VIDEO" ||
+    props.interactionType === "PICTURE"
+) {
+    notificationType = "normal";
+} else if (props.interactionType === "CTA") {
+    notificationType = "link";
+} else if (props.interactionType === "QUICK_CLICK") {
+    notificationType = "quick";
+}
+*/
+function clicNotif() {
+    alert("clic");
+}
+
+console.log(currentInteraction);
 </script>
 
 <template>
-    <div id="notification-animateur" class="chat chat-start">
+    <div
+        v-if="currentInteraction"
+        id="notification-animateur"
+        class="chat chat-start"
+        @click="clicNotif()"
+    >
         <div class="chat-image avatar">
             <div class="w-10 rounded-full bg-base-100">
                 <img src="images/Bulle-COULEUR3.svg" />
@@ -50,15 +89,21 @@ const navigateTo = (url) => {
         >
             Interagir avec l’animateur
             <div class="indicator absolute top-0 right-0 mt-1 mr-1">
-                <span
-                    class="indicator-item badge bg-[#7D7AFF] border-[#7D7AFF]"
-                ></span>
+                <span class="indicator-item badge bg-info border-info"></span>
                 <div class="grid w-32 h-32"></div>
             </div>
         </div>
     </div>
 
-    <!-- CTA Interaction -->
+    <!--
+     Rossiny
+    <div
+        v-if="notificationType === 'link'"
+        id="notification-lien"
+        class="chat chat-start"
+        data-interaction-type="interactionType"
+       @click="clicNotif()"> --
+     -- CTA Interaction --
     <div
         v-if="
             currentInteraction.value && currentInteraction.value.type === InteractionType.CTA
@@ -85,27 +130,29 @@ const navigateTo = (url) => {
             >
 
             <div class="indicator absolute top-0 right-0 mt-1 mr-1">
-                <span
-                    class="indicator-item badge bg-[#7D7AFF] border-[#7D7AFF]"
-                ></span>
+                <span class="indicator-item badge bg-info border-info"></span>
                 <div class="grid w-32 h-32"></div>
             </div>
         </div>
     </div>
 
-    <!-- QUICK_CLICK Interaction -->
+    -- Rossiny
     <div
-        v-if="
-            currentInteraction.value &&
-            currentInteraction.value.type === InteractionType.QUICK_CLICK
-        "
+        v-if="notificationType === 'quick'"
+        id="notification-rapide"
+        data-interaction-type="interactionType"
+        @click="clicNotif()">
+    --
+    -- QUICK_CLICK Interaction --
+    <div
+        v-if="currentInteraction.value && currentInteraction.value.type === InteractionType.QUICK_CLICK"
         id="notification-rapide"
         class="chat chat-start text-black"
         @click="postAnswerAndHideNotification"
+
     >
         <div class="chat-image avatar">
             <div class="w-10 rounded-full bg-base-100">
-                <img src="images/Bulle-COULEUR3.svg" />
             </div>
         </div>
         <div
@@ -113,15 +160,13 @@ const navigateTo = (url) => {
         >
             Sois le premier à cliquer !
             <div class="indicator absolute top-0 right-0 mt-1 mr-1">
-                <span
-                    class="indicator-item badge bg-[#7D7AFF] border-[#7D7AFF]"
-                ></span>
+                <span class="indicator-item badge bg-info border-info"></span>
                 <div class="grid w-32 h-32"></div>
             </div>
         </div>
     </div>
 
-    <!-- SURVEY Interaction -->
+    -- SURVEY Interaction --
     <div
         v-if="
             currentInteraction.value &&
@@ -148,6 +193,9 @@ const navigateTo = (url) => {
             </div>
         </div>
     </div>
+
+
+
     <survey-modal-component
         v-if="
             openModal &&
@@ -158,7 +206,7 @@ const navigateTo = (url) => {
         @close="openModal = false"
     />
 
-    <!-- MCQ Interaction -->
+    MCQ Interaction
     <div
         v-if="
             currentInteraction.value && currentInteraction.value.type === InteractionType.MCQ
@@ -192,7 +240,7 @@ const navigateTo = (url) => {
         "
         :interaction="currentInteraction.value"
         @close="openModal = false"
-    />
+    />-->
 </template>
 
 <style scoped>

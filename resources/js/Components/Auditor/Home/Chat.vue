@@ -107,9 +107,9 @@ function check($event) {
     <!-- Menu dépliant -->
     <div
         id="chat-auditor"
-        class="collapse bg-blue-audior rounded-t-[44px] rounded-b-none"
+        class="collapse bg-blue-auditor rounded-t-[44px] rounded-b-none"
     >
-    <!-- Bouton pour déplier le menu-->
+        <!-- Bouton pour déplier le menu-->
         <input
             type="checkbox"
             class="w-full h-11 min-h-0"
@@ -129,16 +129,25 @@ function check($event) {
             <!-- Messages dans le chat -->
             <div class="overflow-y-scroll h-2 grow flex flex-col-reverse">
                 <!-- Ajouter les nouveaux message ici-->
-                <div v-if="data.messages && data.chatEnabled" ref="messageContainer">
-                    <p v-for="msg in data.messages" :key="msg.id" :msg="msg" class="font-light">
+                <div
+                    v-if="data.messages && data.chatEnabled"
+                    ref="messageContainer"
+                >
+                    <p
+                        v-for="msg in data.messages"
+                        :key="msg.id"
+                        :msg="msg"
+                        class="font-light"
+                    >
                         <span class="text-base-100 opacity-70">
-                            {{ formatDateToHoursMinutes(msg.created_at)}}
-                        </span
-                        ><span class="ml-2 font-bold">{{ msg.user_name }} : </span
+                            {{
+                                formatDateToHoursMinutes(msg.created_at)
+                            }} </span
+                        ><span class="ml-2 font-bold"
+                            >{{ msg.user_name }} : </span
                         ><span>{{ msg.content }}</span>
                     </p>
                 </div>
-
             </div>
             <!-- Formulaire pour envoyer des messages dans le chat -->
             <div class="flex flex-col gap-y-1">
@@ -148,7 +157,7 @@ function check($event) {
                             id="message"
                             v-model="form.message"
                             type="text"
-                            class="bg-blue-audior rounded-full border-base-100 grow focus:border-base-100 focus:outline-0 placeholder:font-extralight"
+                            class="bg-blue-auditor rounded-full border-base-100 grow focus:border-base-100 focus:outline-0 placeholder:font-extralight"
                             required
                             autofocus
                             placeholder="Message…"
@@ -159,7 +168,7 @@ function check($event) {
                             class="border border-base-100 flex items-center justify-center w-16 rounded-full bg-base-100"
                         >
                             <span
-                                class="material-symbols-rounded align-middle text-blue-audior"
+                                class="material-symbols-rounded align-middle text-blue-auditor"
                             >
                                 send
                             </span>
@@ -167,7 +176,7 @@ function check($event) {
                     </div>
                     <div v-show="form.errors.message">
                         <p class="text-sm text-red-600 dark:text-red-400">
-                            {{form.errors.message}}
+                            {{ form.errors.message }}
                         </p>
                     </div>
                 </form>
@@ -197,5 +206,4 @@ input[type="text"]:disabled + button {
     cursor: not-allowed;
     opacity: 0.5;
 }
-
 </style>

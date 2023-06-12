@@ -37,7 +37,7 @@ export const useInteractionStore = defineStore("interaction", () => {
             .error((error) => {
                 console.error(error);
             });
-    }
+    };
 
     const createdInteraction = () => {
         state.isCreatingInteraction = null;
