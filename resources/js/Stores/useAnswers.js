@@ -1,6 +1,6 @@
 import { reactive, computed } from "vue";
 
-export default function useAnswers(answers = []) {
+export function useAnswers(answers = []) {
     const pinnedAnswers = reactive([]);
 
     const notPinnedAnswers = computed(() =>

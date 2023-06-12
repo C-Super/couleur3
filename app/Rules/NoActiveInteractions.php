@@ -18,10 +18,8 @@ class NoActiveInteractions implements ValidationRule
         // 1. Obtenez les interactions actuelles
         $activeInteractions = Interaction::active()->orWhereNull('ended_at')->get();
 
-        dd($currentInteractions);
-
         // 2. Vérifiez si d'autres interactions sont en cours
-        if (! $currentInteractions->isEmpty()) {
+        if (!$activeInteractions->isEmpty()) {
             $fail('Une autre interaction est en cours.');
         }
     }

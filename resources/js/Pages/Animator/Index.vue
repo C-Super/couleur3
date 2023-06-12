@@ -2,40 +2,20 @@
 <script setup>
 import BaseButton from "@/Components/Animator/Bases/BaseButton.vue";
 import ChatView from "@/Components/Animator/Chat/ChatView.vue";
-import QuestionForm from "@/Components/Animator/Question/QuestionForm.vue";
-import CtaForm from "@/Components/Animator/Cta/CtaForm.vue";
-import QuickClickForm from "@/Components/Animator/QuickClick/QuickClickForm.vue";
+import QuickClickIndex from "@/Components/Animator/QuickClick/QuickClickIndex.vue";
+import QuickClickCreate from "@/Components/Animator/QuickClick/QuickClickCreate.vue";
+import QuickClickShow from "@/Components/Animator/QuickClick/QuickClickShow.vue";
+import CtaIndex from "@/Components/Animator/Cta/CtaIndex.vue";
+import CtaCreate from "@/Components/Animator/Cta/CtaCreate.vue";
+import CtaShow from "@/Components/Animator/Cta/CtaShow.vue";
 import InteractionType from "@/Enums/InteractionType.js";
-import { computed, ref } from "vue";
 import { Head, router } from "@inertiajs/vue3";
+import { useInteractionStore } from "@/Stores/useInteractionStore.js";
+import { storeToRefs } from "pinia";
 
-const props = defineProps({
-    chatEnabled: {
-        type: Boolean,
-        required: true,
-    },
-    interaction: {
-        type: Object,
-        default: null,
-    },
-});
-
-const isCreatingInteraction = ref(null);
-const currentInteraction = computed(() => {
-    return props.interaction;
-});
-
-const createdInteraction = () => {
-    isCreatingInteraction.value = null;
-};
-
-const creatingInteraction = (type) => {
-    isCreatingInteraction.value = type;
-};
-
-const cancelInteraction = () => {
-    isCreatingInteraction.value = null;
-};
+const interactionStore = useInteractionStore();
+const { isCreatingInteraction, currentInteraction } =
+    storeToRefs(interactionStore);
 
 const endEmission = () => {
     router.post(route("animator.endEmission"));
@@ -46,7 +26,7 @@ const endEmission = () => {
     <Head title="Dashboard" />
     <div id="animator-container" class="h-screen p-5 flex gap-5">
         <div class="basis-1/3 flex flex-col gap-3">
-            <chat-view :chat-enabled="chatEnabled" />
+            <chat-view />
 
             <base-button
                 color="error"
@@ -58,55 +38,28 @@ const endEmission = () => {
         </div>
 
         <div class="basis-2/3 flex flex-col gap-3">
-            <Transition>
-                <question-form
-                    v-if="
-                        (!isCreatingInteraction && !currentInteraction) ||
-                        InteractionType.isQuestion(isCreatingInteraction) ||
-                        (currentInteraction &&
-                            currentInteraction.type ===
-                                InteractionType.QUESTION)
-                    "
-                    :is-creating-interaction="isCreatingInteraction"
-                    :current-interaction="currentInteraction"
-                    @created="createdInteraction"
-                    @creating="creatingInteraction"
-                    @cancel="cancelInteraction"
-                />
-            </Transition>
+            <template v-if="!isCreatingInteraction && !currentInteraction">
+                <cta-index />
+                <quick-click-index />
+            </template>
 
-            <Transition>
-                <cta-form
-                    v-if="
-                        (!isCreatingInteraction && !currentInteraction) ||
-                        isCreatingInteraction === InteractionType.CTA ||
-                        (currentInteraction &&
-                            currentInteraction.type === InteractionType.CTA)
-                    "
-                    :is-creating-interaction="isCreatingInteraction"
-                    :current-interaction="currentInteraction"
-                    @created="createdInteraction"
-                    @creating="creatingInteraction"
-                    @cancel="cancelInteraction"
-                />
-            </Transition>
+            <quick-click-create
+                v-if="isCreatingInteraction == InteractionType.QUICK_CLICK"
+            />
+            <cta-create v-if="isCreatingInteraction === InteractionType.CTA" />
 
-            <Transition>
-                <quick-click-form
-                    v-if="
-                        (!isCreatingInteraction && !currentInteraction) ||
-                        isCreatingInteraction === InteractionType.QUICK_CLICK ||
-                        (currentInteraction &&
-                            currentInteraction.type ===
-                                InteractionType.QUICK_CLICK)
-                    "
-                    :is-creating-interaction="isCreatingInteraction"
-                    :current-interaction="currentInteraction"
-                    @created="createdInteraction"
-                    @creating="creatingInteraction"
-                    @cancel="cancelInteraction"
-                />
-            </Transition>
+            <quick-click-show
+                v-if="
+                    currentInteraction &&
+                    currentInteraction.type === InteractionType.QUICK_CLICK
+                "
+            />
+            <cta-show
+                v-if="
+                    currentInteraction &&
+                    currentInteraction.type === InteractionType.CTA
+                "
+            />
         </div>
     </div>
 </template>

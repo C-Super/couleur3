@@ -77,6 +77,8 @@ class InteractionController extends Controller
 
         $interaction->save();
 
+        broadcast(new InteractionCreated($interaction))->toOthers();
+
         return redirect()->back()->with([
             'interaction' => $interaction,
         ]);
@@ -96,6 +98,8 @@ class InteractionController extends Controller
         $interaction->ended_at = now()->addSeconds($validated['duration']);
 
         $interaction->save();
+
+        broadcast(new InteractionCreated($interaction))->toOthers();
 
         return redirect()->back()->with([
             'interaction' => $interaction,

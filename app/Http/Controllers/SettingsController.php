@@ -19,7 +19,7 @@ class SettingsController extends Controller
             ]);
         }
 
-        if ($validated['chat_enabled'] === false && ! $settings->chat_enabled) {
+        if ($validated['chat_enabled'] === false && !$settings->chat_enabled) {
             return back()->with([
                 'error', 'Le chat est déjà désactivé.',
                 'chatEnabled' => $settings->chat_enabled,
