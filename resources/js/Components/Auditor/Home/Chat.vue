@@ -107,7 +107,7 @@ function check($event) {
     <!-- Menu dépliant -->
     <div
         id="chat-auditor"
-        class="collapse bg-blue-audior rounded-t-[44px] rounded-b-none"
+        class="collapse bg-blue-auditor rounded-t-[44px] rounded-b-none"
     >
     <!-- Bouton pour déplier le menu-->
         <input
@@ -148,7 +148,7 @@ function check($event) {
                             id="message"
                             v-model="form.message"
                             type="text"
-                            class="bg-blue-audior rounded-full border-base-100 grow focus:border-base-100 focus:outline-0 placeholder:font-extralight"
+                            class="bg-blue-auditor rounded-full border-base-100 grow focus:border-base-100 focus:outline-0 placeholder:font-extralight"
                             required
                             autofocus
                             placeholder="Message…"
@@ -159,7 +159,7 @@ function check($event) {
                             class="border border-base-100 flex items-center justify-center w-16 rounded-full bg-base-100"
                         >
                             <span
-                                class="material-symbols-rounded align-middle text-blue-audior"
+                                class="material-symbols-rounded align-middle text-blue-auditor"
                             >
                                 send
                             </span>
