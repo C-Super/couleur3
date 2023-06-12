@@ -1,3 +1,15 @@
+# Base de donnée
+
+La création d'une base de données nécessite une réflexion approfondie et une planification minutieuse. Plusieurs facteurs ont été pris en compte lors de la conception de la base de données pour ce projet.
+
+**MySQL** : La décision d'utiliser MySQL comme système de gestion de base de données repose sur plusieurs raisons. Tout d'abord, MySQL est un système éprouvé, largement utilisé et possède une grande communauté. En outre, il offre une excellente performance, une fiabilité et une flexibilité. MySQL est également bien soutenu par Laravel, ce qui facilite l'intégration et l'utilisation.
+
+**Utilisation du polymorphisme et de l'héritage** : Le polymorphisme et l'héritage ont été utilisés pour augmenter la flexibilité de la base de données. Le polymorphisme dans Laravel permet à un modèle d'appartenir à plusieurs autres types de modèles. C'est utile pour les situations où un modèle peut avoir plusieurs types de relations avec d'autres modèles. L'héritage, quant à lui, permet à un modèle de base d'être défini avec des attributs et des méthodes communs, et à d'autres modèles d'hériter de ce modèle de base.
+
+**Diagrammes de séquences** : Pour aider à planifier et à visualiser la structure de la base de données, des diagrammes de séquences ont été créés. Ces diagrammes représentent comment les données sont manipulées et comment elles interagissent avec différentes parties de l'application. Ils permettent d'avoir une vision claire du flux de données et facilitent la détection d'éventuelles erreurs ou inefficacités.
+
+Au final, la création de la base de données a été une étape cruciale du projet. Les choix technologiques, l'utilisation de concepts avancés comme le polymorphisme et l'héritage, et la modélisation des flux de données ont permis de construire une base de données robuste, flexible et efficace.
+
 # Structure du backend
 
 **Laravel** ayant été imposé pour la gestion du backend, le choix d'utiliser **Inertia.js** pour faire le lien entre le **Frontend** et le **Backend** semblait la meilleure solution.
