@@ -12,18 +12,18 @@ const { currentInteraction, endInteraction } = storeToRefs(interactionStore);
 
 <template>
     <base-card :color="Color.SECONDARY">
-            <template #title>
-                <div class="flex flex-auto flex-row justify-between">
-                    {{ currentInteraction.title }}
-                    <base-countdown :color="Color.SECONDARY" />
-                </div>
-            </template>
-            <template #actions>
-                <div class="flex flex-row gap-3">
-                    <base-button :color="Color.ERROR" @click="endInteraction"
-                        >Fin de l'interaction</base-button
-                    >
-                </div>
-            </template>
-        </base-card>
+        <template #title>
+            <div class="flex flex-auto flex-row justify-between">
+                {{ currentInteraction.title }}
+                <base-countdown :color="Color.SECONDARY" />
+            </div>
+        </template>
+        <template #actions>
+            <div class="flex flex-row gap-3">
+                <base-button :color="Color.ERROR" @click="endInteraction"
+                    >Fin de l'interaction</base-button
+                >
+            </div>
+        </template>
+    </base-card>
 </template>

@@ -10,10 +10,7 @@
             <div v-if="$slots.content" class="h-full flex flex-col gap-3 mt-8">
                 <slot name="content" />
             </div>
-            <div
-                v-if="$slots.actions"
-                class="card-actions justify-center mt-8"
-            >
+            <div v-if="$slots.actions" class="card-actions justify-center mt-8">
                 <slot name="actions" />
             </div>
         </div>

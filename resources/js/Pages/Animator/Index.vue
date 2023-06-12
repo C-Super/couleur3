@@ -39,7 +39,13 @@ const endEmission = () => {
         </div>
 
         <div class="basis-2/3 flex flex-col gap-3">
-            <template v-if="!currentInteraction && (!isCreatingInteraction || InteractionType.isQuestion(isCreatingInteraction))">
+            <template
+                v-if="
+                    !currentInteraction &&
+                    (!isCreatingInteraction ||
+                        InteractionType.isQuestion(isCreatingInteraction))
+                "
+            >
                 <question-create />
             </template>
 

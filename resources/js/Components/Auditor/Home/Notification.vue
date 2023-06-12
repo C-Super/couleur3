@@ -37,9 +37,6 @@ const navigateTo = (url) => {
     window.location.href = url;
 };*/
 
-
-
-
 /*
 
 
@@ -73,7 +70,6 @@ function clicNotif() {
 }
 
 console.log(currentInteraction);
-
 </script>
 
 <template>
@@ -99,7 +95,7 @@ console.log(currentInteraction);
         </div>
     </div>
 
-<!--
+    <!--
      Rossiny
     <div
         v-if="notificationType === 'link'"

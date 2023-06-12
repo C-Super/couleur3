@@ -66,7 +66,9 @@ defineProps({
                 >
                     <tr class="border-none">
                         <th>
-                           <base-checkbox @click="$emit('update:winner', candidate)" />
+                            <base-checkbox
+                                @click="$emit('update:winner', candidate)"
+                            />
                         </th>
                         <td class="font-bold text-base">
                             <slot>{{ candidate.name }}</slot>

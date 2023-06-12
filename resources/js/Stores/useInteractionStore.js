@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import { defineStore } from "pinia";
-import { computed, ref, onMounted} from "vue";
+import { computed, ref, onMounted } from "vue";
 import { usePage } from "@inertiajs/vue3";
 
 export const useInteractionStore = defineStore("interaction", () => {
@@ -12,7 +12,9 @@ export const useInteractionStore = defineStore("interaction", () => {
     const winners = ref([]);
     const pinnedAnswers = ref([]);
     const notPinnedAnswers = computed(() =>
-        currentInteraction.value.answers.filter((answer) => !pinnedAnswers.value.includes(answer))
+        currentInteraction.value.answers.filter(
+            (answer) => !pinnedAnswers.value.includes(answer)
+        )
     );
 
     onMounted(() => {
@@ -31,7 +33,7 @@ export const useInteractionStore = defineStore("interaction", () => {
             .error((error) => {
                 console.error(error);
             });
-    }
+    };
 
     const createdInteraction = () => {
         isCreatingInteraction.value = null;

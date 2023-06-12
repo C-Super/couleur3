@@ -39,7 +39,9 @@ const submit = () => {
         <template #actions>
             <form @submit.prevent="submit">
                 <base-button :disabled="form.processing">
-                    {{ isChatEnabled ? "Désactiver le chat" : "Activer le chat" }}
+                    {{
+                        isChatEnabled ? "Désactiver le chat" : "Activer le chat"
+                    }}
                 </base-button>
             </form>
         </template>

@@ -109,7 +109,7 @@ function check($event) {
         id="chat-auditor"
         class="collapse bg-blue-auditor rounded-t-[44px] rounded-b-none"
     >
-    <!-- Bouton pour déplier le menu-->
+        <!-- Bouton pour déplier le menu-->
         <input
             type="checkbox"
             class="w-full h-11 min-h-0"
@@ -129,16 +129,25 @@ function check($event) {
             <!-- Messages dans le chat -->
             <div class="overflow-y-scroll h-2 grow flex flex-col-reverse">
                 <!-- Ajouter les nouveaux message ici-->
-                <div v-if="data.messages && data.chatEnabled" ref="messageContainer">
-                    <p v-for="msg in data.messages" :key="msg.id" :msg="msg" class="font-light">
+                <div
+                    v-if="data.messages && data.chatEnabled"
+                    ref="messageContainer"
+                >
+                    <p
+                        v-for="msg in data.messages"
+                        :key="msg.id"
+                        :msg="msg"
+                        class="font-light"
+                    >
                         <span class="text-base-100 opacity-70">
-                            {{ formatDateToHoursMinutes(msg.created_at)}}
-                        </span
-                        ><span class="ml-2 font-bold">{{ msg.user_name }} : </span
+                            {{
+                                formatDateToHoursMinutes(msg.created_at)
+                            }} </span
+                        ><span class="ml-2 font-bold"
+                            >{{ msg.user_name }} : </span
                         ><span>{{ msg.content }}</span>
                     </p>
                 </div>
-
             </div>
             <!-- Formulaire pour envoyer des messages dans le chat -->
             <div class="flex flex-col gap-y-1">
@@ -167,7 +176,7 @@ function check($event) {
                     </div>
                     <div v-show="form.errors.message">
                         <p class="text-sm text-red-600 dark:text-red-400">
-                            {{form.errors.message}}
+                            {{ form.errors.message }}
                         </p>
                     </div>
                 </form>
@@ -197,5 +206,4 @@ input[type="text"]:disabled + button {
     cursor: not-allowed;
     opacity: 0.5;
 }
-
 </style>
