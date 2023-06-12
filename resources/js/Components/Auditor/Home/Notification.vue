@@ -1,0 +1,217 @@
+<script setup>
+import { onMounted, ref } from "vue";
+import InteractionType from "@/Enums/InteractionType.js";
+import { Axios } from "axios";
+
+const interaction = ref();
+
+onMounted(() => {
+    subscribeToPublicChannel();
+});
+
+function subscribeToPublicChannel() {
+    window.Echo.channel("public")
+        .listen("InteractionCreated", (event) => {
+            interaction.value = event.interaction;
+        })
+        .error((error) => {
+            console.error(error);
+        });
+}
+
+let openModal = ref(false);
+
+// Function to post an answer and hide the notification
+const postAnswerAndHideNotification = async () => {
+    // Replace with your actual endpoint and data to send
+    const url = "/answers";
+    const data = {
+        interactionId: interaction.value.id,
+    };
+
+    try {
+        const response = await Axios.post(url, data);
+
+        // Handle response
+        console.log(response.data);
+
+        // If the POST request is successful, set interaction.value to null to hide the notification.
+        interaction.value = null;
+    } catch (error) {
+        // Handle error
+        console.error(error);
+    }
+};
+
+// Function to navigate to CTA URL
+const navigateTo = (url) => {
+    window.location.href = url;
+};
+</script>
+
+<template>
+    <div id="notification-animateur" class="chat chat-start">
+        <div class="chat-image avatar">
+            <div class="w-10 rounded-full bg-base-100">
+                <img src="images/Bulle-COULEUR3.svg" />
+            </div>
+        </div>
+        <div
+            class="chat-bubble gradient-auditor text-black font-bold text-lg relative"
+        >
+            Interagir avec l’animateur
+            <div class="indicator absolute top-0 right-0 mt-1 mr-1">
+                <span
+                    class="indicator-item badge bg-[#7D7AFF] border-[#7D7AFF]"
+                ></span>
+                <div class="grid w-32 h-32"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA Interaction -->
+    <div
+        v-if="
+            interaction.value && interaction.value.type === InteractionType.CTA
+        "
+        id="notification-lien"
+        class="chat chat-start"
+        @click="navigateTo(interaction.value.call_to_action.link)"
+    >
+        <div class="chat-image avatar">
+            <div class="w-10 rounded-full bg-base-100">
+                <img src="images/Bulle-COULEUR3.svg" />
+            </div>
+        </div>
+        <div
+            class="chat-bubble gradient-auditor text-black font-bold text-lg relative"
+        >
+            <span class="mr-2"
+                >{{ interaction.value.title }}
+                <span
+                    id="link"
+                    class="material-symbols-rounded align-middle text-xl"
+                    >open_in_new</span
+                ></span
+            >
+
+            <div class="indicator absolute top-0 right-0 mt-1 mr-1">
+                <span
+                    class="indicator-item badge bg-[#7D7AFF] border-[#7D7AFF]"
+                ></span>
+                <div class="grid w-32 h-32"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- QUICK_CLICK Interaction -->
+    <div
+        v-if="
+            interaction.value &&
+            interaction.value.type === InteractionType.QUICK_CLICK
+        "
+        id="notification-rapide"
+        class="chat chat-start text-black"
+        @click="postAnswerAndHideNotification"
+    >
+        <div class="chat-image avatar">
+            <div class="w-10 rounded-full bg-base-100">
+                <img src="images/Bulle-COULEUR3.svg" />
+            </div>
+        </div>
+        <div
+            class="chat-bubble gradient-auditor text-black font-bold text-lg relative"
+        >
+            Sois le premier à cliquer !
+            <div class="indicator absolute top-0 right-0 mt-1 mr-1">
+                <span
+                    class="indicator-item badge bg-[#7D7AFF] border-[#7D7AFF]"
+                ></span>
+                <div class="grid w-32 h-32"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SURVEY Interaction -->
+    <div
+        v-if="
+            interaction.value &&
+            interaction.value.type === InteractionType.SURVEY
+        "
+        id="notification-survey"
+        class="chat chat-start text-black"
+        @click="openModal = true"
+    >
+        <div class="chat-image avatar">
+            <div class="w-10 rounded-full bg-base-100">
+                <img src="images/Bulle-COULEUR3.svg" />
+            </div>
+        </div>
+        <div
+            class="chat-bubble gradient-auditor text-black font-bold text-lg relative"
+        >
+            {{ interaction.value.title }}
+            <div class="indicator absolute top-0 right-0 mt-1 mr-1">
+                <span
+                    class="indicator-item badge bg-[#7D7AFF] border-[#7D7AFF]"
+                ></span>
+                <div class="grid w-32 h-32"></div>
+            </div>
+        </div>
+    </div>
+    <survey-modal-component
+        v-if="
+            openModal &&
+            interaction.value &&
+            interaction.value.type === InteractionType.SURVEY
+        "
+        :interaction="interaction.value"
+        @close="openModal = false"
+    />
+
+    <!-- MCQ Interaction -->
+    <div
+        v-if="
+            interaction.value && interaction.value.type === InteractionType.MCQ
+        "
+        id="notification-mcq"
+        class="chat chat-start text-black"
+        @click="openModal = true"
+    >
+        <div class="chat-image avatar">
+            <div class="w-10 rounded-full bg-base-100">
+                <img src="images/Bulle-COULEUR3.svg" />
+            </div>
+        </div>
+        <div
+            class="chat-bubble gradient-auditor text-black font-bold text-lg relative"
+        >
+            {{ interaction.value.title }}
+            <div class="indicator absolute top-0 right-0 mt-1 mr-1">
+                <span
+                    class="indicator-item badge bg-[#7D7AFF] border-[#7D7AFF]"
+                ></span>
+                <div class="grid w-32 h-32"></div>
+            </div>
+        </div>
+    </div>
+    <mcq-modal-component
+        v-if="
+            openModal &&
+            interaction.value &&
+            interaction.value.type === InteractionType.MCQ
+        "
+        :interaction="interaction.value"
+        @close="openModal = false"
+    />
+</template>
+
+<style scoped>
+.gradient-auditor::before {
+    background-color: #ff67ff;
+}
+
+#link {
+    font-variation-settings: "wght" 600;
+}
+</style>
