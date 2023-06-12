@@ -29,7 +29,7 @@ class SettingsController extends Controller
         $settings->chat_enabled = $validated['chat_enabled'];
         $settings->save();
 
-        ChatUpdated::dispatch($settings->chat_enabled);
+        broadcast(new ChatUpdated($settings->chat_enabled))->toOthers();
 
         if ($settings->chat_enabled) {
             return back()->with([

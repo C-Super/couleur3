@@ -17,7 +17,16 @@ class AnimatorController extends Controller
     {
         return Inertia::render('Animator/Index', [
             'chatEnabled' => $settings->chat_enabled,
-            'interaction' => Interaction::active()->first(),
+            'interaction' => Interaction::active()->with([
+                'answers' => [
+                    'auditor' => [
+                        'user'
+                    ],
+                    'answerable'
+                ],
+                'call_to_action',
+                'question_choices'
+            ])->first(),
         ]);
     }
 

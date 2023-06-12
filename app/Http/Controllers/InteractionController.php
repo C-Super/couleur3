@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Enums\InteractionType;
 use App\Events\InteractionCreated;
-use App\Http\Requests\StoreCallToActionRequest;
+use App\Http\Requests\Interaction\StoreCallToActionRequest;
+use App\Http\Requests\Interaction\StoreQuickClickRequest;
 use App\Http\Requests\StoreInteractionRequest;
-use App\Http\Requests\StoreQuickClickRequest;
 use App\Jobs\CheckInteractionEnded;
 use App\Models\CallToAction;
 use App\Models\Interaction;
@@ -80,7 +80,16 @@ class InteractionController extends Controller
         broadcast(new InteractionCreated($interaction))->toOthers();
 
         return redirect()->back()->with([
-            'interaction' => $interaction,
+            'interaction' => Interaction::active()->with([
+                'answers' => [
+                    'auditor' => [
+                        'user'
+                    ],
+                    'answerable'
+                ],
+                'call_to_action',
+                'question_choices'
+            ])->first(),
         ]);
     }
 
@@ -102,7 +111,16 @@ class InteractionController extends Controller
         broadcast(new InteractionCreated($interaction))->toOthers();
 
         return redirect()->back()->with([
-            'interaction' => $interaction,
+            'interaction' => Interaction::active()->with([
+                'answers' => [
+                    'auditor' => [
+                        'user'
+                    ],
+                    'answerable'
+                ],
+                'call_to_action',
+                'question_choices'
+            ])->first(),
         ]);
     }
 

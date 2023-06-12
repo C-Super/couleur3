@@ -7,6 +7,7 @@ import Color from "@/Enums/Color.js";
 import { useChatStore } from "@/Stores/useChatStore.js";
 import { storeToRefs } from "pinia";
 import { useForm } from "@inertiajs/vue3";
+import { watch } from "vue";
 
 const chatStore = useChatStore();
 const { isChatEnabled, messages } = storeToRefs(chatStore);
@@ -14,6 +15,13 @@ const { isChatEnabled, messages } = storeToRefs(chatStore);
 const form = useForm({
     chat_enabled: !isChatEnabled.value,
 });
+
+watch(
+    () => isChatEnabled.value,
+    (newValue) => {
+        form.chat_enabled = !newValue;
+    }
+);
 
 const submit = () => {
     form.post(route("settings.update"), {

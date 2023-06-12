@@ -7,7 +7,7 @@ import { useInteractionStore } from "@/Stores/useInteractionStore.js";
 import { storeToRefs } from "pinia";
 
 const interactionStore = useInteractionStore();
-const { currentInteraction, endInteraction } = storeToRefs(interactionStore);
+const { currentInteraction } = storeToRefs(interactionStore);
 </script>
 
 <template>
@@ -20,7 +20,7 @@ const { currentInteraction, endInteraction } = storeToRefs(interactionStore);
             </template>
             <template #actions>
                 <div class="flex flex-row gap-3">
-                    <base-button :color="Color.ERROR" @click="endInteraction"
+                    <base-button @click="interactionStore.endInteraction()"
                         >Fin de l'interaction</base-button
                     >
                 </div>

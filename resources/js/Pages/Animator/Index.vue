@@ -48,10 +48,9 @@ const endEmission = () => {
                 <quick-click-index />
             </template>
 
-            <quick-click-create
-                v-if="isCreatingInteraction == InteractionType.QUICK_CLICK"
-            />
+            <quick-click-create v-if="isCreatingInteraction == InteractionType.QUICK_CLICK" />
             <cta-create v-if="isCreatingInteraction === InteractionType.CTA" />
+
 
             <quick-click-show
                 v-if="
@@ -65,6 +64,7 @@ const endEmission = () => {
                     currentInteraction.type === InteractionType.CTA
                 "
             />
+
         </div>
     </div>
 </template>

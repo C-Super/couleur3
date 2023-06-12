@@ -1,19 +1,25 @@
 /* eslint-disable no-undef */
 import { defineStore } from "pinia";
-import { computed, ref, onMounted} from "vue";
-import { usePage } from "@inertiajs/vue3";
+import { computed, reactive, toRefs, onMounted, watchEffect } from "vue";
+import { usePage, router } from "@inertiajs/vue3";
 
 export const useInteractionStore = defineStore("interaction", () => {
     const page = usePage();
 
-    const isCreatingInteraction = ref(null);
-    const currentInteraction = computed(() => page.props.interaction);
+    const state = reactive({
+        isCreatingInteraction: null,
+        currentInteraction: page.props.interaction,
+        winners: [],
+        pinnedAnswers: [],
+    });
 
-    const winners = ref([]);
-    const pinnedAnswers = ref([]);
     const notPinnedAnswers = computed(() =>
-        currentInteraction.value.answers.filter((answer) => !pinnedAnswers.value.includes(answer))
+        state.currentInteraction.answers.filter((answer) => !state.pinnedAnswers.includes(answer))
     );
+
+    watchEffect(() => {
+        state.currentInteraction = page.props.interaction;
+    });
 
     onMounted(() => {
         subscribeToPublicChannel();
@@ -22,11 +28,11 @@ export const useInteractionStore = defineStore("interaction", () => {
     const subscribeToPublicChannel = () => {
         window.Echo.channel("public")
             .listen("InteractionCreated", (event) => {
-                console.log(event);
-                currentInteraction.value = event.interaction;
+                console.log(event)
+                state.currentInteraction = event.interaction;
             })
             .listen("AnswerSubmitedToAnimator", (event) => {
-                currentInteraction.value.answers.push(event.answer);
+                state.currentInteraction.answers.push(event.answer);
             })
             .error((error) => {
                 console.error(error);
@@ -34,22 +40,23 @@ export const useInteractionStore = defineStore("interaction", () => {
     }
 
     const createdInteraction = () => {
-        isCreatingInteraction.value = null;
+        state.isCreatingInteraction = null;
     };
 
     const creatingInteraction = (type) => {
-        isCreatingInteraction.value = type;
+        state.isCreatingInteraction = type;
     };
 
     const cancelInteraction = () => {
-        isCreatingInteraction.value = null;
+        state.isCreatingInteraction = null;
     };
 
     const endInteraction = () => {
-        window.axios.post(
-            route("interactions.end", currentInteraction.value.id),
+        router.post(
+            route("interactions.end", state.currentInteraction.id),
             {
                 preserveScroll: true,
+                only: ["interaction"],
                 onSuccess: () => {
                     cancelInteraction();
                 },
@@ -58,29 +65,26 @@ export const useInteractionStore = defineStore("interaction", () => {
     };
 
     const addPinned = (answer) => {
-        pinnedAnswers.value.push(answer);
+        state.pinnedAnswers.push(answer);
     };
 
     const removePinned = (answer) => {
-        pinnedAnswers.value.splice(pinnedAnswers.value.indexOf(answer), 1);
+        state.pinnedAnswers.splice(state.pinnedAnswers.indexOf(answer), 1);
     };
 
     const updateWinner = (updatedCandidate) => {
-        if (winners.value.indexOf(updatedCandidate) == -1) {
-            winners.value.push(updatedCandidate);
-        } else winners.value.splice(winners.value.indexOf(updatedCandidate), 1);
+        if (state.winners.indexOf(updatedCandidate) == -1) {
+            state.winners.push(updatedCandidate);
+        } else state.winners.splice(state.winners.indexOf(updatedCandidate), 1);
     };
 
     return {
-        isCreatingInteraction,
-        currentInteraction,
+        ...toRefs(state),
+        notPinnedAnswers,
         createdInteraction,
         creatingInteraction,
         cancelInteraction,
         endInteraction,
-        pinnedAnswers,
-        notPinnedAnswers,
-        winners,
         addPinned,
         removePinned,
         updateWinner,
