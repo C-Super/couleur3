@@ -62,6 +62,23 @@ flowchart LR
     security --> build
     build --> deploy
 ```
+L'intégration continue (Continuous Integration, CI) constitue un élément fondamental de l'infrastructure de développement mise en place. Grâce à GitHub Actions, une automatisation de diverses tâches est mise en œuvre, permettant de garantir la qualité et la fiabilité du code à chaque commit. Cela englobe l'installation des dépendances, le formatage du code, le linting, les tests, les vérifications de sécurité, ainsi que la construction et le déploiement de l'application.
+
+1. **Installation des dépendances** : La configuration de PHP et Node.js est effectuée et les dépendances requises pour l'exécution de l'application sont installées.
+    
+2. **Formatage du code** : Laravel Pint pour PHP et Prettier pour les autres langages sont utilisés afin de maintenir un style de code cohérent et facilement lisible.
+    
+3. **Linting** : Larastan et ESLint sont employés pour analyser le code source, détecter les erreurs potentielles, les problèmes de typage et les problèmes de performance.
+    
+4. **Tests** : Pest est utilisé pour exécuter une suite de tests automatisés, ce qui garantit le bon fonctionnement du code.
+    
+5. **Contrôles de sécurité** : Le contrôle des dépendances pour détecter les vulnérabilités de sécurité connues est réalisé à l'aide de PHP Security Checker et npm audit.
+    
+6. **Construction de l'application** : La construction de l'application en mode production est effectuée par l'exécution des scripts nécessaires.
+    
+7. **Déploiement** : Enfin, le déploiement de l'application est réalisé via une connexion SSH sécurisée.
+
+Chaque étape de ce pipeline d'intégration continue assure ainsi que le code respecte les meilleures pratiques de développement, est exempt d'erreurs et de vulnérabilités, et est prêt pour un déploiement fiable et sécurisé.
 
 ## Laravel Pint
 
