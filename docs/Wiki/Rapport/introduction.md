@@ -1,0 +1,15 @@
+# Introduction
+
+Dans le cadre de ce projet d'articulation, nous avons entrepris de développer une application destinée à améliorer l'interaction entre les animateurs de la radio Couleur 3 et ses auditeurs. Durant un mois intensif de travail, notre équipe s'est engagée à créer un système d'envoi d'interactions en temps réel, ainsi qu'à mettre en place un mécanisme de récupération des réponses instantanées. Nous avons également mis en place un chat, qui permette de connecter la communauté des auditeurs. Ce rapport détaillé présente toutes les étapes du développement, les choix technologiques et graphiques, ainsi que les défis auxquels nous avons fait face.
+
+L'objectif principal de notre application est de renforcer l'engagement des auditeurs de Couleur 3 grâce à des interaction instantanées entre les animateurs de et leur audience. En effet, à l'ère de la radio numérique, il est essentiel d'explorer de nouvelles voies pour créer un lien plus fort entre les médias et leur public. Notre projet s'est donc concentré sur la conception d'un système intuitif et convivial permettant aux auditeurs de participer activement aux émissions en cours et de partager leurs réactions en temps réel.
+
+Ce rapport se divise en plusieurs parties clés, chacune abordant un aspect important du développement de notre application. Dans la première partie, qui s'adresse au client, nous décrivons notre produit, ses différentes fonctionnalités et la valeur ajoutée qu'il représente pour Couleur 3.
+
+Dans la seconde partie, nous présentons la méthodologie que nous avons suivie tout au long du processus de développement. Nous décrivons les différentes étapes de la gestion de projet, depuis la planification initiale jusqu'à la mise en œuvre finale de l'application.
+
+Ensuite, nous abordons le processus de conception. Nous expliquons les différentes étapes et itérations qui nous ont permis d'accéder à la version finale de l'UX de notre application. Nous expliquons également la genèse du concept graphique qui habille notre application.
+
+Pour la quatrième et cinquième partie, nous détaillons les différents choix techniques effectués, ainsi que le processus de mise en place de l'infrastructure backend de notre application. Nous mettons en évidence les choix architecturaux et les décisions clés prises en cours de route, en soulignant leur impact sur le fonctionnement global de notre solution. Nous abordons également les étapes relatives à la mise en place de l'interface frontend. Nous décrivons les décisions et choix techniques sélectionnés pour la mise en place de l'interface.
+
+Enfin, nous terminons par une analyse rétrospective de notre projet, dans laquelle nous revenons sur le travail effectué. Nous identifions les points forts de notre projet, les défis auxquels nous avons dû répondre et comment nous les avons surmontés, ainsi que les points d'amélioration du produit final élaboré. Nous espérons que ce rapport détaillé fournira une vision exhaustive de notre projet, dont nous sommes fiers!
