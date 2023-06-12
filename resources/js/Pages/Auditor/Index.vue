@@ -15,6 +15,10 @@ defineProps({
         type: Object,
         required: true,
     },
+    interaction: {
+        type: Object,
+        default: null,
+    },
 });
 </script>
 

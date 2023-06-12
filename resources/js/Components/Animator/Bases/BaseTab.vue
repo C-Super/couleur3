@@ -15,9 +15,7 @@ const props = defineProps({
 const tabs = inject("tabs");
 
 onBeforeMount(() => {
-    const length = tabs.labels.push(props.title);
-
-    tabs.active = length - 1;
+    tabs.labels.push(props.title);
 });
 </script>
 

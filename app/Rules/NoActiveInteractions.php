@@ -3,23 +3,26 @@
 namespace App\Rules;
 
 use App\Models\Interaction;
-use Illuminate\Contracts\Validation\Rule;
+use Closure;
+use Illuminate\Contracts\Validation\ValidationRule;
 
-class NoActiveInteractions implements Rule
+class NoActiveInteractions implements ValidationRule
 {
-    public function passes($attribute, $value)
+    /**
+     * Run the validation rule.
+     *
+     * @param  \Closure(string): \Illuminate\Translation\PotentiallyTranslatedString  $fail
+     */
+    public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         // 1. Obtenez les interactions actuelles
-        $currentInteractions = Interaction::where('ended_at', '>', now())->orWhereNull('ended_at')->get();
+        $activeInteractions = Interaction::active()->orWhereNull('ended_at')->get();
+
+        dd($currentInteractions);
 
         // 2. Vérifiez si d'autres interactions sont en cours
-        $noCurrentInteractions = $currentInteractions->isEmpty();
-
-        return $noCurrentInteractions;
-    }
-
-    public function message()
-    {
-        return 'Une autre interaction est en cours.';
+        if (! $currentInteractions->isEmpty()) {
+            $fail('Une autre interaction est en cours.');
+        }
     }
 }

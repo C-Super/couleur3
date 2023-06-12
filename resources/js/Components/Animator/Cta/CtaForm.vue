@@ -1,91 +1,168 @@
 <!-- eslint-disable no-undef -->
 <script setup>
-import BaseCard from "@/Components/Bases/BaseCard.vue";
-import BaseButton from "@/Components/Bases/BaseButton.vue";
+import BaseCard from "@/Components/Animator/Bases/BaseCard.vue";
+import BaseButton from "@/Components/Animator/Bases/BaseButton.vue";
 import TextInput from "@/Components/TextInput.vue";
+import InputError from "@/Components/InputError.vue";
 import InputGroup from "@/Components/InputGroup.vue";
 import BaseCountdown from "@/Components/Animator/Bases/BaseCountdown.vue";
-import { useForm } from "@inertiajs/vue3";
+import BaseDurationRange from "@/Components/Animator/Bases/BaseDurationRange.vue";
+import InteractionType from "@/Enums/InteractionType.js";
+import Color from "@/Enums/Color.js";
+import { useForm } from "laravel-precognition-vue-inertia";
 
-defineEmits(["create", "cancel"]);
+const emits = defineEmits(["created", "creating", "cancel"]);
 
-defineProps({
-    isCreating: {
+const props = defineProps({
+    isCreatingInteraction: {
         type: String,
-        required: false,
+        default: null,
+    },
+    currentInteraction: {
+        type: Object,
         default: null,
     },
 });
 
-const form = useForm({
+const form = useForm("post", route("interactions.cta.store"), {
     title: "",
     link: "",
-    ended_at: "",
+    duration: 300,
 });
 
-const submit = () => {
-    form.post(route("interactions.store"), {
+const createCTA = () => {
+    form.submit({
         preserveScroll: true,
         onSuccess: () => {
-            // Show responses page
-            console.log("success");
-        },
-        onError: (error) => {
-            // Show error
-            console.log(error);
+            form.reset();
+            emits("created");
         },
     });
+};
+
+const endCTA = () => {
+    axios.post(route("interactions.end", props.currentInteraction.id), {
+        preserveScroll: true,
+        onSuccess: () => {
+            emits("cancel");
+        },
+    });
+};
+
+const creatingCTA = () => {
+    emits("creating", InteractionType.CTA);
+};
+
+const cancelCTA = () => {
+    emits("cancel");
 };
 </script>
 
 <template>
-    <form @submit.prevent="submit">
-        <base-card type="secondary">
+    <div>
+        <!-- Dashboard card -->
+        <base-card
+            v-if="!isCreatingInteraction && !currentInteraction"
+            :color="Color.SECONDARY"
+        >
             <template #title>Lien</template>
-            <template v-if="!isCreating" #subtitle>
+            <template #subtitle>
                 Envoyer un lien de redirection aux auditeurs
             </template>
-            <template v-if="isCreating === 'cta'" #content>
-                <input-group id="title" label="Titre">
-                    <text-input
-                        id="title"
-                        v-model="form.title"
-                        color="secondary"
-                    />
-                </input-group>
-                <input-group id="link" label="Lien">
-                    <text-input
-                        id="link"
-                        v-model="form.link"
-                        color="secondary"
-                    />
-                </input-group>
-                <base-countdown />
-                <input-group id="duration" label="Durée d'interaction">
-                    <base-duration-range
-                        id="duration"
-                        v-model="form.duration"
-                        :min="15"
-                        color="secondary"
-                    />
-                </input-group>
-            </template>
             <template #actions>
-                <div v-if="isCreating" class="flex flex-row gap-3">
-                    <base-button class="bg-opacity-50" @click="$emit('cancel')"
-                        >Annuler</base-button
-                    >
-                    <base-button color="secondary" type="submit"
-                        >Envoyer</base-button
-                    >
-                </div>
-                <base-button
-                    v-else
-                    color="secondary"
-                    @click="$emit('create', 'cta')"
-                    >Créer</base-button
-                >
+                <base-button :color="Color.SECONDARY" @click="creatingCTA">
+                    Créer
+                </base-button>
             </template>
         </base-card>
-    </form>
+
+        <!-- Create form -->
+        <form
+            v-if="isCreatingInteraction === InteractionType.CTA"
+            @submit.prevent="createCTA"
+        >
+            <base-card :color="Color.SECONDARY">
+                <template #title>Lien</template>
+                <template #content>
+                    <div class="flex flex-col gap-8">
+                        <input-group id="title" label="Titre">
+                            <text-input
+                                id="title"
+                                v-model="form.title"
+                                :color="Color.SECONDARY"
+                                @change="form.validate('title')"
+                            />
+
+                            <InputError
+                                class="mt-2"
+                                :message="form.errors.title"
+                            />
+                        </input-group>
+
+                        <input-group id="link" label="Lien">
+                            <text-input
+                                id="link"
+                                v-model="form.link"
+                                :color="Color.SECONDARY"
+                                @change="form.validate('link')"
+                            />
+
+                            <InputError
+                                class="mt-2"
+                                :message="form.errors.link"
+                            />
+                        </input-group>
+
+                        <input-group id="duration" label="Durée d'interaction">
+                            <base-duration-range
+                                id="duration"
+                                v-model="form.duration"
+                                class="items-center"
+                                :min="15"
+                                :color="Color.SECONDARY"
+                            />
+                        </input-group>
+                    </div>
+                </template>
+                <template #actions>
+                    <div class="flex flex-row gap-3">
+                        <base-button
+                            :disabled="form.processing"
+                            @click="cancelCTA"
+                            >Annuler</base-button
+                        >
+                        <base-button
+                            :disabled="form.processing"
+                            :color="Color.SECONDARY"
+                            type="submit"
+                            >Envoyer</base-button
+                        >
+                    </div>
+                </template>
+            </base-card>
+        </form>
+
+        <!-- Result pages -->
+        <base-card
+            v-if="
+                currentInteraction &&
+                currentInteraction.type === InteractionType.CTA
+            "
+            :color="Color.SECONDARY"
+        >
+            <template #title>
+                <div class="flex flex-auto flex-row justify-between">
+                    {{ currentInteraction.title }}
+                    <base-countdown :color="Color.SECONDARY" />
+                </div>
+            </template>
+            <template #actions>
+                <div class="flex flex-row gap-3">
+                    <base-button :color="Color.ERROR" @click="endCTA"
+                        >Fin de l'interaction</base-button
+                    >
+                </div>
+            </template>
+        </base-card>
+    </div>
 </template>

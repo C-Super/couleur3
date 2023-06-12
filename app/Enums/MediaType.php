@@ -4,9 +4,9 @@ namespace App\Enums;
 
 enum MediaType: string
 {
-    case AUDIO = 'audio';
-    case VIDEO = 'video';
-    case PICTURE = 'picture';
+    case AUDIO = 'AUDIO';
+    case VIDEO = 'VIDEO';
+    case PICTURE = 'PICTURE';
 
     public static function getValues(): array
     {
