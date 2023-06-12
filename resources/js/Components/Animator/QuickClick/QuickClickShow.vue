@@ -10,18 +10,10 @@ import Color from "@/Enums/Color.js";
 import { ref } from "vue";
 import { useInteractionStore } from "@/Stores/useInteractionStore.js";
 import { storeToRefs } from "pinia";
-import { useAnswers } from "@/Stores/useAnswers.js";
 
 const interactionStore = useInteractionStore();
 const { currentInteraction } = storeToRefs(interactionStore);
 
-const {
-    pinnedAnswers,
-    notPinnedAnswers,
-    addPinned,
-    removePinned,
-    updateWinner,
-} = useAnswers();
 const activeTab = ref(0);
 </script>
 
@@ -37,20 +29,11 @@ const activeTab = ref(0);
             <base-tabs v-model="activeTab" :color="Color.ACCENT">
                 <base-tab title="Réponses">
                     Les réponses
-                    <base-answers
-                        :pinned-answers="pinnedAnswers"
-                        :not-pinned-answers="notPinnedAnswers"
-                        @add:pinned="addPinned"
-                        @remove:pinned="removePinned"
-                    />
+                    <base-answers />
                 </base-tab>
                 <base-tab title="Sélection aléatoire" :active="true">
                     Les sélection aléatoire
-                    <base-answers-select
-                        :pinned-candidates="pinnedAnswers"
-                        :candidates="notPinnedAnswers"
-                        @update:winner="updateWinner"
-                    />
+                    <base-answers-select />
                 </base-tab>
                 <base-tab title="Sélection rapidité">
                     Sélection premiers

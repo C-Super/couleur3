@@ -15,7 +15,23 @@ export default class InteractionType {
         return "MCQ";
     }
 
+    static get TEXT() {
+        return "TEXT";
+    }
+
+    static get AUDIO() {
+        return "AUDIO";
+    }
+
+    static get VIDEO() {
+        return "VIDEO";
+    }
+
+    static get PICTURE() {
+        return "PICTURE";
+    }
+
     static isQuestion(type) {
-        return type === InteractionType.SURVEY || type === InteractionType.MCQ;
+        return type === InteractionType.SURVEY || type === InteractionType.MCQ || type === InteractionType.TEXT || type === InteractionType.AUDIO || type === InteractionType.VIDEO || type === InteractionType.PICTURE;
     }
 }

@@ -1,3 +1,4 @@
+<!-- eslint-disable no-undef -->
 <script setup>
 import TextInput from "@/Components/TextInput.vue";
 import InputGroup from "@/Components/InputGroup.vue";
@@ -6,13 +7,16 @@ import BaseCard from "@/Components/Animator/Bases/BaseCard.vue";
 import BaseButton from "@/Components/Animator/Bases/BaseButton.vue";
 import BaseRadioGroup from "@/Components/Animator/Bases/BaseRadioGroup.vue";
 import BaseDurationRange from "@/Components/Animator/Bases/BaseDurationRange.vue";
-import { useForm } from "laravel-precognition-vue-inertia";
+import BaseCheckbox from "@/Components/Animator/Bases/BaseCheckbox.vue";
+import Color from "@/Enums/Color.js";
+import InteractionType from "@/Enums/InteractionType.js";
+import QuestionType from "@/Enums/QuestionType.js";
+import { useForm } from "@inertiajs/vue3";
 import { useInteractionStore } from "@/Stores/useInteractionStore.js";
 import { storeToRefs } from "pinia";
-import { onMounted, computed } from "vue";
 
 const interactionStore = useInteractionStore();
-const { isCreatingInteraction, currentInteraction } = storeToRefs(interactionStore);
+const { isCreatingInteraction } = storeToRefs(interactionStore);
 
 const form = useForm({
     type: "",
@@ -22,29 +26,27 @@ const form = useForm({
     },
 });
 
-const answers = computed(() =>
-    currentInteraction
-        ? currentInteraction.answers.map((answer) => answer.answer)
-        : []
-);
-
-onMounted(() => {
-    subscribeToPublicChannel();
-});
-
-function subscribeToPublicChannel() {
-    window.Echo.channel("public")
-        .listen("AnswerSubmitedToAnimator", (event) => {
-            answers.value.push(event.answer);
-        })
-        .error((error) => {
-            console.error(error);
-        });
-}
+/*
+const submit = () => {
+    form.submit({
+        preserveScroll: true,
+        onSuccess: () => {
+            form.reset();
+            interactionStore.createdInteraction();
+        },
+    });
+};
+*/
 
 const cancelQuestionType = () => {
     form.reset();
     interactionStore.cancelInteraction();
+
+    // Remove the selected radio button
+    const radioButtons = document.getElementsByName("questionTypes");
+    radioButtons.forEach((radioButton) => {
+        radioButton.checked = false;
+    });
 }
 </script>
 
@@ -55,8 +57,8 @@ const cancelQuestionType = () => {
         <template #content>
             <base-radio-group v-model="form.type" :choices="QuestionType.getAll()" name="questionTypes" @input="interactionStore.creatingInteraction(form.type)" />
 
-            <div v-if="isCreating || form.type.length > 0" class="flex flex-col gap-6 mt-5">
-                <input-group v-if="form.type==='mcq'|| form.type==='survey' || form.type==='test'" id="question" label="Question">
+            <div v-if="isCreatingInteraction || form.type.length > 0" class="flex flex-col gap-6 mt-5">
+                <input-group v-if="form.type === InteractionType.MCQ || form.type === InteractionType.SURVEY || form.type === InteractionType.TEXT" id="question" label="Question">
                     <text-input
                         id="question"
                         v-model="form.inputs.title"
@@ -72,12 +74,24 @@ const cancelQuestionType = () => {
                     />
                 </input-group>
 
-                <multiple-input-group v-if="form.type==='mcq'|| form.type==='survey'" :form-type="form.type">
+                <multiple-input-group v-if="form.type === InteractionType.MCQ | form.type === InteractionType.SURVEY" :form-type="form.type">
                     <template #instructions>Entrer les réponses que les auditeurs pourraient répondre. Cocher la réponse correcte.</template>
-                    <template #input1><text-input id="input-1" color="primary"></text-input></template>
-                    <template #input2><text-input id="input-2" color="primary"></text-input></template>
-                    <template #input3><text-input id="input-3" color="primary"></text-input></template>
-                    <template #input4><text-input id="input-4" color="primary"></text-input></template>
+                    <template #input1>
+                        <text-input id="input-1" color="primary" />
+                        <base-checkbox v-if="form.type === InteractionType.MCQ" />
+                    </template>
+                    <template #input2>
+                        <text-input id="input-2" color="primary" />
+                        <base-checkbox v-if="form.type === InteractionType.MCQ" />
+                    </template>
+                    <template #input3>
+                        <text-input id="input-3" color="primary" />
+                        <base-checkbox v-if="form.type === InteractionType.MCQ" />
+                    </template>
+                    <template #input4>
+                        <text-input id="input-4" color="primary" />
+                        <base-checkbox v-if="form.type === InteractionType.MCQ" />
+                    </template>
                 </multiple-input-group>
 
                 <input-group id="duration" label="Durée d'interaction">
@@ -89,32 +103,14 @@ const cancelQuestionType = () => {
                     />
                 </input-group>
             </div>
-
         </template>
-        <template #actions>
-            <div v-if="isCreatingInteraction" class="flex flex-row gap-3">
+        <template v-if="isCreatingInteraction" #actions>
+            <div class="flex flex-row gap-3">
                 <base-button @click="cancelQuestionType"
                     >Annuler</base-button
                 >
                 <base-button color="primary">Envoyer</base-button>
             </div>
         </template>
-    </base-card>
-
-    <!-- Result pages -->
-    <base-card
-        v-if="
-            currentInteraction &&
-            InteractionType.isQuestion(currentInteraction.type)
-        "
-        :color="Color.PRIMARY"
-    >
-        <template #title>
-            <div class="flex flex-auto flex-row justify-between">
-                {{ currentInteraction.title }}
-                <base-countdown :color="Color.SECONDARY" />
-            </div>
-        </template>
-        <template #content> </template>
     </base-card>
 </template>
