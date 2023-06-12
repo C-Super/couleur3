@@ -735,7 +735,7 @@ const Zora = {
                         "Le fichier du champ :attribute n'a pu \u00eatre t\u00e9l\u00e9vers\u00e9.",
                     uppercase:
                         "Le champ :attribute doit \u00eatre en majuscules.",
-                    url: "Le format de l'URL de :attribute n'est pas valide.",
+                    url: "Le format de l'URL du :attribute n'est pas valide.",
                     uuid: "Le champ :attribute doit \u00eatre un UUID valide",
                     attributes: {
                         address: "adresse",
@@ -768,6 +768,7 @@ const Zora = {
                         image: "image",
                         last_name: "nom",
                         lesson: "le\u00e7on",
+                        link: "lien",
                         line_address_1: "ligne d'adresse 1",
                         line_address_2: "ligne d'adresse 2",
                         message: "message",
