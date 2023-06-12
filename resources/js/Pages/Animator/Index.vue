@@ -6,13 +6,8 @@ import QuestionForm from "@/Components/Animator/Question/QuestionForm.vue";
 import CtaForm from "@/Components/Animator/Cta/CtaForm.vue";
 import QuickClickForm from "@/Components/Animator/QuickClick/QuickClickForm.vue";
 import InteractionType from "@/Enums/InteractionType.js";
-import { reactive, onBeforeMount } from "vue";
-import { Head } from "@inertiajs/vue3";
-
-const state = reactive({
-    creatingInteraction: null,
-    currentInteraction: null,
-});
+import { computed, ref } from "vue";
+import { Head, router } from "@inertiajs/vue3";
 
 const props = defineProps({
     chatEnabled: {
@@ -25,19 +20,26 @@ const props = defineProps({
     },
 });
 
-onBeforeMount(() => {
-    if (props.interaction) {
-        state.currentInteraction = props.interaction;
-    }
+const isCreatingInteraction = ref(null);
+const currentInteraction = computed(() => {
+    return props.interaction;
 });
 
-function createInteraction(type) {
-    state.creatingInteraction = type;
-}
+const createdInteraction = () => {
+    isCreatingInteraction.value = null;
+};
 
-function cancelInteraction() {
-    state.creatingInteraction = null;
-}
+const creatingInteraction = (type) => {
+    isCreatingInteraction.value = type;
+};
+
+const cancelInteraction = () => {
+    isCreatingInteraction.value = null;
+};
+
+const endEmission = () => {
+    router.post(route("animator.endEmission"));
+};
 </script>
 
 <template>
@@ -49,60 +51,80 @@ function cancelInteraction() {
             <base-button
                 color="error"
                 class="flex-initial btn-block bg-opacity-50 text-white btn-lg"
-                >Fin d'émission</base-button
+                @click="endEmission"
             >
+                Fin d'émission
+            </base-button>
         </div>
 
-        <div class="basis-2/3 flex flex-col justify-items-stretch gap-3">
-            <question-form
-                v-if="
-                    (!state.creatingInteraction && !state.currentInteraction) ||
-                    InteractionType.isQuestion(state.creatingInteraction) ||
-                    (state.currentInteraction &&
-                        state.currentInteraction.type ===
-                            InteractionType.QUESTION)
-                "
-                class="flex-auto basis-4/6"
-                :creating-interaction="state.creatingInteraction"
-                :current-interaction="state.currentInteraction"
-                @create="createInteraction"
-                @cancel="cancelInteraction"
-            />
+        <div class="basis-2/3 flex flex-col gap-3">
+            <Transition>
+                <question-form
+                    v-if="
+                        (!isCreatingInteraction && !currentInteraction) ||
+                        InteractionType.isQuestion(isCreatingInteraction) ||
+                        (currentInteraction &&
+                            currentInteraction.type ===
+                                InteractionType.QUESTION)
+                    "
+                    :is-creating-interaction="isCreatingInteraction"
+                    :current-interaction="currentInteraction"
+                    @created="createdInteraction"
+                    @creating="creatingInteraction"
+                    @cancel="cancelInteraction"
+                />
+            </Transition>
 
-            <cta-form
-                v-if="
-                    (!state.creatingInteraction && !state.currentInteraction) ||
-                    state.creatingInteraction === InteractionType.CTA ||
-                    (state.currentInteraction &&
-                        state.currentInteraction.type === InteractionType.CTA)
-                "
-                class="flex-auto basis-1/6"
-                :creating-interaction="state.creatingInteraction"
-                :current-interaction="state.currentInteraction"
-                @create="createInteraction"
-                @cancel="cancelInteraction"
-            />
+            <Transition>
+                <cta-form
+                    v-if="
+                        (!isCreatingInteraction && !currentInteraction) ||
+                        isCreatingInteraction === InteractionType.CTA ||
+                        (currentInteraction &&
+                            currentInteraction.type === InteractionType.CTA)
+                    "
+                    :is-creating-interaction="isCreatingInteraction"
+                    :current-interaction="currentInteraction"
+                    @created="createdInteraction"
+                    @creating="creatingInteraction"
+                    @cancel="cancelInteraction"
+                />
+            </Transition>
 
-            <quick-click-form
-                v-if="
-                    (!state.creatingInteraction && !state.currentInteraction) ||
-                    state.creatingInteraction === InteractionType.QUICK_CLICK ||
-                    (state.currentInteraction &&
-                        state.currentInteraction.type ===
-                            InteractionType.QUICK_CLICK)
-                "
-                class="flex-auto basis-1/6"
-                :creating-interaction="state.creatingInteraction"
-                :current-interaction="state.currentInteraction"
-                @create="createInteraction"
-                @cancel="cancelInteraction"
-            />
+            <Transition>
+                <quick-click-form
+                    v-if="
+                        (!isCreatingInteraction && !currentInteraction) ||
+                        isCreatingInteraction === InteractionType.QUICK_CLICK ||
+                        (currentInteraction &&
+                            currentInteraction.type ===
+                                InteractionType.QUICK_CLICK)
+                    "
+                    :is-creating-interaction="isCreatingInteraction"
+                    :current-interaction="currentInteraction"
+                    @created="createdInteraction"
+                    @creating="creatingInteraction"
+                    @cancel="cancelInteraction"
+                />
+            </Transition>
         </div>
     </div>
 </template>
 
 <style lang="postcss" scoped>
+.v-enter-active,
+.v-leave-active {
+    transition: all 0.4s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+    transform: translateX(100px);
+    opacity: 0;
+}
+
 #animator-container {
+    overflow-x: hidden;
     background-color: #1c1354;
 }
 </style>
