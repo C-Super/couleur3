@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import { defineStore } from "pinia";
-import { onMounted, computed, ref } from "vue";
+import { computed, ref, onMounted} from "vue";
 import { usePage } from "@inertiajs/vue3";
 
 export const useInteractionStore = defineStore("interaction", () => {
@@ -9,15 +9,24 @@ export const useInteractionStore = defineStore("interaction", () => {
     const isCreatingInteraction = ref(null);
     const currentInteraction = computed(() => page.props.interaction);
 
+    const winners = ref([]);
+    const pinnedAnswers = ref([]);
+    const notPinnedAnswers = computed(() =>
+        currentInteraction.value.answers.filter((answer) => !pinnedAnswers.value.includes(answer))
+    );
+
     onMounted(() => {
         subscribeToPublicChannel();
     });
 
-    function subscribeToPublicChannel() {
+    const subscribeToPublicChannel = () => {
         window.Echo.channel("public")
             .listen("InteractionCreated", (event) => {
                 console.log(event);
                 currentInteraction.value = event.interaction;
+            })
+            .listen("AnswerSubmitedToAnimator", (event) => {
+                currentInteraction.value.answers.push(event.answer);
             })
             .error((error) => {
                 console.error(error);
@@ -48,6 +57,20 @@ export const useInteractionStore = defineStore("interaction", () => {
         );
     };
 
+    const addPinned = (answer) => {
+        pinnedAnswers.value.push(answer);
+    };
+
+    const removePinned = (answer) => {
+        pinnedAnswers.value.splice(pinnedAnswers.value.indexOf(answer), 1);
+    };
+
+    const updateWinner = (updatedCandidate) => {
+        if (winners.value.indexOf(updatedCandidate) == -1) {
+            winners.value.push(updatedCandidate);
+        } else winners.value.splice(winners.value.indexOf(updatedCandidate), 1);
+    };
+
     return {
         isCreatingInteraction,
         currentInteraction,
@@ -55,5 +78,11 @@ export const useInteractionStore = defineStore("interaction", () => {
         creatingInteraction,
         cancelInteraction,
         endInteraction,
+        pinnedAnswers,
+        notPinnedAnswers,
+        winners,
+        addPinned,
+        removePinned,
+        updateWinner,
     };
 });

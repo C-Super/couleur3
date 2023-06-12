@@ -8,6 +8,7 @@ import QuickClickShow from "@/Components/Animator/QuickClick/QuickClickShow.vue"
 import CtaIndex from "@/Components/Animator/Cta/CtaIndex.vue";
 import CtaCreate from "@/Components/Animator/Cta/CtaCreate.vue";
 import CtaShow from "@/Components/Animator/Cta/CtaShow.vue";
+import QuestionCreate from "@/Components/Animator/Question/QuestionCreate.vue";
 import InteractionType from "@/Enums/InteractionType.js";
 import { Head, router } from "@inertiajs/vue3";
 import { useInteractionStore } from "@/Stores/useInteractionStore.js";
@@ -38,6 +39,10 @@ const endEmission = () => {
         </div>
 
         <div class="basis-2/3 flex flex-col gap-3">
+            <template v-if="!currentInteraction && (!isCreatingInteraction || InteractionType.isQuestion(isCreatingInteraction))">
+                <question-create />
+            </template>
+
             <template v-if="!isCreatingInteraction && !currentInteraction">
                 <cta-index />
                 <quick-click-index />

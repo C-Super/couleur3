@@ -1,4 +1,6 @@
 <script setup>
+import BaseCheckbox from "@/Components/Animator/Bases/BaseCheckbox.vue";
+
 defineEmits(["update:winner"]);
 
 defineProps({
@@ -64,11 +66,7 @@ defineProps({
                 >
                     <tr class="border-none">
                         <th>
-                            <input
-                                type="checkbox"
-                                class="checkbox checkbox-lg checkbox-primary"
-                                @click="$emit('update:winner', candidate)"
-                            />
+                           <base-checkbox @click="$emit('update:winner', candidate)" />
                         </th>
                         <td class="font-bold text-base">
                             <slot>{{ candidate.name }}</slot>

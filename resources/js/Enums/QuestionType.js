@@ -1,9 +1,11 @@
+import InteractionType from "./InteractionType";
+
 export default class QuestionType {
     static get SURVEY() {
         return {
             icon: "bar_chart",
             name: "Sondage",
-            value: "survey",
+            value: InteractionType.SURVEY,
         };
     }
 
@@ -11,7 +13,7 @@ export default class QuestionType {
         return {
             icon: "rule",
             name: "QCM",
-            value: "mcq",
+            value: InteractionType.MCQ,
         };
     }
 
@@ -19,7 +21,7 @@ export default class QuestionType {
         return {
             icon: "mic",
             name: "Audio",
-            value: "audio",
+            value: InteractionType.AUDIO,
         };
     }
 
@@ -27,7 +29,7 @@ export default class QuestionType {
         return {
             icon: "video_call",
             name: "Vidéo",
-            value: "video",
+            value: InteractionType.VIDEO,
         };
     }
 
@@ -35,7 +37,7 @@ export default class QuestionType {
         return {
             icon: "image",
             name: "Image",
-            value: "picture",
+            value: InteractionType.PICTURE,
         };
     }
 
@@ -43,7 +45,7 @@ export default class QuestionType {
         return {
             icon: "subject",
             name: "Texte",
-            value: "text",
+            value: InteractionType.TEXT
         };
     }
 
