@@ -8,7 +8,6 @@ use App\Events\AnswerSubmitedToAnimator;
 use App\Http\Requests\StoreAnswerRequest;
 use App\Models\Answer;
 use App\Models\AnswerText;
-use App\Models\Auditor;
 use App\Models\Media;
 use App\Models\QuestionChoice;
 use Illuminate\Support\Facades\Auth;
@@ -18,30 +17,16 @@ use Storage;
 class AnswerController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(StoreAnswerRequest $request)
     {
         $validated = $request->validated();
 
-        //get user id from auth
+        /** @var \App\Models\User $user */
         $user = Auth::user();
+        /** @var \App\Models\Auditor $auditor */
         $auditor = $user->roleable;
-
-        if (! $auditor instanceof Auditor) {
-            return Inertia::render('Error', [
-                'status' => '403: '.__('http-statuses.403'),
-                'message' => "Vous n'êtes pas un auditeur.",
-            ])->toResponse($request)->setStatusCode(403);
-        }
 
         switch ($request->type) {
             case InteractionType::TEXT->value:

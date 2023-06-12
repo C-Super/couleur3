@@ -28,7 +28,7 @@ const form = useForm("post", route("login"), {
 const submit = () =>
     form.submit({
         preserveScroll: true,
-        onFinish: () => form.reset("password"),
+        onSuccess: () => form.reset("password"),
     });
 </script>
 

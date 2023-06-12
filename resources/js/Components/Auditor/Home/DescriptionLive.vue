@@ -28,8 +28,8 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="bg-black text-base-100 px-3.5">
-        <p id="titre-emission" class="text-3xl mt-5 font-semibold">
+    <div id="description-live" class="bg-black text-base-100 px-3.5 pt-5">
+        <p id="titre-emission" class="text-3xl font-semibold">
             La chose publique
         </p>
 

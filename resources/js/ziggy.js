@@ -24,24 +24,84 @@ const Ziggy = {
         "profile.update": { uri: "profile", methods: ["PATCH"] },
         "profile.destroy": { uri: "profile", methods: ["DELETE"] },
         "messages.store": { uri: "messages", methods: ["POST"] },
-        "answers.store": { uri: "answers", methods: ["POST"] },
+        "interactions.answers.cta.store": {
+            uri: "interactions/{interaction}/answers/cta",
+            methods: ["POST"],
+        },
+        "interactions.answers.quick_click.store": {
+            uri: "interactions/{interaction}/answers/quick_click",
+            methods: ["POST"],
+        },
+        "interactions.answers.survey.store": {
+            uri: "interactions/{interaction}/answers/survey",
+            methods: ["POST"],
+        },
+        "interactions.answers.mcq.store": {
+            uri: "interactions/{interaction}/answers/mcq",
+            methods: ["POST"],
+        },
+        "interactions.answers.audio.store": {
+            uri: "interactions/{interaction}/answers/audio",
+            methods: ["POST"],
+        },
+        "interactions.answers.video.store": {
+            uri: "interactions/{interaction}/answers/video",
+            methods: ["POST"],
+        },
+        "interactions.answers.picture.store": {
+            uri: "interactions/{interaction}/answers/picture",
+            methods: ["POST"],
+        },
         "animator.index": { uri: "dashboard", methods: ["GET", "HEAD"] },
+        "animator.endEmission": { uri: "endEmission", methods: ["POST"] },
         "settings.update": { uri: "settings", methods: ["POST"] },
-        "interactions.store": { uri: "interactions", methods: ["POST"] },
-        "interactions.winner.random": {
-            uri: "interactions/winner/random",
+        "interactions.cta.store": {
+            uri: "interactions/cta",
             methods: ["POST"],
         },
-        "interactions.winner.replace": {
-            uri: "interactions/winner/replace",
+        "interactions.quick_click.store": {
+            uri: "interactions/quick_click",
             methods: ["POST"],
         },
-        "interactions.winner.fastest": {
-            uri: "interactions/winner/fastest",
+        "interactions.survey.store": {
+            uri: "interactions/survey",
             methods: ["POST"],
         },
-        "interactions.winner.confirm": {
-            uri: "interactions/winner/confirm",
+        "interactions.mcq.store": {
+            uri: "interactions/mcq",
+            methods: ["POST"],
+        },
+        "interactions.audio.store": {
+            uri: "interactions/audio",
+            methods: ["POST"],
+        },
+        "interactions.video.store": {
+            uri: "interactions/video",
+            methods: ["POST"],
+        },
+        "interactions.picture.store": {
+            uri: "interactions/picture",
+            methods: ["POST"],
+        },
+        "interactions.end": {
+            uri: "interactions/{interaction}/end",
+            methods: ["POST"],
+            bindings: { interaction: "id" },
+        },
+        "interactions.winners.random": {
+            uri: "interactions/{interaction}/winners/random",
+            methods: ["POST"],
+        },
+        "interactions.winners.replace": {
+            uri: "interactions/{interaction}/winners/replace",
+            methods: ["POST"],
+        },
+        "interactions.winners.fastest": {
+            uri: "interactions/{interaction}/winners/fastest",
+            methods: ["POST"],
+        },
+        "interactions.winners.confirm": {
+            uri: "interactions/{interaction}/winners/confirm",
             methods: ["POST"],
         },
         register: { uri: "register", methods: ["GET", "HEAD"] },

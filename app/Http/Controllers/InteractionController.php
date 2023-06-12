@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\InteractionStatus;
+use App\Enums\InteractionType;
 use App\Events\InteractionCreated;
-use App\Events\InteractionEndedEvent;
-use App\Events\InteractionEndedForAnimatorEvent;
+use App\Http\Requests\StoreCallToActionRequest;
 use App\Http\Requests\StoreInteractionRequest;
+use App\Http\Requests\StoreQuickClickRequest;
 use App\Jobs\CheckInteractionEnded;
 use App\Models\CallToAction;
 use App\Models\Interaction;
@@ -16,23 +16,6 @@ use Inertia\Inertia;
 
 class InteractionController extends Controller
 {
-    /**
-     * Show current interaction
-     */
-    public function getCurrentInteraction()
-    {
-        // Récupérer l'interaction et la retourner
-        $interaction = Interaction::where('ended_at', '>', now())->first();
-
-        // get all rewards
-        $reward = Reward::all();
-
-        return Inertia::render('Animator/Interaction/Show', [
-            'interaction' => $interaction,
-            'rewards' => $reward,
-        ]);
-    }
-
     public function store(StoreInteractionRequest $request)
     {
         // Initialize $cta to null
@@ -79,27 +62,56 @@ class InteractionController extends Controller
         ]);
     }
 
-    /**
-     * Manually end interaction
-     */
+    public function storeCTA(StoreCallToActionRequest $request)
+    {
+        $validated = $request->validated();
+
+        $cta = CallToAction::create($validated);
+        $interaction = new Interaction();
+
+        $interaction->title = $validated['title'];
+        $interaction->type = InteractionType::CTA;
+        $interaction->call_to_action_id = $cta->id;
+        $interaction->animator_id = auth()->user()->id;
+        $interaction->ended_at = now()->addSeconds($validated['duration']);
+
+        $interaction->save();
+
+        broadcast(new InteractionCreated($interaction))->toOthers();
+
+        return redirect()->back()->with([
+            'interaction' => $interaction,
+        ]);
+    }
+
+    public function storeQuickClick(StoreQuickClickRequest $request)
+    {
+        $validated = $request->validated();
+
+        $quick_click = CallToAction::create($validated);
+        $interaction = new Interaction();
+
+        $interaction->title = $validated['title'];
+        $interaction->type = InteractionType::QUICK_CLICK;
+        $interaction->call_to_action_id = $quick_click->id;
+        $interaction->animator_id = auth()->user()->id;
+        $interaction->ended_at = now()->addSeconds($validated['duration']);
+
+        $interaction->save();
+
+        broadcast(new InteractionCreated($interaction))->toOthers();
+
+        return redirect()->back()->with([
+            'interaction' => $interaction,
+        ]);
+    }
+
     public function endInteraction(Interaction $interaction)
     {
-        $interaction->update(['ended_at' => now(), 'status' => InteractionStatus::PENDING->value]);
-        $interaction->refresh();
+        $interaction->update(['ended_at' => now()]);
 
-        event(new InteractionEndedEvent($interaction));
-
-        // Collect all answers && rewards
-        $answers = $interaction->answers()->with('auditor')->get();
-        $rewards = Reward::all();
-
-        event(new InteractionEndedForAnimatorEvent($interaction, $answers, $rewards));
-
-        $reward = Reward::all();
-
-        return Inertia::render('Animator/Interaction/Show', [
-            'interaction' => $interaction,
-            'rewards' => $reward,
+        return redirect()->back()->with([
+            'interaction' => null,
         ]);
     }
 }

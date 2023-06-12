@@ -15,6 +15,10 @@ defineProps({
         type: Object,
         required: true,
     },
+    interaction: {
+        type: Object,
+        default: null,
+    },
 });
 </script>
 
@@ -23,9 +27,12 @@ defineProps({
         <Player />
         <DescriptionLive />
         <ChatComponent :chat-enabled="chatEnabled" />
-        <div class="fixed bottom-16 right-0 left-0">
+        <div
+            id="fixed-container"
+            class="fixed bottom-16 w-screen flex flex-col"
+        >
             <Notification />
-            <Chat />
+            <Chat :chat-enabled="chatEnabled" class="grow" />
         </div>
     </AuditorLayout>
 </template>

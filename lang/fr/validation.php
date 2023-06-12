@@ -138,7 +138,7 @@ return [
     'unique' => 'La valeur du champ :attribute est déjà utilisée.',
     'uploaded' => 'Le fichier du champ :attribute n\'a pu être téléversé.',
     'uppercase' => 'Le champ :attribute doit être en majuscules.',
-    'url' => 'Le format de l\'URL de :attribute n\'est pas valide.',
+    'url' => 'Le format de l\'URL du :attribute n\'est pas valide.',
     'uuid' => 'Le champ :attribute doit être un UUID valide',
     'attributes' => [
         'address' => 'adresse',
@@ -171,6 +171,7 @@ return [
         'image' => 'image',
         'last_name' => 'nom',
         'lesson' => 'leçon',
+        'link' => 'lien',
         'line_address_1' => 'ligne d\'adresse 1',
         'line_address_2' => 'ligne d\'adresse 2',
         'message' => 'message',

@@ -1,13 +1,201 @@
-<script setup></script>
+<script setup>
+import { ref, reactive, onMounted } from "vue";
+import { router } from "@inertiajs/vue3";
+import formatDateToHoursMinutes from "@/Utils/date";
+
+const messageContainer = ref(null);
+
+const data = reactive({
+    chatEnabled: props.chatEnabled,
+    messages: [],
+});
+
+onMounted(() => {
+    subscribeToPublicChannel();
+});
+
+function subscribeToPublicChannel() {
+    window.Echo.channel("public")
+        .listen("MessageSent", (event) => {
+            data.messages.push(event.message);
+        })
+        .listen("ChatUpdated", (event) => {
+            data.chatEnabled = event.chatEnabled;
+
+            if (!data.chatEnabled) {
+                data.messages = [];
+            }
+        })
+        .error((error) => {
+            console.error(error);
+        });
+}
+
+const props = defineProps({
+    chatEnabled: {
+        type: Boolean,
+        required: true,
+    },
+});
+
+const form = reactive({
+    message: "",
+    errors: {},
+});
+
+const submitMessage = () => {
+    form.processing = true;
+    router.post(
+        "/messages",
+        {
+            content: form.message,
+        },
+        {
+            preserveState: true,
+            preserveScroll: true,
+            only: ["chatEnabled"],
+            onSuccess: () => {
+                form.message = "";
+                form.processing = false;
+                form.errors = {};
+            },
+            onError: (errors) => {
+                form.errors = errors.errors;
+                form.processing = false;
+            },
+        }
+    );
+};
+// regarde si le tchat est ouvert ou non
+function check($event) {
+    if ($event.target.checked) {
+        const heightHeaderPlayer =
+            document.querySelector("#the-header").getBoundingClientRect()
+                .height +
+            document.querySelector("#player_container").getBoundingClientRect()
+                .height +
+            "px";
+        document
+            .querySelectorAll("body, #the-header, #player_container")
+            .forEach((element) => {
+                element.classList.add("chat-open");
+            });
+        document.querySelector("#fixed-container").classList.add("bg-black");
+        document.querySelector("#player_container").classList.add("top-16");
+        document.querySelector("#description-live").style.marginTop =
+            heightHeaderPlayer;
+        document.querySelector("#fixed-container").style.top =
+            heightHeaderPlayer;
+        document.querySelector("#chat-auditor").style.gridTemplateRows =
+            "auto 1fr";
+    } else {
+        document
+            .querySelectorAll("body, #the-header, #player_container")
+            .forEach((element) => {
+                element.classList.remove("chat-open");
+            });
+        document.querySelector("#fixed-container").classList.remove("bg-black");
+        document.querySelector("#player_container").classList.remove("top-16");
+        document.querySelector("#description-live").style.marginTop = "";
+        document.querySelector("#fixed-container").style.top = "";
+        document.querySelector("#chat-auditor").style.gridTemplateRows = "";
+    }
+}
+</script>
 
 <template>
-    <div class="collapse bg-blue-audior px-3.5">
-        <input type="checkbox" />
-        <div class="collapse-title text-xl font-medium">
-            Click me to show/hide content
+    <!-- Menu dépliant -->
+    <div
+        id="chat-auditor"
+        class="collapse bg-blue-audior rounded-t-[44px] rounded-b-none"
+    >
+    <!-- Bouton pour déplier le menu-->
+        <input
+            type="checkbox"
+            class="w-full h-11 min-h-0"
+            @change="check($event)"
+        />
+        <div
+            class="collapse-title text-base font-extrabold h-11 min-h-0 p-0 flex items-center justify-center"
+        >
+            Chat<span
+                class="material-symbols-rounded ml-1 align-middle transition-transform"
+            >
+                expand_less
+            </span>
         </div>
-        <div class="collapse-content">
-            <p>hello</p>
+        <!-- Contenu du menu dépliant -->
+        <div class="collapse-content px-3.5 flex flex-col gap-y-3.5">
+            <!-- Messages dans le chat -->
+            <div class="overflow-y-scroll h-2 grow flex flex-col-reverse">
+                <!-- Ajouter les nouveaux message ici-->
+                <div v-if="data.messages && data.chatEnabled" ref="messageContainer">
+                    <p v-for="msg in data.messages" :key="msg.id" :msg="msg" class="font-light">
+                        <span class="text-base-100 opacity-70">
+                            {{ formatDateToHoursMinutes(msg.created_at)}}
+                        </span
+                        ><span class="ml-2 font-bold">{{ msg.user_name }} : </span
+                        ><span>{{ msg.content }}</span>
+                    </p>
+                </div>
+
+            </div>
+            <!-- Formulaire pour envoyer des messages dans le chat -->
+            <div class="flex flex-col gap-y-1">
+                <form @submit.prevent="submitMessage">
+                    <div class="flex gap-x-5">
+                        <input
+                            id="message"
+                            v-model="form.message"
+                            type="text"
+                            class="bg-blue-audior rounded-full border-base-100 grow focus:border-base-100 focus:outline-0 placeholder:font-extralight"
+                            required
+                            autofocus
+                            placeholder="Message…"
+                            :disabled="form.processing || !data.chatEnabled"
+                            @keyup.enter="submitMessage"
+                        />
+                        <button
+                            class="border border-base-100 flex items-center justify-center w-16 rounded-full bg-base-100"
+                        >
+                            <span
+                                class="material-symbols-rounded align-middle text-blue-audior"
+                            >
+                                send
+                            </span>
+                        </button>
+                    </div>
+                    <div v-show="form.errors.message">
+                        <p class="text-sm text-red-600 dark:text-red-400">
+                            {{form.errors.message}}
+                        </p>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </template>
+
+<style scoped>
+input[type="checkbox"]:checked ~ div:first-of-type > span {
+    transform: rotate(180deg);
+}
+input[type="checkbox"]:checked ~ div:last-of-type {
+    padding-bottom: 0.875rem;
+}
+input[type="text"]::placeholder {
+    color: #ffffffbf;
+}
+input[type="text"]:placeholder-shown + button {
+    background-color: transparent;
+}
+input[type="text"]:placeholder-shown + button span {
+    color: #ffffff;
+}
+input[type="text"]:disabled,
+input[type="text"]:disabled + button {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+</style>
