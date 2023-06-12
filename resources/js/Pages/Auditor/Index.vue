@@ -28,8 +28,7 @@ defineProps({
             class="fixed bottom-16 w-screen flex flex-col"
         >
             <!-- <Notification /> -->
-            <p>salut</p>
-            <Chat class="grow" />
+            <Chat :chat-enabled="chatEnabled" class="grow" />
         </div>
     </AuditorLayout>
 </template>

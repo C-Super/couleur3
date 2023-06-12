@@ -1,4 +1,71 @@
 <script setup>
+import { ref, reactive, onMounted } from "vue";
+import { router } from "@inertiajs/vue3";
+import formatDateToHoursMinutes from "@/Utils/date";
+
+const messageContainer = ref(null);
+
+const data = reactive({
+    chatEnabled: props.chatEnabled,
+    messages: [],
+});
+
+onMounted(() => {
+    subscribeToPublicChannel();
+});
+
+function subscribeToPublicChannel() {
+    window.Echo.channel("public")
+        .listen("MessageSent", (event) => {
+            data.messages.push(event.message);
+        })
+        .listen("ChatUpdated", (event) => {
+            data.chatEnabled = event.chatEnabled;
+
+            if (!data.chatEnabled) {
+                data.messages = [];
+            }
+        })
+        .error((error) => {
+            console.error(error);
+        });
+}
+
+const props = defineProps({
+    chatEnabled: {
+        type: Boolean,
+        required: true,
+    },
+});
+
+const form = reactive({
+    message: "",
+    errors: {},
+});
+
+const submitMessage = () => {
+    form.processing = true;
+    router.post(
+        "/messages",
+        {
+            content: form.message,
+        },
+        {
+            preserveState: true,
+            preserveScroll: true,
+            only: ["chatEnabled"],
+            onSuccess: () => {
+                form.message = "";
+                form.processing = false;
+                form.errors = {};
+            },
+            onError: (errors) => {
+                form.errors = errors.errors;
+                form.processing = false;
+            },
+        }
+    );
+};
 // regarde si le tchat est ouvert ou non
 function check($event) {
     if ($event.target.checked) {
@@ -37,10 +104,12 @@ function check($event) {
 </script>
 
 <template>
+    <!-- Menu dépliant -->
     <div
         id="chat-auditor"
         class="collapse bg-blue-audior rounded-t-[44px] rounded-b-none"
     >
+    <!-- Bouton pour déplier le menu-->
         <input
             type="checkbox"
             class="w-full h-11 min-h-0"
@@ -55,65 +124,53 @@ function check($event) {
                 expand_less
             </span>
         </div>
+        <!-- Contenu du menu dépliant -->
         <div class="collapse-content px-3.5 flex flex-col gap-y-3.5">
+            <!-- Messages dans le chat -->
             <div class="overflow-y-scroll h-2 grow flex flex-col-reverse">
                 <!-- Ajouter les nouveaux message ici-->
-                <p class="font-light">
-                    <span class="text-base-100 opacity-70">13:30</span
-                    ><span class="ml-2 font-bold">Hug90 : </span
-                    ><span>Trop bien on peut gagner un billet</span>
-                </p>
-                <p>hello</p>
-                <p>hello</p>
-                <p>hello</p>
-                <p>hello</p>
-                <p>hello</p>
-                <p>hello</p>
-                <p>hello</p>
-                <p>hello</p>
-                <p>hello</p>
-                <p>hello</p>
-                <p>hello</p>
-                <p>hello</p>
-                <p>hello</p>
-                <p>hello</p>
-                <p>hello</p>
-                <p>hello</p>
-                <p>hello</p>
-                <p>hello</p>
-                <p>hello</p>
-                <p>hello</p>
-                <p>hello</p>
-                <p>hello</p>
-                <p>hello</p>
-                <p>hello</p>
-                <p>hello</p>
-                <p>hello</p>
-                <p>hello</p>
-                <p>hello</p>
-                <p>hello</p>
-                <p>hello</p>
-                <p>hello</p>
-                <p>hello</p>
-                <p>hello</p>
-                <p>hellofin</p>
+                <div v-if="data.messages && data.chatEnabled" ref="messageContainer">
+                    <p v-for="msg in data.messages" :key="msg.id" :msg="msg" class="font-light">
+                        <span class="text-base-100 opacity-70">
+                            {{ formatDateToHoursMinutes(msg.created_at)}}
+                        </span
+                        ><span class="ml-2 font-bold">{{ msg.user_name }} : </span
+                        ><span>{{ msg.content }}</span>
+                    </p>
+                </div>
+
             </div>
-            <div class="flex gap-x-5">
-                <input
-                    class="bg-blue-audior rounded-full border-base-100 grow focus:border-base-100 focus:outline-0 placeholder:font-extralight"
-                    type="text"
-                    placeholder="Message"
-                    disabled
-                />
-                <button
-                    class="border border-base-100 flex items-center justify-center w-16 rounded-full bg-base-100"
-                >
-                    <span
-                        class="material-symbols-rounded align-middle text-blue-audior"
-                    >
-                        send
-                    </span>
-                </button>
+            <!-- Formulaire pour envoyer des messages dans le chat -->
+            <div class="flex flex-col gap-y-1">
+                <form @submit.prevent="submitMessage">
+                    <div class="flex gap-x-5">
+                        <input
+                            id="message"
+                            v-model="form.message"
+                            type="text"
+                            class="bg-blue-audior rounded-full border-base-100 grow focus:border-base-100 focus:outline-0 placeholder:font-extralight"
+                            required
+                            autofocus
+                            placeholder="Message…"
+                            :disabled="form.processing || !data.chatEnabled"
+                            @keyup.enter="submitMessage"
+                        />
+                        <button
+                            class="border border-base-100 flex items-center justify-center w-16 rounded-full bg-base-100"
+                        >
+                            <span
+                                class="material-symbols-rounded align-middle text-blue-audior"
+                            >
+                                send
+                            </span>
+                        </button>
+                    </div>
+                    <div v-show="form.errors.message">
+                        <p class="text-sm text-red-600 dark:text-red-400">
+                            {{form.errors.message}}
+                        </p>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -140,4 +197,5 @@ input[type="text"]:disabled + button {
     cursor: not-allowed;
     opacity: 0.5;
 }
+
 </style>

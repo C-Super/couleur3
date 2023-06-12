@@ -1,8 +1,3 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-
 /*@import 'normalize.css'; Tailwind a déjà le sien */
 @import 'Configuration/variables.css';
 @import 'Configuration/typography.css';
@@ -12,6 +7,10 @@
 @import 'Auditor/home.css';
 /* Animator */
 @import 'Animator/base.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 .gradient-auditor {
     background-image: linear-gradient(125deg, #FF67FF 10%, #FFE27C 85%);
@@ -23,17 +22,4 @@
 
 .text-blue-audior {
     color: #1C1354;
-}
-
-/* Provisoire car pour l'instant home.css ne marche pas */
-body.chat-open {
-    overflow: hidden;
-}
-#the-header.chat-open, #player_container.chat-open {
-    position: fixed;
-    left: 0;
-    right: 0;
-}
-#the-header.chat-open {
-    top: 0;
 }
