@@ -11,6 +11,7 @@ use App\Jobs\CheckInteractionEnded;
 use App\Models\CallToAction;
 use App\Models\Interaction;
 use App\Models\Reward;
+use Auth;
 use DateTime;
 use Inertia\Inertia;
 
@@ -68,11 +69,15 @@ class InteractionController extends Controller
 
         $cta = CallToAction::create($validated);
         $interaction = new Interaction();
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        /** @var \App\Models\Animator $animator */
+        $animator = $user->roleable;
 
         $interaction->title = $validated['title'];
         $interaction->type = InteractionType::CTA;
         $interaction->call_to_action_id = $cta->id;
-        $interaction->animator_id = auth()->user()->id;
+        $interaction->animator_id = $animator->id;
         $interaction->ended_at = now()->addSeconds($validated['duration']);
 
         $interaction->save();
@@ -99,11 +104,15 @@ class InteractionController extends Controller
 
         $quick_click = CallToAction::create($validated);
         $interaction = new Interaction();
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        /** @var \App\Models\Animator $animator */
+        $animator = $user->roleable;
 
         $interaction->title = $validated['title'];
         $interaction->type = InteractionType::QUICK_CLICK;
         $interaction->call_to_action_id = $quick_click->id;
-        $interaction->animator_id = auth()->user()->id;
+        $interaction->animator_id = $animator->id;
         $interaction->ended_at = now()->addSeconds($validated['duration']);
 
         $interaction->save();
