@@ -1,6 +1,6 @@
 # Structure du backend
 
-**Laravel** ayant été imposé pour la gestion du backend, le choix d'utiliser **Inertia.js** pour faire le lien entre le **Frontend** et le **Backend** sans devoir utiliser un **API** semblait la meilleure solution.
+**Laravel** ayant été imposé pour la gestion du backend, le choix d'utiliser **Inertia.js** pour faire le lien entre le **Frontend** et le **Backend** semblait la meilleure solution.
 
 **Inertia.js** est un framework moderne qui permet de créer des applications monopages (SPA) en utilisant le backend classique de Laravel tout en bénéficiant de la réactivité des composants Vue.js sur le frontend.
 
@@ -14,7 +14,7 @@ L'utilisation de Inertia présente plusieurs avantages dans le cadre de  l'arch
 
 4. **Maintenance simplifiée** : Étant donné qu'il n'y a pas besoin de construire et de maintenir une API séparée, l'infrastructure globale devient moins complexe, ce qui rend la maintenance plus facile.
 
-Une autre technologie intéressante pour le projet aurait été d'utiliser **Laravel Precognition**.
+Une autre technologie intéressante implémentée pour le projet est **Laravel Precognition**.
 
 L'intérêt d'utiliser **Laravel Precognition** dans un projet réside principalement dans sa capacité à anticiper les résultats d'une future requête HTTP, en particulier pour fournir une validation "en direct" pour votre application frontend JavaScript sans avoir à dupliquer vos règles de validation backend de l'application​[1](https://laravel.com/docs/10.x/precognition)​.
 
@@ -26,21 +26,19 @@ L'intérêt d'utiliser **Laravel Precognition** dans un projet réside principal
 
 4. Flexible et peut s'adapter à divers scénarios d'utilisation. Par exemple, il peut être utilisé pour valider des champs spécifiques ou pour éviter d'exécuter du code de validation lourd. Il dispose également d'une fonctionnalité de limitation de débit qui peut être ajustée en fonction des besoins de votre application​[2](https://haait.net/how-to-use-precognition-in-laravel-9/)​.
 
-Malheureusement, ce projet étant trop récent et manquant de documentation, le choix a été fait de le retirer du projet car posant trop de problèmes de compatibilité.
-
 ## Gestion de la sécurité
 
-Afin de gérer le principe d'avoir 2 frontend différent, 1 pour les auditeurs et 1 pour les animateurs, le choix s'est porté sur l'utilisation de 2 middlewares différents qui permettent d'autoriser les utilisateurs à n'accéder qu'à leurs fonctionnalités respectives.
+Afin de gérer le principe d'avoir 2 frontend différent, 1 pour les auditeurs et 1 pour les animateurs, le choix s'est porté sur l'utilisation de 2 middlewares différents qui permettent d'autoriser les utilisateurs à n'accéder qu'à leurs fonctionnalités respectives. Pour éviter de devoir créer de 0 tout le système d'authentification, le choix s'est porté Breeze [3](https://laravel.com/docs/10.x/starter-kits#breeze-and-inertia). L'avantage de Breeze est qu'il peut être directement configuré avec Vue.js et Inertia.js. 
 
 ## Gestion des événements
 
 La gestion et la diffusion des événements websocket se font avec 3 channel différents :
 
-1. **Public** : Tout le monde peut écouter sur ce channel
+1. **public** : Tout le monde peut écouter sur ce channel. Les informations transmises sur ce channel sont les messages du chat, les créations et les fins d'interactions ainsi que les réponses pour les QCM et les sondages.
 
-2. **interactions** : Channel privé pour l'animateur
+2. **interactions** : Channel privé pour l'animateur. Les informations transmises sur ce channel sont les réponses des auditeurs ainsi que toutes les informations liées aux interactions
 
-3. **answer** : Channel privé pour l'auditeur
+Pour gérer le serveur websocket en production le choix s'est porté sur **Pusher [4](https://pusher.com/)** afin de déléguer la gestion à un service externe. 
 
 ## Gestion des jobs
 
@@ -48,7 +46,7 @@ Afin de pouvoir gérer correctement la fin des interactions, un job a été mis 
 
 ## Gestion des tests
 
-Toutes les fonctionnalités créées des tests avec le framework **Pest**
+Toutes les fonctionnalités créées des tests avec le framework **Pest [5](https://pestphp.com/)**
 
 **Pest** est un framework de tests pour PHP, et en particulier Laravel, qui vise à simplifier et à rendre l'écriture de tests plus agréable et moins fastidieuse. Sa syntaxe expressive, claire et minimaliste, permet d'écrire des tests plus lisibles et maintenables.
 
@@ -66,7 +64,7 @@ L'utilisation de **Pest** présente plusieurs avantages pour la réalisation des
 
 Afin de diminuer les redondances et augmenter la flexibilité de l'architecture du projet, il a été décidé d'intégrer le polymorphisme au sein du modèle de donnée.
 
-Dans Laravel, le polymorphisme est un concept avancé d'orienté objet qui permet à un modèle d'interagir avec des modèles multiples de manière flexible. Il est souvent utilisé dans les relations entre les modèles, comme les relations polymorphiques et les relations polymorphiques multiples.
+Dans Laravel, le polymorphisme est un concept avancé d'orienté objet qui permet à un modèle d'interagir avec des modèles multiples de manière flexible. Il est souvent utilisé dans les relations entre les modèles, comme les relations polymorphiques et les relations polymorphiques multiples. [5](https://laravel.com/docs/10.x/eloquent-relationships#polymorphic-relationships)
 
 L'intérêt du polymorphisme réside dans sa flexibilité et sa réutilisabilité :
 
