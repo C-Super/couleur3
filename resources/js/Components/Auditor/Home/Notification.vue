@@ -1,23 +1,12 @@
 <script setup>
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
 import InteractionType from "@/Enums/InteractionType.js";
 import { Axios } from "axios";
+import { useInteractionStore } from "@/Stores/useInteractionStore.js";
+import { storeToRefs } from "pinia";
 
-const interaction = ref();
-
-onMounted(() => {
-    subscribeToPublicChannel();
-});
-
-function subscribeToPublicChannel() {
-    window.Echo.channel("public")
-        .listen("InteractionCreated", (event) => {
-            interaction.value = event.interaction;
-        })
-        .error((error) => {
-            console.error(error);
-        });
-}
+const interactionStore = useInteractionStore();
+const { currentInteraction } = storeToRefs(interactionStore);
 
 let openModal = ref(false);
 
@@ -26,7 +15,7 @@ const postAnswerAndHideNotification = async () => {
     // Replace with your actual endpoint and data to send
     const url = "/answers";
     const data = {
-        interactionId: interaction.value.id,
+        interactionId: currentInteraction.value.id,
     };
 
     try {
@@ -35,8 +24,8 @@ const postAnswerAndHideNotification = async () => {
         // Handle response
         console.log(response.data);
 
-        // If the POST request is successful, set interaction.value to null to hide the notification.
-        interaction.value = null;
+        // If the POST request is successful, set currentInteraction.value to null to hide the notification.
+        currentInteraction.value = null;
     } catch (error) {
         // Handle error
         console.error(error);
@@ -72,11 +61,11 @@ const navigateTo = (url) => {
     <!-- CTA Interaction -->
     <div
         v-if="
-            interaction.value && interaction.value.type === InteractionType.CTA
+            currentInteraction.value && currentInteraction.value.type === InteractionType.CTA
         "
         id="notification-lien"
         class="chat chat-start"
-        @click="navigateTo(interaction.value.call_to_action.link)"
+        @click="navigateTo(currentInteraction.value.call_to_action.link)"
     >
         <div class="chat-image avatar">
             <div class="w-10 rounded-full bg-base-100">
@@ -87,7 +76,7 @@ const navigateTo = (url) => {
             class="chat-bubble gradient-auditor text-black font-bold text-lg relative"
         >
             <span class="mr-2"
-                >{{ interaction.value.title }}
+                >{{ currentInteraction.value.title }}
                 <span
                     id="link"
                     class="material-symbols-rounded align-middle text-xl"
@@ -107,8 +96,8 @@ const navigateTo = (url) => {
     <!-- QUICK_CLICK Interaction -->
     <div
         v-if="
-            interaction.value &&
-            interaction.value.type === InteractionType.QUICK_CLICK
+            currentInteraction.value &&
+            currentInteraction.value.type === InteractionType.QUICK_CLICK
         "
         id="notification-rapide"
         class="chat chat-start text-black"
@@ -135,8 +124,8 @@ const navigateTo = (url) => {
     <!-- SURVEY Interaction -->
     <div
         v-if="
-            interaction.value &&
-            interaction.value.type === InteractionType.SURVEY
+            currentInteraction.value &&
+            currentInteraction.value.type === InteractionType.SURVEY
         "
         id="notification-survey"
         class="chat chat-start text-black"
@@ -150,7 +139,7 @@ const navigateTo = (url) => {
         <div
             class="chat-bubble gradient-auditor text-black font-bold text-lg relative"
         >
-            {{ interaction.value.title }}
+            {{ currentInteraction.value.title }}
             <div class="indicator absolute top-0 right-0 mt-1 mr-1">
                 <span
                     class="indicator-item badge bg-[#7D7AFF] border-[#7D7AFF]"
@@ -162,17 +151,17 @@ const navigateTo = (url) => {
     <survey-modal-component
         v-if="
             openModal &&
-            interaction.value &&
-            interaction.value.type === InteractionType.SURVEY
+            currentInteraction.value &&
+            currentInteraction.value.type === InteractionType.SURVEY
         "
-        :interaction="interaction.value"
+        :interaction="currentInteraction.value"
         @close="openModal = false"
     />
 
     <!-- MCQ Interaction -->
     <div
         v-if="
-            interaction.value && interaction.value.type === InteractionType.MCQ
+            currentInteraction.value && currentInteraction.value.type === InteractionType.MCQ
         "
         id="notification-mcq"
         class="chat chat-start text-black"
@@ -186,7 +175,7 @@ const navigateTo = (url) => {
         <div
             class="chat-bubble gradient-auditor text-black font-bold text-lg relative"
         >
-            {{ interaction.value.title }}
+            {{ currentInteraction.value.title }}
             <div class="indicator absolute top-0 right-0 mt-1 mr-1">
                 <span
                     class="indicator-item badge bg-[#7D7AFF] border-[#7D7AFF]"
@@ -198,10 +187,10 @@ const navigateTo = (url) => {
     <mcq-modal-component
         v-if="
             openModal &&
-            interaction.value &&
-            interaction.value.type === InteractionType.MCQ
+            currentInteraction.value &&
+            currentInteraction.value.type === InteractionType.MCQ
         "
-        :interaction="interaction.value"
+        :interaction="currentInteraction.value"
         @close="openModal = false"
     />
 </template>

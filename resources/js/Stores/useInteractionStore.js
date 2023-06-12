@@ -9,6 +9,21 @@ export const useInteractionStore = defineStore("interaction", () => {
     const isCreatingInteraction = ref(null);
     const currentInteraction = computed(() => page.props.interaction);
 
+    onMounted(() => {
+        subscribeToPublicChannel();
+    });
+
+    function subscribeToPublicChannel() {
+        window.Echo.channel("public")
+            .listen("InteractionCreated", (event) => {
+                console.log(event);
+                currentInteraction.value = event.interaction;
+            })
+            .error((error) => {
+                console.error(error);
+            });
+    }
+
     const createdInteraction = () => {
         isCreatingInteraction.value = null;
     };
