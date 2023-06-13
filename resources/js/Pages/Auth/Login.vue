@@ -3,8 +3,7 @@
 import Checkbox from "@/Components/Checkbox.vue";
 import AuditorLayout from "@/Layouts/AuditorLayout.vue";
 import InputError from "@/Components/InputError.vue";
-//import InputLabel from "@/Components/InputLabel.vue";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
+import ProfileButton from "@/Components/Auditor/Bases/ProfileButton.vue";
 import TextInput from "@/Components/Auditor/Bases/TextInput.vue";
 import { Head, Link } from "@inertiajs/vue3";
 import { useForm } from "laravel-precognition-vue-inertia";
@@ -80,12 +79,12 @@ const submit = () =>
                     </label>
                 </div>
                 <div class="flex flex-col items-center mt-8 gap-y-4">
-                    <PrimaryButton
+                    <ProfileButton
                         :class="{ 'opacity-25': form.processing }"
                         :disabled="form.processing"
                     >
                         Se connecter
-                    </PrimaryButton>
+                    </ProfileButton>
                     <Link
                         v-if="canResetPassword"
                         :href="route('password.request')"
@@ -94,13 +93,13 @@ const submit = () =>
                         Mot de passe oublié ?
                     </Link>
                 </div>
-                <PrimaryButton
+                <ProfileButton
                         class="mt-16"
                         :class="{ 'opacity-25': form.processing }"
                         :disabled="form.processing"
                     >
                     S'enregistrer
-                </PrimaryButton>
+                </ProfileButton>
             </form>
         </div>
     </AuditorLayout>
