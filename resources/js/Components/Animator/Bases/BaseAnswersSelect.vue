@@ -20,7 +20,6 @@ const candidates = notPinnedAnswers;
         <div class="flex pb-5 items-center">
             <p class="pr-5 text-sm font-light">Sélectionner toutes les épingles</p>
             <base-checkbox :color="Color.PRIMARY" @change="interactionStore.updateWinner(pinnedAnswers)" />
-            {{ console.log(interactionStore) }}
         </div>
     </div>
     <div class="overflow-x-auto h-60">

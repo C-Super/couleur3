@@ -3,9 +3,7 @@ import { useInteractionStore } from "@/Stores/useInteractionStore.js";
 import { storeToRefs } from "pinia";
 
 const interactionStore = useInteractionStore();
-const { pinnedAnswers, notPinnedAnswers, currentInteraction } = storeToRefs(interactionStore);
-console.log(currentInteraction.value.answers);
-console.log(notPinnedAnswers.value);
+const { pinnedAnswers, notPinnedAnswers } = storeToRefs(interactionStore);
 </script>
 <template>
     <p class="text-2xl font-semibold">Réponse obtenues</p>

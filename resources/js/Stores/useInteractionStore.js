@@ -87,8 +87,6 @@ export const useInteractionStore = defineStore("interaction", () => {
                 state.winners.splice(state.winners.indexOf(candidate), 1);
             }
         });
-
-        console.log(state.winners);
     };
 
     return {
