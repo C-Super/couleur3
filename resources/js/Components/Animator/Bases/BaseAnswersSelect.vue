@@ -5,16 +5,24 @@ import { useInteractionStore } from "@/Stores/useInteractionStore.js";
 import { storeToRefs } from "pinia";
 
 const interactionStore = useInteractionStore();
-const { pinnedAnswers, notPinnedAnswers } = storeToRefs(interactionStore);
+const { pinnedAnswers, notPinnedAnswers, winners } = storeToRefs(interactionStore);
 
 const pinnedCandidates = pinnedAnswers;
 const candidates = notPinnedAnswers;
+
 </script>
 <template>
     <p class="text-2xl font-semibold">Réponse obtenues</p>
     <p class="font-light">
         Cliquez sur les utilisateurs que vous souhaitez faire gagner.
     </p>
+    <div class="flex flex-row-reverse">
+        <div class="flex pb-5 items-center">
+            <p class="pr-5 text-sm font-light">Sélectionner toutes les épingles</p>
+            <base-checkbox :color="Color.PRIMARY" @change="interactionStore.updateWinner(pinnedAnswers)" />
+            {{ console.log(interactionStore) }}
+        </div>
+    </div>
     <div class="overflow-x-auto h-60">
         <div>
             <!-- Array pinned -->
@@ -26,14 +34,14 @@ const candidates = notPinnedAnswers;
                 >
                     <tr class="border-none">
                         <th>
-                            <base-checkbox :color="Color.SECONDARY" @click="interactionStore.updateWinner(pinnedCandidate)" />
+                            <base-checkbox :color="Color.PRIMARY" :checked="winners.indexOf(pinnedCandidate) != -1" @change="interactionStore.updateWinner(pinnedCandidate)" />
                         </th>
                         <td class="font-bold text-base">
-                            <slot>{{ pinnedCandidate.name }}</slot>
+                            <slot>{{ pinnedCandidate.auditor.phone }}</slot>
                         </td>
                         <td>
                             <slot class="text-base">{{
-                                pinnedCandidate.response
+                                pinnedCandidate.created_at
                             }}</slot>
                         </td>
                         <th>
@@ -58,16 +66,14 @@ const candidates = notPinnedAnswers;
                 >
                     <tr class="border-none">
                         <th>
-                            <base-checkbox
-                                @click="$emit('update:winner', candidate)"
-                            />
+                            <base-checkbox :color="Color.PRIMARY" @change="interactionStore.updateWinner(candidate)" />
                         </th>
                         <td class="font-bold text-base">
-                            <slot>{{ candidate.name }}</slot>
+                            <slot>{{ candidate.auditor.phone }}</slot>
                         </td>
                         <td>
                             <slot class="text-base">{{
-                                candidate.response
+                                candidate.created_at
                             }}</slot>
                         </td>
                     </tr>
