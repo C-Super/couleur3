@@ -131,13 +131,24 @@ const cancelQuestionType = () => {
                         "
                         :form-type="form.type"
                     >
-                        <template v-if="form.type === InteractionType.SURVEY" #instructions>
-                            Entrer les réponses que les auditeurs pourraient répondre.
-                            <InputError class="mt-2" :message="form.errors.question_choices" />
+                        <template
+                            v-if="form.type === InteractionType.SURVEY"
+                            #instructions
+                        >
+                            Entrer les réponses que les auditeurs pourraient
+                            répondre.
+                            <InputError
+                                class="mt-2"
+                                :message="form.errors.question_choices"
+                            />
                         </template>
                         <template v-else #instructions>
-                            Entrer les réponses que les auditeurs pourraient répondre. Cocher la réponse correcte.
-                            <InputError class="mt-2" :message="form.errors.question_choices" />
+                            Entrer les réponses que les auditeurs pourraient
+                            répondre. Cocher la réponse correcte.
+                            <InputError
+                                class="mt-2"
+                                :message="form.errors.question_choices"
+                            />
                         </template>
                         <template #input1>
                             <input

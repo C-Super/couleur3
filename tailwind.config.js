@@ -31,9 +31,13 @@ export default {
         },
         {
             pattern: /checkbox-(primary|secondary|accent|white)/,
+            variants: ["hover", "focus"],
         },
         {
-            pattern: /tab-active-(primary|secondary|accent)/
+            pattern: /text-(primary|secondary|accent|white)/,
+        },
+        {
+            pattern: /tab-active-(primary|secondary|accent)/,
         },
     ],
 

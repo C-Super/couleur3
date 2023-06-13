@@ -14,7 +14,7 @@ class MaxFourChoices implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        $hasValues = collect($value)->filter(fn ($choice) => $choice['value'] !== "");
+        $hasValues = collect($value)->filter(fn ($choice) => $choice['value'] !== '');
 
         if ($hasValues->count() > 4) {
             $fail('Vous ne pouvez pas avoir plus de 4 choix.');

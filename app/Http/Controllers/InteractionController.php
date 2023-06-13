@@ -91,7 +91,6 @@ class InteractionController extends Controller
                 'replyable',
             ],
             'call_to_action',
-            'question_choices',
         ])->first();
 
         broadcast(new InteractionCreated($currentInteraction))->toOthers();
@@ -105,7 +104,6 @@ class InteractionController extends Controller
     {
         $validated = $request->validated();
 
-        $quick_click = CallToAction::create($validated);
         $interaction = new Interaction();
         /** @var \App\Models\User $user */
         $user = Auth::user();
@@ -114,7 +112,6 @@ class InteractionController extends Controller
 
         $interaction->title = $validated['title'];
         $interaction->type = InteractionType::QUICK_CLICK;
-        $interaction->call_to_action_id = $quick_click->id;
         $interaction->animator_id = $animator->id;
         $interaction->ended_at = now()->addSeconds($validated['duration']);
 
@@ -126,8 +123,6 @@ class InteractionController extends Controller
                 ],
                 'replyable',
             ],
-            'call_to_action',
-            'question_choices',
         ])->first();
 
         broadcast(new InteractionCreated($currentInteraction))->toOthers();
@@ -167,7 +162,6 @@ class InteractionController extends Controller
                 ],
                 'replyable',
             ],
-            'call_to_action',
             'question_choices',
         ])->first();
 
@@ -208,7 +202,6 @@ class InteractionController extends Controller
                 ],
                 'replyable',
             ],
-            'call_to_action',
             'question_choices',
         ])->first();
 
