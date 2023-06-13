@@ -33,7 +33,6 @@ const { currentInteraction } = storeToRefs(interactionStore);
             <base-button
                 type="submit"
                 :color="Color.forInteractionType(currentInteraction.type)"
-                @click="interactionStore.randomWinners()"
             >
                 Générer
             </base-button>
