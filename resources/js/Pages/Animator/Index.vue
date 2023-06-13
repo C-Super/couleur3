@@ -9,6 +9,7 @@ import CtaIndex from "@/Components/Animator/Cta/CtaIndex.vue";
 import CtaCreate from "@/Components/Animator/Cta/CtaCreate.vue";
 import CtaShow from "@/Components/Animator/Cta/CtaShow.vue";
 import QuestionCreate from "@/Components/Animator/Question/QuestionCreate.vue";
+import QuestionShow from "@/Components/Animator/Question/QuestionShow.vue";
 import InteractionType from "@/Enums/InteractionType.js";
 import { Head, router } from "@inertiajs/vue3";
 import { useInteractionStore } from "@/Stores/useInteractionStore.js";
@@ -69,6 +70,12 @@ const endEmission = () => {
                 v-if="
                     currentInteraction &&
                     currentInteraction.type === InteractionType.CTA
+                "
+            />
+            <question-show
+                v-if="
+                    currentInteraction &&
+                    InteractionType.isQuestion(currentInteraction.type)
                 "
             />
         </div>

@@ -1,24 +1,27 @@
 <script setup>
 import BaseCheckbox from "@/Components/Animator/Bases/BaseCheckbox.vue";
+import Color from "@/Enums/Color.js";
+import { useInteractionStore } from "@/Stores/useInteractionStore.js";
+import { storeToRefs } from "pinia";
 
-defineEmits(["update:winner"]);
+const interactionStore = useInteractionStore();
+const { pinnedAnswers, notPinnedAnswers, winners } = storeToRefs(interactionStore);
 
-defineProps({
-    pinnedCandidates: {
-        type: Array,
-        required: true,
-    },
-    candidates: {
-        type: Array,
-        required: true,
-    },
-});
+const pinnedCandidates = pinnedAnswers;
+const candidates = notPinnedAnswers;
+
 </script>
 <template>
     <p class="text-2xl font-semibold">Réponse obtenues</p>
     <p class="font-light">
         Cliquez sur les utilisateurs que vous souhaitez faire gagner.
     </p>
+    <div class="flex flex-row-reverse">
+        <div class="flex pb-5 items-center">
+            <p class="pr-5 text-sm font-light">Sélectionner toutes les épingles</p>
+            <base-checkbox :color="Color.PRIMARY" @change="interactionStore.updateWinner(pinnedAnswers)" />
+        </div>
+    </div>
     <div class="overflow-x-auto h-60">
         <div>
             <!-- Array pinned -->
@@ -30,18 +33,14 @@ defineProps({
                 >
                     <tr class="border-none">
                         <th>
-                            <input
-                                type="checkbox"
-                                class="checkbox checkbox-lg checkbox-primary"
-                                @click="$emit('update:winner', pinnedCandidate)"
-                            />
+                            <base-checkbox :color="Color.PRIMARY" :checked="winners.indexOf(pinnedCandidate) != -1" @change="interactionStore.updateWinner(pinnedCandidate)" />
                         </th>
                         <td class="font-bold text-base">
-                            <slot>{{ pinnedCandidate.name }}</slot>
+                            <slot>{{ pinnedCandidate.auditor.phone }}</slot>
                         </td>
                         <td>
                             <slot class="text-base">{{
-                                pinnedCandidate.response
+                                pinnedCandidate.created_at
                             }}</slot>
                         </td>
                         <th>
@@ -66,16 +65,14 @@ defineProps({
                 >
                     <tr class="border-none">
                         <th>
-                            <base-checkbox
-                                @click="$emit('update:winner', candidate)"
-                            />
+                            <base-checkbox :color="Color.PRIMARY" @change="interactionStore.updateWinner(candidate)" />
                         </th>
                         <td class="font-bold text-base">
-                            <slot>{{ candidate.name }}</slot>
+                            <slot>{{ candidate.auditor.phone }}</slot>
                         </td>
                         <td>
                             <slot class="text-base">{{
-                                candidate.response
+                                candidate.created_at
                             }}</slot>
                         </td>
                     </tr>

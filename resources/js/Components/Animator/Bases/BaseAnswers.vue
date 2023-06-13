@@ -1,16 +1,9 @@
 <script setup>
-defineEmits(["add:pinned", "remove:pinned"]);
+import { useInteractionStore } from "@/Stores/useInteractionStore.js";
+import { storeToRefs } from "pinia";
 
-defineProps({
-    pinnedAnswers: {
-        type: Array,
-        required: true,
-    },
-    notPinnedAnswers: {
-        type: Array,
-        required: true,
-    },
-});
+const interactionStore = useInteractionStore();
+const { pinnedAnswers, notPinnedAnswers } = storeToRefs(interactionStore);
 </script>
 <template>
     <p class="text-2xl font-semibold">Réponse obtenues</p>
@@ -34,21 +27,19 @@ defineProps({
                                 <!-- icon on -->
                                 <span
                                     id="fill"
-                                    class="fill-current material-symbols-rounded text-5xl text-primary"
-                                    @click="
-                                        $emit('remove:pinned', pinnedAnswer)
-                                    "
+                                    class="fill-current material-symbols-rounded text-5xl text-primary font-thin"
+                                    @click="interactionStore.removePinned(pinnedAnswer)"
                                 >
                                     push_pin
                                 </span>
                             </label>
                         </th>
                         <td class="font-bold text-base">
-                            <slot>{{ pinnedAnswer.name }}</slot>
+                            <slot>{{ pinnedAnswer.auditor.phone }}</slot>
                         </td>
                         <td>
                             <slot class="text-base">{{
-                                pinnedAnswer.response
+                                pinnedAnswer.created_at
                             }}</slot>
                         </td>
                     </tr>
@@ -69,21 +60,19 @@ defineProps({
                                 <input type="checkbox" class="hidden" />
                                 <!-- icon off -->
                                 <span
-                                    class="fill-current material-symbols-rounded text-5xl"
-                                    @click="
-                                        $emit('add:pinned', notPinnedAnswer)
-                                    "
+                                    class="fill-current material-symbols-rounded text-5xl font-thin"
+                                    @click="interactionStore.addPinned(notPinnedAnswer)"
                                 >
                                     push_pin
                                 </span>
                             </label>
                         </th>
                         <td class="font-bold text-base">
-                            <slot>{{ notPinnedAnswer.name }}</slot>
+                            <slot>{{ notPinnedAnswer.auditor.phone }}</slot>
                         </td>
                         <td>
                             <slot class="text-base">{{
-                                notPinnedAnswer.response
+                                notPinnedAnswer.created_at
                             }}</slot>
                         </td>
                     </tr>
@@ -94,6 +83,6 @@ defineProps({
 </template>
 <style>
 #fill.material-symbols-rounded {
-    font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 48;
+    font-variation-settings: "FILL" 1, "wght" 100, "GRAD" 0, "opsz" 48;
 }
 </style>

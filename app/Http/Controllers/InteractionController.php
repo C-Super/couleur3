@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\InteractionType;
 use App\Events\InteractionCreated;
 use App\Http\Requests\Interaction\StoreCallToActionRequest;
+use App\Http\Requests\Interaction\StoreMCQRequest;
 use App\Http\Requests\Interaction\StoreQuickClickRequest;
 use App\Http\Requests\StoreInteractionRequest;
 use App\Jobs\CheckInteractionEnded;
@@ -116,6 +117,46 @@ class InteractionController extends Controller
         $interaction->ended_at = now()->addSeconds($validated['duration']);
 
         $interaction->save();
+
+        broadcast(new InteractionCreated($interaction))->toOthers();
+
+        return redirect()->back()->with([
+            'interaction' => Interaction::active()->with([
+                'answers' => [
+                    'auditor' => [
+                        'user',
+                    ],
+                    'replyable',
+                ],
+                'call_to_action',
+                'question_choices',
+            ])->first(),
+        ]);
+    }
+
+    public function storeMCQ(StoreMCQRequest $request)
+    {
+        $validated = $request->validated();
+
+        $quick_click = CallToAction::create($validated);
+        $interaction = new Interaction();
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        /** @var \App\Models\Animator $animator */
+        $animator = $user->roleable;
+
+        $interaction->title = $validated['title'];
+        $interaction->type = InteractionType::MCQ;
+        $interaction->animator_id = $animator->id;
+        $interaction->ended_at = now()->addSeconds($validated['duration']);
+
+        $interaction->save();
+
+        for ($i = 0; $i < count($validated['question_choices']); $i++) {
+            if ($validated['question_choices'][$i]['value']) {
+                $interaction->question_choices()->create($validated['question_choices'][$i]);
+            }
+        }
 
         broadcast(new InteractionCreated($interaction))->toOthers();
 

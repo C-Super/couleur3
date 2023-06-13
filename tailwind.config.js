@@ -30,6 +30,9 @@ export default {
             variants: ["hover", "focus"],
         },
         {
+            pattern: /checkbox-(primary|secondary|accent|white)/,
+        },
+        {
             pattern: /tab-active-(primary|secondary|accent)/
         },
     ],
