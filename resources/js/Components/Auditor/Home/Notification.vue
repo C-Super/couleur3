@@ -2,7 +2,7 @@
 import InteractionType from "@/Enums/InteractionType.js";
 import { useInteractionStore } from "@/Stores/useInteractionStore.js";
 import { storeToRefs } from "pinia";
-import TemplateNotif from "@/Components/Auditor/Home/TemplateNotif.vue";
+import BaseNotif from "@/Components/Auditor/Bases/BaseNotif.vue";
 
 const interactionStore = useInteractionStore();
 const { currentInteraction } = storeToRefs(interactionStore);
@@ -27,7 +27,7 @@ function clicNotif() {
 </script>
 
 <template>
-    <TemplateNotif
+    <BaseNotif
         v-if="
             currentInteraction &&
             (currentInteraction.type === InteractionType.TEXT ||
@@ -41,8 +41,8 @@ function clicNotif() {
         @click="clicNotif"
     >
         Interagir avec l’animateur
-    </TemplateNotif>
-    <TemplateNotif
+    </BaseNotif>
+    <BaseNotif
         v-if="
             currentInteraction &&
             currentInteraction.type === InteractionType.QUICK_CLICK
@@ -51,8 +51,8 @@ function clicNotif() {
         @click="clicNotif"
     >
         {{ currentInteraction.title }}
-    </TemplateNotif>
-    <TemplateNotif
+    </BaseNotif>
+    <BaseNotif
         v-if="
             currentInteraction &&
             currentInteraction.type === InteractionType.CTA
@@ -66,9 +66,9 @@ function clicNotif() {
                 id="link"
                 class="material-symbols-rounded align-middle text-xl"
                 >open_in_new</span
-            ></span
-        >
-    </TemplateNotif>
+            >
+        </span>
+    </BaseNotif>
     <!--
 
     <survey-modal-component

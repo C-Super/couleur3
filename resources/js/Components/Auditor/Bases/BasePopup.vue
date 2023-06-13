@@ -1,5 +1,13 @@
 <script setup>
-import BaseButton from "@/Components/Auditor/Bases/BaseButton.vue";
+import { ref } from "vue";
+import BaseButtonPopup from "@/Components/Auditor/Bases/Popup/BaseButtonPopup.vue";
+import BasesTitrePopup from "@/Components/Auditor/Bases/Popup/BasesTitrePopup.vue";
+
+const popupTitle = ref("thanks");
+
+const popupButton = ref("next");
+
+const formValidation = ref(false);
 </script>
 
 <template>
@@ -14,38 +22,50 @@ import BaseButton from "@/Components/Auditor/Bases/BaseButton.vue";
                     cancel
                 </span>
             </button>
-            <!-- Contenu du popup -->
-            <div>
-                <!-- Titre de question -->
-                <div>
-                    <span class="material-symbols-rounded text-8xl text-center">
-                        help
-                    </span>
-                    <p class="font-extrabold text-xl text-center">
-                        L’animateur aimerait connaître ton avis!
-                    </p>
-                </div>
-                <!-- Titre de remerciement -->
-                <div>
-                    <span class="material-symbols-rounded text-8xl text-center">
-                        sentiment_very_satisfied
-                    </span>
-                    <p class="font-extrabold text-xl text-center">
-                        L’animateur te remercie pour ta participation
-                    </p>
-                </div>
-                <!-- Titre de cadeau -->
-                <div>
-                    <span class="material-symbols-rounded text-8xl text-center">
-                        redeem
-                    </span>
-                    <p class="font-extrabold text-xl text-center">
-                        Vous avez gagné{{ cadeau }}
-                    </p>
-                </div>
+            <!-- Contenu du popup
+            v-if="popupTitle === 'question'"
+            v-if="popupTitle === 'thanks'"
+            v-if="popupTitle === 'gift'"
+            -->
+            <div class="flex flex-col">
+                <BasesTitrePopup v-if="popupTitle === 'question'" icone="help"
+                    >L’animateur aimerait connaître ton avis !</BasesTitrePopup
+                >
+                <BasesTitrePopup
+                    v-if="popupTitle === 'thanks'"
+                    icone="sentiment_very_satisfied"
+                    >L’animateur te remercie pour ta participation
+                    !</BasesTitrePopup
+                >
+                <BasesTitrePopup v-if="popupTitle === 'gift'" icone="redeem"
+                    >Vous avez gagné {{ cadeau }}</BasesTitrePopup
+                >
                 <slot />
                 <!-- Bouton envoyer, fermer, suivant -->
-                <BaseButton />
+                <BaseButtonPopup
+                    v-if="popupButton === 'close'"
+                    :is-validate="true"
+                    button-type="close"
+                    >Fermer</BaseButtonPopup
+                >
+                <BaseButtonPopup
+                    v-if="popupButton === 'next'"
+                    :is-validate="true"
+                    button-type="next"
+                    >Suivant</BaseButtonPopup
+                >
+                <BaseButtonPopup
+                    v-if="popupButton === 'send'"
+                    :is-validate="formValidation"
+                    button-type="send"
+                    >Envoyer</BaseButtonPopup
+                >
+                <BaseButtonPopup
+                    v-if="popupButton === 'login'"
+                    :is-validate="true"
+                    button-type="login"
+                    >Se connecter</BaseButtonPopup
+                >
             </div>
         </form>
     </dialog>
