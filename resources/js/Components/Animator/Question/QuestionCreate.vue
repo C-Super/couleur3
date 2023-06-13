@@ -96,7 +96,15 @@ const cancelQuestionType = () => {
                     "
                     :form-type="form.type"
                 >
-                    <template #instructions
+                    <template
+                        v-if="
+                            form.type === InteractionType.SURVEY
+                        " #instructions
+                        >Entrer les réponses que les auditeurs pourraient
+                        répondre.</template
+                    >
+                    <template
+                        v-else #instructions
                         >Entrer les réponses que les auditeurs pourraient
                         répondre. Cocher la réponse correcte.</template
                     >

@@ -14,6 +14,10 @@ import { storeToRefs } from "pinia";
 const interactionStore = useInteractionStore();
 const { currentInteraction } = storeToRefs(interactionStore);
 
+const duration = new Date(currentInteraction.value.ended_at).getTime() - new Date().getTime();
+const sec = Math.floor((duration / 1000) % 60);
+const min = Math.floor((duration / (1000 * 60)));
+
 const activeTab = ref(0);
 </script>
 
@@ -22,7 +26,7 @@ const activeTab = ref(0);
         <template #title>
             <div class="flex flex-auto flex-row justify-between">
                 {{ currentInteraction.title }}
-                <base-countdown :color="Color.ACCENT" />
+                <base-countdown :color="Color.ACCENT" :sec="sec" :min="min"/>
             </div>
         </template>
         <template #content>
@@ -32,7 +36,7 @@ const activeTab = ref(0);
                     <base-answers />
                 </base-tab>
                 <base-tab title="Sélection aléatoire" :active="true">
-                    Les sélection aléatoire
+                    Sélection aléatoire
                     <base-answers-select />
                 </base-tab>
                 <base-tab title="Sélection rapidité">
