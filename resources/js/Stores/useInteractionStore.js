@@ -14,7 +14,7 @@ export const useInteractionStore = defineStore("interaction", () => {
     });
 
     const notPinnedAnswers = computed(() =>
-        state.currentInteraction.answers.filter(
+        state.currentInteraction?.answers.filter(
             (answer) => !state.pinnedAnswers.includes(answer)
         )
     );
@@ -32,6 +32,10 @@ export const useInteractionStore = defineStore("interaction", () => {
             .listen("InteractionCreated", (event) => {
                 console.log(event);
                 state.currentInteraction = event.interaction;
+            })
+            .listen("InteractionEndedEvent", () => {
+                console.log("ended");
+                state.currentInteraction = null;
             })
             .listen("AnswerSubmitedToAnimator", (event) => {
                 state.currentInteraction.answers.push(event.answer);

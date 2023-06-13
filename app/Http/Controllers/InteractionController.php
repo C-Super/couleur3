@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\InteractionType;
 use App\Events\InteractionCreated;
+use App\Events\InteractionEndedEvent;
 use App\Http\Requests\Interaction\StoreCallToActionRequest;
 use App\Http\Requests\Interaction\StoreQuickClickRequest;
 use App\Http\Requests\StoreInteractionRequest;
@@ -81,20 +82,21 @@ class InteractionController extends Controller
         $interaction->ended_at = now()->addSeconds($validated['duration']);
 
         $interaction->save();
+        $currentInteraction = Interaction::active()->with([
+            'answers' => [
+                'auditor' => [
+                    'user',
+                ],
+                'replyable',
+            ],
+            'call_to_action',
+            'question_choices',
+        ])->first();
 
-        broadcast(new InteractionCreated($interaction))->toOthers();
+        broadcast(new InteractionCreated($currentInteraction))->toOthers();
 
         return redirect()->back()->with([
-            'interaction' => Interaction::active()->with([
-                'answers' => [
-                    'auditor' => [
-                        'user',
-                    ],
-                    'replyable',
-                ],
-                'call_to_action',
-                'question_choices',
-            ])->first(),
+            'interaction' => $currentInteraction,
         ]);
     }
 
@@ -116,26 +118,29 @@ class InteractionController extends Controller
         $interaction->ended_at = now()->addSeconds($validated['duration']);
 
         $interaction->save();
+        $currentInteraction = Interaction::active()->with([
+            'answers' => [
+                'auditor' => [
+                    'user',
+                ],
+                'replyable',
+            ],
+            'call_to_action',
+            'question_choices',
+        ])->first();
 
-        broadcast(new InteractionCreated($interaction))->toOthers();
+        broadcast(new InteractionCreated($currentInteraction))->toOthers();
 
         return redirect()->back()->with([
-            'interaction' => Interaction::active()->with([
-                'answers' => [
-                    'auditor' => [
-                        'user',
-                    ],
-                    'replyable',
-                ],
-                'call_to_action',
-                'question_choices',
-            ])->first(),
+            'interaction' => $currentInteraction,
         ]);
     }
 
     public function endInteraction(Interaction $interaction)
     {
         $interaction->update(['ended_at' => now()]);
+
+        broadcast(new InteractionEndedEvent())->toOthers();
 
         return redirect()->back()->with([
             'interaction' => null,
