@@ -9,8 +9,8 @@ Néanmoins, nous avons pu observer plusieurs aspects sur lesquels nous pourrions
 Notre MVP est certes fonctionnel et sert de prototype concret et travaillé, il n'implémente tout de même pas toutes les fonctionnalités déterminées lors de la conception du projet. En effet, il manque plusieurs types d'interactions possibles, particulièrement en ce qui concerne les interactions média (audio et vidéo). Ces fonctionnalités ne sont manquantes qu'au niveau du front-end ; leur implémentation dans le back-end est complète. 
 Cet écart existe dû à une erreur dans l'estimation de la durée des tâches, notamment engendré par le point suivant. 
 ## Déphasage UX
-Ordinairement, il s'agirait d'initialement effectuer une recherche UX aboutie avant d'entamer la phase de développement. Malheureusement, dans un projet de si courte durée, ceci n'était pas envisageable et nous avions dû effectuer la phase UX en parallèle avec le début du développement du projet, de la conception du produit. 
-Ceci a créé de nombreux micro-retards et a engendré de nombreux changements à la structure du produit final. De plus, la prise de contact avec un de nos publics cibles, les animateurs radio, a été particulièrement compliqué et a retardé la finalisation de la recherche UX de plusieurs jours. 
+Ordinairement, il s'agirait d'initialement effectuer une recherche UX aboutie avant d'entamer la phase de développement. Malheureusement, dans un projet de si courte durée, une gestion consécutive de ces deux phases, la conception UX et le développement du projet, n'était pas envisageable. Nous les avons donc effectuées en parallèle. 
+Ceci a créé de nombreux micro-retards et a engendré de nombreux changements à la structure du produit final. De plus, la prise de contact avec un de nos publics cibles, les animateurs radio, a été particulièrement compliqué et finalement impossible. Ceci a retardé la finalisation de la recherche UX de plusieurs jours. 
 ## Difficultés techniques
 Finalement, nous avons rencontrés quelques légères difficultés techniques. 
 ### Système de gestion GitHub
