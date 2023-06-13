@@ -1,5 +1,3 @@
 <template>
-    <div>
-        Selection de la rapidité
-    </div>
+    <div>Selection de la rapidité</div>
 </template>

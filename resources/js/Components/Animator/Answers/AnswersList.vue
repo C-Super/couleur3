@@ -4,7 +4,8 @@ import { useInteractionStore } from "@/Stores/useInteractionStore.js";
 import { storeToRefs } from "pinia";
 
 const interactionStore = useInteractionStore();
-const { pinnedAnswers, notPinnedAnswers, currentInteraction } = storeToRefs(interactionStore);
+const { pinnedAnswers, notPinnedAnswers, currentInteraction } =
+    storeToRefs(interactionStore);
 </script>
 <template>
     <p class="text-2xl font-semibold">Réponse obtenues</p>
@@ -26,7 +27,9 @@ const { pinnedAnswers, notPinnedAnswers, currentInteraction } = storeToRefs(inte
                         <input type="checkbox" class="hidden" />
                         <!-- icon off -->
                         <span
-                            :class="`fill-current material-symbols-fill material-symbols-rounded text-4xl font-thin text-${Color.forInteractionType(currentInteraction.type)}`"
+                            :class="`fill-current material-symbols-fill material-symbols-rounded text-4xl font-thin text-${Color.forInteractionType(
+                                currentInteraction.type
+                            )}`"
                             @click="interactionStore.removePinned(pinnedAnswer)"
                         >
                             push_pin

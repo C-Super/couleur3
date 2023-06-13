@@ -18,7 +18,8 @@ const candidates = notPinnedAnswers;
             <div>
                 <p class="text-2xl font-semibold">Réponse obtenues</p>
                 <p class="font-light">
-                    Cliquez sur les utilisateurs que vous souhaitez faire gagner.
+                    Cliquez sur les utilisateurs que vous souhaitez faire
+                    gagner.
                 </p>
             </div>
             <div class="flex items-center">
@@ -27,7 +28,9 @@ const candidates = notPinnedAnswers;
                 </p>
                 <base-checkbox
                     :color="Color.forInteractionType(currentInteraction.type)"
-                    @change="interactionStore.updatePinnedAsWinners(pinnedAnswers)"
+                    @change="
+                        interactionStore.updatePinnedAsWinners(pinnedAnswers)
+                    "
                 />
             </div>
         </div>
@@ -44,11 +47,15 @@ const candidates = notPinnedAnswers;
                     >
                         <base-checkbox
                             :color="
-                                Color.forInteractionType(currentInteraction.type)
+                                Color.forInteractionType(
+                                    currentInteraction.type
+                                )
                             "
                             :checked="winners.indexOf(pinnedCandidate) != -1"
                             class="ml-1 mr-1"
-                            @change="interactionStore.removeWinner(pinnedCandidate)"
+                            @change="
+                                interactionStore.removeWinner(pinnedCandidate)
+                            "
                         />
 
                         <div class="font-bold">
@@ -67,7 +74,9 @@ const candidates = notPinnedAnswers;
                         </div>
 
                         <div
-                            :class="`fill-current material-symbols-fill material-symbols-rounded text-2xl font-thin text-${Color.forInteractionType(currentInteraction.type)}`"
+                            :class="`fill-current material-symbols-fill material-symbols-rounded text-2xl font-thin text-${Color.forInteractionType(
+                                currentInteraction.type
+                            )}`"
                         >
                             push_pin
                         </div>
@@ -85,7 +94,9 @@ const candidates = notPinnedAnswers;
                     >
                         <base-checkbox
                             :color="
-                                Color.forInteractionType(currentInteraction.type)
+                                Color.forInteractionType(
+                                    currentInteraction.type
+                                )
                             "
                             :checked="winners.indexOf(candidate) != -1"
                             class="ml-1 mr-1"
@@ -98,18 +109,19 @@ const candidates = notPinnedAnswers;
 
                         <div class="text-base">
                             {{
-                                new Date(candidate.created_at).toLocaleTimeString(
-                                    "fr-FR",
-                                    {
-                                        hour: "2-digit",
-                                        minute: "2-digit",
-                                    }
-                                )
+                                new Date(
+                                    candidate.created_at
+                                ).toLocaleTimeString("fr-FR", {
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                })
                             }}
                         </div>
 
                         <div
-                            :class="`fill-current material-symbols-rounded text-2xl font-thin text-${Color.forInteractionType(currentInteraction.type)}`"
+                            :class="`fill-current material-symbols-rounded text-2xl font-thin text-${Color.forInteractionType(
+                                currentInteraction.type
+                            )}`"
                         >
                             push_pin
                         </div>

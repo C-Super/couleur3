@@ -22,7 +22,10 @@ const { currentInteraction } = storeToRefs(interactionStore);
 
         <form class="flex flex-col gap-4 mt-4">
             <input-group id="winners-count" label="Nombre de gagnant">
-                <text-input id="winners-count" :color="Color.forInteractionType(currentInteraction.type)" />
+                <text-input
+                    id="winners-count"
+                    :color="Color.forInteractionType(currentInteraction.type)"
+                />
 
                 <input-error class="mt-2" />
             </input-group>

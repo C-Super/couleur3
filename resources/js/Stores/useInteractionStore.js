@@ -101,6 +101,6 @@ export const useInteractionStore = defineStore("interaction", () => {
         removePinned,
         addWinner,
         removeWinner,
-        updatePinnedAsWinners
+        updatePinnedAsWinners,
     };
 });
