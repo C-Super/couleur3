@@ -50,6 +50,7 @@ const submit = () => {
                         <text-input
                             id="link"
                             v-model="form.link"
+                            placeholder="https://"
                             :color="Color.SECONDARY"
                             @change="form.validate('link')"
                         />

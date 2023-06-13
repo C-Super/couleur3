@@ -42,9 +42,12 @@ const activeTab = ref(0);
         </template>
         <template #actions>
             <div class="flex flex-row gap-3">
-                <base-button :color="Color.ERROR" @click="interactionStore.endInteraction"
-                    >Fin de l'interaction</base-button
+                <base-button
+                    type="submit"
+                    @click="interactionStore.endInteraction()"
                 >
+                    Fin de l'interaction
+                </base-button>
             </div>
         </template>
     </base-card>

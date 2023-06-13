@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Interaction;
 
-use App\Rules\NoActiveInteractions;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreCallToActionRequest extends FormRequest
+class StoreQuickClickRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +23,7 @@ class StoreCallToActionRequest extends FormRequest
     {
         return [
             'title' => 'required|string|min:3|max:255',
-            'link' => 'required|url',
             'duration' => 'required|integer|min:15|max:3600',
-            new NoActiveInteractions,
         ];
     }
 }

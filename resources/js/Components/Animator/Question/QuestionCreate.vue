@@ -2,12 +2,11 @@
 <script setup>
 import TextInput from "@/Components/TextInput.vue";
 import InputGroup from "@/Components/InputGroup.vue";
-import MultipleInputGroup from "@/Components/MultipleInputGroup.vue";
+import MultipleInputGroup from "@/Components/Animator/Bases/MultipleInputGroup.vue";
 import BaseCard from "@/Components/Animator/Bases/BaseCard.vue";
 import BaseButton from "@/Components/Animator/Bases/BaseButton.vue";
 import BaseRadioGroup from "@/Components/Animator/Bases/BaseRadioGroup.vue";
 import BaseDurationRange from "@/Components/Animator/Bases/BaseDurationRange.vue";
-import BaseCheckbox from "@/Components/Animator/Bases/BaseCheckbox.vue";
 import Color from "@/Enums/Color.js";
 import InteractionType from "@/Enums/InteractionType.js";
 import QuestionType from "@/Enums/QuestionType.js";
@@ -21,8 +20,8 @@ const { isCreatingInteraction } = storeToRefs(interactionStore);
 const form = useForm({
     type: "",
     inputs: {
-        title:"",
-        duration:300
+        title: "",
+        duration: 300,
     },
 });
 
@@ -47,7 +46,7 @@ const cancelQuestionType = () => {
     radioButtons.forEach((radioButton) => {
         radioButton.checked = false;
     });
-}
+};
 </script>
 
 <template>
@@ -55,10 +54,26 @@ const cancelQuestionType = () => {
     <base-card :color="Color.PRIMARY">
         <template #title>Question</template>
         <template #content>
-            <base-radio-group v-model="form.type" :choices="QuestionType.getAll()" name="questionTypes" @input="interactionStore.creatingInteraction(form.type)" />
+            <base-radio-group
+                v-model="form.type"
+                :choices="QuestionType.getAll()"
+                name="questionTypes"
+                @input="interactionStore.creatingInteraction(form.type)"
+            />
 
-            <div v-if="isCreatingInteraction || form.type.length > 0" class="flex flex-col gap-6 mt-5">
-                <input-group v-if="form.type === InteractionType.MCQ || form.type === InteractionType.SURVEY || form.type === InteractionType.TEXT" id="question" label="Question">
+            <div
+                v-if="isCreatingInteraction || form.type.length > 0"
+                class="flex flex-col gap-6 mt-5"
+            >
+                <input-group
+                    v-if="
+                        form.type === InteractionType.MCQ ||
+                        form.type === InteractionType.SURVEY ||
+                        form.type === InteractionType.TEXT
+                    "
+                    id="question"
+                    label="Question"
+                >
                     <text-input
                         id="question"
                         v-model="form.inputs.title"
@@ -74,23 +89,52 @@ const cancelQuestionType = () => {
                     />
                 </input-group>
 
-                <multiple-input-group v-if="form.type === InteractionType.MCQ | form.type === InteractionType.SURVEY" :form-type="form.type">
-                    <template #instructions>Entrer les réponses que les auditeurs pourraient répondre. Cocher la réponse correcte.</template>
+                <multiple-input-group
+                    v-if="
+                        (form.type === InteractionType.MCQ) |
+                            (form.type === InteractionType.SURVEY)
+                    "
+                    :form-type="form.type"
+                >
+                    <template #instructions
+                        >Entrer les réponses que les auditeurs pourraient
+                        répondre. Cocher la réponse correcte.</template
+                    >
                     <template #input1>
+                        <input
+                            v-if="form.type === InteractionType.MCQ"
+                            type="radio"
+                            name="mcq"
+                            class="checkbox bg-transparent checkbox-primary checkbox-lg"
+                        />
                         <text-input id="input-1" color="primary" />
-                        <base-checkbox v-if="form.type === InteractionType.MCQ" />
                     </template>
                     <template #input2>
+                        <input
+                            v-if="form.type === InteractionType.MCQ"
+                            type="radio"
+                            name="mcq"
+                            class="checkbox bg-transparent checkbox-primary checkbox-lg"
+                        />
                         <text-input id="input-2" color="primary" />
-                        <base-checkbox v-if="form.type === InteractionType.MCQ" />
                     </template>
                     <template #input3>
+                        <input
+                            v-if="form.type === InteractionType.MCQ"
+                            type="radio"
+                            name="mcq"
+                            class="checkbox bg-transparent checkbox-primary checkbox-lg"
+                        />
                         <text-input id="input-3" color="primary" />
-                        <base-checkbox v-if="form.type === InteractionType.MCQ" />
                     </template>
                     <template #input4>
+                        <input
+                            v-if="form.type === InteractionType.MCQ"
+                            type="radio"
+                            name="mcq"
+                            class="checkbox bg-transparent checkbox-primary checkbox-lg"
+                        />
                         <text-input id="input-4" color="primary" />
-                        <base-checkbox v-if="form.type === InteractionType.MCQ" />
                     </template>
                 </multiple-input-group>
 
@@ -106,10 +150,14 @@ const cancelQuestionType = () => {
         </template>
         <template v-if="isCreatingInteraction" #actions>
             <div class="flex flex-row gap-3">
-                <base-button @click="cancelQuestionType"
+                <base-button
+                    :disabled="form.processing"
+                    @click="cancelQuestionType"
                     >Annuler</base-button
                 >
-                <base-button color="primary">Envoyer</base-button>
+                <base-button color="primary" :disabled="form.processing"
+                    >Envoyer</base-button
+                >
             </div>
         </template>
     </base-card>
