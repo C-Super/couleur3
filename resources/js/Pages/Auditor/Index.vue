@@ -2,7 +2,7 @@
 import AuditorLayout from "@/Layouts/AuditorLayout.vue";
 import Player from "@/Components/Auditor/Player.vue";
 import DescriptionLive from "@/Components/Auditor/Home/DescriptionLive.vue";
-import BasePopup from "@/Components/Auditor/Bases/BasePopup.vue";
+import Popup from "@/Components/Auditor/Home/Popup.vue";
 import ChatComponent from "@/Components/ChatComponent.vue";
 import Chat from "@/Components/Auditor/Home/Chat.vue";
 import Notification from "@/Components/Auditor/Home/Notification.vue";
@@ -27,7 +27,7 @@ defineProps({
     <AuditorLayout :auth-inf="auth.user">
         <Player />
         <DescriptionLive />
-        <BasePopup />
+        <Popup />
         <ChatComponent :chat-enabled="chatEnabled" />
         <div
             id="fixed-container"

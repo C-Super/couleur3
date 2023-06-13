@@ -26,7 +26,7 @@ function clickButtonPopup() {
 <template>
     <div class="flex justify-center mt-6">
         <button
-            class="btn btn-wide btn-md text-base rounded-full border-none w-36 h-9 min-h-0 font-bold text-base-100 bg-blue-auditor"
+            class="btn btn-md text-base rounded-full border-none w-36 h-9 min-h-0 font-bold text-base-100 bg-blue-auditor"
             :disabled="!isValidate"
             @click="clickButtonPopup"
         >
