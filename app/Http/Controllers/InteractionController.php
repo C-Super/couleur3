@@ -7,6 +7,7 @@ use App\Events\InteractionCreated;
 use App\Http\Requests\Interaction\StoreCallToActionRequest;
 use App\Http\Requests\Interaction\StoreMCQRequest;
 use App\Http\Requests\Interaction\StoreQuickClickRequest;
+use App\Http\Requests\Interaction\StoreSurveyRequest;
 use App\Http\Requests\StoreInteractionRequest;
 use App\Jobs\CheckInteractionEnded;
 use App\Models\CallToAction;
@@ -82,20 +83,21 @@ class InteractionController extends Controller
         $interaction->ended_at = now()->addSeconds($validated['duration']);
 
         $interaction->save();
+        $currentInteraction = Interaction::active()->with([
+            'answers' => [
+                'auditor' => [
+                    'user',
+                ],
+                'replyable',
+            ],
+            'call_to_action',
+            'question_choices',
+        ])->first();
 
-        broadcast(new InteractionCreated($interaction))->toOthers();
+        broadcast(new InteractionCreated($currentInteraction))->toOthers();
 
         return redirect()->back()->with([
-            'interaction' => Interaction::active()->with([
-                'answers' => [
-                    'auditor' => [
-                        'user',
-                    ],
-                    'replyable',
-                ],
-                'call_to_action',
-                'question_choices',
-            ])->first(),
+            'interaction' => $currentInteraction,
         ]);
     }
 
@@ -117,20 +119,21 @@ class InteractionController extends Controller
         $interaction->ended_at = now()->addSeconds($validated['duration']);
 
         $interaction->save();
+        $currentInteraction = Interaction::active()->with([
+            'answers' => [
+                'auditor' => [
+                    'user',
+                ],
+                'replyable',
+            ],
+            'call_to_action',
+            'question_choices',
+        ])->first();
 
-        broadcast(new InteractionCreated($interaction))->toOthers();
+        broadcast(new InteractionCreated($currentInteraction))->toOthers();
 
         return redirect()->back()->with([
-            'interaction' => Interaction::active()->with([
-                'answers' => [
-                    'auditor' => [
-                        'user',
-                    ],
-                    'replyable',
-                ],
-                'call_to_action',
-                'question_choices',
-            ])->first(),
+            'interaction' => $currentInteraction,
         ]);
     }
 
@@ -138,7 +141,6 @@ class InteractionController extends Controller
     {
         $validated = $request->validated();
 
-        $quick_click = CallToAction::create($validated);
         $interaction = new Interaction();
         /** @var \App\Models\User $user */
         $user = Auth::user();
@@ -158,19 +160,62 @@ class InteractionController extends Controller
             }
         }
 
-        broadcast(new InteractionCreated($interaction))->toOthers();
+        $currentInteraction = Interaction::active()->with([
+            'answers' => [
+                'auditor' => [
+                    'user',
+                ],
+                'replyable',
+            ],
+            'call_to_action',
+            'question_choices',
+        ])->first();
+
+        broadcast(new InteractionCreated($currentInteraction))->toOthers();
 
         return redirect()->back()->with([
-            'interaction' => Interaction::active()->with([
-                'answers' => [
-                    'auditor' => [
-                        'user',
-                    ],
-                    'replyable',
+            'interaction' => $currentInteraction,
+        ]);
+    }
+
+    public function storeSurvey(StoreSurveyRequest $request)
+    {
+        $validated = $request->validated();
+
+        $interaction = new Interaction();
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        /** @var \App\Models\Animator $animator */
+        $animator = $user->roleable;
+
+        $interaction->title = $validated['title'];
+        $interaction->type = InteractionType::SURVEY;
+        $interaction->animator_id = $animator->id;
+        $interaction->ended_at = now()->addSeconds($validated['duration']);
+
+        $interaction->save();
+
+        for ($i = 0; $i < count($validated['question_choices']); $i++) {
+            if ($validated['question_choices'][$i]['value']) {
+                $interaction->question_choices()->create($validated['question_choices'][$i]);
+            }
+        }
+
+        $currentInteraction = Interaction::active()->with([
+            'answers' => [
+                'auditor' => [
+                    'user',
                 ],
-                'call_to_action',
-                'question_choices',
-            ])->first(),
+                'replyable',
+            ],
+            'call_to_action',
+            'question_choices',
+        ])->first();
+
+        broadcast(new InteractionCreated($currentInteraction))->toOthers();
+
+        return redirect()->back()->with([
+            'interaction' => $currentInteraction,
         ]);
     }
 

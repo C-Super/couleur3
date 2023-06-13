@@ -28,7 +28,11 @@ const { pinnedAnswers, notPinnedAnswers } = storeToRefs(interactionStore);
                                 <span
                                     id="fill"
                                     class="fill-current material-symbols-rounded text-5xl text-primary font-thin"
-                                    @click="interactionStore.removePinned(pinnedAnswer)"
+                                    @click="
+                                        interactionStore.removePinned(
+                                            pinnedAnswer
+                                        )
+                                    "
                                 >
                                     push_pin
                                 </span>
@@ -61,7 +65,11 @@ const { pinnedAnswers, notPinnedAnswers } = storeToRefs(interactionStore);
                                 <!-- icon off -->
                                 <span
                                     class="fill-current material-symbols-rounded text-5xl font-thin"
-                                    @click="interactionStore.addPinned(notPinnedAnswer)"
+                                    @click="
+                                        interactionStore.addPinned(
+                                            notPinnedAnswer
+                                        )
+                                    "
                                 >
                                     push_pin
                                 </span>
