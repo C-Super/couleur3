@@ -32,7 +32,7 @@ class StoreMCQRequest extends FormRequest
                 'max:4',
                 new OnlyOneAnswerCorrect(),
             ],
-            'question_choices.*.value' => 'required|string|min:1|max:255',
+            'question_choices.*.value' => 'nullable|string|min:1|max:255',
             'question_choices.*.is_correct_answer' => 'required|boolean',
         ];
     }

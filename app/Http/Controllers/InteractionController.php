@@ -153,7 +153,9 @@ class InteractionController extends Controller
         $interaction->save();
 
         for ($i = 0; $i < count($validated['question_choices']); $i++) {
-            $interaction->question_choices()->create($validated['question_choices'][$i]);
+            if ($validated['question_choices'][$i]['value']) {
+                $interaction->question_choices()->create($validated['question_choices'][$i]);
+            }
         }
 
         broadcast(new InteractionCreated($interaction))->toOthers();
