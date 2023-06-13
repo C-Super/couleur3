@@ -67,8 +67,8 @@
 
   <style scoped>
   #miniature_player_container {
-    height: 64px;
-    width: 120px;
+    height: 4rem;
+width: calc(16 / 9 * 4rem);
   }
 
   .text-container {
