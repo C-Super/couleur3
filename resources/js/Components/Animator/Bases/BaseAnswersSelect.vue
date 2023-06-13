@@ -26,7 +26,14 @@ const candidates = notPinnedAnswers;
                 >
                     <tr class="border-none">
                         <th>
-                            <base-checkbox :color="Color.SECONDARY" @click="interactionStore.updateWinner(pinnedCandidate)" />
+                            <base-checkbox
+                                :color="Color.SECONDARY"
+                                @click="
+                                    interactionStore.updateWinner(
+                                        pinnedCandidate
+                                    )
+                                "
+                            />
                         </th>
                         <td class="font-bold text-base">
                             <slot>{{ pinnedCandidate.name }}</slot>
