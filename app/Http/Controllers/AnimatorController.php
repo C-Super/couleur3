@@ -22,7 +22,7 @@ class AnimatorController extends Controller
                     'auditor' => [
                         'user',
                     ],
-                    'answerable',
+                    'replyable',
                 ],
                 'call_to_action',
                 'question_choices',

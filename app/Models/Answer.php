@@ -31,7 +31,7 @@ class Answer extends Model
         return $this->belongsTo(Auditor::class);
     }
 
-    public function answerable(): MorphTo
+    public function replyable(): MorphTo
     {
         return $this->morphTo();
     }

@@ -90,7 +90,7 @@ class InteractionController extends Controller
                     'auditor' => [
                         'user',
                     ],
-                    'answerable',
+                    'replyable',
                 ],
                 'call_to_action',
                 'question_choices',
@@ -125,7 +125,7 @@ class InteractionController extends Controller
                     'auditor' => [
                         'user',
                     ],
-                    'answerable',
+                    'replyable',
                 ],
                 'call_to_action',
                 'question_choices',

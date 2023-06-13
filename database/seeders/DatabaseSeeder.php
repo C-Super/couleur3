@@ -18,5 +18,7 @@ class DatabaseSeeder extends Seeder
             AuditorSeeder::class,
             MessageSeeder::class,
         ]);
+
+        // Answer::factory()->count(10)->for(Interaction::factory()->state(['type' => 'QUICK_CLICK']))->for(CallToAction::factory(), 'replyable')->create()
     }
 }
