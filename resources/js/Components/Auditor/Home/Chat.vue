@@ -118,7 +118,8 @@ function check($event) {
         <div
             class="collapse-title text-base font-extrabold h-11 min-h-0 p-0 flex items-center justify-center"
         >
-            Chat<span
+            Chat {{ data.chatEnabled ? "" : "(désactivé par l'animateur)"
+            }}<span
                 class="material-symbols-rounded ml-1 align-middle transition-transform"
             >
                 expand_less

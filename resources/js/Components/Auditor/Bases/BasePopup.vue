@@ -1,19 +1,16 @@
 <script setup>
-import BaseButton from '@/Components/Auditor/Bases/BaseButton.vue';
+import BaseButton from "@/Components/Auditor/Bases/BaseButton.vue";
 </script>
 
 <template>
     <dialog id="popup-auditor" class="modal">
         <form
             method="dialog"
-            class="modal-box gradient-auditor flex flex-col text-blue-audior"
+            class="modal-box gradient-auditor flex flex-col text-blue-auditor"
         >
             <!-- Ferme le popup-->
-            <button
-                for="my-modal-3"
-                class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-            >
-                <span class="material-symbols-rounded text-4xl mr-4 mt-1">
+            <button for="my-modal-3" class="absolute right-4 top-4">
+                <span class="material-symbols-rounded text-4xl leading-none">
                     cancel
                 </span>
             </button>
