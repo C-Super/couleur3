@@ -14,7 +14,7 @@ export const useInteractionStore = defineStore("interaction", () => {
     });
 
     const notPinnedAnswers = computed(() =>
-        state.currentInteraction.answers.filter(
+        state.currentInteraction?.answers.filter(
             (answer) => !state.pinnedAnswers.includes(answer)
         )
     );

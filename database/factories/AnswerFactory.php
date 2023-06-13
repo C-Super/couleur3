@@ -2,10 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Enums\InteractionType;
-use App\Models\AnswerText;
 use App\Models\Auditor;
-use App\Models\Interaction;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

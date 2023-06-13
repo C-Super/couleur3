@@ -24,8 +24,8 @@ class QuestionChoice extends Model
         return $this->belongsTo(Interaction::class);
     }
 
-    public function answer(): MorphOne
+    public function replyable(): MorphOne
     {
-        return $this->morphOne(Answer::class, 'answerable');
+        return $this->morphOne(Answer::class, 'replyable');
     }
 }
