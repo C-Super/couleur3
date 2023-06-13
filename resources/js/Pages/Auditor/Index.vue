@@ -5,7 +5,6 @@ import DescriptionLive from "@/Components/Auditor/Home/DescriptionLive.vue";
 import Chat from "@/Components/Auditor/Home/Chat.vue";
 import Notification from "@/Components/Auditor/Home/Notification.vue";
 
-
 defineProps({
     chatEnabled: {
         type: Boolean,

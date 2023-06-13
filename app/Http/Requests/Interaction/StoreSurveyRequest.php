@@ -35,7 +35,7 @@ class StoreSurveyRequest extends FormRequest
                 new MaxFourChoices(),
             ],
             'question_choices.*.value' => 'nullable|string|min:1|max:255',
-            'question_choices.*.is_correct_answer' => 'required|boolean:false'
+            'question_choices.*.is_correct_answer' => 'required|boolean:false',
         ];
     }
 }

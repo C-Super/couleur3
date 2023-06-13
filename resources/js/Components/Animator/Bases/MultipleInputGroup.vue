@@ -8,7 +8,7 @@ import InputGroup from "@/Components/InputGroup.vue";
             <slot name="instructions"></slot>
         </div>
         <div class="flex flex-row w-full gap-10">
-            <input-group id="input-1" class=" flex-row items-center" label="1.">
+            <input-group id="input-1" class="flex-row items-center" label="1.">
                 <slot name="input1"></slot>
             </input-group>
 
