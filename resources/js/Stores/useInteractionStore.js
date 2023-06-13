@@ -77,10 +77,10 @@ export const useInteractionStore = defineStore("interaction", () => {
         if (Array.isArray(updatedCandidates)) {
             candidates = [...updatedCandidates];
         } else {
-            candidates.push(updatedCandidates)
+            candidates.push(updatedCandidates);
         }
 
-        candidates.forEach(candidate => {
+        candidates.forEach((candidate) => {
             if (state.winners.indexOf(candidate) == -1) {
                 state.winners.push(candidate);
             } else {

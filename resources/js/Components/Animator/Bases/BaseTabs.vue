@@ -61,7 +61,7 @@ function changeTab(i) {
 }
 
 .tab-active-primary {
-    @apply border-primary bg-[#6BA5BE];
+    @apply border-primary bg-[#6BA5BE] !important;
 }
 
 .tab-active-secondary {
