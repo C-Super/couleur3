@@ -1,16 +1,9 @@
 <script setup>
-defineEmits(["add:pinned", "remove:pinned"]);
+import { useInteractionStore } from "@/Stores/useInteractionStore.js";
+import { storeToRefs } from "pinia";
 
-defineProps({
-    pinnedAnswers: {
-        type: Array,
-        required: true,
-    },
-    notPinnedAnswers: {
-        type: Array,
-        required: true,
-    },
-});
+const interactionStore = useInteractionStore();
+const { pinnedAnswers, notPinnedAnswers } = storeToRefs(interactionStore);
 </script>
 <template>
     <p class="text-2xl font-semibold">Réponse obtenues</p>
@@ -35,9 +28,7 @@ defineProps({
                                 <span
                                     id="fill"
                                     class="fill-current material-symbols-rounded text-5xl text-primary"
-                                    @click="
-                                        $emit('remove:pinned', pinnedAnswer)
-                                    "
+                                    @click="interactionStore.removePinned(pinnedAnswer)"
                                 >
                                     push_pin
                                 </span>
@@ -70,9 +61,7 @@ defineProps({
                                 <!-- icon off -->
                                 <span
                                     class="fill-current material-symbols-rounded text-5xl"
-                                    @click="
-                                        $emit('add:pinned', notPinnedAnswer)
-                                    "
+                                    @click="interactionStore.addPinned(notPinnedAnswer)"
                                 >
                                     push_pin
                                 </span>

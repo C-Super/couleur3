@@ -1,18 +1,14 @@
 <script setup>
 import BaseCheckbox from "@/Components/Animator/Bases/BaseCheckbox.vue";
+import Color from "@/Enums/Color.js";
+import { useInteractionStore } from "@/Stores/useInteractionStore.js";
+import { storeToRefs } from "pinia";
 
-defineEmits(["update:winner"]);
+const interactionStore = useInteractionStore();
+const { pinnedAnswers, notPinnedAnswers } = storeToRefs(interactionStore);
 
-defineProps({
-    pinnedCandidates: {
-        type: Array,
-        required: true,
-    },
-    candidates: {
-        type: Array,
-        required: true,
-    },
-});
+const pinnedCandidates = pinnedAnswers;
+const candidates = notPinnedAnswers;
 </script>
 <template>
     <p class="text-2xl font-semibold">Réponse obtenues</p>
@@ -30,11 +26,7 @@ defineProps({
                 >
                     <tr class="border-none">
                         <th>
-                            <input
-                                type="checkbox"
-                                class="checkbox checkbox-lg checkbox-primary"
-                                @click="$emit('update:winner', pinnedCandidate)"
-                            />
+                            <base-checkbox :color="Color.SECONDARY" @click="interactionStore.updateWinner(pinnedCandidate)" />
                         </th>
                         <td class="font-bold text-base">
                             <slot>{{ pinnedCandidate.name }}</slot>
