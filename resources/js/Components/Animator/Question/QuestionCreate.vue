@@ -119,7 +119,19 @@ const cancelQuestionType = () => {
                             (form.type === InteractionType.MCQ) ||
                             (form.type === InteractionType.SURVEY)
                         "
-                        :form-type="form.type"
+                      :form-type="form.type"
+                >
+                    <template
+                        v-if="
+                            form.type === InteractionType.SURVEY
+                        " #instructions
+                        >Entrer les réponses que les auditeurs pourraient
+                        répondre.</template
+                    >
+                    <template
+                        v-else #instructions
+                        >Entrer les réponses que les auditeurs pourraient
+                        répondre. Cocher la réponse correcte.</template
                     >
                         <template #instructions
                             >Entrer les réponses que les auditeurs pourraient

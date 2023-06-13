@@ -1,23 +1,31 @@
 <script setup>
 import { ref } from "vue";
 
-defineProps({
+const props = defineProps({
     color: {
         type: String,
         default: "primary",
     },
+    sec: {
+        type: Number,
+        default: 0,
+    },
+    min: {
+        type: Number,
+        default: 0,
+    },
 });
 
-const seconds = ref(10);
-const minutes = ref(0);
+const seconds = ref(props.sec);
+const minutes = ref(props.min);
 
 setInterval(() => {
-    if (seconds.value > 0) {
+    if (seconds.value >= 0) {
         seconds.value--;
     }
-    if (seconds.value == 0 && !minutes.value == 0) {
+    if (seconds.value < 0 && !minutes.value == 0) {
         minutes.value--;
-        seconds.value = 60;
+        seconds.value = 59;
     }
 }, 1000);
 </script>

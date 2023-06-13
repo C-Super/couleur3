@@ -13,7 +13,7 @@ import { useInteractionStore } from "@/Stores/useInteractionStore.js";
 const interactionStore = useInteractionStore();
 
 const form = useForm("post", route("interactions.quick_click.store"), {
-    title: "Cliquer le plus rapidement possible",
+    title: "Sois le premier à cliquer !",
     duration: 60,
 });
 

@@ -41,6 +41,7 @@ class Interaction extends Model
     protected $casts = [
         'type' => InteractionType::class,
         'status' => InteractionStatus::class,
+        'ended_at' => 'datetime',
     ];
 
     /**
