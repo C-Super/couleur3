@@ -2,5 +2,5 @@ Dans le cadre du projet d'articulation (ProjArt), nous devons tenir et rigoureus
 - [Avant Projet](Avant%20Projet.md)
 - [Planification](Planification.md)
 - [Réalisation](R%C3%A9alisation)
-- [Clôture](Cl%C3%B4ture)
+- [Clôture](GesProj/cloture.md)
 De plus, nous avons documenté notre méthodologie de gestion dans [ce document](GesProj/methodologie.md).

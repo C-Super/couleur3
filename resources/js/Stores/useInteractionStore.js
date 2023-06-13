@@ -71,10 +71,22 @@ export const useInteractionStore = defineStore("interaction", () => {
         state.pinnedAnswers.splice(state.pinnedAnswers.indexOf(answer), 1);
     };
 
-    const updateWinner = (updatedCandidate) => {
-        if (state.winners.indexOf(updatedCandidate) == -1) {
-            state.winners.push(updatedCandidate);
-        } else state.winners.splice(state.winners.indexOf(updatedCandidate), 1);
+    const updateWinner = (updatedCandidates) => {
+        let candidates = [];
+
+        if (Array.isArray(updatedCandidates)) {
+            candidates = [...updatedCandidates];
+        } else {
+            candidates.push(updatedCandidates)
+        }
+
+        candidates.forEach(candidate => {
+            if (state.winners.indexOf(candidate) == -1) {
+                state.winners.push(candidate);
+            } else {
+                state.winners.splice(state.winners.indexOf(candidate), 1);
+            }
+        });
     };
 
     return {

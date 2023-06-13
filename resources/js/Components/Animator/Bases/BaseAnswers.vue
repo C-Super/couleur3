@@ -27,23 +27,19 @@ const { pinnedAnswers, notPinnedAnswers } = storeToRefs(interactionStore);
                                 <!-- icon on -->
                                 <span
                                     id="fill"
-                                    class="fill-current material-symbols-rounded text-5xl text-primary"
-                                    @click="
-                                        interactionStore.removePinned(
-                                            pinnedAnswer
-                                        )
-                                    "
+                                    class="fill-current material-symbols-rounded text-5xl text-primary font-thin"
+                                    @click="interactionStore.removePinned(pinnedAnswer)"
                                 >
                                     push_pin
                                 </span>
                             </label>
                         </th>
                         <td class="font-bold text-base">
-                            <slot>{{ pinnedAnswer.name }}</slot>
+                            <slot>{{ pinnedAnswer.auditor.phone }}</slot>
                         </td>
                         <td>
                             <slot class="text-base">{{
-                                pinnedAnswer.response
+                                pinnedAnswer.created_at
                             }}</slot>
                         </td>
                     </tr>
@@ -64,23 +60,19 @@ const { pinnedAnswers, notPinnedAnswers } = storeToRefs(interactionStore);
                                 <input type="checkbox" class="hidden" />
                                 <!-- icon off -->
                                 <span
-                                    class="fill-current material-symbols-rounded text-5xl"
-                                    @click="
-                                        interactionStore.addPinned(
-                                            notPinnedAnswer
-                                        )
-                                    "
+                                    class="fill-current material-symbols-rounded text-5xl font-thin"
+                                    @click="interactionStore.addPinned(notPinnedAnswer)"
                                 >
                                     push_pin
                                 </span>
                             </label>
                         </th>
                         <td class="font-bold text-base">
-                            <slot>{{ notPinnedAnswer.name }}</slot>
+                            <slot>{{ notPinnedAnswer.auditor.phone }}</slot>
                         </td>
                         <td>
                             <slot class="text-base">{{
-                                notPinnedAnswer.response
+                                notPinnedAnswer.created_at
                             }}</slot>
                         </td>
                     </tr>
@@ -91,6 +83,6 @@ const { pinnedAnswers, notPinnedAnswers } = storeToRefs(interactionStore);
 </template>
 <style>
 #fill.material-symbols-rounded {
-    font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 48;
+    font-variation-settings: "FILL" 1, "wght" 100, "GRAD" 0, "opsz" 48;
 }
 </style>
