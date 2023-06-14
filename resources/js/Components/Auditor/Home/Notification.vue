@@ -6,7 +6,7 @@ import { storeToRefs } from "pinia";
 import BaseNotif from "@/Components/Auditor/Bases/BaseNotif.vue";
 
 const interactionStore = useInteractionStore();
-const { currentInteraction } = storeToRefs(interactionStore);
+const { currentInteraction, hasOpenedNotif } = storeToRefs(interactionStore);
 
 function clicNotif() {
     if (
@@ -18,6 +18,7 @@ function clicNotif() {
         currentInteraction.value.type === InteractionType.VIDEO ||
         currentInteraction.value.type === InteractionType.PICTURE
     ) {
+        hasOpenedNotif.value = true;
         // Ouvre la modal
         document.querySelector("#popup-auditor").showModal();
 
@@ -47,7 +48,7 @@ function clicNotif() {
     <BaseNotif
         v-if="
             currentInteraction &&
-            currentInteraction.type === InteractionType.QUICK_CLICK
+            currentInteraction.type === InteractionType.QUICK_CLICK && hasOpenedNotif === false
         "
         id="notification-rapide"
         @click="clicNotif"

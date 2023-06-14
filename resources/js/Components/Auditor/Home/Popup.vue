@@ -1,6 +1,6 @@
 <!-- eslint-disable no-undef -->
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 // Construction du popup
 import BaseButtonPopup from "@/Components/Auditor/Bases/Popup/BaseButtonPopup.vue";
 import BasesTitrePopup from "@/Components/Auditor/Bases/Popup/BasesTitrePopup.vue";
@@ -14,7 +14,7 @@ import { storeToRefs } from "pinia";
 import { router } from "@inertiajs/vue3";
 
 const interactionStore = useInteractionStore();
-const { currentInteraction } = storeToRefs(interactionStore);
+const { currentInteraction, hasOpenedNotif } = storeToRefs(interactionStore);
 
 // permet de récupérer la personne authentifiée si elle existe
 const props = defineProps({
@@ -24,22 +24,23 @@ const props = defineProps({
     },
 });
 
-
-
 const submitQuickClickAnswer = () => {
-    router.post(route('interactions.answers.quick_click.store', currentInteraction.value.id))
+    router.post(route('interactions.answers.quick_click.store', currentInteraction.value.id));
 }
 
-if (props.authInf && currentInteraction.value.type  === InteractionType.QUICK_CLICK) {
-    submitQuickClickAnswer();
-}
+watch(hasOpenedNotif, () => {
+    if (props.authInf && hasOpenedNotif.value !== false && currentInteraction.value?.type  === InteractionType.QUICK_CLICK) {
+        submitQuickClickAnswer();
+    }
+})
+
 
 // Constante pour afficher ou non les titres et la validation
 const formValidation = ref(false);
 const popupTitle = computed(() => {
-    if (InteractionType.isQuestion(currentInteraction.value.type)) {
+    if (InteractionType.isQuestion(currentInteraction.value?.type)) {
         return PopupTitleType.QUESTION;
-    } else if (currentInteraction.value.type === InteractionType.QUICK_CLICK) {
+    } else if (currentInteraction.value?.type === InteractionType.QUICK_CLICK) {
         if (props.authInf === null) {
             return PopupTitleType.QUICK;
         }
@@ -47,7 +48,7 @@ const popupTitle = computed(() => {
     return PopupTitleType.THANKS;
 })
 
-
+console.log(currentInteraction.value);
 // Clique sur le bouton du popup
 function handleButtonPopup ($event) {
     if ($event.target.id === "login") {
@@ -62,7 +63,7 @@ function handleButtonPopup ($event) {
 </script>
 
 <template>
-    <dialog v-if="currentInteraction !== null" id="popup-auditor" class="modal">
+    <dialog v-if="currentInteraction !== null" class="modal">
         <form
             method="dialog"
             class="modal-box gradient-auditor flex flex-col text-blue-auditor"

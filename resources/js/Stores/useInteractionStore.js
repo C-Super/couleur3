@@ -8,6 +8,7 @@ export const useInteractionStore = defineStore("interaction", () => {
 
     const state = reactive({
         isCreatingInteraction: null,
+        hasOpenedNotif: false,
         currentInteraction: page.props.interaction,
         winners: [],
         pinnedAnswers: [],
@@ -30,8 +31,9 @@ export const useInteractionStore = defineStore("interaction", () => {
     const subscribeToPublicChannel = () => {
         window.Echo.channel("public")
             .listen("InteractionCreated", (event) => {
-                console.log(event);
+
                 state.currentInteraction = event.interaction;
+                state.hasOpenedNotif = false;
             })
             .listen("InteractionEndedEvent", () => {
                 console.log("ended");
@@ -107,4 +109,8 @@ export const useInteractionStore = defineStore("interaction", () => {
         removeWinner,
         updatePinnedAsWinners,
     };
+}, {
+    persist: {
+        paths: ['hasOpenedNotif']
+    }
 });

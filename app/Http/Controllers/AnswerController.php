@@ -6,6 +6,7 @@ use App\Enums\InteractionType;
 use App\Events\AnswerQuestionChoiceSubmited;
 use App\Events\AnswerSubmitedToAnimator;
 use App\Http\Requests\StoreAnswerRequest;
+use App\Settings\GeneralSettings;
 use App\Models\Answer;
 use App\Models\AnswerText;
 use App\Models\Interaction;
@@ -78,7 +79,7 @@ class AnswerController extends Controller
         return Inertia::render('Auditor/Answer', $answer);
     }
 
-    public function storeQuickClick(Request $request, Interaction $interaction)
+    public function storeQuickClick(Request $request, Interaction $interaction, GeneralSettings $settings)
     {
         $answer = Answer::create([
             'auditor_id' => Auth::user()->id,
@@ -88,7 +89,5 @@ class AnswerController extends Controller
         $answer->with('auditor.user')->get();
 
         broadcast(new AnswerSubmitedToAnimator($answer))->toOthers();
-
-        return response()->back();
     }
 }

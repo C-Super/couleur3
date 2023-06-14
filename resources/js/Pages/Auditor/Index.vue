@@ -22,7 +22,7 @@ defineProps({
     <AuditorLayout :auth-inf="auth.user">
         <Player />
         <DescriptionLive />
-        <Popup :auth-inf="auth.user" />
+        <Popup id="popup-auditor" :auth-inf="auth.user" />
         <div
             id="fixed-container"
             class="fixed bottom-16 w-screen flex flex-col"
