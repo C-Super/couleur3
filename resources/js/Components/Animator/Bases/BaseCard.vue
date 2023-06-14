@@ -1,5 +1,5 @@
 <template>
-    <div :class="`card bg-${color} bg-opacity-25 text-white`">
+    <div :class="`card bg-${color} bg-opacity-25 text-white h-full`">
         <div class="card-body">
             <h2 v-if="$slots.title" class="card-title font-bold text-3xl">
                 <slot name="title" />
