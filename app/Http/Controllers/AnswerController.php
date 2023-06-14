@@ -14,7 +14,6 @@ use App\Models\Media;
 use App\Models\QuestionChoice;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
-use Request;
 use Storage;
 
 class AnswerController extends Controller
@@ -42,7 +41,7 @@ class AnswerController extends Controller
                 $file = $request->file('replyable_data.file');
 
                 // Générer un nom de fichier unique
-                $fileName = time() . '_' . $file->getClientOriginalName();
+                $fileName = time().'_'.$file->getClientOriginalName();
 
                 // Envoyez le fichier au disque minio
                 Storage::disk('s3')->put($fileName, file_get_contents($file));
@@ -76,7 +75,7 @@ class AnswerController extends Controller
             broadcast(new AnswerQuestionChoiceSubmited($answer))->toOthers();
         }
 
-        return Inertia::render('Auditor/Answer', $answer);
+        return Inertia::render('Auditor/Index', $answer);
     }
 
     public function storeQuickClick(Request $request, Interaction $interaction, GeneralSettings $settings)

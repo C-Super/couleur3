@@ -31,7 +31,6 @@ export const useInteractionStore = defineStore("interaction", () => {
     const subscribeToPublicChannel = () => {
         window.Echo.channel("public")
             .listen("InteractionCreated", (event) => {
-
                 state.currentInteraction = event.interaction;
                 state.hasOpenedNotif = false;
             })
