@@ -20,7 +20,6 @@ const interactionStore = useInteractionStore();
 const { isCreatingInteraction } = storeToRefs(interactionStore);
 
 const correctAnswer = ref(null);
-
 const form = useForm({
     type: null,
     title: "",
@@ -55,10 +54,9 @@ watch(correctAnswer, (newValue) => {
 const submit = () => {
     form.post(
         route(
-            `interactions.${isCreatingInteraction.value.toLowerCase()}.store`
+            `interactions.${isCreatingInteraction.value?.toLowerCase()}.store`
         ),
         {
-            preserveScroll: true,
             onSuccess: () => {
                 form.reset();
                 interactionStore.createdInteraction();
@@ -113,7 +111,6 @@ const cancelQuestionType = () => {
                             id="question"
                             v-model="form.title"
                             :color="Color.PRIMARY"
-                            @change="form.validate('title')"
                         />
                         <InputError class="mt-2" :message="form.errors.title" />
                     </input-group>
@@ -123,7 +120,6 @@ const cancelQuestionType = () => {
                             id="title"
                             v-model="form.title"
                             :color="Color.PRIMARY"
-                            @change="form.validate('title')"
                         />
                         <InputError class="mt-2" :message="form.errors.title" />
                     </input-group>
@@ -155,68 +151,76 @@ const cancelQuestionType = () => {
                             />
                         </template>
                         <template #input1>
-                            <input
-                                v-if="form.type === InteractionType.MCQ"
-                                v-model="correctAnswer"
-                                :value="0"
-                                type="radio"
-                                name="mcq"
-                                class="checkbox bg-transparent checkbox-primary checkbox-lg"
-                                @change="correctAnswer = 0"
-                            />
-                            <text-input
-                                id="input-1"
-                                v-model="form.question_choices[0].value"
-                                :color="Color.PRIMARY"
-                            />
+                            <div class="flex flex-row items-center gap-3">
+                                <input
+                                    v-if="form.type === InteractionType.MCQ"
+                                    v-model="correctAnswer"
+                                    :value="0"
+                                    type="radio"
+                                    name="mcq"
+                                    class="checkbox bg-transparent checkbox-primary checkbox-lg"
+                                    @change="correctAnswer = 0"
+                                />
+                                <text-input
+                                    id="input-1"
+                                    v-model="form.question_choices[0].value"
+                                    :color="Color.PRIMARY"
+                                />
+                            </div>
                         </template>
                         <template #input2>
-                            <input
-                                v-if="form.type === InteractionType.MCQ"
-                                v-model="correctAnswer"
-                                :value="1"
-                                type="radio"
-                                name="mcq"
-                                class="checkbox bg-transparent checkbox-primary checkbox-lg"
-                                @change="correctAnswer = 1"
-                            />
-                            <text-input
-                                id="input-2"
-                                v-model="form.question_choices[1].value"
-                                :color="Color.PRIMARY"
-                            />
+                            <div class="flex flex-row items-center gap-3">
+                                <input
+                                    v-if="form.type === InteractionType.MCQ"
+                                    v-model="correctAnswer"
+                                    :value="1"
+                                    type="radio"
+                                    name="mcq"
+                                    class="checkbox bg-transparent checkbox-primary checkbox-lg"
+                                    @change="correctAnswer = 1"
+                                />
+                                <text-input
+                                    id="input-2"
+                                    v-model="form.question_choices[1].value"
+                                    :color="Color.PRIMARY"
+                                />
+                            </div>
                         </template>
                         <template #input3>
-                            <input
-                                v-if="form.type === InteractionType.MCQ"
-                                v-model="correctAnswer"
-                                :value="2"
-                                type="radio"
-                                name="mcq"
-                                class="checkbox bg-transparent checkbox-primary checkbox-lg"
-                                @change="correctAnswer = 2"
-                            />
-                            <text-input
-                                id="input-3"
-                                v-model="form.question_choices[2].value"
-                                :color="Color.PRIMARY"
-                            />
+                            <div class="flex flex-row items-center gap-3">
+                                <input
+                                    v-if="form.type === InteractionType.MCQ"
+                                    v-model="correctAnswer"
+                                    :value="2"
+                                    type="radio"
+                                    name="mcq"
+                                    class="checkbox bg-transparent checkbox-primary checkbox-lg"
+                                    @change="correctAnswer = 2"
+                                />
+                                <text-input
+                                    id="input-3"
+                                    v-model="form.question_choices[2].value"
+                                    :color="Color.PRIMARY"
+                                />
+                            </div>
                         </template>
                         <template #input4>
-                            <input
-                                v-if="form.type === InteractionType.MCQ"
-                                v-model="correctAnswer"
-                                :value="3"
-                                type="radio"
-                                name="mcq"
-                                class="checkbox bg-transparent checkbox-primary checkbox-lg"
-                                @change="correctAnswer = 3"
-                            />
-                            <text-input
-                                id="input-4"
-                                v-model="form.question_choices[3].value"
-                                :color="Color.PRIMARY"
-                            />
+                            <div class="flex flex-row items-center gap-3">
+                                <input
+                                    v-if="form.type === InteractionType.MCQ"
+                                    v-model="correctAnswer"
+                                    :value="3"
+                                    type="radio"
+                                    name="mcq"
+                                    class="checkbox bg-transparent checkbox-primary checkbox-lg"
+                                    @change="correctAnswer = 3"
+                                />
+                                <text-input
+                                    id="input-4"
+                                    v-model="form.question_choices[3].value"
+                                    :color="Color.PRIMARY"
+                                />
+                            </div>
                         </template>
                     </multiple-input-group>
 

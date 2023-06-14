@@ -32,7 +32,7 @@ const formatedSeconds = computed(() => {
 </script>
 
 <template>
-    <div class="flex w-full gap-8">
+    <div class="flex w-full gap-8 items-center">
         <div class="flex flex-auto flex-col">
             <input
                 id="duration"
