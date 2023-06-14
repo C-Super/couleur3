@@ -44,7 +44,7 @@ onMounted(() => {
 
         <button
             id="share"
-            :class="`btn btn-${type} btn-wide btn-md text-lg rounded-full border-none mt-5 w-[131.5px] h-[40px] font-light text-base-100`"
+            :class="`btn btn-${type} flex btn-md text-lg rounded-full border-none mt-5 px-5 h-[40px] font-light text-base-100`"
             style="background-color: rgba(255, 255, 255, 0.25)"
         >
             <span class="material-symbols-rounded font-light"> ios_share </span>
