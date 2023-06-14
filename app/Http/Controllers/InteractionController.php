@@ -100,7 +100,7 @@ class InteractionController extends Controller
 
         for ($i = 0; $i < count($validated['question_choices']); $i++) {
             if ($validated['question_choices'][$i]['value']) {
-                $interaction->question_choices()->create($validated['question_choices'][$i]);
+                $interaction->questionChoices()->create($validated['question_choices'][$i]);
             }
         }
 
@@ -140,7 +140,7 @@ class InteractionController extends Controller
 
         for ($i = 0; $i < count($validated['question_choices']); $i++) {
             if ($validated['question_choices'][$i]['value']) {
-                $interaction->question_choices()->create($validated['question_choices'][$i]);
+                $interaction->questionChoices()->create($validated['question_choices'][$i]);
             }
         }
 
