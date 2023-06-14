@@ -43,7 +43,7 @@ class AnimatorController extends Controller
             'status' => InteractionStatus::STOPPED,
         ]);
 
-        broadcast(new InteractionEndedEvent($currentInteraction))->toOthers();
+        broadcast(new InteractionEndedEvent())->toOthers();
 
         return redirect()->back()->with([
             'chatEnabled' => $settings->chat_enabled,

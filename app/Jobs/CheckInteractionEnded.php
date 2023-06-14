@@ -49,7 +49,7 @@ class CheckInteractionEnded implements ShouldQueue
             $rewards = Reward::all();
 
             // Trigger the InteractionEnded event for the auditors
-            event(new InteractionEndedEvent($this->interaction));
+            event(new InteractionEndedEvent());
 
             // Trigger the InteractionEndedForAnimator event for the animator
             event(new InteractionEndedForAnimatorEvent($this->interaction, $answers, $rewards));
