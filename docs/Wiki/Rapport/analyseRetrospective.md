@@ -32,8 +32,9 @@ Nous avons également du voir nos ambitions à la baisse en ce qui concerne la v
 ### Technique
 
 ### Backend !!!A COMPLETER!!!
-Au cours de ce projet, l'équipe a rencontré un défi technique majeur : le déploiement de l'application. Initialement, le projet devait être déployé sur l'infrastructure interne de l'école, appelée Pinguin. Cependant, cette plateforme a présenté plusieurs contraintes techniques et administratives, dont un pare-feu restrictif, l'absence de droits d'administration etc... Ces limitations ont rendu le déploiement sur Pinguin difficile et ont entravé le bon déroulement du projet.
 L'utilisation de GitHub pour la gestion de projet s'est prouvée moins idéale que prévu et nous a coûté en temps afin de nous l'approprier correctement. Nous avons également rencontré des difficultés avec le serveur "pingouin" de l'école, trop restrictif pour nos besoins, et que nous avons finalement abandonné pour Amazon S3.
+
+Au cours de ce projet, l'équipe a rencontré un défi technique majeur : le déploiement de l'application. Initialement, le projet devait être déployé sur l'infrastructure interne de l'école, appelée Pinguin. Cependant, cette plateforme a présenté plusieurs contraintes techniques et administratives, dont un pare-feu restrictif, l'absence de droits d'administration etc... Ces limitations ont rendu le déploiement sur Pinguin difficile et ont entravé le bon déroulement du projet.
 
 Devant ces obstacles, l'équipe a pris la décision stratégique de déployer le projet sur Azure, la plateforme cloud de Microsoft. Bien que cela ait introduit une nouvelle technologie à maîtriser, cela a également offert une occasion d'apprendre et de se familiariser avec les services cloud, une compétence de plus en plus précieuse dans l'industrie du développement logiciel.
 
