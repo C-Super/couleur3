@@ -53,7 +53,10 @@ function hideDetails(){
         </template>
         <template #content>
             <base-tabs v-model="activeTab" :color="Color.PRIMARY">
+                <!--ANSWER LIST-->
                 <base-tab title="Réponses">
+
+                    <!--MCQ && SURVEY-->
                     <base-bar-answers v-if="currentInteraction.type === InteractionType.MCQ && !isDisplayed" @display="displayDetails"/>
                     <div v-if = "isDisplayed">
                         <p class="text-2xl font-semibold">Participants ayant répondu</p>
@@ -63,13 +66,30 @@ function hideDetails(){
                         {{ answersDisplayed }}
                         <base-answer-simple :value="questionDisplayed.value"/>
                     </div>
+
+                    <!--TEXT-->
+                    <base-answers v-if="currentInteraction.type === InteractionType.TEXT"/>
                 </base-tab>
-                <base-tab v-if="currentInteraction.type === InteractionType.TEXT || currentInteraction.type === InteractionType.PICTURE" title="Sélection manuelle">
+
+                <!--SELECT MANUALLY-->
+                <base-tab v-if="currentInteraction.type === InteractionType.TEXT" title="Sélection manuelle">
+
+                    <!--TEXT-->
                     <base-answers-select />
                 </base-tab>
+
+                <!--SELECT RANDOM-->
                 <base-tab title="Sélection aléatoire" :active="true">
+
+
+                    <!--MCQ  random parmi les corrects -> pseudo des gagnants qui ont répondu juste-->
+
+                    <!--SURVEY  pseudo des gagnant random + n° de la question? -->
+                    <!--TEXT  pseudo des gagnant random + contenu text -->
                     <base-answers-select />
                 </base-tab>
+
+                <!--SELECT FIRSTS-->
                 <base-tab v-if="currentInteraction.type === InteractionType.MCQ" title="Sélection des premiers" >
                     <base-answers-select />
                 </base-tab>
