@@ -1,4 +1,6 @@
 # Projet d'articulation - Groupe 6 (Super)
+## Contexte
+Ce projet a été conçu et réalisé dans le cadre d'un projet de cours (COMEM) à la Haute École d'Ingénierie et de Gestion du Canton de Vaud (HEIG-VD). Il s'agit d'un projet d'articulation, mené par des étudiants en deuxième année du cursus, se formant pour devenir des ingénieurs des médias. Ces projets ont pour objectif d'intégrer et d'appliquer les compétences acquises tout au long de la formation dans un contexte concret et professionnel.
 ## Introduction
 Le présent résumé a pour objectif de présenter de manière concise notre produit, ShowSpark. Pendant un mois, notre équipe s'est engagée à développer une solution qui réponde aux besoins identifiés de Couleur 3 et apporte une réelle valeur ajoutée à sa mission.
 Pour plus d’informations, veuillez consulter le rapport rendu, ou la [documentation du projet](https://github.com/C-Super/couleur3/tree/main/docs/Wiki).
