@@ -14,7 +14,6 @@ import { storeToRefs } from "pinia";
 
 const interactionStore = useInteractionStore();
 const { currentInteraction } = storeToRefs(interactionStore);
-
 const duration =
     new Date(currentInteraction.value.ended_at).getTime() -
     new Date().getTime();
@@ -27,12 +26,12 @@ const isDisplayed = ref(false);
 const questionDisplayed = ref(null);
 const answersDisplayed = ref(null);
 
-function displayDetails(questionChoice, answers){
+function displayDetails(questionChoice, answers) {
     questionDisplayed.value = questionChoice;
     answersDisplayed.value = answers;
     isDisplayed.value = true;
 }
-function hideDetails(){
+function hideDetails() {
     isDisplayed.value = false;
 }
 </script>
@@ -55,33 +54,42 @@ function hideDetails(){
             <base-tabs v-model="activeTab" :color="Color.PRIMARY">
                 <!--ANSWER LIST-->
                 <base-tab title="Réponses">
-
                     <!--MCQ && SURVEY-->
-                    <base-bar-answers v-if="currentInteraction.type === InteractionType.MCQ && !isDisplayed" @display="displayDetails"/>
-                    <div v-if = "isDisplayed">
-                        <p class="text-2xl font-semibold">Participants ayant répondu</p>
+                    <base-bar-answers
+                        v-if="
+                            currentInteraction.type === InteractionType.MCQ &&
+                            !isDisplayed
+                        "
+                        @display="displayDetails"
+                    />
+                    <div v-if="isDisplayed">
+                        <p class="text-2xl font-semibold">
+                            Participants ayant répondu
+                        </p>
                         <p class="font-light">
-                            Réponse: {{questionDisplayed}}
+                            Réponse: {{ questionDisplayed }}
                         </p>
                         {{ answersDisplayed }}
-                        <base-answer-simple :value="questionDisplayed.value"/>
+                        <base-answer-simple :value="questionDisplayed.value" />
                     </div>
 
                     <!--TEXT-->
-                    <base-answers v-if="currentInteraction.type === InteractionType.TEXT"/>
+                    <base-answers
+                        v-if="currentInteraction.type === InteractionType.TEXT"
+                    />
                 </base-tab>
 
                 <!--SELECT MANUALLY-->
-                <base-tab v-if="currentInteraction.type === InteractionType.TEXT" title="Sélection manuelle">
-
+                <base-tab
+                    v-if="currentInteraction.type === InteractionType.TEXT"
+                    title="Sélection manuelle"
+                >
                     <!--TEXT-->
                     <base-answers-select />
                 </base-tab>
 
                 <!--SELECT RANDOM-->
                 <base-tab title="Sélection aléatoire" :active="true">
-
-
                     <!--MCQ  random parmi les corrects -> pseudo des gagnants qui ont répondu juste-->
 
                     <!--SURVEY  pseudo des gagnant random + n° de la question? -->
@@ -90,7 +98,10 @@ function hideDetails(){
                 </base-tab>
 
                 <!--SELECT FIRSTS-->
-                <base-tab v-if="currentInteraction.type === InteractionType.MCQ" title="Sélection des premiers" >
+                <base-tab
+                    v-if="currentInteraction.type === InteractionType.MCQ"
+                    title="Sélection des premiers"
+                >
                     <base-answers-select />
                 </base-tab>
             </base-tabs>
@@ -98,13 +109,16 @@ function hideDetails(){
         <template #actions>
             <div class="flex flex-row gap-3">
                 <base-button
-                    v-if="isDisplayed && (activeTab === 0 || activeTab === 'Réponses')"
+                    v-if="
+                        isDisplayed &&
+                        (activeTab === 0 || activeTab === 'Réponses')
+                    "
                     @click="hideDetails()"
                 >
                     Retour
                 </base-button>
                 <base-button
-v-else
+                    v-else
                     type="submit"
                     @click="interactionStore.endInteraction()"
                 >

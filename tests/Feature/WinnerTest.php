@@ -30,8 +30,6 @@ it('generates random winners list successfully', function () {
         'roleable_type' => get_class($animator),
     ]);
 
-    $reward = Reward::factory()->create();
-
     $interaction = Interaction::factory(
         [
             'animator_id' => $animator->id,
@@ -51,7 +49,7 @@ it('generates random winners list successfully', function () {
     $this->actingAs($user);
 
     // Send request
-    $response = postJson('/interactions/winner/random', [
+    $response = postJson("/interactions/{$interaction->id}/winners/random", [
         'interaction_id' => $interaction->id,
         'winners_count' => 3,
     ]);
@@ -113,7 +111,7 @@ it('replaces a winner successfully', function () {
     $winnerToReplace = $winners[0];
 
     // Send request to replace the first winner
-    $response = postJson('/interactions/winner/replace', [
+    $response = postJson("/interactions/{$interaction->id}/winners/replace", [
         'interaction_id' => $interaction->id,
         'auditor_id' => $winnerToReplace['id'],
     ]);
@@ -170,7 +168,7 @@ it('stores winners successfully', function () {
     $winners = $auditors->take(3)->pluck('id')->toArray();
 
     // Send request to store the winners
-    $response = postJson('/interactions/winner/confirm', [
+    $response = postJson("/interactions/{$interaction->id}/winners/confirm", [
         'interaction_id' => $interaction->id,
         'auditor_ids' => $winners,
         'reward_id' => $reward->id,
@@ -229,7 +227,7 @@ it('generates fastest winners list successfully', function () {
     $this->actingAs($user);
 
     // Send request
-    $response = postJson('/interactions/winner/fastest', [
+    $response = postJson("/interactions/{$interaction->id}/winners/fastest", [
         'interaction_id' => $interaction->id,
         'winners_count' => 3,
     ]);
@@ -280,7 +278,7 @@ it('requires reward field to store winners', function () {
     $winners = $auditors->take(3)->pluck('id')->toArray();
 
     // Send request to store the winners without providing reward_id
-    $response = postJson('/interactions/winner/confirm', [
+    $response = postJson("/interactions/{$interaction->id}/winners/confirm", [
         'interaction_id' => $interaction->id,
         'auditor_ids' => $winners,
     ]);

@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import defaultTheme from "tailwindcss/defaultTheme";
 import * as daisyui from "daisyui";
 import forms from "@tailwindcss/forms";
@@ -34,10 +35,17 @@ export default {
             variants: ["hover", "focus"],
         },
         {
+            pattern: /outline-(primary|secondary|accent|white|error)/,
+            variants: ["hover", "focus"],
+        },
+        {
             pattern: /text-(primary|secondary|accent|white|error)/,
         },
         {
             pattern: /tab-active-(primary|secondary|accent|white|error)/,
+        },
+        {
+            pattern: /scrollbar-thumb-(primary|secondary|accent|white|error)/,
         },
     ],
 
@@ -77,5 +85,9 @@ export default {
         },
     },
 
-    plugins: [forms, daisyui],
+    plugins: [
+        forms,
+        daisyui,
+        require("tailwind-scrollbar")({ nocompatible: true }),
+    ],
 };

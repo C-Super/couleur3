@@ -2,6 +2,7 @@
 <script setup>
 import TextInput from "@/Components/TextInput.vue";
 import InputGroup from "@/Components/InputGroup.vue";
+import InputError from "@/Components/InputError.vue";
 import MultipleInputGroup from "@/Components/Animator/Bases/MultipleInputGroup.vue";
 import BaseCard from "@/Components/Animator/Bases/BaseCard.vue";
 import BaseButton from "@/Components/Animator/Bases/BaseButton.vue";
@@ -68,6 +69,7 @@ const submit = () => {
 
 const cancelQuestionType = () => {
     form.reset();
+    form.clearErrors();
     interactionStore.cancelInteraction();
 
     // Remove the selected radio button
@@ -80,7 +82,10 @@ const cancelQuestionType = () => {
 
 <template>
     <!-- Dashboard card && Create form -->
-    <form @submit.prevent="submit">
+    <form
+        class="overflow-y-scroll scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-primary"
+        @submit.prevent="submit"
+    >
         <base-card :color="Color.PRIMARY">
             <template #title>Question</template>
             <template #content>
@@ -108,7 +113,9 @@ const cancelQuestionType = () => {
                             id="question"
                             v-model="form.title"
                             :color="Color.PRIMARY"
+                            @change="form.validate('title')"
                         />
+                        <InputError class="mt-2" :message="form.errors.title" />
                     </input-group>
 
                     <input-group v-else id="title" label="Titre">
@@ -116,7 +123,9 @@ const cancelQuestionType = () => {
                             id="title"
                             v-model="form.title"
                             :color="Color.PRIMARY"
+                            @change="form.validate('title')"
                         />
+                        <InputError class="mt-2" :message="form.errors.title" />
                     </input-group>
 
                     <multiple-input-group
@@ -129,13 +138,22 @@ const cancelQuestionType = () => {
                         <template
                             v-if="form.type === InteractionType.SURVEY"
                             #instructions
-                            >Entrer les réponses que les auditeurs pourraient
-                            répondre.</template
                         >
-                        <template v-else #instructions
-                            >Entrer les réponses que les auditeurs pourraient
-                            répondre. Cocher la réponse correcte.</template
-                        >
+                            Entrer les réponses que les auditeurs pourraient
+                            répondre.
+                            <InputError
+                                class="mt-2"
+                                :message="form.errors.question_choices"
+                            />
+                        </template>
+                        <template v-else #instructions>
+                            Entrer les réponses que les auditeurs pourraient
+                            répondre. Cocher la réponse correcte.
+                            <InputError
+                                class="mt-2"
+                                :message="form.errors.question_choices"
+                            />
+                        </template>
                         <template #input1>
                             <input
                                 v-if="form.type === InteractionType.MCQ"

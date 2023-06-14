@@ -32,18 +32,15 @@ const submit = () => {
 </script>
 
 <template>
-    <base-card class="flex-auto grow" :color="Color.WHITE">
+    <base-card :color="Color.WHITE">
         <template #title>Chat</template>
-        <template #subtitle>
-            <div class="overflow-hidden overflow-y-auto">
-                <TransitionGroup tag="ul">
-                    <li v-for="msg in messages" :key="msg.id">
-                        <message-item :msg="msg" class="mb-2" />
-                    </li>
-                </TransitionGroup>
-            </div>
+        <template #content>
+            <ul class="overflow-y-scroll flex-col gap-2">
+                <li v-for="msg in messages" :key="msg.id">
+                    <message-item :msg="msg" />
+                </li>
+            </ul>
         </template>
-        <template #content></template>
         <template #actions>
             <form @submit.prevent="submit">
                 <base-button :disabled="form.processing">

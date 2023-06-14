@@ -4,10 +4,9 @@ namespace App\Http\Requests\Interaction;
 
 use App\Rules\MaxFourChoices;
 use App\Rules\MinTwoChoices;
-use App\Rules\OnlyOneAnswerCorrect;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreMCQRequest extends FormRequest
+class StoreSurveyRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -32,12 +31,11 @@ class StoreMCQRequest extends FormRequest
                 'array',
                 'min:2',
                 'max:4',
-                new OnlyOneAnswerCorrect(),
                 new MinTwoChoices(),
                 new MaxFourChoices(),
             ],
             'question_choices.*.value' => 'nullable|string|min:1|max:255',
-            'question_choices.*.is_correct_answer' => 'required|boolean',
+            'question_choices.*.is_correct_answer' => 'required|boolean:false',
         ];
     }
 }
