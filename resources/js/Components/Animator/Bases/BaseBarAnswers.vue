@@ -17,19 +17,17 @@ const getBarColor = (isCorrect) => {
 const getQuestionChoiceAnswers = (questionChoice) => {
     return currentInteraction.value.answers.filter(
         (answer) => answer.value === questionChoice.value
-    ).length;
+    );
 };
 let maxValue = 0;
 questionChoices.forEach((questionChoice) => {
-    if (getQuestionChoiceAnswers(questionChoice) > maxValue) {
-        maxValue = getQuestionChoiceAnswers(questionChoice);
+    if (getQuestionChoiceAnswers(questionChoice).length > maxValue) {
+        maxValue = getQuestionChoiceAnswers(questionChoice).length;
     }
 });
 
 const getHeights = (questionChoice) => {
-    const questionChoiceValue = currentInteraction.value.answers.filter(
-        (answer) => answer.value === questionChoice.value
-    ).length;
+    const questionChoiceValue = getQuestionChoiceAnswers(questionChoice).length;
     if(maxValue != 0){
         return (questionChoiceValue  / maxValue) * (barMaxHeight - 50) + 50;
     } else {
@@ -52,10 +50,10 @@ const getHeights = (questionChoice) => {
             class="bar"
             :class="`grid grid-cols-1 bg-${getBarColor(
                 questionChoice.is_correct_answer
-            )} bg-opacity-50 rounded-t-[20px] w-full justify-items-center content-between`"
-            @click = "$emit(display, questionChoice )"
+            )} bg-opacity-50 rounded-t-[20px] w-full justify-items-center content-between hover:bg-opacity-75`"
+            @click = "$emit('display', questionChoice.value, getQuestionChoiceAnswers(questionChoice) )"
         >
-            <div>{{ getQuestionChoiceAnswers(questionChoice) }}</div>
+            <div>{{ getQuestionChoiceAnswers(questionChoice).length }}</div>
             <div class="text-[#1c1354] text-lg font-bold">
                 {{ questionChoice.value }}
             </div>

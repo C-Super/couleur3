@@ -25,11 +25,15 @@ const activeTab = ref(0);
 console.log(activeTab.value);
 const isDisplayed = ref(false);
 const questionDisplayed = ref(null);
+const answersDisplayed = ref(null);
 
-function displayDetails(questionChoice){
-    alert("c'est cliqué!")
+function displayDetails(questionChoice, answers){
     questionDisplayed.value = questionChoice;
+    answersDisplayed.value = answers;
     isDisplayed.value = true;
+}
+function hideDetails(){
+    isDisplayed.value = false;
 }
 </script>
 
@@ -50,16 +54,23 @@ function displayDetails(questionChoice){
         <template #content>
             <base-tabs v-model="activeTab" :color="Color.PRIMARY">
                 <base-tab title="Réponses">
-                    <base-bar-answers v-if="currentInteraction.type === InteractionType.MCQ" @display="displayDetails"/>
-                    <div v-if = "isDisplayed">Participants</div>
+                    <base-bar-answers v-if="currentInteraction.type === InteractionType.MCQ && !isDisplayed" @display="displayDetails"/>
+                    <div v-if = "isDisplayed">
+                        <p class="text-2xl font-semibold">Participants ayant répondu</p>
+                        <p class="font-light">
+                            Réponse: {{questionDisplayed}}
+                        </p>
+                        {{ answersDisplayed }}
+                        <base-answer-simple :value="questionDisplayed.value"/>
+                    </div>
                 </base-tab>
-                <base-tab v-if="currentInteraction.type === InteractionType.TEXT" title="Sélection manuelle">
+                <base-tab v-if="currentInteraction.type === InteractionType.TEXT || currentInteraction.type === InteractionType.PICTURE" title="Sélection manuelle">
                     <base-answers-select />
                 </base-tab>
-                <base-tab v-if="currentInteraction.type === InteractionType.SURVEY" title="Sélection aléatoire" :active="true">
+                <base-tab title="Sélection aléatoire" :active="true">
                     <base-answers-select />
                 </base-tab>
-                <base-tab v-if="currentInteraction.type === InteractionType.MCQ" title="Sélection premiers" >
+                <base-tab v-if="currentInteraction.type === InteractionType.MCQ" title="Sélection des premiers" >
                     <base-answers-select />
                 </base-tab>
             </base-tabs>
@@ -67,6 +78,13 @@ function displayDetails(questionChoice){
         <template #actions>
             <div class="flex flex-row gap-3">
                 <base-button
+                    v-if="isDisplayed && (activeTab === 0 || activeTab === 'Réponses')"
+                    @click="hideDetails()"
+                >
+                    Retour
+                </base-button>
+                <base-button
+v-else
                     type="submit"
                     @click="interactionStore.endInteraction()"
                 >
