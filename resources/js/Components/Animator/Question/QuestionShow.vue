@@ -8,17 +8,15 @@ import BaseBarAnswers from "@/Components/Animator/Bases/BaseBarAnswers.vue";
 import BaseAnswersSelect from "@/Components/Animator/Bases/BaseAnswersSelect.vue";
 import InteractionType from "@/Enums/InteractionType.js";
 import Color from "@/Enums/Color.js";
+import { calculateDuration } from "@/Utils/time.js";
 import { ref } from "vue";
 import { useInteractionStore } from "@/Stores/useInteractionStore.js";
 import { storeToRefs } from "pinia";
 
 const interactionStore = useInteractionStore();
 const { currentInteraction } = storeToRefs(interactionStore);
-const duration =
-    new Date(currentInteraction.value.ended_at).getTime() -
-    new Date().getTime();
-const sec = Math.floor((duration / 1000) % 60);
-const min = Math.floor(duration / (1000 * 60));
+
+const { sec, min } = calculateDuration(currentInteraction.value.ended_at, null);
 
 const activeTab = ref(0);
 console.log(activeTab.value);
