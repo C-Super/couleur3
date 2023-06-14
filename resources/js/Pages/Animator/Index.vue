@@ -26,9 +26,9 @@ const endEmission = () => {
 
 <template>
     <Head title="Dashboard" />
-    <div id="animator-container" class="h-screen p-5 flex gap-5">
-        <div class="basis-1/3 flex flex-col gap-3">
-            <chat-view />
+    <div id="animator-container" class="max-h-screen h-screen p-5 flex gap-5">
+        <div class="basis-1/3 flex flex-auto flex-col max-h-full gap-3">
+            <chat-view class="flex-auto" />
 
             <base-button
                 color="error"

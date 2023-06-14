@@ -14,7 +14,7 @@ export default {
 
     safelist: [
         {
-            pattern: /bg-(primary|secondary|accent|white)/,
+            pattern: /bg-(primary|secondary|accent|white|error)/,
             variants: ["hover", "focus"],
         },
         {
@@ -22,18 +22,26 @@ export default {
             variants: ["hover", "focus"],
         },
         {
-            pattern: /border-(primary|secondary|accent|white)/,
+            pattern: /border-(primary|secondary|accent|white|error)/,
             variants: ["hover", "focus"],
         },
         {
-            pattern: /range-(primary|secondary|accent|white)/,
+            pattern: /range-(primary|secondary|accent|white|error)/,
             variants: ["hover", "focus"],
         },
         {
-            pattern: /checkbox-(primary|secondary|accent|white)/,
+            pattern: /checkbox-(primary|secondary|accent|white|error)/,
+            variants: ["hover", "focus"],
         },
         {
-            pattern: /tab-active-(primary|secondary|accent)/
+            pattern: /outline-(primary|secondary|accent|white|error)/,
+            variants: ["hover", "focus"],
+        },
+        {
+            pattern: /text-(primary|secondary|accent|white|error)/,
+        },
+        {
+            pattern: /tab-active-(primary|secondary|accent|white|error)/,
         },
     ],
 

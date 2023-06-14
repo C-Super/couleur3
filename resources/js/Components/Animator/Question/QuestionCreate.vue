@@ -2,6 +2,7 @@
 <script setup>
 import TextInput from "@/Components/TextInput.vue";
 import InputGroup from "@/Components/InputGroup.vue";
+import InputError from "@/Components/InputError.vue";
 import MultipleInputGroup from "@/Components/Animator/Bases/MultipleInputGroup.vue";
 import BaseCard from "@/Components/Animator/Bases/BaseCard.vue";
 import BaseButton from "@/Components/Animator/Bases/BaseButton.vue";
@@ -42,23 +43,28 @@ const form = useForm({
             value: "",
             is_correct_answer: correctAnswer?.value === 3,
         },
-    ]
+    ],
 });
 
 watch(correctAnswer, (newValue) => {
     form.question_choices.forEach((question_choice, index) => {
         question_choice.is_correct_answer = newValue === index;
     });
-})
+});
 
 const submit = () => {
-    form.post(route(`interactions.${isCreatingInteraction.value.toLowerCase()}.store`), {
-        preserveScroll: true,
-        onSuccess: () => {
-            form.reset();
-            interactionStore.createdInteraction();
-        },
-    });
+    form.post(
+        route(
+            `interactions.${isCreatingInteraction.value.toLowerCase()}.store`
+        ),
+        {
+            preserveScroll: true,
+            onSuccess: () => {
+                form.reset();
+                interactionStore.createdInteraction();
+            },
+        }
+    );
 };
 
 const cancelQuestionType = () => {
@@ -103,7 +109,9 @@ const cancelQuestionType = () => {
                             id="question"
                             v-model="form.title"
                             :color="Color.PRIMARY"
+                            @change="form.validate('title')"
                         />
+                        <InputError class="mt-2" :message="form.errors.title" />
                     </input-group>
 
                     <input-group v-else id="title" label="Titre">
@@ -111,32 +119,37 @@ const cancelQuestionType = () => {
                             id="title"
                             v-model="form.title"
                             :color="Color.PRIMARY"
+                            @change="form.validate('title')"
                         />
+                        <InputError class="mt-2" :message="form.errors.title" />
                     </input-group>
 
                     <multiple-input-group
                         v-if="
-                            (form.type === InteractionType.MCQ) ||
-                            (form.type === InteractionType.SURVEY)
-                        "
-                      :form-type="form.type"
-                >
-                    <template
-                        v-if="
+                            form.type === InteractionType.MCQ ||
                             form.type === InteractionType.SURVEY
-                        " #instructions
-                        >Entrer les réponses que les auditeurs pourraient
-                        répondre.</template
+                        "
+                        :form-type="form.type"
                     >
-                    <template
-                        v-else #instructions
-                        >Entrer les réponses que les auditeurs pourraient
-                        répondre. Cocher la réponse correcte.</template
-                    >
-                        <template #instructions
-                            >Entrer les réponses que les auditeurs pourraient
-                            répondre. Cocher la réponse correcte.</template
+                        <template
+                            v-if="form.type === InteractionType.SURVEY"
+                            #instructions
                         >
+                            Entrer les réponses que les auditeurs pourraient
+                            répondre.
+                            <InputError
+                                class="mt-2"
+                                :message="form.errors.question_choices"
+                            />
+                        </template>
+                        <template v-else #instructions>
+                            Entrer les réponses que les auditeurs pourraient
+                            répondre. Cocher la réponse correcte.
+                            <InputError
+                                class="mt-2"
+                                :message="form.errors.question_choices"
+                            />
+                        </template>
                         <template #input1>
                             <input
                                 v-if="form.type === InteractionType.MCQ"
@@ -147,7 +160,11 @@ const cancelQuestionType = () => {
                                 class="checkbox bg-transparent checkbox-primary checkbox-lg"
                                 @change="correctAnswer = 0"
                             />
-                            <text-input id="input-1" v-model="form.question_choices[0].value" :color="Color.PRIMARY" />
+                            <text-input
+                                id="input-1"
+                                v-model="form.question_choices[0].value"
+                                :color="Color.PRIMARY"
+                            />
                         </template>
                         <template #input2>
                             <input
@@ -159,7 +176,11 @@ const cancelQuestionType = () => {
                                 class="checkbox bg-transparent checkbox-primary checkbox-lg"
                                 @change="correctAnswer = 1"
                             />
-                            <text-input id="input-2" v-model="form.question_choices[1].value" :color="Color.PRIMARY" />
+                            <text-input
+                                id="input-2"
+                                v-model="form.question_choices[1].value"
+                                :color="Color.PRIMARY"
+                            />
                         </template>
                         <template #input3>
                             <input
@@ -171,7 +192,11 @@ const cancelQuestionType = () => {
                                 class="checkbox bg-transparent checkbox-primary checkbox-lg"
                                 @change="correctAnswer = 2"
                             />
-                            <text-input id="input-3" v-model="form.question_choices[2].value" :color="Color.PRIMARY" />
+                            <text-input
+                                id="input-3"
+                                v-model="form.question_choices[2].value"
+                                :color="Color.PRIMARY"
+                            />
                         </template>
                         <template #input4>
                             <input
@@ -183,7 +208,11 @@ const cancelQuestionType = () => {
                                 class="checkbox bg-transparent checkbox-primary checkbox-lg"
                                 @change="correctAnswer = 3"
                             />
-                            <text-input id="input-4" v-model="form.question_choices[3].value" :color="Color.PRIMARY" />
+                            <text-input
+                                id="input-4"
+                                v-model="form.question_choices[3].value"
+                                :color="Color.PRIMARY"
+                            />
                         </template>
                     </multiple-input-group>
 

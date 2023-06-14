@@ -85,8 +85,8 @@ const formatedSeconds = computed(() => {
 }
 
 #range-labels li::before {
-    content: "'";
-    font-size: 1.2rem;
+    content: "|";
+    font-size: 0.6rem;
     position: absolute;
     top: -1rem;
     left: 50%;

@@ -7,9 +7,11 @@ import { storeToRefs } from "pinia";
 
 const interactionStore = useInteractionStore();
 const { currentInteraction } = storeToRefs(interactionStore);
-const duration = new Date(currentInteraction.value.ended_at).getTime() - new Date().getTime();
+const duration =
+    new Date(currentInteraction.value.ended_at).getTime() -
+    new Date().getTime();
 const sec = Math.floor((duration / 1000) % 60);
-const min = Math.floor((duration / (1000 * 60)));
+const min = Math.floor(duration / (1000 * 60));
 </script>
 
 <template>
@@ -23,7 +25,11 @@ const min = Math.floor((duration / (1000 * 60)));
         <template #title>
             <div class="flex flex-auto flex-row justify-between">
                 {{ currentInteraction.title }}
-                <base-countdown :color="Color.SECONDARY" :sec="sec" :min="min" />
+                <base-countdown
+                    :color="Color.SECONDARY"
+                    :sec="sec"
+                    :min="min"
+                />
             </div>
         </template>
         <template #content> </template>

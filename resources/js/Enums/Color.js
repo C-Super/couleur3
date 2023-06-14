@@ -1,3 +1,5 @@
+import InteractionType from "./InteractionType";
+
 export default class Color {
     static get PRIMARY() {
         return "primary";
@@ -33,5 +35,18 @@ export default class Color {
 
     static get WHITE() {
         return "white";
+    }
+
+    static forInteractionType(type) {
+        switch (type) {
+            case InteractionType.isQuestion(type):
+                return Color.PRIMARY;
+            case InteractionType.CTA:
+                return Color.SECONDARY;
+            case InteractionType.QUICK_CLICK:
+                return Color.ACCENT;
+            default:
+                return Color.PRIMARY;
+        }
     }
 }

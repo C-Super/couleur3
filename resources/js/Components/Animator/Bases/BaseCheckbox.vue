@@ -12,6 +12,6 @@ defineProps({
 <template>
     <input
         type="checkbox"
-        :class="`checkbox bg-transparent checkbox-lg checkbox-${color}`"
+        :class="`checkbox bg-transparent checkbox-lg checkbox-${color} focus:outline-${color}`"
     />
 </template>

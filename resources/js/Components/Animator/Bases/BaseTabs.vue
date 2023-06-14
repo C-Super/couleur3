@@ -29,7 +29,7 @@ function changeTab(i) {
 
 <template>
     <div>
-        <ul class="tabs tabs-boxed">
+        <ul class="tabs tabs-boxed mb-6">
             <label
                 v-for="(label, index) in tabs.labels"
                 :key="index"
@@ -47,7 +47,6 @@ function changeTab(i) {
                 {{ label }}
             </label>
         </ul>
-
         <slot />
     </div>
 </template>
