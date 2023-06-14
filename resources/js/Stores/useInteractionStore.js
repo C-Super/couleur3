@@ -58,11 +58,12 @@ export const useInteractionStore = defineStore(
         const subscribeToPublicChannel = () => {
             window.Echo.channel("public")
                 .listen("InteractionCreated", (event) => {
-                    state.currentInteraction = event.interaction;
                     state.hasOpenedNotif = false;
+                    state.currentInteraction = event.interaction;
                 })
                 .listen("InteractionEndedEvent", () => {
                     state.currentInteraction = null;
+                    state.hasOpenedNotif = false;
                 })
                 .error((error) => {
                     console.error(error);
