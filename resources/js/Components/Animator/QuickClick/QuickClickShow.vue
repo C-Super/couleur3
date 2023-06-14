@@ -5,8 +5,7 @@ import BaseCountdown from "@/Components/Animator/Bases/BaseCountdown.vue";
 import BaseTabs from "@/Components/Animator/Bases/BaseTabs.vue";
 import BaseTab from "@/Components/Animator/Bases/BaseTab.vue";
 import AnswersList from "@/Components/Animator/Answers/AnswersList.vue";
-import AnswersSelect from "@/Components/Animator/Answers/AnswersSelect.vue";
-import AnswersRapidity from "@/Components/Animator/Answers/AnswersRapidity.vue";
+import AnswersSelectRapidity from "@/Components/Animator/Answers/AnswersSelectRapidity.vue";
 import Color from "@/Enums/Color.js";
 import { ref } from "vue";
 import { useInteractionStore } from "@/Stores/useInteractionStore.js";
@@ -37,11 +36,8 @@ const activeTab = ref(0);
                 <base-tab title="Réponses">
                     <answers-list />
                 </base-tab>
-                <base-tab title="Sélection aléatoire" :active="true">
-                    <answers-select />
-                </base-tab>
                 <base-tab title="Sélection rapidité">
-                    <answers-rapidity />
+                    <answers-select-rapidity />
                 </base-tab>
             </base-tabs>
         </template>

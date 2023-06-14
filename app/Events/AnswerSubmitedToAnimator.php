@@ -3,7 +3,6 @@
 namespace App\Events;
 
 use App\Models\Answer;
-use App\Models\User;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
@@ -28,6 +27,6 @@ class AnswerSubmitedToAnimator
      */
     public function broadcastOn(): PrivateChannel
     {
-        return new PrivateChannel('interactions.' . $this->answer->interaction_id);
+        return new PrivateChannel('interactions.'.$this->answer->interaction_id);
     }
 }

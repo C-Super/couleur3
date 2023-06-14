@@ -24,11 +24,11 @@ const bgColor = ref(props.color);
 
 const interval = setInterval(() => {
     if (seconds.value >= 0) {
-            seconds.value--;
-        if(seconds.value <= 10 && minutes.value === 0) {
+        seconds.value--;
+        if (seconds.value <= 10 && minutes.value === 0) {
             setTimeout(() => {
                 bgColor.value = "error";
-                if(seconds.value % 2 === 0){
+                if (seconds.value % 2 === 0) {
                     opacity.value = 50;
                 } else {
                     opacity.value = 25;

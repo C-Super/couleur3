@@ -4,8 +4,12 @@ import BaseButton from "@/Components/Animator/Bases/BaseButton.vue";
 import BaseCountdown from "@/Components/Animator/Bases/BaseCountdown.vue";
 import BaseTabs from "@/Components/Animator/Bases/BaseTabs.vue";
 import BaseTab from "@/Components/Animator/Bases/BaseTab.vue";
-import BaseBarAnswers from "@/Components/Animator/Bases/BaseBarAnswers.vue";
-import BaseAnswersSelect from "@/Components/Animator/Bases/BaseAnswersSelect.vue";
+import AnswersBarChart from "@/Components/Animator/Answers/AnswersBarChart.vue";
+import AnswersList from "@/Components/Animator/Answers/AnswersList.vue";
+import AnswersSelectManual from "@/Components/Animator/Answers/AnswersSelectManual.vue";
+import AnswersSelectRandom from "@/Components/Animator/Answers/AnswersSelectRandom.vue";
+import AnswersSelectRapidity from "@/Components/Animator/Answers/AnswersSelectRapidity.vue";
+import AnswersSimple from "@/Components/Animator/Answers/AnswersSimple.vue";
 import InteractionType from "@/Enums/InteractionType.js";
 import Color from "@/Enums/Color.js";
 import { calculateDuration } from "@/Utils/time.js";
@@ -16,10 +20,12 @@ import { storeToRefs } from "pinia";
 const interactionStore = useInteractionStore();
 const { currentInteraction } = storeToRefs(interactionStore);
 
-const { sec, min } = calculateDuration(currentInteraction.value.ended_at, null);
+const { sec, min } = calculateDuration(
+    currentInteraction.value.ended_at,
+    new Date()
+);
 
 const activeTab = ref(0);
-console.log(activeTab.value);
 const isDisplayed = ref(false);
 const questionDisplayed = ref(null);
 const answersDisplayed = ref(null);
@@ -53,10 +59,12 @@ function hideDetails() {
                 <!--ANSWER LIST-->
                 <base-tab title="Réponses">
                     <!--MCQ && SURVEY-->
-                    <base-bar-answers
+                    <answers-bar-chart
                         v-if="
-                            currentInteraction.type === InteractionType.MCQ &&
-                            !isDisplayed
+                            currentInteraction.type === InteractionType.MCQ ||
+                            (currentInteraction.type ===
+                                InteractionType.SURVEY &&
+                                !isDisplayed)
                         "
                         @display="displayDetails"
                     />
@@ -68,11 +76,11 @@ function hideDetails() {
                             Réponse: {{ questionDisplayed }}
                         </p>
                         {{ answersDisplayed }}
-                        <base-answer-simple :value="questionDisplayed.value" />
+                        <answers-simple :value="questionDisplayed.value" />
                     </div>
 
                     <!--TEXT-->
-                    <base-answers
+                    <answers-list
                         v-if="currentInteraction.type === InteractionType.TEXT"
                     />
                 </base-tab>
@@ -83,7 +91,7 @@ function hideDetails() {
                     title="Sélection manuelle"
                 >
                     <!--TEXT-->
-                    <base-answers-select />
+                    <answers-select-manual />
                 </base-tab>
 
                 <!--SELECT RANDOM-->
@@ -92,7 +100,7 @@ function hideDetails() {
 
                     <!--SURVEY  pseudo des gagnant random + n° de la question? -->
                     <!--TEXT  pseudo des gagnant random + contenu text -->
-                    <base-answers-select />
+                    <answers-select-random />
                 </base-tab>
 
                 <!--SELECT FIRSTS-->
@@ -100,7 +108,7 @@ function hideDetails() {
                     v-if="currentInteraction.type === InteractionType.MCQ"
                     title="Sélection des premiers"
                 >
-                    <base-answers-select />
+                    <answers-select-rapidity />
                 </base-tab>
             </base-tabs>
         </template>

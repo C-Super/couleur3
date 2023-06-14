@@ -8,7 +8,7 @@ const { currentInteraction } = storeToRefs(interactionStore);
 const barMaxHeight = 200;
 const questionChoices = currentInteraction.value.question_choices;
 
-defineEmits(['display']);
+defineEmits(["display"]);
 
 const getBarColor = (isCorrect) => {
     return isCorrect ? "primary" : "white";
@@ -28,10 +28,10 @@ questionChoices.forEach((questionChoice) => {
 
 const getHeights = (questionChoice) => {
     const questionChoiceValue = getQuestionChoiceAnswers(questionChoice).length;
-    if(maxValue != 0){
-        return (questionChoiceValue  / maxValue) * (barMaxHeight - 50) + 50;
+    if (maxValue != 0) {
+        return (questionChoiceValue / maxValue) * (barMaxHeight - 50) + 50;
     } else {
-        return 50
+        return 50;
     }
 };
 </script>
@@ -51,7 +51,13 @@ const getHeights = (questionChoice) => {
             :class="`grid grid-cols-1 bg-${getBarColor(
                 questionChoice.is_correct_answer
             )} bg-opacity-50 rounded-t-[20px] w-full justify-items-center content-between hover:bg-opacity-75`"
-            @click = "$emit('display', questionChoice.value, getQuestionChoiceAnswers(questionChoice) )"
+            @click="
+                $emit(
+                    'display',
+                    questionChoice.value,
+                    getQuestionChoiceAnswers(questionChoice)
+                )
+            "
         >
             <div>{{ getQuestionChoiceAnswers(questionChoice).length }}</div>
             <div class="text-[#1c1354] text-lg font-bold">
