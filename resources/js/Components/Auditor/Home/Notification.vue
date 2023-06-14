@@ -19,6 +19,7 @@ function clicNotif() {
     ) {
         // Ouvre la modal
         document.querySelector("#popup-auditor").showModal();
+
     } else if (currentInteraction.value.type === InteractionType.CTA) {
         // Redirige l'auditeur sur le lien
         window.open(currentInteraction.value.call_to_action.link, "_blank");

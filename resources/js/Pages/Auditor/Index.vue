@@ -16,10 +16,6 @@ defineProps({
         type: Object,
         required: true,
     },
-    interaction: {
-        type: Object,
-        default: null,
-    },
 });
 </script>
 
@@ -27,7 +23,7 @@ defineProps({
     <AuditorLayout :auth-inf="auth.user">
         <Player />
         <DescriptionLive />
-        <Popup />
+        <Popup :auth-inf="auth.user" />
         <ChatComponent :chat-enabled="chatEnabled" />
         <div
             id="fixed-container"

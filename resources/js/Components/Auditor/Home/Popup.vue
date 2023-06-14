@@ -1,8 +1,9 @@
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 // Construction du popup
 import BaseButtonPopup from "@/Components/Auditor/Bases/Popup/BaseButtonPopup.vue";
 import BasesTitrePopup from "@/Components/Auditor/Bases/Popup/BasesTitrePopup.vue";
+import PopupTitleType from "@/Enums/PopupTitleType.js";
 // type de popup
 import PopupText from "@/Components/Auditor/Home/Popup/PopupText.vue";
 // Interaction activée
@@ -13,27 +14,37 @@ import { storeToRefs } from "pinia";
 const interactionStore = useInteractionStore();
 const { currentInteraction } = storeToRefs(interactionStore);
 
+// permet de récupérer la personne authentifiée si elle existe
+const props = defineProps({
+    authInf: {
+        type: Object,
+        default: null,
+    },
+});
 
-
-const popupTitle = ref("");
-const popupButton = ref("");
+// Constante pour afficher ou non les titres et la validation
 const formValidation = ref(false);
+const popupTitle = computed(() => {
+    if (InteractionType.isQuestion(currentInteraction.value.type)) {
+        return PopupTitleType.QUESTION;
+    } else if (currentInteraction.value.type === InteractionType.QUICK_CLICK) {
+        if (props.authInf === null) {
+            return PopupTitleType.QUICK;
+        }
+    }
+    return PopupTitleType.THANKS;
+})
 
 
-
-if (
-        currentInteraction.value.type === InteractionType.TEXT ||
-        currentInteraction.value.type === InteractionType.SURVEY ||
-        currentInteraction.value.type === InteractionType.MCQ ||
-        currentInteraction.value.type === InteractionType.AUDIO ||
-        currentInteraction.value.type === InteractionType.VIDEO ||
-        currentInteraction.value.type === InteractionType.PICTURE) {
-    popupTitle.value = "question"
-    popupButton.value = "send"
-
-} else if (currentInteraction.value.type === InteractionType.QUICK_CLICK) {
-    popupTitle.value = "thanks"
-    popupButton.value = "close"
+// Clique sur le bouton du popup
+function handleButtonPopup ($event) {
+    if ($event.target.id === "login") {
+        window.location.href = "/login";
+    } else if ($event.target.id === "next") {
+        window.location.href = "/profile";
+    } else if ($event.target.id === "send") {
+        popupTitle.value = 'thanks';
+    }
 }
 
 
@@ -41,7 +52,7 @@ if (
 </script>
 
 <template>
-    <dialog id="popup-auditor" class="modal">
+    <dialog v-if="currentInteraction !== null" id="popup-auditor" class="modal">
         <form
             method="dialog"
             class="modal-box gradient-auditor flex flex-col text-blue-auditor"
@@ -55,11 +66,11 @@ if (
             <!-- Contenu du popup -->
             <div class="flex flex-col">
                 <!-- Titre du popup -->
-                <BasesTitrePopup v-if="popupTitle === 'question'" icone="help"
+                <BasesTitrePopup v-if="popupTitle === PopupTitleType.QUESTION" icone="help"
                     >L’animateur aimerait connaître ton avis !</BasesTitrePopup
                 >
                 <BasesTitrePopup
-                    v-if="popupTitle === 'thanks'"
+                    v-if="popupTitle === PopupTitleType.THANKS"
                     icone="sentiment_very_satisfied"
                     >L’animateur te remercie pour ta participation
                     !</BasesTitrePopup
@@ -67,33 +78,44 @@ if (
                 <BasesTitrePopup v-if="popupTitle === 'gift'" icone="redeem"
                     >Vous avez gagné {{ cadeau }}</BasesTitrePopup
                 >
+                <BasesTitrePopup v-if="popupTitle === PopupTitleType.QUICK" icone="bolt"
+                    >{{ currentInteraction.title }}</BasesTitrePopup
+                >
+                <!-- Question du popup -->
+                <p v-if="currentInteraction.type !== InteractionType.QUICK_CLICK" class="text-base-100 text-base font-bold mt-6">{{ currentInteraction.title }}</p>
                 <!-- Type du popup -->
                 <PopupText v-if="currentInteraction.type === InteractionType.TEXT" />
                 <!-- Bouton envoyer, fermer, suivant, se connecter -->
-                <BaseButtonPopup
-                    v-if="popupButton === 'close'"
-                    :is-validate="true"
-                    button-type="close"
-                    >Fermer</BaseButtonPopup
-                >
-                <BaseButtonPopup
-                    v-if="popupButton === 'next'"
-                    :is-validate="true"
-                    button-type="next"
-                    >Suivant</BaseButtonPopup
-                >
-                <BaseButtonPopup
-                    v-if="popupButton === 'send'"
-                    :is-validate="formValidation"
-                    button-type="send"
-                    >Envoyer</BaseButtonPopup
-                >
-                <BaseButtonPopup
-                    v-if="popupButton === 'login'"
-                    :is-validate="true"
-                    button-type="login"
-                    >Se connecter</BaseButtonPopup
-                >
+                <div class="flex justify-center mt-10">
+                    <BaseButtonPopup
+                        v-if="popupTitle === PopupTitleType.THANKS && authInf !== null"
+                        id="close"
+                        :is-validate="true"
+                        @click="handleButtonPopup"
+                        >Fermer</BaseButtonPopup
+                    >
+                    <BaseButtonPopup
+                        v-if="popupTitle === 'gift' && authInf === null"
+                        id="next"
+                        :is-validate="true"
+                        @click="handleButtonPopup"
+                        >Suivant</BaseButtonPopup
+                    >
+                    <BaseButtonPopup
+                        v-if="popupTitle === PopupTitleType.QUESTION && authInf !== null"
+                        id="send"
+                        :is-validate="formValidation"
+                        @click="handleButtonPopup"
+                        >Envoyer</BaseButtonPopup
+                    >
+                    <BaseButtonPopup
+                        v-if="(popupTitle === PopupTitleType.QUESTION || popupTitle === PopupTitleType.QUICK) && authInf === null"
+                        id="login"
+                        :is-validate="true"
+                        @click="handleButtonPopup"
+                        >Se connecter</BaseButtonPopup
+                    >
+                </div>
             </div>
         </form>
     </dialog>
