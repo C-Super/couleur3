@@ -87,7 +87,5 @@ class AnswerController extends Controller
         $answer->with('auditor.user')->get();
 
         broadcast(new AnswerSubmitedToAnimator($answer))->toOthers();
-
-        return Inertia::render('Auditor/Index', $answer);
     }
 }

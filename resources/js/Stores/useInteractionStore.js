@@ -30,7 +30,6 @@ export const useInteractionStore = defineStore("interaction", () => {
     const subscribeToPublicChannel = () => {
         window.Echo.channel("public")
             .listen("InteractionCreated", (event) => {
-                console.log(event);
                 state.currentInteraction = event.interaction;
             })
             .listen("AnswerSubmitedToAnimator", (event) => {
