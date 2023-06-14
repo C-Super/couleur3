@@ -26,8 +26,8 @@ const submit = () => {
     <GuestLayout>
         <Head title="Register" />
 
-        <form class="w-full flex flex-col items-center" @submit.prevent="submit">
-            <div class="w-full">
+        <form @submit.prevent="submit">
+            <div>
                 <InputLabel for="name" value="Name" />
 
                 <TextInput

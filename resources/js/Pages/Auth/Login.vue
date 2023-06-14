@@ -1,6 +1,6 @@
 <!-- eslint-disable no-undef -->
 <script setup>
-import Checkbox from "@/Components/Checkbox.vue";
+import Checkbox from "@/Components/Auditor/Bases/Checkbox.vue";
 import AuditorLayout from "@/Layouts/AuditorLayout.vue";
 import InputError from "@/Components/InputError.vue";
 import ProfileButton from "@/Components/Auditor/Bases/ProfileButton.vue";
@@ -36,7 +36,7 @@ const submit = () =>
         <Head title="Login" />
 
         <div id="login" class="flex flex-col justify-center items-center px-3.5">
-            <h2 class="font-semibold text-2xl mb-5" >Login</h2>
+            <h2 class="font-semibold text-3xl mb-5" >Login</h2>
             <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
                 {{ status }}
             </div>
@@ -73,7 +73,7 @@ const submit = () =>
                 <div class="block mt-4">
                     <label class="flex items-center">
                         <Checkbox v-model:checked="form.remember" name="remember" />
-                        <span class="ml-2 text-sm text-gray-600 dark:text-gray-400"
+                        <span class="ml-2 text-base text-base-100 dark:text-base-100"
                             >Se rappeler de moi</span
                         >
                     </label>
@@ -81,6 +81,7 @@ const submit = () =>
                 <div class="flex flex-col items-center mt-8 gap-y-4">
                     <ProfileButton
                         :class="{ 'opacity-25': form.processing }"
+                        :outlined="true"
                         :disabled="form.processing"
                     >
                         Se connecter
@@ -88,14 +89,14 @@ const submit = () =>
                     <Link
                         v-if="canResetPassword"
                         :href="route('password.request')"
-                        class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
+                        class="underline text-sm text-base-100 dark:text-base-100 hover:text-base-100 dark:hover:text-base-100 "
                     >
                         Mot de passe oublié ?
                     </Link>
                 </div>
                 <ProfileButton
-                        class="mt-16"
                         :class="{ 'opacity-25': form.processing }"
+                        :outlined="false"
                         :disabled="form.processing"
                     >
                     S'enregistrer
