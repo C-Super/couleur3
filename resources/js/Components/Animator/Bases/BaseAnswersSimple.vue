@@ -19,7 +19,7 @@ const answers = notPinnedAnswers;
             <tbody v-for="answer of answers" :key="answer.value" :for="answer.value">
                 <tr class="border-none">
                     <td class="font-bold text-base">
-                        <slot>{{ answer.auditor.phone }}</slot>
+                        <slot>{{ answer.auditor.user.name }}</slot>
                     </td>
                 </tr>
             </tbody>
