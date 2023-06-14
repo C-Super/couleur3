@@ -1,3 +1,4 @@
+<!-- eslint-disable no-undef -->
 <script setup>
 import { ref, computed } from "vue";
 // Construction du popup
@@ -10,6 +11,7 @@ import PopupText from "@/Components/Auditor/Home/Popup/PopupText.vue";
 import InteractionType from "@/Enums/InteractionType.js";
 import { useInteractionStore } from "@/Stores/useInteractionStore.js";
 import { storeToRefs } from "pinia";
+import { router } from "@inertiajs/vue3";
 
 const interactionStore = useInteractionStore();
 const { currentInteraction } = storeToRefs(interactionStore);
@@ -21,6 +23,16 @@ const props = defineProps({
         default: null,
     },
 });
+
+
+
+const submitQuickClickAnswer = () => {
+    router.post(route('interactions.answers.quick_click.store', currentInteraction.value.id))
+}
+
+if (props.authInf && currentInteraction.value.type  === InteractionType.QUICK_CLICK) {
+    submitQuickClickAnswer();
+}
 
 // Constante pour afficher ou non les titres et la validation
 const formValidation = ref(false);
@@ -46,8 +58,6 @@ function handleButtonPopup ($event) {
         popupTitle.value = 'thanks';
     }
 }
-
-
 
 </script>
 

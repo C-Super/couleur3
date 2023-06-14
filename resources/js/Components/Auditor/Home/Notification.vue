@@ -1,3 +1,4 @@
+<!-- eslint-disable no-undef -->
 <script setup>
 import InteractionType from "@/Enums/InteractionType.js";
 import { useInteractionStore } from "@/Stores/useInteractionStore.js";
