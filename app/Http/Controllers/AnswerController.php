@@ -75,10 +75,10 @@ class AnswerController extends Controller
             broadcast(new AnswerQuestionChoiceSubmited($answer))->toOthers();
         }
 
-        return Inertia::render('Auditor/Answer', $answer);
+        return Inertia::render('Auditor/Index', $answer);
     }
 
-    public function storeQuickClick(Request $request, Interaction $interaction)
+    public function storeQuickClick(Interaction $interaction)
     {
         $answer = Answer::create([
             'auditor_id' => Auth::user()->id,
@@ -89,6 +89,6 @@ class AnswerController extends Controller
 
         broadcast(new AnswerSubmitedToAnimator($answer))->toOthers();
 
-        return response()->back();
+        return Inertia::render('Auditor/Index', $answer);
     }
 }
