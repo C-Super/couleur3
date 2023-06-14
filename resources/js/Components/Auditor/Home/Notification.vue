@@ -76,62 +76,15 @@ function clicNotif() {
         id="notification-lien"
         @click="clicNotif"
     >
-        <span class="mr-2"
-            >{{ currentInteraction.title }}
+        <span class="flex gap-x-1"
+            ><span>{{ currentInteraction.title }}</span>
             <span
                 id="link"
-                class="material-symbols-rounded align-middle text-xl"
+                class="material-symbols-rounded text-xl"
                 >open_in_new</span
             >
         </span>
     </BaseNotif>
-    <!--
-
-    <survey-modal-component
-        v-if="
-            openModal &&
-            currentInteraction.value &&
-            currentInteraction.value.type === InteractionType.SURVEY
-        "
-        :interaction="currentInteraction.value"
-        @close="openModal = false"
-    />
-
-    MCQ Interaction
-    <div
-        v-if="
-            currentInteraction.value && currentInteraction.value.type === InteractionType.MCQ
-        "
-        id="notification-mcq"
-        class="chat chat-start text-black"
-        @click="openModal = true"
-    >
-        <div class="chat-image avatar">
-            <div class="w-10 rounded-full bg-base-100">
-                <img src="images/Bulle-COULEUR3.svg" />
-            </div>
-        </div>
-        <div
-            class="chat-bubble gradient-auditor text-black font-bold text-lg relative"
-        >
-            {{ currentInteraction.value.title }}
-            <div class="indicator absolute top-0 right-0 mt-1 mr-1">
-                <span
-                    class="indicator-item badge bg-[#7D7AFF] border-[#7D7AFF]"
-                ></span>
-                <div class="grid w-32 h-32"></div>
-            </div>
-        </div>
-    </div>
-    <mcq-modal-component
-        v-if="
-            openModal &&
-            currentInteraction.value &&
-            currentInteraction.value.type === InteractionType.MCQ
-        "
-        :interaction="currentInteraction.value"
-        @close="openModal = false"
-    />-->
 </template>
 
 <style scoped>

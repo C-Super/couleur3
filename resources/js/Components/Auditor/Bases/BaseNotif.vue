@@ -17,14 +17,14 @@ defineProps({
 </script>
 
 <template>
-    <div :id="id" class="chat chat-start cursor-pointer py-2 px-3.5">
+    <div :id="id" class="chat chat-start self-start cursor-pointer py-2 px-3.5">
         <div class="chat-image avatar">
             <div class="w-10 rounded-full bg-base-100">
                 <img src="images/Bulle-COULEUR3.svg" alt="Logo Couleur 3" />
             </div>
         </div>
         <div
-            class="chat-bubble gradient-auditor text-black font-bold text-lg relative"
+            class="chat-bubble gradient-auditor text-black font-bold text-lg relative max-w-none"
         >
             <slot />
             <div v-if="!hasOpenedNotif" class="indicator absolute top-0 right-0 mt-1 mr-1">
