@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted } from "vue";
 import Recommandation from "@/Components/Auditor/Home/Recommandation.vue";
-import MinaturePlayer from "@/Components/Auditor/MinaturePlayer.vue";
+import MiniaturePlayer from "@/Components/Auditor/MiniaturePlayer.vue";
 defineProps({
     type: {
         type: String,
@@ -53,7 +53,7 @@ onMounted(() => {
         <hr class="mt-8" />
 
         <Recommandation />
-        <MinaturePlayer />
+        <MiniaturePlayer />
     </div>
 </template>
 

@@ -16,6 +16,10 @@ defineProps({
         type: String,
         default: "",
     },
+    auth: {
+        type: Object,
+        required: true,
+    },
 });
 
 const form = useForm("post", route("login"), {
@@ -32,7 +36,7 @@ const submit = () =>
 </script>
 
 <template>
-    <AuditorLayout>
+    <AuditorLayout :auth-inf="auth.user">
         <Head title="Login" />
 
         <div

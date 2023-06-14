@@ -10,6 +10,13 @@ import TextInputCity from "@/Components/Auditor/Bases/TextInputCity.vue";
 import { Head, Link } from "@inertiajs/vue3";
 import { useForm } from "laravel-precognition-vue-inertia";
 
+defineProps({
+    auth: {
+        type: Object,
+        required: true,
+    },
+});
+
 const form = useForm("post", route("register"), {
     name: "",
     email: "",
@@ -29,7 +36,7 @@ const submit = () => {
 </script>
 
 <template>
-    <AuditorLayout>
+    <AuditorLayout :auth-inf="auth.user">
         <Head title="Register" />
 
         <div
