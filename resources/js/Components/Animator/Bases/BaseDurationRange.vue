@@ -81,15 +81,6 @@ const formatedSeconds = computed(() => {
 <style scoped>
 #range-labels li {
     position: relative;
-    margin-top: 2rem;
-}
-
-#range-labels li::before {
-    content: "|";
-    font-size: 1.2rem;
-    position: absolute;
-    top: -1.4rem;
-    left: 50%;
-    transform: translateX(-50%);
+    margin-top: 0.2rem;
 }
 </style>

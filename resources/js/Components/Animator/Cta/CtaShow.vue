@@ -7,23 +7,36 @@ import { useInteractionStore } from "@/Stores/useInteractionStore.js";
 import { storeToRefs } from "pinia";
 
 const interactionStore = useInteractionStore();
-const { currentInteraction, endInteraction } = storeToRefs(interactionStore);
+const { currentInteraction } = storeToRefs(interactionStore);
+
+const duration =
+    new Date(currentInteraction.value.ended_at).getTime() -
+    new Date().getTime();
+const sec = Math.floor((duration / 1000) % 60);
+const min = Math.floor(duration / (1000 * 60));
 </script>
 
 <template>
     <base-card :color="Color.SECONDARY">
-            <template #title>
-                <div class="flex flex-auto flex-row justify-between">
-                    {{ currentInteraction.title }}
-                    <base-countdown :color="Color.SECONDARY" />
-                </div>
-            </template>
-            <template #actions>
-                <div class="flex flex-row gap-3">
-                    <base-button :color="Color.ERROR" @click="endInteraction"
-                        >Fin de l'interaction</base-button
-                    >
-                </div>
-            </template>
-        </base-card>
+        <template #title>
+            <div class="flex flex-auto flex-row items-center justify-between">
+                {{ currentInteraction.title }}
+                <base-countdown
+                    :color="Color.SECONDARY"
+                    :sec="sec"
+                    :min="min"
+                />
+            </div>
+        </template>
+        <template #subtitle>
+            {{ currentInteraction.call_to_action.link }}
+        </template>
+        <template #actions>
+            <div class="flex flex-row gap-3">
+                <base-button @click="interactionStore.endInteraction()"
+                    >Fin de l'interaction</base-button
+                >
+            </div>
+        </template>
+    </base-card>
 </template>

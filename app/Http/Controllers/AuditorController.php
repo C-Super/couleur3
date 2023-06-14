@@ -13,7 +13,16 @@ class AuditorController extends Controller
     {
         return Inertia::render('Auditor/Index', [
             'chatEnabled' => $settings->chat_enabled,
-            'interaction' => Interaction::active()->first(),
+            'interaction' => Interaction::active()->with([
+                'answers' => [
+                    'auditor' => [
+                        'user',
+                    ],
+                    'replyable',
+                ],
+                'callToAction',
+                'questionChoices',
+            ])->first(),
         ]);
     }
 }

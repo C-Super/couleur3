@@ -1,70 +1,32 @@
+<!-- eslint-disable no-undef -->
 <script setup>
-import { ref, reactive, onMounted } from "vue";
-import { router } from "@inertiajs/vue3";
+import { ref, reactive } from "vue";
 import formatDateToHoursMinutes from "@/Utils/date";
+import { useChatStore } from "@/Stores/useChatStore.js";
+import { storeToRefs } from "pinia";
+import { router } from "@inertiajs/vue3";
+
+const chatStore = useChatStore();
+const { isChatEnabled, messages } = storeToRefs(chatStore);
 
 const messageContainer = ref(null);
 
-const data = reactive({
-    chatEnabled: props.chatEnabled,
-    messages: [],
-});
-
-onMounted(() => {
-    subscribeToPublicChannel();
-});
-
-function subscribeToPublicChannel() {
-    window.Echo.channel("public")
-        .listen("MessageSent", (event) => {
-            data.messages.push(event.message);
-        })
-        .listen("ChatUpdated", (event) => {
-            data.chatEnabled = event.chatEnabled;
-
-            if (!data.chatEnabled) {
-                data.messages = [];
-            }
-        })
-        .error((error) => {
-            console.error(error);
-        });
-}
-
-const props = defineProps({
-    chatEnabled: {
-        type: Boolean,
-        required: true,
-    },
-});
-
 const form = reactive({
-    message: "",
+    content: "",
     errors: {},
 });
 
 const submitMessage = () => {
+    console.log("new message");
     form.processing = true;
-    router.post(
-        "/messages",
-        {
-            content: form.message,
+    router.post(route("messages.store"), form, {
+        preserveScroll: true,
+        onSuccess: () => {
+            form.processing = false;
+            form.errors = {};
+            form.content = "";
         },
-        {
-            preserveState: true,
-            preserveScroll: true,
-            only: ["chatEnabled"],
-            onSuccess: () => {
-                form.message = "";
-                form.processing = false;
-                form.errors = {};
-            },
-            onError: (errors) => {
-                form.errors = errors.errors;
-                form.processing = false;
-            },
-        }
-    );
+    });
 };
 // regarde si le tchat est ouvert ou non
 function check($event) {
@@ -107,9 +69,9 @@ function check($event) {
     <!-- Menu dépliant -->
     <div
         id="chat-auditor"
-        class="collapse bg-blue-audior rounded-t-[44px] rounded-b-none"
+        class="collapse bg-blue-auditor rounded-t-[44px] rounded-b-none"
     >
-    <!-- Bouton pour déplier le menu-->
+        <!-- Bouton pour déplier le menu-->
         <input
             type="checkbox"
             class="w-full h-11 min-h-0"
@@ -118,7 +80,8 @@ function check($event) {
         <div
             class="collapse-title text-base font-extrabold h-11 min-h-0 p-0 flex items-center justify-center"
         >
-            Chat<span
+            Chat {{ isChatEnabled ? "" : "(désactivé par l'animateur)"
+            }}<span
                 class="material-symbols-rounded ml-1 align-middle transition-transform"
             >
                 expand_less
@@ -129,16 +92,22 @@ function check($event) {
             <!-- Messages dans le chat -->
             <div class="overflow-y-scroll h-2 grow flex flex-col-reverse">
                 <!-- Ajouter les nouveaux message ici-->
-                <div v-if="data.messages && data.chatEnabled" ref="messageContainer">
-                    <p v-for="msg in data.messages" :key="msg.id" :msg="msg" class="font-light">
+                <div v-if="messages && isChatEnabled" ref="messageContainer">
+                    <p
+                        v-for="msg in messages"
+                        :key="msg.id"
+                        :msg="msg"
+                        class="font-light"
+                    >
                         <span class="text-base-100 opacity-70">
-                            {{ formatDateToHoursMinutes(msg.created_at)}}
-                        </span
-                        ><span class="ml-2 font-bold">{{ msg.user_name }} : </span
+                            {{
+                                formatDateToHoursMinutes(msg.created_at)
+                            }} </span
+                        ><span class="ml-2 font-bold"
+                            >{{ msg.user_name }} : </span
                         ><span>{{ msg.content }}</span>
                     </p>
                 </div>
-
             </div>
             <!-- Formulaire pour envoyer des messages dans le chat -->
             <div class="flex flex-col gap-y-1">
@@ -146,20 +115,21 @@ function check($event) {
                     <div class="flex gap-x-5">
                         <input
                             id="message"
-                            v-model="form.message"
+                            v-model="form.content"
                             type="text"
-                            class="bg-blue-audior rounded-full border-base-100 grow focus:border-base-100 focus:outline-0 placeholder:font-extralight"
+                            class="bg-blue-auditor rounded-full border-base-100 grow focus:border-base-100 focus:outline-0 placeholder:font-extralight"
                             required
                             autofocus
                             placeholder="Message…"
-                            :disabled="form.processing || !data.chatEnabled"
+                            :disabled="form.processing || !isChatEnabled"
                             @keyup.enter="submitMessage"
                         />
                         <button
                             class="border border-base-100 flex items-center justify-center w-16 rounded-full bg-base-100"
+                            type="submit"
                         >
                             <span
-                                class="material-symbols-rounded align-middle text-blue-audior"
+                                class="material-symbols-rounded align-middle text-blue-auditor"
                             >
                                 send
                             </span>
@@ -167,7 +137,7 @@ function check($event) {
                     </div>
                     <div v-show="form.errors.message">
                         <p class="text-sm text-red-600 dark:text-red-400">
-                            {{form.errors.message}}
+                            {{ form.errors.message }}
                         </p>
                     </div>
                 </form>
@@ -197,5 +167,4 @@ input[type="text"]:disabled + button {
     cursor: not-allowed;
     opacity: 0.5;
 }
-
 </style>

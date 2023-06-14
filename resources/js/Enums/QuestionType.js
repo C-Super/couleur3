@@ -45,7 +45,7 @@ export default class QuestionType {
         return {
             icon: "subject",
             name: "Texte",
-            value: InteractionType.TEXT
+            value: InteractionType.TEXT,
         };
     }
 

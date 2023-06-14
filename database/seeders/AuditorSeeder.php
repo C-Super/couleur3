@@ -12,6 +12,6 @@ class AuditorSeeder extends Seeder
      */
     public function run(): void
     {
-        Auditor::factory()->count(10)->hasUser()->create();
+        Auditor::factory()->hasUser()->create();
     }
 }

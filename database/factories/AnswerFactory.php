@@ -2,9 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\AnswerText;
 use App\Models\Auditor;
-use App\Models\Interaction;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,14 +17,16 @@ class AnswerFactory extends Factory
      */
     public function definition(): array
     {
-        $interaction = Interaction::factory()->create(['type' => 'text']);
-        $answerText = AnswerText::factory()->create();
-
         return [
-            'interaction_id' => $interaction->id,
-            'auditor_id' => Auditor::factory(),
-            'replyable_id' => $answerText->id,
-            'replyable_type' => AnswerText::class,
+            'auditor_id' => Auditor::factory()->hasUser()->create(),
         ];
     }
+
+    // Answer::factory()->count(10)->for(Interaction::factory()->state(['type' => InteractionType::QUICK_CLICK]))->create();
+    // Answer::factory()->count(10)->for(Interaction::factory()->state(['type' => InteractionType::CTA]))->for(CallToAction::factory(), 'replyable')->create();
+
+    /**
+     *  $interaction = Interaction::factory()->state(['type' => InteractionType::MCQ])->hasQuestionChoices(4)->create();
+     * Answer::factory()->count(10)->for($interaction)->for($interaction->questionChoices()->get()->random(), 'replyable')->create();
+     */
 }

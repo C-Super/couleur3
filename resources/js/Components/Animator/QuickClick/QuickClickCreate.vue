@@ -13,14 +13,15 @@ import { useInteractionStore } from "@/Stores/useInteractionStore.js";
 const interactionStore = useInteractionStore();
 
 const form = useForm("post", route("interactions.quick_click.store"), {
-    title: "",
+    title: "Sois le premier à cliquer !",
     duration: 60,
 });
 
 const submit = () => {
     form.submit({
         preserveScroll: true,
-        onSuccess: () => {
+        onSuccess: (response) => {
+            console.log(response);
             form.reset();
             interactionStore.createdInteraction();
         },
@@ -64,10 +65,17 @@ const submit = () => {
 
             <template #actions>
                 <div class="flex flex-row gap-3">
-                    <base-button @click="interactionStore.cancelInteraction()"
+                    <base-button
+                        :disabled="form.processing"
+                        @click="interactionStore.cancelInteraction()"
                         >Annuler</base-button
                     >
-                    <base-button :color="Color.ACCENT">Envoyer</base-button>
+                    <base-button
+                        :color="Color.ACCENT"
+                        :disabled="form.processing"
+                        type="submit"
+                        >Envoyer</base-button
+                    >
                 </div>
             </template>
         </base-card>

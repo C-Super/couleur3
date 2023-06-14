@@ -1,205 +1,93 @@
+<!-- eslint-disable no-undef -->
 <script setup>
-import { ref } from "vue";
 import InteractionType from "@/Enums/InteractionType.js";
-import { Axios } from "axios";
 import { useInteractionStore } from "@/Stores/useInteractionStore.js";
 import { storeToRefs } from "pinia";
+import BaseNotif from "@/Components/Auditor/Bases/BaseNotif.vue";
 
 const interactionStore = useInteractionStore();
-const { currentInteraction } = storeToRefs(interactionStore);
+const { currentInteraction, hasOpenedNotif } = storeToRefs(interactionStore);
 
-let openModal = ref(false);
+// permet de récupérer la personne authentifiée si elle existe
+const props = defineProps({
+    authInf: {
+        type: Object,
+        default: null,
+    },
+});
 
-// Function to post an answer and hide the notification
-const postAnswerAndHideNotification = async () => {
-    // Replace with your actual endpoint and data to send
-    const url = "/answers";
-    const data = {
-        interactionId: currentInteraction.value.id,
-    };
+function clicNotif() {
+    if (currentInteraction.value.type === InteractionType.QUICK_CLICK && props.authInf === null) {
+        document.querySelector("#popup-auditor").showModal();
+    } else if (
+        currentInteraction.value.type === InteractionType.QUICK_CLICK ||
+        currentInteraction.value.type === InteractionType.TEXT ||
+        currentInteraction.value.type === InteractionType.SURVEY ||
+        currentInteraction.value.type === InteractionType.MCQ ||
+        currentInteraction.value.type === InteractionType.AUDIO ||
+        currentInteraction.value.type === InteractionType.VIDEO ||
+        currentInteraction.value.type === InteractionType.PICTURE
+    ) {
+        // l'auditeur à ouvert la notification
+        hasOpenedNotif.value = true;
+        // Ouvre la modal
+        document.querySelector("#popup-auditor").showModal();
 
-    try {
-        const response = await Axios.post(url, data);
-
-        // Handle response
-        console.log(response.data);
-
-        // If the POST request is successful, set currentInteraction.value to null to hide the notification.
-        currentInteraction.value = null;
-    } catch (error) {
-        // Handle error
-        console.error(error);
+    } else if (currentInteraction.value.type === InteractionType.CTA) {
+        // l'auditeur à ouvert la notification
+        hasOpenedNotif.value = true;
+        // Redirige l'auditeur sur le lien
+        window.open(currentInteraction.value.call_to_action.link, "_blank");
     }
-};
-
-// Function to navigate to CTA URL
-const navigateTo = (url) => {
-    window.location.href = url;
-};
+}
 </script>
 
 <template>
-    <div id="notification-animateur" class="chat chat-start">
-        <div class="chat-image avatar">
-            <div class="w-10 rounded-full bg-base-100">
-                <img src="images/Bulle-COULEUR3.svg" />
-            </div>
-        </div>
-        <div
-            class="chat-bubble gradient-auditor text-black font-bold text-lg relative"
-        >
-            Interagir avec l’animateur
-            <div class="indicator absolute top-0 right-0 mt-1 mr-1">
-                <span
-                    class="indicator-item badge bg-[#7D7AFF] border-[#7D7AFF]"
-                ></span>
-                <div class="grid w-32 h-32"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- CTA Interaction -->
-    <div
+    <BaseNotif
         v-if="
-            currentInteraction.value && currentInteraction.value.type === InteractionType.CTA
+            currentInteraction &&
+            (currentInteraction.type === InteractionType.TEXT ||
+                currentInteraction.type === InteractionType.SURVEY ||
+                currentInteraction.type === InteractionType.MCQ ||
+                currentInteraction.type === InteractionType.AUDIO ||
+                currentInteraction.type === InteractionType.VIDEO ||
+                currentInteraction.type === InteractionType.PICTURE)
         "
-        id="notification-lien"
-        class="chat chat-start"
-        @click="navigateTo(currentInteraction.value.call_to_action.link)"
+        id="notification-animateur"
+        @click="clicNotif"
     >
-        <div class="chat-image avatar">
-            <div class="w-10 rounded-full bg-base-100">
-                <img src="images/Bulle-COULEUR3.svg" />
-            </div>
-        </div>
-        <div
-            class="chat-bubble gradient-auditor text-black font-bold text-lg relative"
-        >
-            <span class="mr-2"
-                >{{ currentInteraction.value.title }}
-                <span
-                    id="link"
-                    class="material-symbols-rounded align-middle text-xl"
-                    >open_in_new</span
-                ></span
-            >
-
-            <div class="indicator absolute top-0 right-0 mt-1 mr-1">
-                <span
-                    class="indicator-item badge bg-[#7D7AFF] border-[#7D7AFF]"
-                ></span>
-                <div class="grid w-32 h-32"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- QUICK_CLICK Interaction -->
-    <div
+        Interagir avec l’animateur
+    </BaseNotif>
+    <BaseNotif
         v-if="
-            currentInteraction.value &&
-            currentInteraction.value.type === InteractionType.QUICK_CLICK
+            currentInteraction &&
+            currentInteraction.type === InteractionType.QUICK_CLICK && hasOpenedNotif === false
         "
         id="notification-rapide"
-        class="chat chat-start text-black"
-        @click="postAnswerAndHideNotification"
+        @click="clicNotif"
     >
-        <div class="chat-image avatar">
-            <div class="w-10 rounded-full bg-base-100">
-                <img src="images/Bulle-COULEUR3.svg" />
-            </div>
-        </div>
-        <div
-            class="chat-bubble gradient-auditor text-black font-bold text-lg relative"
-        >
-            Sois le premier à cliquer !
-            <div class="indicator absolute top-0 right-0 mt-1 mr-1">
-                <span
-                    class="indicator-item badge bg-[#7D7AFF] border-[#7D7AFF]"
-                ></span>
-                <div class="grid w-32 h-32"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- SURVEY Interaction -->
-    <div
+        {{ currentInteraction.title }}
+    </BaseNotif>
+    <BaseNotif
         v-if="
-            currentInteraction.value &&
-            currentInteraction.value.type === InteractionType.SURVEY
+            currentInteraction &&
+            currentInteraction.type === InteractionType.CTA
         "
-        id="notification-survey"
-        class="chat chat-start text-black"
-        @click="openModal = true"
+        id="notification-lien"
+        @click="clicNotif"
     >
-        <div class="chat-image avatar">
-            <div class="w-10 rounded-full bg-base-100">
-                <img src="images/Bulle-COULEUR3.svg" />
-            </div>
-        </div>
-        <div
-            class="chat-bubble gradient-auditor text-black font-bold text-lg relative"
-        >
-            {{ currentInteraction.value.title }}
-            <div class="indicator absolute top-0 right-0 mt-1 mr-1">
-                <span
-                    class="indicator-item badge bg-[#7D7AFF] border-[#7D7AFF]"
-                ></span>
-                <div class="grid w-32 h-32"></div>
-            </div>
-        </div>
-    </div>
-    <survey-modal-component
-        v-if="
-            openModal &&
-            currentInteraction.value &&
-            currentInteraction.value.type === InteractionType.SURVEY
-        "
-        :interaction="currentInteraction.value"
-        @close="openModal = false"
-    />
-
-    <!-- MCQ Interaction -->
-    <div
-        v-if="
-            currentInteraction.value && currentInteraction.value.type === InteractionType.MCQ
-        "
-        id="notification-mcq"
-        class="chat chat-start text-black"
-        @click="openModal = true"
-    >
-        <div class="chat-image avatar">
-            <div class="w-10 rounded-full bg-base-100">
-                <img src="images/Bulle-COULEUR3.svg" />
-            </div>
-        </div>
-        <div
-            class="chat-bubble gradient-auditor text-black font-bold text-lg relative"
-        >
-            {{ currentInteraction.value.title }}
-            <div class="indicator absolute top-0 right-0 mt-1 mr-1">
-                <span
-                    class="indicator-item badge bg-[#7D7AFF] border-[#7D7AFF]"
-                ></span>
-                <div class="grid w-32 h-32"></div>
-            </div>
-        </div>
-    </div>
-    <mcq-modal-component
-        v-if="
-            openModal &&
-            currentInteraction.value &&
-            currentInteraction.value.type === InteractionType.MCQ
-        "
-        :interaction="currentInteraction.value"
-        @close="openModal = false"
-    />
+        <span class="flex gap-x-1"
+            ><span>{{ currentInteraction.title }}</span>
+            <span
+                id="link"
+                class="material-symbols-rounded text-xl"
+                >open_in_new</span
+            >
+        </span>
+    </BaseNotif>
 </template>
 
 <style scoped>
-.gradient-auditor::before {
-    background-color: #ff67ff;
-}
-
 #link {
     font-variation-settings: "wght" 600;
 }

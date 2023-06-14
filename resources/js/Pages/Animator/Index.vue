@@ -9,6 +9,7 @@ import CtaIndex from "@/Components/Animator/Cta/CtaIndex.vue";
 import CtaCreate from "@/Components/Animator/Cta/CtaCreate.vue";
 import CtaShow from "@/Components/Animator/Cta/CtaShow.vue";
 import QuestionCreate from "@/Components/Animator/Question/QuestionCreate.vue";
+import QuestionShow from "@/Components/Animator/Question/QuestionShow.vue";
 import InteractionType from "@/Enums/InteractionType.js";
 import { Head, router } from "@inertiajs/vue3";
 import { useInteractionStore } from "@/Stores/useInteractionStore.js";
@@ -25,9 +26,9 @@ const endEmission = () => {
 
 <template>
     <Head title="Dashboard" />
-    <div id="animator-container" class="h-screen p-5 flex gap-5">
-        <div class="basis-1/3 flex flex-col gap-3">
-            <chat-view />
+    <div id="animator-container" class="max-h-screen h-screen p-5 flex gap-5">
+        <div class="basis-1/3 flex flex-auto flex-col max-h-full gap-3">
+            <chat-view class="flex-auto" />
 
             <base-button
                 color="error"
@@ -39,7 +40,13 @@ const endEmission = () => {
         </div>
 
         <div class="basis-2/3 flex flex-col gap-3">
-            <template v-if="!currentInteraction && (!isCreatingInteraction || InteractionType.isQuestion(isCreatingInteraction))">
+            <template
+                v-if="
+                    !currentInteraction &&
+                    (!isCreatingInteraction ||
+                        InteractionType.isQuestion(isCreatingInteraction))
+                "
+            >
                 <question-create />
             </template>
 
@@ -63,6 +70,12 @@ const endEmission = () => {
                 v-if="
                     currentInteraction &&
                     currentInteraction.type === InteractionType.CTA
+                "
+            />
+            <question-show
+                v-if="
+                    currentInteraction &&
+                    InteractionType.isQuestion(currentInteraction.type)
                 "
             />
         </div>

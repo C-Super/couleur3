@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             AnimatorSeeder::class,
             AuditorSeeder::class,
-            MessageSeeder::class,
+            RewardSeeder::class,
         ]);
     }
 }
