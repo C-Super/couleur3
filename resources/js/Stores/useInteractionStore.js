@@ -45,6 +45,7 @@ export const useInteractionStore = defineStore(
             if (!page.props.auth) return;
 
             if (
+                page.props.auth.user &&
                 page.props.auth.user.roleable_type ===
                     "App\\Models\\Animator" &&
                 state.currentInteraction
