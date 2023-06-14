@@ -27,6 +27,7 @@ class AnimatorController extends Controller
                 'callToAction',
                 'questionChoices',
             ])->first(),
+            'rewards' => Reward::all()
         ]);
     }
 
