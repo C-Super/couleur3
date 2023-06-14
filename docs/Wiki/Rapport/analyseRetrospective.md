@@ -2,7 +2,7 @@
 
 ### Gestion de projet
 
-La définition de notre fonctionnement interne dès le début du projet nous a permis de maintenir un fonctionnement d'équipe le plus efficace possible. De plus, la pratique d'une gestion de projet agile à contribué à notre capacité à tenir les délais, et si nécessaire, prioriser les tâches afin d'assurer l'issue positive du projet. 
+La définition de notre fonctionnement interne dès le début du projet nous a permis de maintenir un fonctionnement d'équipe le plus efficace possible. De plus, la pratique d'une gestion de projet agile a contribué à notre capacité à tenir les délais, et si nécessaire, prioriser les tâches afin d'assurer l'issue positive du projet. 
 
 ### Technique !!!A COMPLETER!!!
 
@@ -28,12 +28,12 @@ L'utilisation de GitHub pour la gestion de projet s'est prouvée moins idéale q
 
 ### Gestion de projet
 
-Notre gestion de projet s'est très bien passée. Nous avons cependant identifié quelques pistes d'amélioration, notamment au niveau de l'archivage des différentes étapes. Nous nous sommes retrouvés quelques fois dans des situations où nous avons rediscuté des décisions qui avaient été au préalable déjà discutées et définies. Ces quelques situations n'ont pas grandement impacté le projet, mais la prise d'un PV pendant nos séances quotidiennes aurait permis d'éviter ce genre de digressions et de retrouver facilement les sujet déjà abordés, les décisions prises et les justifications de nos choix. 
+Notre gestion de projet s'est très bien passée. Nous avons cependant identifié quelques pistes d'amélioration, notamment au niveau de l'archivage des différentes étapes. Nous nous sommes retrouvés quelques fois dans des situations où nous avons rediscuté des décisions qui avaient été au préalable déjà discutées et définies. Ces quelques situations n'ont pas grandement impacté le projet, mais la prise d'un PV pendant nos séances quotidiennes aurait permis d'éviter ce genre de digressions et de retrouver facilement les sujets déjà abordés, les décisions prises et les justifications de nos choix. 
 
 ### Support de l'application
 
-Même si cela sort du cadre de ce projet, nous avons mené une réflexion sur la compatibilité de notre solution sur le système d'une voiture. En effet, un grand nombre d'auditeur profite des trajets en voiture pour écouter la radio. 
+Même si cela sort du cadre de ce projet, nous avons mené une réflexion sur la compatibilité de notre solution sur le système d'une voiture. En effet, un grand nombre d'auditeurs profitent des trajets en voiture pour écouter la radio. 
 
-Nous savons que pour que le système soit compatible sur voiture, il faudrait créer une application IOS ou Androïd, qui puisse ensuite être adaptée au système CarPlay ou Androïd Auto. Il faudrait notamment simplifier l'interface utilisateur afin d'offrir une interface en accord avec les directives du système. Il faut surtout réduire le contenu visuel, afin de minimiser les distractions et optimiser la disposition pour une utilisation en conduisant. Cela consiste aussi à penser à des contrôles mains libres, avec par exemple l'implémentation d'un système de dictée et de commande vocale, qui permette au conducteur d'interagir avec la radio sans mettre en péril son attention pour la conduite. 
+Nous savons que pour que le système soit compatible sur voiture, il faudrait créer une application iOS ou Android, qui puisse ensuite être adaptée au système CarPlay ou Android Auto. Il faudrait notamment simplifier l'interface utilisateur afin d'offrir une interface en accord avec les directives du système. Il faut surtout réduire le contenu visuel, afin de minimiser les distractions et optimiser la disposition pour une utilisation en conduisant. Cela consiste aussi à penser à des contrôles mains libres, avec, par exemple, l'implémentation d'un système de dictée et de commande vocale, qui permette au conducteur d'interagir avec la radio sans mettre en péril son attention pour la conduite. 
 
 ## Leçons apprises !!!A COMPLETER!!!
