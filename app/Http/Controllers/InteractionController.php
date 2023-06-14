@@ -40,8 +40,7 @@ class InteractionController extends Controller
                 ],
                 'replyable',
             ],
-            'call_to_action',
-            'question_choices',
+            'callToAction',
         ])->first();
 
         broadcast(new InteractionCreated($currentInteraction))->toOthers();
@@ -102,7 +101,7 @@ class InteractionController extends Controller
 
         for ($i = 0; $i < count($validated['question_choices']); $i++) {
             if ($validated['question_choices'][$i]['value']) {
-                $interaction->question_choices()->create($validated['question_choices'][$i]);
+                $interaction->questionChoices()->create($validated['question_choices'][$i]);
             }
         }
 
@@ -113,7 +112,7 @@ class InteractionController extends Controller
                 ],
                 'replyable',
             ],
-            'question_choices',
+            'questionChoices',
         ])->first();
 
         broadcast(new InteractionCreated($currentInteraction))->toOthers();
@@ -142,7 +141,7 @@ class InteractionController extends Controller
 
         for ($i = 0; $i < count($validated['question_choices']); $i++) {
             if ($validated['question_choices'][$i]['value']) {
-                $interaction->question_choices()->create($validated['question_choices'][$i]);
+                $interaction->questionChoices()->create($validated['question_choices'][$i]);
             }
         }
 
@@ -153,7 +152,7 @@ class InteractionController extends Controller
                 ],
                 'replyable',
             ],
-            'question_choices',
+            'questionChoices',
         ])->first();
 
         broadcast(new InteractionCreated($currentInteraction))->toOthers();
