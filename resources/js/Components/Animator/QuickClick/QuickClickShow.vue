@@ -4,8 +4,7 @@ import BaseButton from "@/Components/Animator/Bases/BaseButton.vue";
 import BaseCountdown from "@/Components/Animator/Bases/BaseCountdown.vue";
 import BaseTabs from "@/Components/Animator/Bases/BaseTabs.vue";
 import BaseTab from "@/Components/Animator/Bases/BaseTab.vue";
-//import BaseAnswers from "@/Components/Animator/Bases/BaseAnswers.vue";
-import BaseAnswersSimple from "@/Components/Animator/Bases/BaseAnswersSimple.vue"
+import BaseAnswers from "@/Components/Animator/Bases/BaseAnswers.vue";
 import BaseAnswersSelect from "@/Components/Animator/Bases/BaseAnswersSelect.vue";
 import Color from "@/Enums/Color.js";
 import { ref } from "vue";
@@ -30,8 +29,7 @@ const activeTab = ref(0);
             <base-tabs v-model="activeTab" :color="Color.ACCENT">
                 <base-tab title="Réponses">
                     Les réponses
-                    <!--<base-answers />-->
-                    <base-answers-simple/>
+                    <base-answers />
                 </base-tab>
                 <base-tab title="Sélection aléatoire" :active="true">
                     Les sélection aléatoire
