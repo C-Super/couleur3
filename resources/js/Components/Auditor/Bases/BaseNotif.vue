@@ -5,9 +5,6 @@ import { storeToRefs } from "pinia";
 const interactionStore = useInteractionStore();
 const { hasOpenedNotif } = storeToRefs(interactionStore);
 
-
-
-
 defineProps({
     id: {
         type: String,
@@ -27,7 +24,10 @@ defineProps({
             class="chat-bubble gradient-auditor text-black font-bold text-lg relative max-w-none"
         >
             <slot />
-            <div v-if="!hasOpenedNotif" class="indicator absolute top-0 right-0 mt-1 mr-1">
+            <div
+                v-if="!hasOpenedNotif"
+                class="indicator absolute top-0 right-0 mt-1 mr-1"
+            >
                 <span class="indicator-item badge bg-info border-info"></span>
                 <div class="grid w-32 h-32"></div>
             </div>

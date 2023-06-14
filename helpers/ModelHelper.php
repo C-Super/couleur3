@@ -209,6 +209,7 @@ namespace App\Models{
      * @method static \Database\Factories\InteractionFactory factory($count = null, $state = [])
      * @method static \Illuminate\Database\Eloquent\Builder|Interaction newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder|Interaction newQuery()
+     * @method static \Illuminate\Database\Eloquent\Builder|Interaction pending()
      * @method static \Illuminate\Database\Eloquent\Builder|Interaction query()
      * @method static \Illuminate\Database\Eloquent\Builder|Interaction whereAnimatorId($value)
      * @method static \Illuminate\Database\Eloquent\Builder|Interaction whereCallToActionId($value)

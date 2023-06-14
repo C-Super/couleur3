@@ -77,4 +77,9 @@ class Interaction extends Model
     {
         $query->where('ended_at', '>', now())->where('status', InteractionStatus::PENDING);
     }
+
+    public function scopePending(Builder $query): void
+    {
+        $query->where('status', InteractionStatus::PENDING);
+    }
 }
