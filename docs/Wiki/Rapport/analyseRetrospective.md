@@ -16,6 +16,8 @@ Ce point ayant déjà été abordé dans le document de clôture du projet, disp
 
 De l'envergure du projet et du temps donné ont découlé la nécessité d'effectuer la phase UX/UI en parallèle avec la phase de mise en place du backend, ce qui retire son sens au processus initial de recherche UX. Le processus de recherche et de conception UX/UI nous a tout de même permis de corriger et d'ajuster les fonctionnalités envisagées, dans une moindre mesure. Nous avons également pu confirmer le bien fondé des décisions liées à l'interface que nous avons prises plus tôt. 
 
+Suivant le même principe, l'élaboration du backend en parallèle avec la conception de l'application a mené à de multiples restructurations en cours de route, en fonction des décisions prises et des rectifications élaborées par l'équipe de conception. Ces restructurations nous ont bien sûr demandé du temps, et peuvent être frustrantes pour l'équipe du backend qui a pu avoir le sentiment d'avoir travaillé "dans le vide", sur des fonctionnalités finalement supprimées.
+
 Nous avons également du voir nos ambitions à la baisse en ce qui concerne la version fonctionnelle finale de notre MVP, à laquelle nous avons retiré certaines fonctionnalités envisagées. 
 
 ### Technique
