@@ -24,8 +24,8 @@ class AnimatorController extends Controller
                     ],
                     'replyable',
                 ],
-                'call_to_action',
-                'question_choices',
+                'callToAction',
+                'questionChoices',
             ])->first(),
         ]);
     }

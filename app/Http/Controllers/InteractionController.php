@@ -39,7 +39,7 @@ class InteractionController extends Controller
                 ],
                 'replyable',
             ],
-            'call_to_action',
+            'callToAction',
         ])->first();
 
         broadcast(new InteractionCreated($currentInteraction))->toOthers();
@@ -111,7 +111,7 @@ class InteractionController extends Controller
                 ],
                 'replyable',
             ],
-            'question_choices',
+            'questionChoices',
         ])->first();
 
         broadcast(new InteractionCreated($currentInteraction))->toOthers();
@@ -151,7 +151,7 @@ class InteractionController extends Controller
                 ],
                 'replyable',
             ],
-            'question_choices',
+            'questionChoices',
         ])->first();
 
         broadcast(new InteractionCreated($currentInteraction))->toOthers();
