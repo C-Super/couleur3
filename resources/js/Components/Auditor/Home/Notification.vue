@@ -8,8 +8,18 @@ import BaseNotif from "@/Components/Auditor/Bases/BaseNotif.vue";
 const interactionStore = useInteractionStore();
 const { currentInteraction, hasOpenedNotif } = storeToRefs(interactionStore);
 
+// permet de récupérer la personne authentifiée si elle existe
+const props = defineProps({
+    authInf: {
+        type: Object,
+        default: null,
+    },
+});
+
 function clicNotif() {
-    if (
+    if (currentInteraction.value.type === InteractionType.QUICK_CLICK && props.authInf === null) {
+        document.querySelector("#popup-auditor").showModal();
+    } else if (
         currentInteraction.value.type === InteractionType.QUICK_CLICK ||
         currentInteraction.value.type === InteractionType.TEXT ||
         currentInteraction.value.type === InteractionType.SURVEY ||
@@ -18,11 +28,14 @@ function clicNotif() {
         currentInteraction.value.type === InteractionType.VIDEO ||
         currentInteraction.value.type === InteractionType.PICTURE
     ) {
+        // l'auditeur à ouvert la notification
         hasOpenedNotif.value = true;
         // Ouvre la modal
         document.querySelector("#popup-auditor").showModal();
 
     } else if (currentInteraction.value.type === InteractionType.CTA) {
+        // l'auditeur à ouvert la notification
+        hasOpenedNotif.value = true;
         // Redirige l'auditeur sur le lien
         window.open(currentInteraction.value.call_to_action.link, "_blank");
     }

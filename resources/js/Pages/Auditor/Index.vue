@@ -22,12 +22,12 @@ defineProps({
     <AuditorLayout :auth-inf="auth.user">
         <Player />
         <DescriptionLive />
-        <Popup id="popup-auditor" :auth-inf="auth.user" />
+        <Popup :auth-inf="auth.user" />
         <div
             id="fixed-container"
             class="fixed bottom-16 w-screen flex flex-col"
         >
-            <Notification />
+            <Notification :auth-inf="auth.user"/>
             <Chat :chat-enabled="chatEnabled" class="grow" />
         </div>
     </AuditorLayout>

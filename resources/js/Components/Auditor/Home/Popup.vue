@@ -63,7 +63,7 @@ function handleButtonPopup ($event) {
 </script>
 
 <template>
-    <dialog v-if="currentInteraction !== null" class="modal">
+    <dialog v-if="currentInteraction !== null" id="popup-auditor" class="modal">
         <form
             method="dialog"
             class="modal-box gradient-auditor flex flex-col text-blue-auditor"
