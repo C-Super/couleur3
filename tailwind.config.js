@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import defaultTheme from "tailwindcss/defaultTheme";
 import * as daisyui from "daisyui";
 import forms from "@tailwindcss/forms";
@@ -43,6 +44,9 @@ export default {
         {
             pattern: /tab-active-(primary|secondary|accent|white|error)/,
         },
+        {
+            pattern: /scrollbar-thumb-(primary|secondary|accent|white|error)/,
+        },
     ],
 
     daisyui: {
@@ -81,5 +85,9 @@ export default {
         },
     },
 
-    plugins: [forms, daisyui],
+    plugins: [
+        forms,
+        daisyui,
+        require("tailwind-scrollbar")({ nocompatible: true }),
+    ],
 };

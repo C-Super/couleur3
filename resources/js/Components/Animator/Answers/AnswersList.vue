@@ -14,7 +14,11 @@ const { pinnedAnswers, notPinnedAnswers, currentInteraction } =
         Cliquez sur les réponses que vous souhaitez épingler en haut de la
         liste.
     </p>
-    <div class="overflow-x-auto h-[36vh] flex flex-col gap-2 mt-2">
+    <div
+        :class="`overflow-x-auto h-[36vh] scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-${Color.forInteractionType(
+            currentInteraction.type
+        )} flex flex-col gap-2 mt-2`"
+    >
         <div v-if="pinnedAnswers.length > 0">
             <!-- Array pinned -->
             <ul class="flex flex-col gap-2">

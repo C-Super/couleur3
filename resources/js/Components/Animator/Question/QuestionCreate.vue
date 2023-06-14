@@ -69,6 +69,7 @@ const submit = () => {
 
 const cancelQuestionType = () => {
     form.reset();
+    form.clearErrors();
     interactionStore.cancelInteraction();
 
     // Remove the selected radio button
@@ -81,7 +82,10 @@ const cancelQuestionType = () => {
 
 <template>
     <!-- Dashboard card && Create form -->
-    <form @submit.prevent="submit">
+    <form
+        class="overflow-y-scroll scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-primary"
+        @submit.prevent="submit"
+    >
         <base-card :color="Color.PRIMARY">
             <template #title>Question</template>
             <template #content>
