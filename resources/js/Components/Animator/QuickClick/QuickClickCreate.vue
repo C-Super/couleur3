@@ -7,6 +7,7 @@ import BaseCard from "@/Components/Animator/Bases/BaseCard.vue";
 import BaseButton from "@/Components/Animator/Bases/BaseButton.vue";
 import BaseDurationRange from "@/Components/Animator/Bases/BaseDurationRange.vue";
 import Color from "@/Enums/Color.js";
+import BaseSelectPrize from "../Bases/BaseSelectPrize.vue";
 import { useForm } from "laravel-precognition-vue-inertia";
 import { useInteractionStore } from "@/Stores/useInteractionStore.js";
 
@@ -61,6 +62,7 @@ const submit = () => {
                         />
                     </input-group>
                 </div>
+                <Base-select-prize />
             </template>
 
             <template #actions>
