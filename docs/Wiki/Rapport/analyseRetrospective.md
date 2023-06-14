@@ -10,20 +10,17 @@ Bonne liaison back-front? Utilisation de technologies actuelles et récentes?
 
 ## Principaux défis et problèmes rencontrés et comment nous les avons surmontés
 
-### Gestion de projet !!!A COMPLETER!!!
+Ce point ayant déjà été abordé dans le document de clôture du projet, disponible dans ce rapport au point 3.4 Réalisation et clôture, nous allons simplement faire un rappel des points clés. 
 
-Utilisation de GitHub pour la gestion de projet pas idéale. Manque d'alternatives peu couteuses.
+### Envergure du projet et temps à disposition
 
-### UX/UI
+De l'envergure du projet et du temps donné ont découlé la nécessité d'effectuer la phase UX/UI en parallèle avec la phase de mise en place du backend, ce qui retire son sens au processus initial de recherche UX. Le processus de recherche et de conception UX/UI nous a tout de même permis de corriger et d'ajuster les fonctionnalités envisagées, dans une moindre mesure. Nous avons également pu confirmer le bien fondé des décisions liées à l'interface que nous avons prises plus tôt. 
 
-Dans le cadre d'un projet de cette envergure et sur le temps donné, la conception de l'UX/UI n'a pas pu être effectuée de manière aussi efficace et logique que dans une situation de projet réel. 
+Nous avons également du voir nos ambitions à la baisse en ce qui concerne la version fonctionnelle finale de notre MVP, à laquelle nous avons retiré certaines fonctionnalités envisagées. 
 
-En effet, afin de pouvoir commencer rapidement à mettre en place la partie backend du projet, les deux équipes ont travaillé en parallèle, ce qui ne correspond pas du tout à l'enchaînement idéal des tâches. L'UX/UI aurait du se faire en tout premier lieu, et la mise en place du backend ensuite, après avoir sélectionné sur sa base les fonctionnalités principales de notre interface. À l'inverse, nous avons dû commencer par déterminer les fonctionnalités principales avant même d'avoir effectué l'étape des recherches utilisateurs, ce qui retire le sens à la démarche de recherche et de conception UX/UI. 
+### Technique
 
-Le processus de recherche et de conception UX/UI nous a tout de même permis de corriger et d'ajuster les fonctionnalités envisagées, dans une moindre mesure. Nous avons également pu confirmer le bien fondé des décisions liées à l'interface que nous avons prises plus tôt. 
-
-### Backend !!!A COMPLETER!!!
-Pingouin
+L'utilisation de GitHub pour la gestion de projet s'est prouvée moins idéale que prévu et nous a coûté en temps afin de nous l'approprier correctement. Nous avons également rencontré des difficultés avec le serveur "pingouin" de l'école, trop restrictif pour nos besoins, et que nous avons finalement abandonné pour Amazon S3.
 
 ## Opportunités d'amélioration
 
