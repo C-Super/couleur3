@@ -4,8 +4,9 @@ import BaseButton from "@/Components/Animator/Bases/BaseButton.vue";
 import BaseCountdown from "@/Components/Animator/Bases/BaseCountdown.vue";
 import BaseTabs from "@/Components/Animator/Bases/BaseTabs.vue";
 import BaseTab from "@/Components/Animator/Bases/BaseTab.vue";
-import BaseAnswers from "@/Components/Animator/Bases/BaseAnswers.vue";
-import BaseAnswersSelect from "@/Components/Animator/Bases/BaseAnswersSelect.vue";
+import AnswersList from "@/Components/Animator/Answers/AnswersList.vue";
+import AnswersSelect from "@/Components/Animator/Answers/AnswersSelect.vue";
+import AnswersRapidity from "@/Components/Animator/Answers/AnswersRapidity.vue";
 import Color from "@/Enums/Color.js";
 import { ref } from "vue";
 import { useInteractionStore } from "@/Stores/useInteractionStore.js";
@@ -14,29 +15,33 @@ import { storeToRefs } from "pinia";
 const interactionStore = useInteractionStore();
 const { currentInteraction } = storeToRefs(interactionStore);
 
+const duration =
+    new Date(currentInteraction.value.ended_at).getTime() -
+    new Date().getTime();
+const sec = Math.floor((duration / 1000) % 60);
+const min = Math.floor(duration / (1000 * 60));
+
 const activeTab = ref(0);
 </script>
 
 <template>
     <base-card :color="Color.ACCENT">
         <template #title>
-            <div class="flex flex-auto flex-row justify-between">
+            <div class="flex flex-auto flex-row items-center justify-between">
                 {{ currentInteraction.title }}
-                <base-countdown :color="Color.ACCENT" />
+                <base-countdown :color="Color.ACCENT" :sec="sec" :min="min" />
             </div>
         </template>
         <template #content>
             <base-tabs v-model="activeTab" :color="Color.ACCENT">
                 <base-tab title="Réponses">
-                    Les réponses
-                    <base-answers />
+                    <answers-list />
                 </base-tab>
                 <base-tab title="Sélection aléatoire" :active="true">
-                    Les sélection aléatoire
-                    <base-answers-select />
+                    <answers-select />
                 </base-tab>
                 <base-tab title="Sélection rapidité">
-                    Sélection premiers
+                    <answers-rapidity />
                 </base-tab>
             </base-tabs>
         </template>

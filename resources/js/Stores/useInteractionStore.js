@@ -68,6 +68,7 @@ export const useInteractionStore = defineStore("interaction", () => {
     };
 
     const addPinned = (answer) => {
+        console.log(answer);
         state.pinnedAnswers.push(answer);
     };
 
@@ -75,10 +76,22 @@ export const useInteractionStore = defineStore("interaction", () => {
         state.pinnedAnswers.splice(state.pinnedAnswers.indexOf(answer), 1);
     };
 
-    const updateWinner = (updatedCandidate) => {
-        if (state.winners.indexOf(updatedCandidate) == -1) {
-            state.winners.push(updatedCandidate);
-        } else state.winners.splice(state.winners.indexOf(updatedCandidate), 1);
+    const addWinner = (candidate) => {
+        state.winners.push(candidate);
+    };
+
+    const removeWinner = (candidate) => {
+        state.winners.splice(state.winners.indexOf(candidate), 1);
+    };
+
+    const updatePinnedAsWinners = (candidates) => {
+        candidates.forEach((candidate) => {
+            if (!state.winners.includes(candidate)) {
+                state.winners.push(candidate);
+            } else {
+                state.winners.splice(state.winners.indexOf(candidate), 1);
+            }
+        });
     };
 
     return {
@@ -90,6 +103,8 @@ export const useInteractionStore = defineStore("interaction", () => {
         endInteraction,
         addPinned,
         removePinned,
-        updateWinner,
+        addWinner,
+        removeWinner,
+        updatePinnedAsWinners,
     };
 });

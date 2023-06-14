@@ -41,12 +41,13 @@ class Interaction extends Model
     protected $casts = [
         'type' => InteractionType::class,
         'status' => InteractionStatus::class,
+        'ended_at' => 'datetime',
     ];
 
     /**
      * Get all question_choices for the interaction.
      */
-    public function question_choices(): HasMany
+    public function questionChoices(): HasMany
     {
         return $this->hasMany(QuestionChoice::class);
     }
@@ -54,7 +55,7 @@ class Interaction extends Model
     /**
      * Get the call_to_action that owns the interaction.
      */
-    public function call_to_action(): BelongsTo
+    public function callToAction(): BelongsTo
     {
         return $this->belongsTo(CallToAction::class);
     }

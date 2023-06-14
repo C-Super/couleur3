@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('call_to_actions', function (Blueprint $table) {
             $table->id();
-            $table->string('link')->nullable();
+            $table->string('link');
             $table->timestamps();
         });
     }

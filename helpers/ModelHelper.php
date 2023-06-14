@@ -73,11 +73,11 @@ namespace App\Models{
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property int $auditor_id
      * @property int $interaction_id
-     * @property string $replyable_type
-     * @property int $replyable_id
-     * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $answerable
+     * @property string|null $replyable_type
+     * @property int|null $replyable_id
      * @property-read \App\Models\Auditor $auditor
      * @property-read \App\Models\Interaction $interaction
+     * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $replyable
      *
      * @method static \Database\Factories\AnswerFactory factory($count = null, $state = [])
      * @method static \Illuminate\Database\Eloquent\Builder|Answer newModelQuery()
@@ -162,9 +162,10 @@ namespace App\Models{
      * App\Models\CallToAction
      *
      * @property int $id
-     * @property string|null $link
+     * @property string $link
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property \Illuminate\Support\Carbon|null $updated_at
+     * @property-read \App\Models\Interaction|null $interaction
      *
      * @method static \Database\Factories\CallToActionFactory factory($count = null, $state = [])
      * @method static \Illuminate\Database\Eloquent\Builder|CallToAction newModelQuery()
@@ -192,7 +193,7 @@ namespace App\Models{
      * @property int|null $call_to_action_id
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property \Illuminate\Support\Carbon|null $updated_at
-     * @property string|null $ended_at
+     * @property \Illuminate\Support\Carbon|null $ended_at
      * @property int $animator_id
      * @property int|null $reward_id
      * @property int|null $winners_count
@@ -293,8 +294,8 @@ namespace App\Models{
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property int $interaction_id
-     * @property-read \App\Models\Answer|null $answer
      * @property-read \App\Models\Interaction $interaction
+     * @property-read \App\Models\Answer|null $replyable
      *
      * @method static \Database\Factories\QuestionChoiceFactory factory($count = null, $state = [])
      * @method static \Illuminate\Database\Eloquent\Builder|QuestionChoice newModelQuery()

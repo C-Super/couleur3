@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('auditor_id')->constrained();
             $table->foreignId('interaction_id')->constrained();
             $table->unique(['interaction_id', 'auditor_id']);
-            $table->morphs('replyable');
+            $table->nullableMorphs('replyable');
         });
     }
 

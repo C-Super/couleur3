@@ -8,10 +8,12 @@ use App\Events\AnswerSubmitedToAnimator;
 use App\Http\Requests\StoreAnswerRequest;
 use App\Models\Answer;
 use App\Models\AnswerText;
+use App\Models\Interaction;
 use App\Models\Media;
 use App\Models\QuestionChoice;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use Request;
 use Storage;
 
 class AnswerController extends Controller
@@ -39,7 +41,7 @@ class AnswerController extends Controller
                 $file = $request->file('replyable_data.file');
 
                 // Générer un nom de fichier unique
-                $fileName = time().'_'.$file->getClientOriginalName();
+                $fileName = time() . '_' . $file->getClientOriginalName();
 
                 // Envoyez le fichier au disque minio
                 Storage::disk('s3')->put($fileName, file_get_contents($file));
@@ -74,5 +76,19 @@ class AnswerController extends Controller
         }
 
         return Inertia::render('Auditor/Answer', $answer);
+    }
+
+    public function storeQuickClick(Request $request, Interaction $interaction)
+    {
+        $answer = Answer::create([
+            'auditor_id' => Auth::user()->id,
+            'interaction_id' => $interaction->id,
+        ]);
+
+        $answer->with('auditor.user')->get();
+
+        broadcast(new AnswerSubmitedToAnimator($answer))->toOthers();
+
+        return response()->back();
     }
 }

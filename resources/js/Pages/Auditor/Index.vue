@@ -3,7 +3,6 @@ import AuditorLayout from "@/Layouts/AuditorLayout.vue";
 import Player from "@/Components/Auditor/Player.vue";
 import DescriptionLive from "@/Components/Auditor/Home/DescriptionLive.vue";
 import Popup from "@/Components/Auditor/Home/Popup.vue";
-import ChatComponent from "@/Components/ChatComponent.vue";
 import Chat from "@/Components/Auditor/Home/Chat.vue";
 import Notification from "@/Components/Auditor/Home/Notification.vue";
 
@@ -24,7 +23,6 @@ defineProps({
         <Player />
         <DescriptionLive />
         <Popup :auth-inf="auth.user" />
-        <ChatComponent :chat-enabled="chatEnabled" />
         <div
             id="fixed-container"
             class="fixed bottom-16 w-screen flex flex-col"
