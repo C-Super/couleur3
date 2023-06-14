@@ -35,13 +35,19 @@ const submit = () =>
     <AuditorLayout>
         <Head title="Login" />
 
-        <div id="login" class="flex flex-col justify-center items-center px-3.5">
-            <h2 class="font-semibold text-3xl mb-5" >Login</h2>
+        <div
+            id="login"
+            class="flex flex-col justify-center items-center px-3.5"
+        >
+            <h2 class="font-semibold text-3xl mb-5">Login</h2>
             <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
                 {{ status }}
             </div>
 
-            <form class="w-full flex flex-col items-center" @submit.prevent="submit">
+            <form
+                class="w-full flex flex-col items-center"
+                @submit.prevent="submit"
+            >
                 <div class="w-full">
                     <TextInput
                         id="email"
@@ -56,7 +62,7 @@ const submit = () =>
                     />
                     <InputError class="mt-2" :message="form.errors.email" />
                 </div>
-                <div class="w-full  mt-4">
+                <div class="w-full mt-4">
                     <TextInput
                         id="password"
                         v-model="form.password"
@@ -72,8 +78,12 @@ const submit = () =>
 
                 <div class="block mt-4">
                     <label class="flex items-center">
-                        <Checkbox v-model:checked="form.remember" name="remember" />
-                        <span class="ml-2 text-base text-base-100 dark:text-base-100"
+                        <Checkbox
+                            v-model:checked="form.remember"
+                            name="remember"
+                        />
+                        <span
+                            class="ml-2 text-base text-base-100 dark:text-base-100"
                             >Se rappeler de moi</span
                         >
                     </label>
@@ -89,26 +99,25 @@ const submit = () =>
                     <Link
                         v-if="canResetPassword"
                         :href="route('password.request')"
-                        class="underline text-sm text-base-100 dark:text-base-100 hover:text-base-100 dark:hover:text-base-100 "
+                        class="underline text-sm text-base-100 dark:text-base-100 hover:text-base-100 dark:hover:text-base-100"
                     >
                         Mot de passe oublié ?
                     </Link>
                 </div>
-                <ProfileButton
-                        :class="{ 'opacity-25': form.processing }"
-                        :outlined="false"
-                        :disabled="form.processing"
-                    >
-                    S'enregistrer
-                </ProfileButton>
             </form>
+            <ProfileButton
+                :class="{ 'opacity-25': form.processing }"
+                :outlined="false"
+                :disabled="form.processing"
+            >
+                <a :href="route('register')"> S'enregistrer</a>
+            </ProfileButton>
         </div>
     </AuditorLayout>
 </template>
 
 <style scoped>
-#login{
-    height: calc(100vh - 4rem - 4rem)
+#login {
+    height: calc(100vh - 4rem - 4rem);
 }
-
 </style>
