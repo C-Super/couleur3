@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\InteractionType;
 use App\Enums\InteractionStatus;
+use App\Enums\InteractionType;
 use App\Events\InteractionCreated;
 use App\Events\InteractionEndedEvent;
 use App\Http\Requests\Interaction\StoreCallToActionRequest;

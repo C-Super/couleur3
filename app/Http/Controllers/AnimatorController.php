@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Enums\InteractionStatus;
 use App\Events\ChatUpdated;
 use App\Events\InteractionEndedEvent;
-use App\Events\InteractionEndedForAnimatorEvent;
 use App\Models\Interaction;
 use App\Models\Reward;
 use App\Settings\GeneralSettings;
@@ -27,7 +26,7 @@ class AnimatorController extends Controller
                 'callToAction',
                 'questionChoices',
             ])->first(),
-            'rewards' => Reward::all()
+            'rewards' => Reward::all(),
         ]);
     }
 
