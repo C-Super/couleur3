@@ -27,7 +27,7 @@ const activeTab = ref(0);
 <template>
     <base-card :color="Color.ACCENT">
         <template #title>
-            <div class="flex flex-auto flex-row justify-between">
+            <div class="flex flex-auto flex-row items-center justify-between">
                 {{ currentInteraction.title }}
                 <base-countdown :color="Color.ACCENT" :sec="sec" :min="min" />
             </div>

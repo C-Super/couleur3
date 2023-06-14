@@ -1,6 +1,7 @@
 <script setup>
 import Color from "@/Enums/Color.js";
 import { useInteractionStore } from "@/Stores/useInteractionStore.js";
+import { calculateDuration, formatDuration } from "@/Utils/time.js";
 import { storeToRefs } from "pinia";
 
 const interactionStore = useInteractionStore();
@@ -13,8 +14,8 @@ const { pinnedAnswers, notPinnedAnswers, currentInteraction } =
         Cliquez sur les réponses que vous souhaitez épingler en haut de la
         liste.
     </p>
-    <div class="overflow-x-auto mt-4">
-        <div class="mb-2">
+    <div class="overflow-x-auto h-[36vh] flex flex-col gap-2 mt-2">
+        <div v-if="pinnedAnswers.length > 0">
             <!-- Array pinned -->
             <ul class="flex flex-col gap-2">
                 <li
@@ -41,13 +42,14 @@ const { pinnedAnswers, notPinnedAnswers, currentInteraction } =
                     </div>
 
                     <div>
+                        Répondu en
                         {{
-                            new Date(
-                                pinnedAnswer.created_at
-                            ).toLocaleTimeString("fr-FR", {
-                                hour: "2-digit",
-                                minute: "2-digit",
-                            })
+                            formatDuration(
+                                calculateDuration(
+                                    pinnedAnswer.created_at,
+                                    currentInteraction.created_at
+                                )
+                            )
                         }}
                     </div>
                 </li>
@@ -78,13 +80,14 @@ const { pinnedAnswers, notPinnedAnswers, currentInteraction } =
                     </div>
 
                     <div>
+                        Répondu en
                         {{
-                            new Date(
-                                notPinnedAnswer.created_at
-                            ).toLocaleTimeString("fr-FR", {
-                                hour: "2-digit",
-                                minute: "2-digit",
-                            })
+                            formatDuration(
+                                calculateDuration(
+                                    notPinnedAnswer.created_at,
+                                    currentInteraction.created_at
+                                )
+                            )
                         }}
                     </div>
                 </li>

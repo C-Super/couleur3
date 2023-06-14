@@ -1,6 +1,7 @@
 <script setup>
 import BaseCheckbox from "@/Components/Animator/Bases/BaseCheckbox.vue";
 import Color from "@/Enums/Color.js";
+import { calculateDuration, formatDuration } from "@/Utils/time.js";
 import { useInteractionStore } from "@/Stores/useInteractionStore.js";
 import { storeToRefs } from "pinia";
 
@@ -35,8 +36,8 @@ const candidates = notPinnedAnswers;
             </div>
         </div>
 
-        <div class="overflow-x-auto mt-4">
-            <div class="mb-2">
+        <div class="overflow-x-auto h-[36vh] mt-4 pl-1 pt-1">
+            <div>
                 <!-- Array pinned -->
                 <ul class="flex flex-col gap-4">
                     <li
@@ -52,7 +53,7 @@ const candidates = notPinnedAnswers;
                                 )
                             "
                             :checked="winners.indexOf(pinnedCandidate) != -1"
-                            class="ml-1 mr-1"
+                            class="mr-1"
                             @change="
                                 interactionStore.removeWinner(pinnedCandidate)
                             "
@@ -63,13 +64,14 @@ const candidates = notPinnedAnswers;
                         </div>
 
                         <div class="text-base">
+                            Répondu en
                             {{
-                                new Date(
-                                    pinnedCandidate.created_at
-                                ).toLocaleTimeString("fr-FR", {
-                                    hour: "2-digit",
-                                    minute: "2-digit",
-                                })
+                                formatDuration(
+                                    calculateDuration(
+                                        pinnedCandidate.created_at,
+                                        currentInteraction.created_at
+                                    )
+                                )
                             }}
                         </div>
 
@@ -83,7 +85,7 @@ const candidates = notPinnedAnswers;
                     </li>
                 </ul>
             </div>
-            <div>
+            <div class="mt-4">
                 <!-- Array not pinned -->
                 <ul class="flex flex-col gap-4">
                     <li
@@ -99,7 +101,7 @@ const candidates = notPinnedAnswers;
                                 )
                             "
                             :checked="winners.indexOf(candidate) != -1"
-                            class="ml-1 mr-1"
+                            class="mr-1"
                             @change="interactionStore.addWinner(candidate)"
                         />
 
@@ -109,12 +111,12 @@ const candidates = notPinnedAnswers;
 
                         <div class="text-base">
                             {{
-                                new Date(
-                                    candidate.created_at
-                                ).toLocaleTimeString("fr-FR", {
-                                    hour: "2-digit",
-                                    minute: "2-digit",
-                                })
+                                formatDuration(
+                                    calculateDuration(
+                                        candidate.created_at,
+                                        currentInteraction.created_at
+                                    )
+                                )
                             }}
                         </div>
 
