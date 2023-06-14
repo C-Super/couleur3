@@ -1,0 +1,19 @@
+name: Continuous deployment
+
+on:
+  workflow_run:
+    workflows: Continuous integration
+    branches: main
+    types: completed
+
+jobs:
+  deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+     - name: Deploy to production
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: cd /var/www/super-laravel && ./deploy.sh
