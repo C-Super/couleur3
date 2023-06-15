@@ -20,7 +20,7 @@ import { storeToRefs } from "pinia";
 const interactionStore = useInteractionStore();
 const { currentInteraction } = storeToRefs(interactionStore);
 
-const { sec, min } = calculateDuration(
+const { min, sec } = calculateDuration(
     currentInteraction.value.ended_at,
     new Date()
 );
