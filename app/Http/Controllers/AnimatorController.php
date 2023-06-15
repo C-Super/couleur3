@@ -21,7 +21,6 @@ class AnimatorController extends Controller
                     'auditor' => [
                         'user',
                     ],
-                    'replyable',
                 ],
                 'winners',
                 'callToAction',

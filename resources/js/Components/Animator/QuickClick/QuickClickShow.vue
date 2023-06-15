@@ -15,7 +15,7 @@ import { storeToRefs } from "pinia";
 const interactionStore = useInteractionStore();
 const { currentInteraction } = storeToRefs(interactionStore);
 
-const { sec, min } = calculateDuration(
+const { min, sec } = calculateDuration(
     currentInteraction.value.ended_at,
     new Date()
 );
@@ -45,7 +45,7 @@ const activeTab = ref(0);
                 <base-tab title="Réponses">
                     <answers-list />
                 </base-tab>
-                <base-tab title="Sélection rapidité">
+                <base-tab title="Sélection des premiers">
                     <answers-select-fastest />
                 </base-tab>
             </base-tabs>
