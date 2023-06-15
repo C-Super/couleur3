@@ -32,17 +32,11 @@ function check($event) {
     if ($event.target.checked) {
         const heightHeaderPlayer =
             document.querySelector("#the-header").getBoundingClientRect()
-                .height +
-            document.querySelector("#player_container").getBoundingClientRect()
-                .height +
-            "px";
-        document
-            .querySelectorAll("body, #the-header, #player_container")
-            .forEach((element) => {
-                element.classList.add("chat-open");
-            });
+                .height + "px";
+        document.querySelectorAll("body, #the-header").forEach((element) => {
+            element.classList.add("chat-open");
+        });
         document.querySelector("#fixed-container").classList.add("bg-black");
-        document.querySelector("#player_container").classList.add("top-16");
         document.querySelector("#description-live").style.marginTop =
             heightHeaderPlayer;
         document.querySelector("#fixed-container").style.top =
@@ -50,13 +44,10 @@ function check($event) {
         document.querySelector("#chat-auditor").style.gridTemplateRows =
             "auto 1fr";
     } else {
-        document
-            .querySelectorAll("body, #the-header, #player_container")
-            .forEach((element) => {
-                element.classList.remove("chat-open");
-            });
+        document.querySelectorAll("body, #the-header").forEach((element) => {
+            element.classList.remove("chat-open");
+        });
         document.querySelector("#fixed-container").classList.remove("bg-black");
-        document.querySelector("#player_container").classList.remove("top-16");
         document.querySelector("#description-live").style.marginTop = "";
         document.querySelector("#fixed-container").style.top = "";
         document.querySelector("#chat-auditor").style.gridTemplateRows = "";
@@ -92,12 +83,7 @@ function check($event) {
             <div class="overflow-y-scroll h-2 grow flex flex-col-reverse">
                 <!-- Ajouter les nouveaux message ici-->
                 <div v-if="messages && isChatEnabled" ref="messageContainer">
-                    <p
-                        v-for="msg in messages"
-                        :key="msg.id"
-                        :msg="msg"
-                        class="font-light"
-                    >
+                    <p v-for="msg in messages" :key="msg.id" class="font-light">
                         <span class="text-base-100 opacity-70">
                             {{
                                 formatDateToHoursMinutes(msg.created_at)

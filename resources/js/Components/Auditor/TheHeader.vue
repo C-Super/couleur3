@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import { Link } from "@inertiajs/vue3";
+import PrimaryButton from "@/Components/Auditor/Bases/PrimaryButton.vue";
 import MiniaturePlayer from "@/Components/Auditor/MiniaturePlayer.vue";
 
 const activePage = ref(location.pathname);
@@ -26,16 +27,18 @@ const activePage = ref(location.pathname);
         <MiniaturePlayer class="h-16" />
         <div
             v-if="activePage === '/profile'"
-            class="h-10 flex items-center justify-end px-3.5"
+            class="h-16 flex items-center px-3.5"
         >
-            <Link
-                href="/logout"
-                method="post"
-                as="button"
-                class="flex items-center gap-x-1.5"
-                ><span class="material-symbols-rounded"> logout </span>
-                <span>Se déconnecter</span></Link
-            >
+            <PrimaryButton>
+                <Link
+                    href="/logout"
+                    method="post"
+                    as="button"
+                    class="flex items-center gap-x-1.5"
+                    ><span class="material-symbols-rounded"> logout </span>
+                    <span>Se déconnecter</span></Link
+                >
+            </PrimaryButton>
         </div>
     </header>
 </template>

@@ -7,6 +7,7 @@ import BasesTitrePopup from "@/Components/Auditor/Bases/Popup/BasesTitrePopup.vu
 import PopupTitleType from "@/Enums/PopupTitleType.js";
 // type de popup
 import PopupText from "@/Components/Auditor/Home/Popup/PopupText.vue";
+import PopupSurveyMcq from "@/Components/Auditor/Home/Popup/PopupSurveyMcq.vue";
 // Interaction activée
 import InteractionType from "@/Enums/InteractionType.js";
 import { useInteractionStore } from "@/Stores/useInteractionStore.js";
@@ -53,7 +54,10 @@ watch(hasOpenedNotif, () => {
     }
 });
 
+const hasAnswered = ref(false);
+
 const inputTextValue = ref("");
+
 const formValidation = computed(() => {
     if (currentInteraction.value?.type === InteractionType.TEXT) {
         return inputTextValue.value.length > 0;
@@ -64,6 +68,7 @@ const formValidation = computed(() => {
 
 // Constante pour afficher ou non les titres et la validation
 const popupTitle = computed(() => {
+    console.log(hasBeenRewarded.value);
     if (hasBeenRewarded.value !== null) {
         document.querySelector("#popup-auditor").showModal();
         return PopupTitleType.GIFT;
@@ -75,7 +80,10 @@ const popupTitle = computed(() => {
             return PopupTitleType.QUICK;
         }
     }
-    return PopupTitleType.THANKS;
+    if (!hasAnswered.value) {
+        return PopupTitleType.THANKS;
+    }
+    return null;
 });
 
 // Clique sur le bouton du popup
@@ -90,12 +98,22 @@ function handleButtonPopup($event) {
         }
 
         popupTitle.value = "thanks";
+    } else if (
+        $event.target.id === "closeGift" &&
+        hasBeenRewarded.value !== null
+    ) {
+        hasBeenRewarded.value = null;
+        hasAnswered.value = true;
     }
 }
 </script>
 
 <template>
-    <dialog v-if="currentInteraction !== null" id="popup-auditor" class="modal">
+    <dialog
+        v-if="currentInteraction !== null && popupTitle !== null"
+        id="popup-auditor"
+        class="modal"
+    >
         <form
             method="dialog"
             class="modal-box gradient-auditor flex flex-col text-blue-auditor"
@@ -123,7 +141,11 @@ function handleButtonPopup($event) {
                 <BasesTitrePopup
                     v-if="popupTitle === PopupTitleType.GIFT"
                     icone="redeem"
-                    >Vous avez gagné {{ hasBeenRewarded.name }}</BasesTitrePopup
+                    >Vous avez gagné ce prix !<br />
+                    {{ hasBeenRewarded.name }} :
+                    {{
+                        hasBeenRewarded.description.toLowerCase()
+                    }}</BasesTitrePopup
                 >
                 <BasesTitrePopup
                     v-if="popupTitle === PopupTitleType.QUICK"
@@ -135,24 +157,43 @@ function handleButtonPopup($event) {
                     v-if="
                         currentInteraction.type !== InteractionType.QUICK_CLICK
                     "
-                    class="text-base-100 text-base font-bold mt-6"
+                    class="text-base-100 text-base font-bold mb-8"
                 >
                     {{ currentInteraction.title }}
                 </p>
                 <!-- Type du popup -->
                 <PopupText
-                    v-if="currentInteraction.type === InteractionType.TEXT"
+                    v-if="
+                        currentInteraction.type === InteractionType.TEXT &&
+                        authInf !== null
+                    "
                     v-model="inputTextValue"
                 />
+                <PopupSurveyMcq
+                    v-if="
+                        (currentInteraction.type === InteractionType.SURVEY ||
+                            currentInteraction.type === InteractionType.MCQ) &&
+                        authInf !== null
+                    "
+                />
                 <!-- Bouton envoyer, fermer, suivant, se connecter -->
-                <div class="flex justify-center mt-10">
+                <div class="flex justify-center">
                     <BaseButtonPopup
                         v-if="
-                            (popupTitle === PopupTitleType.GIFT ||
-                                popupTitle === PopupTitleType.THANKS) &&
+                            popupTitle === PopupTitleType.THANKS &&
                             authInf !== null
                         "
                         id="close"
+                        :is-validate="true"
+                        @click="handleButtonPopup"
+                        >Fermer</BaseButtonPopup
+                    >
+                    <BaseButtonPopup
+                        v-if="
+                            popupTitle === PopupTitleType.GIFT &&
+                            authInf !== null
+                        "
+                        id="closeGift"
                         :is-validate="true"
                         @click="handleButtonPopup"
                         >Fermer</BaseButtonPopup

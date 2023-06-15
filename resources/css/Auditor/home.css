@@ -1,3 +1,6 @@
+body.chat-open {
+    overflow: hidden;
+}
 #the-header.chat-open {
     position: fixed;
     left: 0;
