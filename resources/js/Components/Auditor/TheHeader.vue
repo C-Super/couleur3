@@ -18,7 +18,11 @@ const activePage = ref(location.pathname);
             alt="Logo de Couleur 3"
         />
     </header>
-    <header v-if="activePage !== '/'" id="the-header" class="bg-black fixed">
+    <header
+        v-if="activePage !== '/'"
+        id="the-header"
+        class="bg-black fixed w-full z-10"
+    >
         <MiniaturePlayer class="h-16" />
         <div
             v-if="activePage === '/profile'"

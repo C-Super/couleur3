@@ -6,7 +6,7 @@ import ProfileButton from "@/Components/Auditor/Bases/ProfileButton.vue";
 import TextInput from "@/Components/Auditor/Bases/TextInput.vue";
 import TextInputPostalCode from "@/Components/Auditor/Bases/TextInputPostalCode.vue";
 import TextInputCity from "@/Components/Auditor/Bases/TextInputCity.vue";
-import { Head, Link } from "@inertiajs/vue3";
+import { Head } from "@inertiajs/vue3";
 import { useForm } from "laravel-precognition-vue-inertia";
 
 defineProps({
@@ -115,16 +115,27 @@ const submit = () => {
                 </div>
 
                 <div class="collapse bg-black">
-                    <input type="checkbox" class="w-full h-full" />
+                    <input
+                        id="checkboxAddress"
+                        type="checkbox"
+                        class="w-full h-full"
+                    />
                     <div
-                        class="collapse-title text-lg font-light text-base-100 flex flex-col items-center justify-center"
+                        class="collapse-title text-lg font-light text-base-100 flex flex-col items-center justify-center px-0"
                     >
                         Ajoutez votre adresse pour recevoir des récompenses
                         <br />
                         <span
+                            id="openAddress"
                             class="material-symbols-rounded text-4xl font-light"
                         >
                             add
+                        </span>
+                        <span
+                            id="closeAddress"
+                            class="material-symbols-rounded text-4xl font-light"
+                        >
+                            remove
                         </span>
                     </div>
                     <div class="collapse-content">
@@ -178,14 +189,7 @@ const submit = () => {
                     </div>
                 </div>
 
-                <div class="flex flex-col items-center mt-8 gap-y-4">
-                    <Link
-                        :href="route('login')"
-                        class="underline text-sm text-base-100 dark:text-base-100 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none"
-                    >
-                        Déjà enregistré?
-                    </Link>
-
+                <div class="flex flex-col items-center">
                     <ProfileButton
                         :class="{ 'opacity-25': form.processing }"
                         :outlined="false"
@@ -198,3 +202,15 @@ const submit = () => {
         </div>
     </AuditorLayout>
 </template>
+<style scoped>
+#checkboxAddress:checked + div > #openAddress {
+    display: none;
+}
+#checkboxAddress:checked + div > #closeAddress {
+    display: block;
+}
+
+#closeAddress {
+    display: none;
+}
+</style>
