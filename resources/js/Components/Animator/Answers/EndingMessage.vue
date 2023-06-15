@@ -4,6 +4,7 @@ import BaseButton from "@/Components/Animator/Bases/BaseButton.vue";
 import Color from "@/Enums/Color";
 import { useInteractionStore } from "@/Stores/useInteractionStore.js";
 import { storeToRefs } from "pinia";
+
 const interactionStore = useInteractionStore();
 const { currentInteraction } = storeToRefs(interactionStore);
 </script>
@@ -24,7 +25,7 @@ const { currentInteraction } = storeToRefs(interactionStore);
                 </li>
                 <li>
                     <p class="font-light">
-                        {{ currentInteraction.winners.length }} gagants
+                        {{ currentInteraction.winners.length }} gagnants
                     </p>
                 </li>
             </ul>
