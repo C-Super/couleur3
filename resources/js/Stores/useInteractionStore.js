@@ -49,8 +49,6 @@ export const useInteractionStore = defineStore(
 
                 if (oldValue.id === newValue.id) return;
 
-                console.log(newValue);
-
                 if (newValue) {
                     if (
                         newValue.roleable_type === "App\\Models\\Animator" &&
@@ -111,7 +109,6 @@ export const useInteractionStore = defineStore(
         };
 
         const subscribeAuditorToPrivateChannel = () => {
-            console.log("sub private auditor: ", page.props.auth.user.id);
             window.Echo.private(`auditors.${page.props.auth.user.id}`).listen(
                 "WinnerSentResult",
                 (event) => {

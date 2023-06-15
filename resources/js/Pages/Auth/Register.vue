@@ -31,7 +31,6 @@ const form = useForm("post", route("register"), {
 
 const submit = () => {
     if (Object.values(form.address).every((field) => field === "")) {
-        console.log(form.address);
         // Make the address fields null if they are all empty
         form.address.street = null;
         form.address.zip_code = null;
