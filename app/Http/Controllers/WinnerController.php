@@ -46,6 +46,10 @@ class WinnerController extends Controller
     {
         $validated = $request->validated();
         $winnersCount = $validated['winners_count'];
+        $reward_id = $validated['reward_id'];
+
+        // Insert into interaction reward_id
+        $interaction->update(['reward_id' => $reward_id]);
 
         // Récupérer les IDs des auditeurs les plus rapides qui ont répondu à l'interaction et qui ne sont pas déjà des gagnants
         $auditorIds = Answer::where('interaction_id', $interaction->id)
