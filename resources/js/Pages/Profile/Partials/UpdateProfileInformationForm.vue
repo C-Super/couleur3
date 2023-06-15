@@ -5,7 +5,7 @@ import PrimaryButton from "@/Components/Auditor/Bases/PrimaryButton.vue";
 import TextInput from "@/Components/Auditor/Bases/TextInput.vue";
 import { Link, useForm, usePage } from "@inertiajs/vue3";
 
-defineProps({
+const props = defineProps({
     mustVerifyEmail: {
         type: Boolean,
     },
@@ -18,12 +18,13 @@ defineProps({
         required: true,
     },
 });
-
+console.log(props.address);
 const user = usePage().props.auth.user;
 
 const form = useForm({
     name: user.name,
     email: user.email,
+    address: props.address,
 });
 </script>
 
@@ -76,6 +77,22 @@ const form = useForm({
 
                 <InputError class="mt-2" :message="form.errors.email" />
             </div>
+
+            <div>
+                <InputLabel for="street" :value="address.street" />
+
+                <TextInput
+                    id="address"
+                    v-model="form.address.street"
+                    label="Adresse"
+                    type="text"
+                    class="mt-1 block w-full"
+                    required
+                    autocomplete="address"
+                />
+            </div>
+
+            <InputError class="mt-2" :message="form.errors.address" />
 
             <div v-if="mustVerifyEmail && user.email_verified_at === null">
                 <p class="text-sm mt-2 text-gray-800 dark:text-gray-200">
