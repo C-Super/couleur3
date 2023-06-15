@@ -88,7 +88,6 @@ const form = useForm({
                     label="Adresse"
                     type="text"
                     class="mt-1 block w-full"
-                    required
                     autocomplete="address"
                 />
             </div>
@@ -100,7 +99,6 @@ const form = useForm({
                         v-model="form.address.zip_code"
                         label="NPA"
                         type="zip_code"
-                        required
                         autocomplete="zip_code"
                     />
                 </div>
@@ -111,7 +109,6 @@ const form = useForm({
                         v-model="form.address.city"
                         label="Ville"
                         type="city"
-                        required
                         autocomplete="city"
                     />
                 </div>
@@ -126,7 +123,6 @@ const form = useForm({
                     label="Pays"
                     type="text"
                     class="mt-1 block w-full"
-                    required
                     autocomplete="country"
                 />
             </div>
