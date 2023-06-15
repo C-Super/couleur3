@@ -1,8 +1,10 @@
+<!-- eslint-disable no-undef -->
 <script setup>
 import { ref, computed } from "vue";
 import InteractionType from "@/Enums/InteractionType.js";
 import { useInteractionStore } from "@/Stores/useInteractionStore.js";
 import { storeToRefs } from "pinia";
+import { router } from "@inertiajs/vue3";
 
 const interactionStore = useInteractionStore();
 const { currentInteraction } = storeToRefs(interactionStore);
@@ -12,7 +14,8 @@ const statsChoices = computed(() => {
     return [20, 30, 40, 10];
 });
 
-function responseAuditor() {
+function responseAuditor(choiceId) {
+    submit(choiceId);
     // change la taille des résultats
     const container = document.querySelector(".container");
     statsChoices.value.forEach((stat, index) => {
@@ -48,19 +51,17 @@ function responseAuditor() {
 //     ],
 // });
 
-// const submit = () => {
-//     form.post(
-//         route(
-//             `interactions.${isCreatingInteraction.value?.toLowerCase()}.store`
-//         ),
-//         {
-//             onSuccess: () => {
-//                 form.reset();
-//                 interactionStore.createdInteraction();
-//             },
-//         }
-//     );
-// };
+const submit = (choiceId) => {
+    router.post(
+        route(
+            `interactions.answers.${currentInteraction.value.type.toLowerCase()}.store`,
+            currentInteraction.value.id
+        ),
+        {
+            questionChoiceChosed: choiceId,
+        }
+    );
+};
 </script>
 
 <template>
@@ -79,7 +80,7 @@ function responseAuditor() {
                 name="SurveyMCQ"
                 :disabled="isDisabled"
                 :value="choice.value"
-                @change="responseAuditor"
+                @change="responseAuditor(choice.id)"
             />
             <label
                 ref="choices"

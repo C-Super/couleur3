@@ -36,10 +36,12 @@ const Ziggy = {
         "interactions.answers.survey.store": {
             uri: "interactions/{interaction}/answers/survey",
             methods: ["POST"],
+            bindings: { interaction: "id" },
         },
         "interactions.answers.mcq.store": {
             uri: "interactions/{interaction}/answers/mcq",
             methods: ["POST"],
+            bindings: { interaction: "id" },
         },
         "interactions.answers.audio.store": {
             uri: "interactions/{interaction}/answers/audio",
@@ -56,6 +58,7 @@ const Ziggy = {
         "interactions.answers.text.store": {
             uri: "interactions/{interaction}/answers/text",
             methods: ["POST"],
+            bindings: { interaction: "id" },
         },
         "animator.index": { uri: "dashboard", methods: ["GET", "HEAD"] },
         "animator.endEmission": { uri: "endEmission", methods: ["POST"] },

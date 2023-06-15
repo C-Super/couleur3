@@ -57,6 +57,7 @@ watch(hasOpenedNotif, () => {
 const hasAnswered = ref(false);
 
 const inputTextValue = ref("");
+
 const formValidation = computed(() => {
     if (currentInteraction.value?.type === InteractionType.TEXT) {
         return inputTextValue.value.length > 0;
