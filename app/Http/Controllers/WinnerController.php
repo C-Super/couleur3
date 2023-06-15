@@ -5,14 +5,13 @@ namespace App\Http\Controllers;
 use App\Events\NewWinnerGenerated;
 use App\Events\WinnerSentResult;
 use App\Events\WinnersListGenerated;
-use App\Http\Requests\Winner\GenerateWinnersRequest;
 use App\Http\Requests\ReplaceWinnerRequest;
 use App\Http\Requests\StoreWinnerRequest;
+use App\Http\Requests\Winner\GenerateWinnersRequest;
 use App\Models\Answer;
 use App\Models\Interaction;
 use App\Models\Winner;
 use DB;
-use Inertia\Inertia;
 
 class WinnerController extends Controller
 {
@@ -74,9 +73,9 @@ class WinnerController extends Controller
         }
 
         return back()->with([
-            "interaction" => [
-                "winners" => $winners
-            ]
+            'interaction' => [
+                'winners' => $winners,
+            ],
         ]);
     }
 
