@@ -21,7 +21,7 @@ class AnimatorController extends Controller
                     'auditor' => [
                         'user',
                     ],
-                    'replyable'
+                    'replyable',
                 ],
                 'winners' => [
                     'auditor' => [

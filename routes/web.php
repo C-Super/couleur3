@@ -69,4 +69,4 @@ Route::middleware(['auth', 'auth.animator'])->group(function () {
     Route::post('/interactions/{interaction}/winners/confirm', [WinnerController::class, 'store'])->name('interactions.winners.confirm');
 });
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';
