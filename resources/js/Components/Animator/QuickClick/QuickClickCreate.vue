@@ -61,7 +61,6 @@ const submit = () => {
                         />
                     </input-group>
                 </div>
-                <Base-select-prize />
             </template>
 
             <template #actions>
