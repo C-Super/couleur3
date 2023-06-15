@@ -35,7 +35,6 @@ class RegisteredUserController extends Controller
             return $request->validated();
         });
 
-
         $auditor = Auditor::create();
 
         // Créez une nouvelle adresse si elle est définie dans le payload
@@ -50,7 +49,6 @@ class RegisteredUserController extends Controller
             'roleable_type' => get_class($auditor),
             'roleable_id' => $auditor->id,
         ]);
-
 
         event(new Registered($user));
 

@@ -143,7 +143,6 @@ const submit = () => {
                 </div>
 
                 <div class="w-full mt-4">
-
                     <TextInput
                         id="password_confirmation"
                         v-model="form.password_confirmation"
