@@ -8,6 +8,7 @@ use App\Models\Animator;
 use App\Models\Answer;
 use App\Models\Auditor;
 use App\Models\Interaction;
+use App\Models\QuestionChoice;
 use App\Models\Reward;
 use App\Models\User;
 use App\Models\Winner;
@@ -61,6 +62,84 @@ it('generates random winners list successfully', function () {
     $response->assertStatus(200);
     $response->assertJsonStructure(['auditor_ids']);
     $this->assertCount(3, $response['auditor_ids']);
+
+    // Assert database winners with interaction_id
+    $this->assertCount(3, Winner::where('interaction_id', $interaction->id)->get());
+
+    // Assert event
+    Event::assertDispatched(WinnersListGenerated::class);
+});
+
+it('generates random winners list with correct MCQ answers', function () {
+    Event::fake([WinnersListGenerated::class]);
+
+    $animator = Animator::factory()->create();
+    $user = User::factory()->create([
+        'name' => fake()->name(),
+        'email' => fake()->email(),
+        'password' => Hash::make('animator'),
+        'roleable_id' => $animator->id,
+        'roleable_type' => get_class($animator),
+    ]);
+
+    $interaction = Interaction::factory(
+        [
+            'animator_id' => $animator->id,
+            'type' => InteractionType::MCQ,
+        ]
+    )->create();
+
+    $reward = Reward::factory()->create();
+
+    $correctChoice = QuestionChoice::factory()->state(['is_correct_answer' => true])->create([
+        'interaction_id' => $interaction->id,
+    ]);
+
+    $incorrectChoice = QuestionChoice::factory()->state(['is_correct_answer' => false])->create([
+        'interaction_id' => $interaction->id,
+    ]);
+
+    // Create auditors with correct and incorrect answers
+    $auditorsCorrect = Auditor::factory()->count(3)->create();
+    $auditorsIncorrect = Auditor::factory()->count(2)->create();
+
+    foreach ($auditorsCorrect as $auditor) {
+        Answer::factory()->create([
+            'interaction_id' => $interaction->id,
+            'auditor_id' => $auditor->id,
+            'replyable_id' => $correctChoice->id,
+            'replyable_type' => QuestionChoice::class,
+        ]);
+    }
+
+    foreach ($auditorsIncorrect as $auditor) {
+        Answer::factory()->create([
+            'interaction_id' => $interaction->id,
+            'auditor_id' => $auditor->id,
+            'replyable_id' => $incorrectChoice->id,
+            'replyable_type' => QuestionChoice::class,
+        ]);
+    }
+
+    $this->actingAs($user);
+
+    // Send request
+    $response = postJson("/interactions/{$interaction->id}/winners/random", [
+        'interaction_id' => $interaction->id,
+        'winners_count' => 3,
+        'reward_id' => $reward->id,
+    ]);
+
+    // Assert response
+    $response->assertStatus(200);
+    $response->assertJsonStructure(['auditor_ids']);
+    $this->assertCount(3, $response['auditor_ids']);
+
+    // Assert all winners have the correct answer
+    foreach ($response['auditor_ids'] as $auditorId) {
+        $answer = Answer::where('auditor_id', $auditorId)->where('interaction_id', $interaction->id)->first();
+        $this->assertEquals($correctChoice->id, $answer->replyable_id);
+    }
 
     // Assert database winners with interaction_id
     $this->assertCount(3, Winner::where('interaction_id', $interaction->id)->get());

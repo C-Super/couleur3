@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\InteractionType;
 use App\Events\NewWinnerGenerated;
 use App\Events\WinnerSentResult;
 use App\Events\WinnersListGenerated;
@@ -21,15 +22,26 @@ class WinnerController extends Controller
         $validated = $request->validated();
         $winnersCount = $validated['winners_count'];
 
-        // Récupérer les IDs de tous les auditeurs qui ont répondu à l'interaction et qui ne sont pas déjà des gagnants
-        $auditorIds = Answer::where('interaction_id', $interaction->id)
-            ->whereNotIn('auditor_id', Winner::where('interaction_id', $interaction->id)->pluck('auditor_id'))
-            ->inRandomOrder()
+        // Initialisez la requête pour récupérer les IDs des auditeurs
+        $query = Answer::where('answers.interaction_id', $interaction->id)
+            ->whereNotIn('auditor_id', Winner::where('interaction_id', $interaction->id)->pluck('auditor_id'));
+
+        // Si l'interaction est de type QCM
+        if ($interaction->type == InteractionType::MCQ) {
+            $query->join('question_choices', function ($join) {
+                $join->on('answers.replyable_id', '=', 'question_choices.id')
+                    ->where('answers.replyable_type', '=', 'App\Models\QuestionChoice')
+                    ->where('question_choices.is_correct_answer', '=', true);
+            });
+        }
+
+        // Ordonne de façon aléatoire et prends le nombre spécifié de gagnants
+        $auditorIds = $query->inRandomOrder()
             ->take($winnersCount)
-            ->pluck('auditor_id')
+            ->pluck('answers.auditor_id')
             ->toArray();
 
-        //Store temp winners
+        // Créer les gagnants
         foreach ($auditorIds as $auditorId) {
             Winner::create([
                 'interaction_id' => $interaction->id,
@@ -37,7 +49,7 @@ class WinnerController extends Controller
             ]);
         }
 
-        // Dispatch an event with the auditor list
+        // Lancer un événement avec la liste des auditeurs
         event(new WinnersListGenerated($auditorIds));
 
         return response()->json(['auditor_ids' => $auditorIds], 200);
@@ -52,16 +64,27 @@ class WinnerController extends Controller
         // Insert into interaction reward_id
         $interaction->update(['reward_id' => $reward_id]);
 
-        // Récupérer les IDs des auditeurs les plus rapides qui ont répondu à l'interaction et qui ne sont pas déjà des gagnants
-        $auditorIds = Answer::where('interaction_id', $interaction->id)
+        // Initialisez la requête pour récupérer les IDs des auditeurs les plus rapides
+        $query = Answer::where('answers.interaction_id', $interaction->id)
             ->whereNotIn('auditor_id', Winner::where('interaction_id', $interaction->id)->pluck('auditor_id'))
-            ->orderBy('created_at')
-            ->with(['auditor.user'])
+            ->with(['auditor.user']);
+
+        // Si l'interaction est de type QCM, joignez avec la table question_choices et filtrez seulement les bonnes réponses
+        if ($interaction->type == InteractionType::MCQ) {
+            $query->join('question_choices', function ($join) {
+                $join->on('answers.replyable_id', '=', 'question_choices.id')
+                    ->where('answers.replyable_type', '=', 'App\Models\QuestionChoice')
+                    ->where('question_choices.is_correct_answer', '=', true);
+            });
+        }
+
+        // Ordonnez par date de création et prenez le nombre spécifié de gagnants
+        $auditorIds = $query->orderBy('answers.created_at') // Assurez-vous de spécifier la table car created_at est présent dans les deux tables
             ->take($winnersCount)
-            ->pluck('auditor_id')
+            ->pluck('answers.auditor_id') // Assurez-vous de spécifier la table car l'ID de l'auditeur est présent dans les deux tables
             ->toArray();
 
-        //Store temp winner
+        // Créer les gagnants
         $winners = [];
         foreach ($auditorIds as $auditorId) {
             $winner = Winner::create([
@@ -72,7 +95,7 @@ class WinnerController extends Controller
             array_push($winners, $winner);
         }
 
-        // Broadcast an event to winners
+        // Lancer un événement pour les gagnants
         foreach ($winners as $winner) {
             broadcast(new WinnerSentResult($winner->auditor_id, $interaction->reward));
         }
