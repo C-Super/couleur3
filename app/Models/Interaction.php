@@ -65,7 +65,7 @@ class Interaction extends Model
         return $this->hasMany(Answer::class);
     }
 
-    public function rewards(): BelongsTo
+    public function reward(): BelongsTo
     {
         return $this->belongsTo(Reward::class);
     }

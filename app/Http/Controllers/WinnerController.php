@@ -73,7 +73,7 @@ class WinnerController extends Controller
 
         // Broadcast an event to winners
         foreach ($winners as $winner) {
-            broadcast(new WinnerSentResult($winner->auditor_id));
+            broadcast(new WinnerSentResult($winner->auditor_id, $interaction->reward));
         }
 
         return back()->with([
