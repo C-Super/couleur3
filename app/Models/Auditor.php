@@ -22,6 +22,7 @@ class Auditor extends Model
      */
     protected $fillable = [
         'phone',
+        'address_id',
     ];
 
     /**
