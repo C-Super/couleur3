@@ -7,7 +7,7 @@ import BasesTitrePopup from "@/Components/Auditor/Bases/Popup/BasesTitrePopup.vu
 import PopupTitleType from "@/Enums/PopupTitleType.js";
 // type de popup
 import PopupText from "@/Components/Auditor/Home/Popup/PopupText.vue";
-import PopupSurvey from "@/Components/Auditor/Home/Popup/PopupSurvey.vue";
+import PopupSurveyMCQ from "@/Components/Auditor/Home/Popup/PopupSurveyMCQ.vue";
 // Interaction activée
 import InteractionType from "@/Enums/InteractionType.js";
 import { useInteractionStore } from "@/Stores/useInteractionStore.js";
@@ -67,6 +67,7 @@ const formValidation = computed(() => {
 
 // Constante pour afficher ou non les titres et la validation
 const popupTitle = computed(() => {
+    console.log(hasBeenRewarded.value);
     if (hasBeenRewarded.value !== null) {
         document.querySelector("#popup-auditor").showModal();
         return PopupTitleType.GIFT;
@@ -162,7 +163,7 @@ function handleButtonPopup($event) {
                     "
                     v-model="inputTextValue"
                 />
-                <PopupSurvey
+                <PopupSurveyMCQ
                     v-if="
                         (currentInteraction.type === InteractionType.SURVEY ||
                             currentInteraction.type === InteractionType.MCQ) &&
