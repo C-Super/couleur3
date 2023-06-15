@@ -82,7 +82,7 @@ const popupTitle = computed(() => {
     if (!hasAnswered.value) {
         return PopupTitleType.THANKS;
     }
-    return "";
+    return null;
 });
 
 // Clique sur le bouton du popup
@@ -101,13 +101,18 @@ function handleButtonPopup($event) {
         $event.target.id === "closeGift" &&
         hasBeenRewarded.value !== null
     ) {
+        hasBeenRewarded.value = null;
         hasAnswered.value = true;
     }
 }
 </script>
 
 <template>
-    <dialog v-if="currentInteraction !== null" id="popup-auditor" class="modal">
+    <dialog
+        v-if="currentInteraction !== null && popupTitle !== null"
+        id="popup-auditor"
+        class="modal"
+    >
         <form
             method="dialog"
             class="modal-box gradient-auditor flex flex-col text-blue-auditor"
