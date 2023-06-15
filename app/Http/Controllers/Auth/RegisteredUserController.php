@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterRequest;
+use App\Models\Address;
 use App\Models\Auditor;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
@@ -31,16 +32,19 @@ class RegisteredUserController extends Controller
      */
     public function store(RegisterRequest $request): RedirectResponse
     {
+
         $payload = precognitive(function () use ($request) {
             return $request->validated();
         });
 
-        $auditor = Auditor::create();
-
         // Créez une nouvelle adresse si elle est définie dans le payload
         if (isset($payload['address'])) {
-            $auditor->address()->create($payload['address']);
+            $address = Address::create($payload['address']);
         }
+
+        $auditor = Auditor::create([
+            'address_id' => isset($address) ? $address->id : null,
+        ]);
 
         $user = User::create([
             'name' => $payload['name'],
