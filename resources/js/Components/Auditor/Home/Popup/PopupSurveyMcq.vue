@@ -26,31 +26,6 @@ function responseAuditor(choiceId) {
     isDisabled.value = true;
 }
 
-// const form = useForm({
-//     type: null,
-//     title: "",
-//     duration: 300,
-
-//     question_choices: [
-//         {
-//             value: "",
-//             is_correct_answer: correctAnswer?.value === 0,
-//         },
-//         {
-//             value: "",
-//             is_correct_answer: correctAnswer?.value === 1,
-//         },
-//         {
-//             value: "",
-//             is_correct_answer: correctAnswer?.value === 2,
-//         },
-//         {
-//             value: "",
-//             is_correct_answer: correctAnswer?.value === 3,
-//         },
-//     ],
-// });
-
 const submit = (choiceId) => {
     router.post(
         route(
