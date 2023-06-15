@@ -18,4 +18,9 @@ class Address extends Model
         'city',
         'country',
     ];
+
+    public function auditor()
+    {
+        return $this->hasMany(Auditor::class);
+    }
 }
