@@ -12,6 +12,7 @@ export const useInteractionStore = defineStore(
             isCreatingInteraction: null,
             hasOpenedNotif: false,
             hasBeenRewarded: null,
+            hasAnswerd: false,
             currentInteraction: page.props.interaction,
             winnersCount: 1,
             choosedWinners: [],
@@ -97,11 +98,15 @@ export const useInteractionStore = defineStore(
             window.Echo.channel("public")
                 .listen("InteractionCreated", (event) => {
                     state.hasOpenedNotif = false;
+                    state.hasBeenRewarded = null;
+                    state.hasAnswerd = false;
                     state.currentInteraction = event.interaction;
                 })
                 .listen("InteractionEndedEvent", () => {
-                    state.currentInteraction = null;
                     state.hasOpenedNotif = false;
+                    state.hasBeenRewarded = null;
+                    state.hasAnswerd = false;
+                    state.currentInteraction = null;
                 })
                 .error((error) => {
                     console.error(error);

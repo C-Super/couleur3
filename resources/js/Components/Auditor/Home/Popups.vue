@@ -15,7 +15,7 @@ import { storeToRefs } from "pinia";
 import { router } from "@inertiajs/vue3";
 
 const interactionStore = useInteractionStore();
-const { currentInteraction, hasOpenedNotif, hasBeenRewarded } =
+const { currentInteraction, hasOpenedNotif, hasBeenRewarded, hasAnswerd } =
     storeToRefs(interactionStore);
 
 // permet de récupérer la personne authentifiée si elle existe
@@ -54,8 +54,6 @@ watch(hasOpenedNotif, () => {
     }
 });
 
-const hasAnswered = ref(false);
-
 const inputTextValue = ref("");
 
 const formValidation = computed(() => {
@@ -80,7 +78,7 @@ const popupTitle = computed(() => {
             return PopupTitleType.QUICK;
         }
     }
-    if (!hasAnswered.value) {
+    if (!hasAnswerd.value) {
         return PopupTitleType.THANKS;
     }
     return null;
@@ -103,7 +101,7 @@ function handleButtonPopup($event) {
         hasBeenRewarded.value !== null
     ) {
         hasBeenRewarded.value = null;
-        hasAnswered.value = true;
+        hasAnswerd.value = true;
     }
 }
 </script>
