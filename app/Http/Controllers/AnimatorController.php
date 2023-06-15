@@ -23,6 +23,7 @@ class AnimatorController extends Controller
                     ],
                     'replyable',
                 ],
+                'winners',
                 'callToAction',
                 'questionChoices',
             ])->first(),

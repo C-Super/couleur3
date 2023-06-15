@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Winner;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -21,9 +21,10 @@ class GenerateWinnersRequest extends FormRequest
      */
     public function rules(): array
     {
+        $totalAnswers = $this->interaction->answers()->count();
+
         return [
-            'interaction_id' => 'required|exists:interactions,id',
-            'winners_count' => 'required|integer',
+            'winners_count' => "required|integer|min:1|max:$totalAnswers",
         ];
     }
 }
