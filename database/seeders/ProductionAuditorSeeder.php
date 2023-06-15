@@ -24,11 +24,11 @@ class ProductionAuditorSeeder extends Seeder
         ]);
 
         while (($data = fgetcsv($file, 86, ',')) !== false) {
-            $email = $data[0]; // assuming email is the first column in the csv
-            $name = explode('.', $email)[0]; // get the name before the dot
-            $name = ucfirst($name); // capitalize the first letter
+            $email = $data[0];
+            $name = explode('.', $email)[0];
+            $name = ucfirst($name);
 
-            $auditor = Auditor::factory()
+            Auditor::factory()
                 ->withUser([
                     'name' => $name,
                     'email' => $email,
