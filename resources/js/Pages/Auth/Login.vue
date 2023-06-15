@@ -41,7 +41,7 @@ const submit = () =>
 
         <div
             id="login"
-            class="flex flex-col justify-center items-center px-3.5"
+            class="flex flex-col justify-center items-center px-3.5 h-screen"
         >
             <h2 class="font-semibold text-3xl mb-5">Login</h2>
             <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
@@ -119,9 +119,3 @@ const submit = () =>
         </div>
     </AuditorLayout>
 </template>
-
-<style scoped>
-#login {
-    height: calc(100vh - 4rem - 4rem);
-}
-</style>

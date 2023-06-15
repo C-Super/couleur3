@@ -18,7 +18,7 @@ class AuditorController extends Controller
                     'auditor' => [
                         'user',
                         'address',
-                        'winners'
+                        'winners',
                     ],
                     'replyable',
                 ],
