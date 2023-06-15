@@ -68,32 +68,9 @@ const { currentInteraction } = storeToRefs(interactionStore);
                     :color="Color.forInteractionType(currentInteraction.type)"
                     @click="interactionStore.endInteraction()"
                 >
-<<<<<<< HEAD
                     Retour à l'accueil
                 </base-button>
             </template>
         </base-card>
     </template>
-=======
-                    <div class="font-bold">
-                        {{ winner.auditor.user.name }}
-                    </div>
-                </li>
-                <li>
-                    <p class="font-light">
-                        {{ currentInteraction.winners.length }} gagnants
-                    </p>
-                </li>
-            </ul>
-        </template>
-        <template #actions>
-            <base-button
-                :color="Color.forInteractionType(currentInteraction.type)"
-                @click="interactionStore.endInteraction()"
-            >
-                Retour à l'accueil
-            </base-button>
-        </template>
-    </base-card>
->>>>>>> origin/main
 </template>
