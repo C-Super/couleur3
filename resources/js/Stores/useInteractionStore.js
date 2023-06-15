@@ -15,6 +15,7 @@ export const useInteractionStore = defineStore(
             currentInteraction: page.props.interaction,
             winnersCandidates: [],
             winnersCountForFastest: 1,
+            winnersCountForRandom: 1,
             choosedWinners: [],
             rewards: page.props.rewards,
             choosedReward: null,
@@ -178,15 +179,16 @@ export const useInteractionStore = defineStore(
             });
         };
 
-        const addCandidate = (candidate) => {
-            state.winnersCandidates.push(candidate);
-        };
-
-        const removeCandidate = (candidate) => {
-            state.winnersCandidates.splice(
-                state.winnersCandidates.indexOf(candidate),
-                1
-            );
+        const updateCandidate = (candidate) => {
+            if (!state.winnersCandidates.includes(candidate)) {
+                state.winnersCandidates.push(candidate);
+            } else {
+                state.winnersCandidates.splice(
+                    state.winnersCandidates.indexOf(candidate),
+                    1
+                );
+            }
+            console.log(state.winnersCandidates);
         };
 
         const updatePinnedAsCandidates = (candidates) => {
@@ -200,6 +202,7 @@ export const useInteractionStore = defineStore(
                     );
                 }
             });
+            console.log(state.winnersCandidates);
         };
 
         const submitFastest = () => {
@@ -217,6 +220,26 @@ export const useInteractionStore = defineStore(
                     only: ["interaction", "errors"],
                     onSuccess: () => {
                         state.winnersCountForFastest = 1;
+                    },
+                }
+            );
+        };
+
+        const submitRandom = () => {
+            router.post(
+                route(
+                    "interactions.winners.random",
+                    state.currentInteraction.id
+                ),
+                {
+                    winners_count: state.winnersCountForRandom,
+                    reward_id: state.choosedReward,
+                },
+                {
+                    preserveScroll: true,
+                    only: ["interaction", "errors"],
+                    onSuccess: () => {
+                        state.winnersCountForRandom = 1;
                     },
                 }
             );
@@ -258,8 +281,8 @@ export const useInteractionStore = defineStore(
             updatePinnedAsWinners,
             submitFastest,
             submitManual,
-            addCandidate,
-            removeCandidate,
+            submitRandom,
+            updateCandidate,
             updatePinnedAsCandidates,
         };
     },

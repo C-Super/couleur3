@@ -155,6 +155,7 @@ function hideDetails() {
                     "
                     type="submit"
                     :color="Color.ACCENT"
+                    @click="interactionStore.submitManual()"
                 >
                     Confirmer
                 </base-button>

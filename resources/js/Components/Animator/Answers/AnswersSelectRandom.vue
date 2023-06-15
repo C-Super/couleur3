@@ -2,17 +2,19 @@
 import InputGroup from "@/Components/InputGroup.vue";
 import TextInput from "@/Components/TextInput.vue";
 import InputError from "@/Components/InputError.vue";
+import SelectReward from "@/Components/Animator/Answers/SelectReward.vue";
 import { useInteractionStore } from "@/Stores/useInteractionStore.js";
 import { storeToRefs } from "pinia";
 import Color from "@/Enums/Color.js";
 
 const interactionStore = useInteractionStore();
-const { currentInteraction } = storeToRefs(interactionStore);
+const { currentInteraction, winnersCountForRandom, errors } =
+    storeToRefs(interactionStore);
 </script>
 
 <template>
     <div>
-        <form class="flex flex-col gap-4 mt-4">
+        <div class="flex flex-col gap-4 mt-4">
             <input-group id="winners-count" label="Nombre de gagnants">
                 <text-input
                     id="winners-count"
@@ -26,8 +28,9 @@ const { currentInteraction } = storeToRefs(interactionStore);
                     "
                 />
 
-                <input-error class="mt-2" />
+                <input-error class="mt-2" :message="errors.winners_count" />
             </input-group>
-        </form>
+            <select-reward />
+        </div>
     </div>
 </template>

@@ -28,7 +28,9 @@ const candidates = notPinnedAnswers;
                 <base-checkbox
                     :color="Color.forInteractionType(currentInteraction.type)"
                     @change="
-                        interactionStore.updatePinnedAsCandidates(pinnedAnswers)
+                        interactionStore.updatePinnedAsCandidates(
+                            pinnedCandidates
+                        )
                     "
                 />
             </div>
@@ -57,7 +59,7 @@ const candidates = notPinnedAnswers;
                             "
                             class="mr-1"
                             @change="
-                                interactionStore.removeCandidate(
+                                interactionStore.updateCandidate(
                                     pinnedCandidate
                                 )
                             "
@@ -110,7 +112,9 @@ const candidates = notPinnedAnswers;
                                 ) != -1
                             "
                             class="mr-1"
-                            @change="interactionStore.addCandidate(candidate)"
+                            @change="
+                                interactionStore.updateCandidate(candidate)
+                            "
                         />
 
                         <div class="font-bold">
@@ -138,7 +142,6 @@ const candidates = notPinnedAnswers;
                     </li>
                 </ul>
             </div>
-            <base-select-prize />
         </div>
     </div>
 </template>
