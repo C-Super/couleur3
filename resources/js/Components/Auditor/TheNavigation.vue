@@ -2,7 +2,7 @@
 import { ref } from "vue";
 
 // permet de récupérer la personne authentifiée si elle existe
-defineProps({
+const props = defineProps({
     authInf: {
         type: Object,
         default: null,
@@ -19,8 +19,11 @@ const buttons = ref([
 
 // Fonction appelée lorsqu'on clique sur un bouton
 function handleButtonClick(index) {
-    if (buttons.value[index].name === "person") {
-        // Rediriger vers la page de profil
+    if (buttons.value[index].name === "person" && props.authInf === null) {
+        // Rediriger vers la page de login si l'utilisateur est pas connecté
+        window.location.href = "/login";
+    } else if (buttons.value[index].name === "person" && props.authInf !== null) {
+        // Rediriger vers la page de profil si l'utilisateur est connecté
         window.location.href = "/profile";
     } else if (buttons.value[index].name === "smart_display") {
         // Rediriger vers la page du lecteur

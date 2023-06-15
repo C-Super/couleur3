@@ -40,7 +40,7 @@ class AnswerController extends Controller
                 $file = $request->file('replyable_data.file');
 
                 // Générer un nom de fichier unique
-                $fileName = time().'_'.$file->getClientOriginalName();
+                $fileName = time() . '_' . $file->getClientOriginalName();
 
                 // Envoyez le fichier au disque minio
                 Storage::disk('s3')->put($fileName, file_get_contents($file));
