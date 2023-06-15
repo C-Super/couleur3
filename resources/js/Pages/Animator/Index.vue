@@ -64,23 +64,35 @@ const endEmission = () => {
             <quick-click-show
                 v-if="
                     currentInteraction &&
-                    currentInteraction.type === InteractionType.QUICK_CLICK
+                    currentInteraction.type === InteractionType.QUICK_CLICK &&
+                    currentInteraction.winners &&
+                    currentInteraction.winners.length === 0
                 "
             />
             <cta-show
                 v-if="
                     currentInteraction &&
-                    currentInteraction.type === InteractionType.CTA
+                    currentInteraction.type === InteractionType.CTA &&
+                    currentInteraction.winners &&
+                    currentInteraction.winners.length === 0
                 "
             />
             <question-show
                 v-if="
                     currentInteraction &&
-                    InteractionType.isQuestion(currentInteraction.type)
+                    InteractionType.isQuestion(currentInteraction.type) &&
+                    currentInteraction.winners &&
+                    currentInteraction.winners.length === 0
                 "
             />
 
-            <ending-message v-if="currentInteraction.winners.length > 0" />
+            <ending-message
+                v-if="
+                    currentInteraction &&
+                    currentInteraction.winners &&
+                    currentInteraction.winners.length > 0
+                "
+            />
         </div>
     </div>
 </template>

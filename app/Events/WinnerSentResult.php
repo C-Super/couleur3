@@ -5,7 +5,6 @@ namespace App\Events;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
@@ -31,7 +30,7 @@ class WinnerSentResult implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('auditors. '.$this->auditorId),
+            new PrivateChannel('auditors. ' . $this->auditorId),
         ];
     }
 }

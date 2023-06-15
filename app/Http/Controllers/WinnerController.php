@@ -52,6 +52,7 @@ class WinnerController extends Controller
         $auditorIds = Answer::where('interaction_id', $interaction->id)
             ->whereNotIn('auditor_id', Winner::where('interaction_id', $interaction->id)->pluck('auditor_id'))
             ->orderBy('created_at')
+            ->with(['auditor.user'])
             ->take($winnersCount)
             ->pluck('auditor_id')
             ->toArray();
