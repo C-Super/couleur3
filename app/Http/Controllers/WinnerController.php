@@ -10,7 +10,6 @@ use App\Http\Requests\StoreWinnerRequest;
 use App\Http\Requests\Winner\GenerateWinnersRequest;
 use App\Models\Answer;
 use App\Models\Interaction;
-use App\Models\Reward;
 use App\Models\Winner;
 use DB;
 

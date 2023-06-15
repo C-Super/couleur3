@@ -6,15 +6,18 @@ const modelValue = defineModel();
 defineProps({
     id: {
         type: String,
-        required: true,
+        required: false,
+        default: "",
     },
     label: {
         type: String,
-        required: true,
+        required: false,
+        default: "",
     },
     type: {
         type: String,
-        required: true,
+        required: false,
+        default: "text",
     },
 });
 

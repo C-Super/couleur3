@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\InteractionType;
 use App\Events\AnswerQuestionChoiceSubmited;
 use App\Events\AnswerSubmitedToAnimator;
+use App\Http\Requests\Answer\StoreAnswerTextRequest;
 use App\Http\Requests\StoreAnswerRequest;
 use App\Models\Answer;
 use App\Models\AnswerText;
@@ -82,6 +83,22 @@ class AnswerController extends Controller
         $answer = Answer::create([
             'auditor_id' => Auth::user()->id,
             'interaction_id' => $interaction->id,
+        ])->load('auditor.user');
+
+        broadcast(new AnswerSubmitedToAnimator($answer))->toOthers();
+    }
+
+    public function storeText(StoreAnswerTextRequest $request, Interaction $interaction)
+    {
+        $validated = $request->validated();
+
+        $replyable = AnswerText::create(['content' => $validated['content']]);
+
+        $answer = Answer::create([
+            'auditor_id' => Auth::user()->id,
+            'interaction_id' => $interaction->id,
+            'replyable_id' => $replyable->id,
+            'replyable_type' => get_class($replyable),
         ])->load('auditor.user');
 
         broadcast(new AnswerSubmitedToAnimator($answer))->toOthers();
