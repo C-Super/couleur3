@@ -126,14 +126,14 @@ it('generates random winners list with correct MCQ answers', function () {
     // Send request
     $response = postJson("/interactions/{$interaction->id}/winners/random", [
         'interaction_id' => $interaction->id,
-        'winners_count' => 3,
+        'winners_count' => 2,
         'reward_id' => $reward->id,
     ]);
 
     // Assert response
     $response->assertStatus(200);
     $response->assertJsonStructure(['auditor_ids']);
-    $this->assertCount(3, $response['auditor_ids']);
+    $this->assertCount(2, $response['auditor_ids']);
 
     // Assert all winners have the correct answer
     foreach ($response['auditor_ids'] as $auditorId) {
@@ -142,7 +142,7 @@ it('generates random winners list with correct MCQ answers', function () {
     }
 
     // Assert database winners with interaction_id
-    $this->assertCount(3, Winner::where('interaction_id', $interaction->id)->get());
+    $this->assertCount(2, Winner::where('interaction_id', $interaction->id)->get());
 
     // Assert event
     Event::assertDispatched(WinnersListGenerated::class);
@@ -326,6 +326,93 @@ it('generates fastest winners list successfully', function () {
 
     // Assert event
     Event::assertDispatched(WinnerSentResult::class, 3); // Assure that WinnerSentResult event was dispatched 3 times
+});
+
+it('generates fastest winners list successfully with correct MCQ answers', function () {
+    Event::fake([WinnerSentResult::class]);
+
+    $animator = Animator::factory()->create();
+    $user = User::factory()->create([
+        'name' => fake()->name(),
+        'email' => fake()->email(),
+        'password' => Hash::make('animator'),
+        'roleable_id' => $animator->id,
+        'roleable_type' => get_class($animator),
+    ]);
+
+    $reward = Reward::factory()->create();
+
+    $interaction = Interaction::factory(
+        [
+            'animator_id' => $animator->id,
+            'type' => InteractionType::MCQ,
+        ]
+    )->create();
+
+    // Creating question choices
+    $questionChoiceCorrect = QuestionChoice::factory()->state([
+        'is_correct_answer' => true,
+    ])->create([
+        'interaction_id' => $interaction->id,
+    ]);
+
+    $questionChoiceIncorrect = QuestionChoice::factory()->state([
+        'is_correct_answer' => false,
+    ])->create([
+        'interaction_id' => $interaction->id,
+    ]);
+
+    // Creating auditors who answered correctly and incorrectly
+    $correctAuditors = Auditor::factory()->count(3)->create();
+    $incorrectAuditors = Auditor::factory()->count(2)->create();
+
+    // Answers from auditors
+    foreach ($correctAuditors as $auditor) {
+        Answer::factory()->create([
+            'interaction_id' => $interaction->id,
+            'auditor_id' => $auditor->id,
+            'replyable_id' => $questionChoiceCorrect->id,
+            'replyable_type' => QuestionChoice::class,
+        ]);
+    }
+
+    foreach ($incorrectAuditors as $auditor) {
+        Answer::factory()->create([
+            'interaction_id' => $interaction->id,
+            'auditor_id' => $auditor->id,
+            'replyable_id' => $questionChoiceIncorrect->id,
+            'replyable_type' => QuestionChoice::class,
+        ]);
+    }
+
+    $this->actingAs($user);
+
+    // Send request
+    $response = postJson("/interactions/{$interaction->id}/winners/fastest", [
+        'interaction_id' => $interaction->id,
+        'winners_count' => 3,
+        'reward_id' => $reward->id,
+    ]);
+
+    // Get the data from the session
+    $winners = session('interaction.winners');
+
+    // Ensure there are 3 winners
+    $this->assertCount(3, $winners);
+
+    // Assert database winners with interaction_id
+    $this->assertCount(3, Winner::where('interaction_id', $interaction->id)->get());
+
+    // Assert event
+    Event::assertDispatched(WinnerSentResult::class, 3); // Assure that WinnerSentResult event was dispatched 3 times
+
+    // Verify that all winners have the correct answer
+    foreach ($winners as $winner) {
+        $answer = Answer::where('auditor_id', $winner->auditor_id)
+            ->where('interaction_id', $interaction->id)
+            ->first();
+        $this->assertEquals($questionChoiceCorrect->id, $answer->replyable_id);
+    }
 });
 
 it('requires reward field to store winners', function () {
