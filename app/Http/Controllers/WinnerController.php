@@ -15,15 +15,14 @@ use DB;
 
 class WinnerController extends Controller
 {
-    public function generateRandomList(GenerateWinnersRequest $request)
+    public function generateRandomList(GenerateWinnersRequest $request, Interaction $interaction)
     {
         $validated = $request->validated();
-        $interaction_id = $validated['interaction_id'];
         $winnersCount = $validated['winners_count'];
 
         // Récupérer les IDs de tous les auditeurs qui ont répondu à l'interaction et qui ne sont pas déjà des gagnants
-        $auditorIds = Answer::where('interaction_id', $interaction_id)
-            ->whereNotIn('auditor_id', Winner::where('interaction_id', $interaction_id)->pluck('auditor_id'))
+        $auditorIds = Answer::where('interaction_id', $interaction->id)
+            ->whereNotIn('auditor_id', Winner::where('interaction_id', $interaction->id)->pluck('auditor_id'))
             ->inRandomOrder()
             ->take($winnersCount)
             ->pluck('auditor_id')
@@ -32,7 +31,7 @@ class WinnerController extends Controller
         //Store temp winners
         foreach ($auditorIds as $auditorId) {
             Winner::create([
-                'interaction_id' => $interaction_id,
+                'interaction_id' => $interaction->id,
                 'auditor_id' => $auditorId,
             ]);
         }
