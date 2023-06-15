@@ -23,5 +23,10 @@ class AnswerFactory extends Factory
     }
 
     // Answer::factory()->count(10)->for(Interaction::factory()->state(['type' => InteractionType::QUICK_CLICK]))->create();
-    // Answer::factory()->count(10)->for(Interaction::factory()->state(['type' => InteractionType::CTA]))->for(CallToAction::factory(), 'replyable')->create()
+    // Answer::factory()->count(10)->for(Interaction::factory()->state(['type' => InteractionType::CTA]))->for(CallToAction::factory(), 'replyable')->create();
+
+    /**
+     *  $interaction = Interaction::factory()->state(['type' => InteractionType::MCQ])->hasQuestionChoices(4)->create();
+     * Answer::factory()->count(10)->for($interaction)->for($interaction->questionChoices()->get()->random(), 'replyable')->create();
+     */
 }

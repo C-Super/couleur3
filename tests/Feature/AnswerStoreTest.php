@@ -19,6 +19,37 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Hash;
 use function Pest\Laravel\postJson;
 
+it('can store quick click answer and fires correct event', function () {
+    Event::fake([AnswerSubmitedToAnimator::class, AnswerQuestionChoiceSubmited::class]);
+
+    $auditor = Auditor::factory()->create();
+    $user = User::factory()->create([
+        'name' => 'test',
+        'email' => 'testd@example.com',
+        'password' => Hash::make('password'),
+        'roleable_id' => $auditor->id,
+        'roleable_type' => get_class($auditor),
+    ]);
+
+    $interaction = Interaction::factory()->create([
+        'type' => InteractionType::QUICK_CLICK,
+    ]);
+
+    $this->actingAs($user);
+
+    $response = postJson("/interactions/{$interaction->id}/answers/quick_click", [
+    ]);
+
+    $response->assertStatus(200);
+    expect(Answer::where('auditor_id', $auditor->id)->exists())->toBeTrue();
+
+    Event::assertDispatched(AnswerSubmitedToAnimator::class, function ($event) use ($auditor) {
+        return $event->answer->auditor_id === $auditor->id;
+    });
+
+    Event::assertNotDispatched(AnswerQuestionChoiceSubmited::class);
+});
+
 it('can store text answer and fires correct event', function () {
     Event::fake([AnswerSubmitedToAnimator::class, AnswerQuestionChoiceSubmited::class]);
 

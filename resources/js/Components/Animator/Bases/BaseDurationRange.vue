@@ -32,7 +32,7 @@ const formatedSeconds = computed(() => {
 </script>
 
 <template>
-    <div class="flex w-full gap-8">
+    <div class="flex w-full gap-8 items-center">
         <div class="flex flex-auto flex-col">
             <input
                 id="duration"
@@ -81,15 +81,6 @@ const formatedSeconds = computed(() => {
 <style scoped>
 #range-labels li {
     position: relative;
-    margin-top: 1rem;
-}
-
-#range-labels li::before {
-    content: "|";
-    font-size: 0.6rem;
-    position: absolute;
-    top: -1rem;
-    left: 50%;
-    transform: translateX(-50%);
+    margin-top: 0.2rem;
 }
 </style>

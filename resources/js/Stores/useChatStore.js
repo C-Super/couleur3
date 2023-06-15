@@ -28,6 +28,7 @@ export const useChatStore = defineStore("chat", () => {
             })
             .listen("ChatUpdated", (event) => {
                 isChatEnabled.value = event.chatEnabled;
+                messages.value = [];
             })
             .error((error) => {
                 console.error(error);

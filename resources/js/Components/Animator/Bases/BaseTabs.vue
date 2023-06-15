@@ -1,12 +1,16 @@
 <script setup>
-import { reactive, computed, provide, defineModel } from "vue";
+import { reactive, computed, provide } from "vue";
 
-const modelValue = defineModel();
+const emits = defineEmits(["update:modelValue"]);
 
 defineProps({
     color: {
         type: String,
         default: "primary",
+    },
+    modelValue: {
+        type: Number,
+        default: 0,
     },
 });
 
@@ -24,6 +28,7 @@ provide("tabs", tabs);
 
 function changeTab(i) {
     tabs.active = i;
+    emits("update:modelValue", i);
 }
 </script>
 
@@ -36,13 +41,12 @@ function changeTab(i) {
                 :class="`tab ${
                     index === active ? `tab-active tab-active-${color}` : ''
                 }`"
-                @click="changeTab(index)"
             >
                 <input
-                    v-model="modelValue"
-                    :value="label"
+                    :value="modelValue"
                     type="radio"
                     class="hidden"
+                    @click="changeTab(index)"
                 />
                 {{ label }}
             </label>
@@ -60,7 +64,7 @@ function changeTab(i) {
 }
 
 .tab-active-primary {
-    @apply border-primary bg-[#6BA5BE];
+    @apply border-primary bg-[#6BA5BE] !important;
 }
 
 .tab-active-secondary {

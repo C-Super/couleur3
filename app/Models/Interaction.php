@@ -47,7 +47,7 @@ class Interaction extends Model
     /**
      * Get all question_choices for the interaction.
      */
-    public function question_choices(): HasMany
+    public function questionChoices(): HasMany
     {
         return $this->hasMany(QuestionChoice::class);
     }
@@ -55,7 +55,7 @@ class Interaction extends Model
     /**
      * Get the call_to_action that owns the interaction.
      */
-    public function call_to_action(): BelongsTo
+    public function callToAction(): BelongsTo
     {
         return $this->belongsTo(CallToAction::class);
     }
@@ -76,5 +76,10 @@ class Interaction extends Model
     public function scopeActive(Builder $query): void
     {
         $query->where('ended_at', '>', now())->where('status', InteractionStatus::PENDING);
+    }
+
+    public function scopePending(Builder $query): void
+    {
+        $query->where('status', InteractionStatus::PENDING);
     }
 }

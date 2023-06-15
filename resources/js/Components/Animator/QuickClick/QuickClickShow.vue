@@ -5,21 +5,20 @@ import BaseCountdown from "@/Components/Animator/Bases/BaseCountdown.vue";
 import BaseTabs from "@/Components/Animator/Bases/BaseTabs.vue";
 import BaseTab from "@/Components/Animator/Bases/BaseTab.vue";
 import AnswersList from "@/Components/Animator/Answers/AnswersList.vue";
-import AnswersSelect from "@/Components/Animator/Answers/AnswersSelect.vue";
-import AnswersRapidity from "@/Components/Animator/Answers/AnswersRapidity.vue";
+import AnswersSelectRapidity from "@/Components/Animator/Answers/AnswersSelectRapidity.vue";
 import Color from "@/Enums/Color.js";
 import { ref } from "vue";
+import { calculateDuration } from "@/Utils/time.js";
 import { useInteractionStore } from "@/Stores/useInteractionStore.js";
 import { storeToRefs } from "pinia";
 
 const interactionStore = useInteractionStore();
 const { currentInteraction } = storeToRefs(interactionStore);
 
-const duration =
-    new Date(currentInteraction.value.ended_at).getTime() -
-    new Date().getTime();
-const sec = Math.floor((duration / 1000) % 60);
-const min = Math.floor(duration / (1000 * 60));
+const { sec, min } = calculateDuration(
+    currentInteraction.value.ended_at,
+    new Date()
+);
 
 const activeTab = ref(0);
 </script>
@@ -37,11 +36,8 @@ const activeTab = ref(0);
                 <base-tab title="Réponses">
                     <answers-list />
                 </base-tab>
-                <base-tab title="Sélection aléatoire" :active="true">
-                    <answers-select />
-                </base-tab>
                 <base-tab title="Sélection rapidité">
-                    <answers-rapidity />
+                    <answers-select-rapidity />
                 </base-tab>
             </base-tabs>
         </template>

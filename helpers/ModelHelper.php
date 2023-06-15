@@ -200,8 +200,8 @@ namespace App\Models{
      * @property \App\Enums\InteractionStatus $status
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Answer> $answers
      * @property-read int|null $answers_count
-     * @property-read \App\Models\CallToAction|null $call_to_action
-     * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\QuestionChoice> $question_choices
+     * @property-read \App\Models\CallToAction|null $callToAction
+     * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\QuestionChoice> $questionChoices
      * @property-read int|null $question_choices_count
      * @property-read \App\Models\Reward|null $rewards
      *
@@ -209,6 +209,7 @@ namespace App\Models{
      * @method static \Database\Factories\InteractionFactory factory($count = null, $state = [])
      * @method static \Illuminate\Database\Eloquent\Builder|Interaction newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder|Interaction newQuery()
+     * @method static \Illuminate\Database\Eloquent\Builder|Interaction pending()
      * @method static \Illuminate\Database\Eloquent\Builder|Interaction query()
      * @method static \Illuminate\Database\Eloquent\Builder|Interaction whereAnimatorId($value)
      * @method static \Illuminate\Database\Eloquent\Builder|Interaction whereCallToActionId($value)

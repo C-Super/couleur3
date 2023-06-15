@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\InteractionStatus;
 use App\Enums\InteractionType;
 use App\Events\InteractionCreated;
+use App\Events\InteractionEndedEvent;
 use App\Http\Requests\Interaction\StoreCallToActionRequest;
 use App\Http\Requests\Interaction\StoreMCQRequest;
 use App\Http\Requests\Interaction\StoreQuickClickRequest;
@@ -39,7 +41,7 @@ class InteractionController extends Controller
                 ],
                 'replyable',
             ],
-            'call_to_action',
+            'callToAction',
         ])->first();
 
         broadcast(new InteractionCreated($currentInteraction))->toOthers();
@@ -100,7 +102,7 @@ class InteractionController extends Controller
 
         for ($i = 0; $i < count($validated['question_choices']); $i++) {
             if ($validated['question_choices'][$i]['value']) {
-                $interaction->question_choices()->create($validated['question_choices'][$i]);
+                $interaction->questionChoices()->create($validated['question_choices'][$i]);
             }
         }
 
@@ -111,7 +113,7 @@ class InteractionController extends Controller
                 ],
                 'replyable',
             ],
-            'question_choices',
+            'questionChoices',
         ])->first();
 
         broadcast(new InteractionCreated($currentInteraction))->toOthers();
@@ -140,7 +142,7 @@ class InteractionController extends Controller
 
         for ($i = 0; $i < count($validated['question_choices']); $i++) {
             if ($validated['question_choices'][$i]['value']) {
-                $interaction->question_choices()->create($validated['question_choices'][$i]);
+                $interaction->questionChoices()->create($validated['question_choices'][$i]);
             }
         }
 
@@ -151,7 +153,7 @@ class InteractionController extends Controller
                 ],
                 'replyable',
             ],
-            'question_choices',
+            'questionChoices',
         ])->first();
 
         broadcast(new InteractionCreated($currentInteraction))->toOthers();
@@ -163,7 +165,12 @@ class InteractionController extends Controller
 
     public function endInteraction(Interaction $interaction)
     {
-        $interaction->update(['ended_at' => now()]);
+        $interaction->update([
+            'ended_at' => now(),
+            'status' => InteractionStatus::STOPPED,
+        ]);
+
+        broadcast(new InteractionEndedEvent())->toOthers();
 
         return redirect()->back()->with([
             'interaction' => null,

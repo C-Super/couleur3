@@ -12,6 +12,7 @@ import { ZiggyVue } from "../../vendor/tightenco/ziggy/dist/vue.m";
 import { Ziggy } from "./ziggy";
 import { ZoraVue } from "zora";
 import { Zora } from "./zora.js";
+import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
 
 const appName =
     window.document.getElementsByTagName("title")[0]?.innerText || "Laravel";
@@ -26,6 +27,7 @@ const i18n = createI18n({
 });
 
 const pinia = createPinia();
+pinia.use(piniaPluginPersistedstate);
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
