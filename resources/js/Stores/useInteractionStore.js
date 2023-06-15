@@ -120,6 +120,7 @@ export const useInteractionStore = defineStore(
             window.Echo.private(`auditors.${page.props.auth.user.id}`).listen(
                 "WinnerSentResult",
                 (event) => {
+                    console.log(event);
                     state.hasBeenRewarded = event.reward;
                 }
             );
@@ -158,54 +159,35 @@ export const useInteractionStore = defineStore(
             state.pinnedAnswers.splice(state.pinnedAnswers.indexOf(answer), 1);
         };
 
-        const addWinner = (candidate) => {
-            state.currentInteraction.push(candidate);
-        };
-
-        const removeWinner = (candidate) => {
+        const removeWinner = (choseWinner) => {
             state.currentInteraction.winners.splice(
-                state.currentInteraction.indexOf(candidate),
+                state.currentInteraction.indexOf(choseWinner),
                 1
             );
         };
 
-        const updatePinnedAsWinners = (candidates) => {
-            candidates.forEach((candidate) => {
-                if (!state.chosedWinners.includes(candidate)) {
-                    state.chosedWinners.push(candidate);
+        const updatePinnedAsChosedWinners = (chosedWinners) => {
+            chosedWinners.forEach((choseWinner) => {
+                if (!state.chosedWinners.includes(choseWinner)) {
+                    state.chosedWinners.push(choseWinner);
                 } else {
                     state.chosedWinners.splice(
-                        state.chosedWinners.indexOf(candidate),
+                        state.chosedWinners.indexOf(choseWinner),
                         1
                     );
                 }
             });
         };
 
-        const updateCandidate = (candidate) => {
-            if (!state.winnersCandidates.includes(candidate)) {
-                state.winnersCandidates.push(candidate);
+        const updateChosedWinner = (choseWinner) => {
+            if (!state.chosedWinners.includes(choseWinner)) {
+                state.chosedWinners.push(choseWinner);
             } else {
-                state.winnersCandidates.splice(
-                    state.winnersCandidates.indexOf(candidate),
+                state.chosedWinners.splice(
+                    state.chosedWinners.indexOf(choseWinner),
                     1
                 );
             }
-            console.log(state.winnersCandidates);
-        };
-
-        const updatePinnedAsCandidates = (candidates) => {
-            candidates.forEach((candidate) => {
-                if (!state.winnersCandidates.includes(candidate)) {
-                    state.winnersCandidates.push(candidate);
-                } else {
-                    state.winnersCandidates.splice(
-                        state.winnersCandidates.indexOf(candidate),
-                        1
-                    );
-                }
-            });
-            console.log(state.winnersCandidates);
         };
 
         const submitFastest = () => {
@@ -250,6 +232,7 @@ export const useInteractionStore = defineStore(
         };
 
         const submitManual = () => {
+            console.log("submitManual");
             router.post(
                 route(
                     "interactions.winners.confirm",
@@ -257,7 +240,7 @@ export const useInteractionStore = defineStore(
                 ),
                 {
                     winners: state.chosedWinners.map(
-                        (candidate) => candidate.id
+                        (candidate) => candidate.auditor_id
                     ),
                     reward_id: state.chosedReward,
                 },
@@ -282,14 +265,12 @@ export const useInteractionStore = defineStore(
             endInteraction,
             addPinned,
             removePinned,
-            addWinner,
             removeWinner,
-            updatePinnedAsWinners,
+            updatePinnedAsChosedWinners,
             submitFastest,
             submitRandom,
             submitManual,
-            updateCandidate,
-            updatePinnedAsCandidates,
+            updateChosedWinner,
         };
     },
     {

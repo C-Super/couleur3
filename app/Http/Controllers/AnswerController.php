@@ -35,7 +35,7 @@ class AnswerController extends Controller
             'interaction_id' => $interaction->id,
             'replyable_id' => $replyable->id,
             'replyable_type' => get_class($replyable),
-        ])->load('auditor.user');
+        ])->load(['auditor.user', 'replyable']);
 
         broadcast(new AnswerSubmitedToAnimator($answer))->toOthers();
     }

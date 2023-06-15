@@ -5,13 +5,14 @@ import Color from "@/Enums/Color.js";
 import { calculateDuration, formatDuration } from "@/Utils/time.js";
 import { useInteractionStore } from "@/Stores/useInteractionStore.js";
 import { storeToRefs } from "pinia";
+import { ref } from "vue";
 
 const interactionStore = useInteractionStore();
 const { pinnedAnswers, notPinnedAnswers, currentInteraction, chosedWinners } =
     storeToRefs(interactionStore);
 
-const pinnedCandidates = pinnedAnswers;
-const candidates = notPinnedAnswers;
+const pinnedCandidates = ref(pinnedAnswers);
+const candidates = ref(notPinnedAnswers);
 </script>
 
 <template>
@@ -29,7 +30,7 @@ const candidates = notPinnedAnswers;
                 <base-checkbox
                     :color="Color.forInteractionType(currentInteraction.type)"
                     @change="
-                        interactionStore.updatePinnedAsCandidates(
+                        interactionStore.updatePinnedAsChosedWinners(
                             pinnedCandidates
                         )
                     "
@@ -43,8 +44,7 @@ const candidates = notPinnedAnswers;
                 <ul class="flex flex-col gap-4">
                     <li
                         v-for="pinnedCandidate of pinnedCandidates"
-                        :key="pinnedCandidate.value"
-                        :for="pinnedCandidate.value"
+                        :key="pinnedCandidate.id"
                         class="flex flex-row items-center gap-2 text-md"
                     >
                         <base-checkbox
@@ -54,11 +54,12 @@ const candidates = notPinnedAnswers;
                                 )
                             "
                             :checked="
+                                chosedWinners.length > 0 &&
                                 chosedWinners.indexOf(pinnedCandidate) != -1
                             "
                             class="mr-1"
                             @change="
-                                interactionStore.updateCandidate(
+                                interactionStore.updateChosedWinner(
                                     pinnedCandidate
                                 )
                             "
@@ -90,7 +91,7 @@ const candidates = notPinnedAnswers;
                     </li>
                 </ul>
             </div>
-            <div class="mt-4">
+            <div>
                 <!-- Array not pinned -->
                 <ul class="flex flex-col gap-4">
                     <li
@@ -105,10 +106,13 @@ const candidates = notPinnedAnswers;
                                     currentInteraction.type
                                 )
                             "
-                            :checked="chosedWinners.indexOf(candidate) != -1"
+                            :checked="
+                                chosedWinners.length > 0 &&
+                                chosedWinners.indexOf(candidate) != -1
+                            "
                             class="mr-1"
                             @change="
-                                interactionStore.updateCandidate(candidate)
+                                interactionStore.updateChosedWinner(candidate)
                             "
                         />
 
@@ -137,7 +141,7 @@ const candidates = notPinnedAnswers;
                     </li>
                 </ul>
             </div>
-            <select-reward />
+            <select-reward class="mt-4" />
         </div>
     </div>
 </template>

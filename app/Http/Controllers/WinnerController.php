@@ -173,7 +173,7 @@ class WinnerController extends Controller
 
         // Dispatch an event to notify the new winners
         foreach ($winners_id as $winner_id) {
-            event(new WinnerSentResult($winner_id, $interaction->reward));
+            broadcast(new WinnerSentResult($winner_id, $interaction->reward));
         }
 
         return back()->with([
