@@ -7,7 +7,7 @@ import { useInteractionStore } from "@/Stores/useInteractionStore.js";
 import { storeToRefs } from "pinia";
 
 const interactionStore = useInteractionStore();
-const { pinnedAnswers, notPinnedAnswers, currentInteraction, choosedWinners } =
+const { pinnedAnswers, notPinnedAnswers, currentInteraction, chosedWinners } =
     storeToRefs(interactionStore);
 
 const pinnedCandidates = pinnedAnswers;
@@ -54,7 +54,7 @@ const candidates = notPinnedAnswers;
                                 )
                             "
                             :checked="
-                                choosedWinners.indexOf(pinnedCandidate) != -1
+                                chosedWinners.indexOf(pinnedCandidate) != -1
                             "
                             class="mr-1"
                             @change="
@@ -105,7 +105,7 @@ const candidates = notPinnedAnswers;
                                     currentInteraction.type
                                 )
                             "
-                            :checked="choosedWinners.indexOf(candidate) != -1"
+                            :checked="chosedWinners.indexOf(candidate) != -1"
                             class="mr-1"
                             @change="
                                 interactionStore.updateCandidate(candidate)
