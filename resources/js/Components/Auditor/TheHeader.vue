@@ -22,7 +22,7 @@ const activePage = ref(location.pathname);
     <header
         v-if="activePage !== '/'"
         id="the-header"
-        class="bg-black"
+        class="bg-black fixed"
     >
         <MiniaturePlayer class="h-16" />
         <div v-if="activePage === '/profile'" class="h-10 flex items-center justify-end px-3.5">
@@ -32,8 +32,8 @@ const activePage = ref(location.pathname);
             as="button"
             class="flex items-center gap-x-1.5"
             ><span class="material-symbols-rounded">
-logout
-</span>
+            logout
+            </span>
             <span>Se déconnecter</span></Link>
         </div>
     </header>

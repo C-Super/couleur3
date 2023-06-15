@@ -2,7 +2,6 @@
 <script setup>
 import AuditorLayout from "@/Layouts/AuditorLayout.vue";
 import InputError from "@/Components/InputError.vue";
-import InputLabel from "@/Components/InputLabel.vue";
 import ProfileButton from "@/Components/Auditor/Bases/ProfileButton.vue";
 import TextInput from "@/Components/Auditor/Bases/TextInput.vue";
 import TextInputPostalCode from "@/Components/Auditor/Bases/TextInputPostalCode.vue";
@@ -41,7 +40,7 @@ const submit = () => {
 
         <div
             id="register"
-            class="flex flex-col justify-center items-center px-3.5 mt-52"
+            class="flex flex-col justify-center items-center px-3.5 py-24"
         >
             <h2 class="font-semibold text-3xl mb-5">S'enregistrer</h2>
 
@@ -50,8 +49,6 @@ const submit = () => {
                 @submit.prevent="submit"
             >
                 <div class="w-full">
-                    <InputLabel for="name" value="Name" />
-
                     <TextInput
                         id="name"
                         v-model="form.name"
@@ -68,8 +65,6 @@ const submit = () => {
                 </div>
 
                 <div class="w-full mt-4">
-                    <InputLabel for="email" value="Email" />
-
                     <TextInput
                         id="email"
                         v-model="form.email"
@@ -85,8 +80,6 @@ const submit = () => {
                 </div>
 
                 <div class="w-full mt-4">
-                    <InputLabel for="adress" value="Adress" />
-
                     <TextInput
                         id="adress"
                         v-model="form.adress"
@@ -98,29 +91,24 @@ const submit = () => {
                     />
                 </div>
 
-                <div class="mt-4 w-full">
-                    <InputLabel for="postal_code" value="Postal code" />
-                    <InputLabel for="city" value="City" />
-
-                    <div class="inline-block">
+                <div class="mt-4 w-full flex gap-x-2">
+                    <div class="w-24">
                         <TextInputPostalCode
                             id="postal_code"
                             v-model="form.postal_code"
                             label="NPA"
                             type="postal_code"
-                            class="mt-1 block w-full"
                             autocomplete="postal_code"
                             @change="form.validate('postal_code')"
                         />
                     </div>
 
-                    <div class="inline-block">
+                    <div class="grow">
                         <TextInputCity
                             id="city"
                             v-model="form.city"
                             label="Ville"
                             type="city"
-                            class="mt-1 block w-full"
                             autocomplete="city"
                             @change="form.validate('city')"
                         />
@@ -129,8 +117,6 @@ const submit = () => {
 
 
                 <div class="w-full mt-4">
-                    <InputLabel for="country" value="Country" />
-
                     <TextInput
                         id="country"
                         v-model="form.country"
@@ -143,8 +129,6 @@ const submit = () => {
                 </div>
 
                 <div class="w-full mt-4">
-                    <InputLabel for="password" value="Password" />
-
                     <TextInput
                         id="password"
                         v-model="form.password"
@@ -160,10 +144,6 @@ const submit = () => {
                 </div>
 
                 <div class="w-full mt-4">
-                    <InputLabel
-                        for="password_confirmation"
-                        value="Confirm Password"
-                    />
 
                     <TextInput
                         id="password_confirmation"
@@ -202,8 +182,3 @@ const submit = () => {
         </div>
     </AuditorLayout>
 </template>
-<style scoped>
-#register {
-    height: calc(100vh - 4rem - 4rem);
-}
-</style>
