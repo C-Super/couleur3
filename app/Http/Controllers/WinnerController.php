@@ -10,6 +10,7 @@ use App\Http\Requests\StoreWinnerRequest;
 use App\Http\Requests\Winner\GenerateWinnersRequest;
 use App\Models\Answer;
 use App\Models\Interaction;
+use App\Models\Reward;
 use App\Models\Winner;
 use DB;
 
@@ -120,6 +121,7 @@ class WinnerController extends Controller
 
         $interaction_id = $validated['interaction_id'];
         $auditor_ids = $validated['auditor_ids'];
+        $reward = Reward::find($validated['reward_id']);
 
         DB::transaction(function () use ($interaction_id, $auditor_ids, $validated) {
             // Delete all existing winners for the interaction
@@ -142,7 +144,7 @@ class WinnerController extends Controller
 
         // Dispatch an event to notify the new winners
         foreach ($auditor_ids as $auditor_id) {
-            event(new WinnerSentResult($auditor_id));
+            event(new WinnerSentResult($auditor_id, $reward));
         }
 
         return response()->json(['message' => 'Winners stored successfully.'], 200);
