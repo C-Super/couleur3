@@ -37,6 +37,7 @@ const submit = () => {
         form.address.zip_code = null;
         form.address.city = null;
         form.address.country = null;
+        form.address = null;
     }
     form.submit({
         onFinish: () => form.reset("password", "password_confirmation"),
