@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Models\Reward;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
@@ -14,23 +15,22 @@ class WinnerSentResult implements ShouldBroadcast
 
     public $auditorId;
 
+    public $reward;
+
     /**
      * Create a new event instance.
      */
-    public function __construct($auditorId)
+    public function __construct($auditorId, Reward $reward)
     {
         $this->auditorId = $auditorId;
+        $this->reward = $reward;
     }
 
     /**
      * Get the channels the event should broadcast on.
-     *
-     * @return array<int, \Illuminate\Broadcasting\Channel>
      */
-    public function broadcastOn(): array
+    public function broadcastOn(): PrivateChannel
     {
-        return [
-            new PrivateChannel('auditors. ' . $this->auditorId),
-        ];
+        return new PrivateChannel('auditors.'.$this->auditorId);
     }
 }
