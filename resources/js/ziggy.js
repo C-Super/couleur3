@@ -100,6 +100,7 @@ const Ziggy = {
         "interactions.winners.random": {
             uri: "interactions/{interaction}/winners/random",
             methods: ["POST"],
+            bindings: { interaction: "id" },
         },
         "interactions.winners.replace": {
             uri: "interactions/{interaction}/winners/replace",
@@ -108,10 +109,12 @@ const Ziggy = {
         "interactions.winners.fastest": {
             uri: "interactions/{interaction}/winners/fastest",
             methods: ["POST"],
+            bindings: { interaction: "id" },
         },
         "interactions.winners.confirm": {
             uri: "interactions/{interaction}/winners/confirm",
             methods: ["POST"],
+            bindings: { interaction: "id" },
         },
         register: { uri: "register", methods: ["GET", "HEAD"] },
         login: { uri: "login", methods: ["GET", "HEAD"] },

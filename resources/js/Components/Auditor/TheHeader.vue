@@ -29,7 +29,7 @@ const activePage = ref(location.pathname);
             class="h-10 flex items-center justify-end px-3.5"
         >
             <Link
-                :href="route('logout')"
+                href="/logout"
                 method="post"
                 as="button"
                 class="flex items-center gap-x-1.5"
