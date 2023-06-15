@@ -134,8 +134,11 @@ function handleButtonPopup($event) {
                 <BasesTitrePopup
                     v-if="popupTitle === PopupTitleType.GIFT"
                     icone="redeem"
-                    >Vous avez gagné {{ hasBeenRewarded.name }}
-                    {{ hasBeenRewarded.description }}</BasesTitrePopup
+                    >Vous avez gagné ce prix !<br />
+                    {{ hasBeenRewarded.name }} :
+                    {{
+                        hasBeenRewarded.description.toLowerCase()
+                    }}</BasesTitrePopup
                 >
                 <BasesTitrePopup
                     v-if="popupTitle === PopupTitleType.QUICK"
@@ -186,7 +189,7 @@ function handleButtonPopup($event) {
                         id="closeGift"
                         :is-validate="true"
                         @click="handleButtonPopup"
-                        >Fermer gift</BaseButtonPopup
+                        >Fermer</BaseButtonPopup
                     >
                     <BaseButtonPopup
                         v-if="
