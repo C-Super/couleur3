@@ -45,6 +45,8 @@ watch(hasOpenedNotif, () => {
     }
 });
 
+const hasAnswered = ref(false);
+
 // Constante pour afficher ou non les titres et la validation
 const formValidation = ref(false);
 const popupTitle = computed(() => {
@@ -59,7 +61,10 @@ const popupTitle = computed(() => {
             return PopupTitleType.QUICK;
         }
     }
-    return PopupTitleType.THANKS;
+    if (!hasAnswered.value) {
+        return PopupTitleType.THANKS;
+    }
+    return "";
 });
 
 // Clique sur le bouton du popup
@@ -70,6 +75,11 @@ function handleButtonPopup($event) {
         window.location.href = "/profile";
     } else if ($event.target.id === "send") {
         popupTitle.value = "thanks";
+    } else if (
+        $event.target.id === "closeGift" &&
+        hasBeenRewarded.value !== null
+    ) {
+        hasAnswered.value = true;
     }
 }
 </script>
@@ -103,7 +113,8 @@ function handleButtonPopup($event) {
                 <BasesTitrePopup
                     v-if="popupTitle === PopupTitleType.GIFT"
                     icone="redeem"
-                    >Vous avez gagné {{ hasBeenRewarded.name }}</BasesTitrePopup
+                    >Vous avez gagné {{ hasBeenRewarded.name }}
+                    {{ hasBeenRewarded.description }}</BasesTitrePopup
                 >
                 <BasesTitrePopup
                     v-if="popupTitle === PopupTitleType.QUICK"
@@ -115,29 +126,45 @@ function handleButtonPopup($event) {
                     v-if="
                         currentInteraction.type !== InteractionType.QUICK_CLICK
                     "
-                    class="text-base-100 text-base font-bold mt-6 mb-8"
+                    class="text-base-100 text-base font-bold mb-8"
                 >
                     {{ currentInteraction.title }}
                 </p>
                 <!-- Type du popup -->
                 <PopupText
-                    v-if="currentInteraction.type === InteractionType.TEXT && authInf !== null"
+                    v-if="
+                        currentInteraction.type === InteractionType.TEXT &&
+                        authInf !== null
+                    "
                 />
                 <PopupSurvey
-                    v-if="(currentInteraction.type === InteractionType.SURVEY || currentInteraction.type === InteractionType.MCQ) && authInf !== null"
+                    v-if="
+                        (currentInteraction.type === InteractionType.SURVEY ||
+                            currentInteraction.type === InteractionType.MCQ) &&
+                        authInf !== null
+                    "
                 />
                 <!-- Bouton envoyer, fermer, suivant, se connecter -->
                 <div class="flex justify-center">
                     <BaseButtonPopup
                         v-if="
-                            (popupTitle === PopupTitleType.GIFT ||
-                                popupTitle === PopupTitleType.THANKS) &&
+                            popupTitle === PopupTitleType.THANKS &&
                             authInf !== null
                         "
                         id="close"
                         :is-validate="true"
                         @click="handleButtonPopup"
                         >Fermer</BaseButtonPopup
+                    >
+                    <BaseButtonPopup
+                        v-if="
+                            popupTitle === PopupTitleType.GIFT &&
+                            authInf !== null
+                        "
+                        id="closeGift"
+                        :is-validate="true"
+                        @click="handleButtonPopup"
+                        >Fermer gift</BaseButtonPopup
                     >
                     <BaseButtonPopup
                         v-if="

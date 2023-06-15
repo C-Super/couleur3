@@ -8,7 +8,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <div class="flex flex-col">
+    <div class="flex flex-col mb-6">
         <span class="material-symbols-rounded text-8xl text-center">
             {{ props.icone }}
         </span>
