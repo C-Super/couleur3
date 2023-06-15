@@ -30,7 +30,7 @@ class WinnerSentResult implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('auditors. '.$this->auditorId),
+            new PrivateChannel('auditors. ' . $this->auditorId),
         ];
     }
 }

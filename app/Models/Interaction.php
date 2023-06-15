@@ -70,6 +70,11 @@ class Interaction extends Model
         return $this->belongsTo(Reward::class);
     }
 
+    public function winners(): HasMany
+    {
+        return $this->hasMany(Winner::class);
+    }
+
     /**
      * Scope a query to only include active interactions.
      */

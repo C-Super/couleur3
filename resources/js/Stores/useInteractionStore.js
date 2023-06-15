@@ -12,7 +12,8 @@ export const useInteractionStore = defineStore(
             isCreatingInteraction: null,
             hasOpenedNotif: false,
             currentInteraction: page.props.interaction,
-            winners: [],
+            winnersCountForFastest: 1,
+            errors: {},
             pinnedAnswers: [],
         });
 
@@ -35,8 +36,30 @@ export const useInteractionStore = defineStore(
             }
         );
 
+        watch(
+            () => page.props.auth.user,
+            (newValue, oldValue) => {
+                if (oldValue) {
+                    window.Echo.leaveChannel(`auditors.${oldValue.id}`);
+                }
+
+                if (newValue) {
+                    if (
+                        page.props.auth.user.roleable_type ===
+                            "App\\Models\\Animator" &&
+                        state.currentInteraction
+                    ) {
+                        subscribeAnimatorToPrivateChannel();
+                    } else {
+                        subscribeAuditorToPrivateChannel();
+                    }
+                }
+            }
+        );
+
         watchEffect(() => {
             state.currentInteraction = page.props.interaction;
+            state.errors = page.props.errors;
         });
 
         onMounted(() => {
@@ -44,8 +67,9 @@ export const useInteractionStore = defineStore(
 
             if (!page.props.auth) return;
 
+            if (!page.props.auth.user) return;
+
             if (
-                page.props.auth.user &&
                 page.props.auth.user.roleable_type ===
                     "App\\Models\\Animator" &&
                 state.currentInteraction
@@ -124,21 +148,46 @@ export const useInteractionStore = defineStore(
         };
 
         const addWinner = (candidate) => {
-            state.winners.push(candidate);
+            state.currentInteraction.push(candidate);
         };
 
         const removeWinner = (candidate) => {
-            state.winners.splice(state.winners.indexOf(candidate), 1);
+            state.currentInteraction.winners.splice(
+                state.currentInteraction.indexOf(candidate),
+                1
+            );
         };
 
         const updatePinnedAsWinners = (candidates) => {
             candidates.forEach((candidate) => {
-                if (!state.winners.includes(candidate)) {
-                    state.winners.push(candidate);
+                if (!state.currentInteraction.includes(candidate)) {
+                    state.currentInteraction.push(candidate);
                 } else {
-                    state.winners.splice(state.winners.indexOf(candidate), 1);
+                    state.currentInteraction.splice(
+                        state.currentInteraction.indexOf(candidate),
+                        1
+                    );
                 }
             });
+        };
+
+        const submitFastest = () => {
+            router.post(
+                route(
+                    "interactions.winners.fastest",
+                    state.currentInteraction.id
+                ),
+                {
+                    winners_count: state.winnersCountForFastest,
+                },
+                {
+                    preserveScroll: true,
+                    only: ["interaction", "errors"],
+                    onSuccess: () => {
+                        state.winnersCountForFastest = 1;
+                    },
+                }
+            );
         };
 
         return {
@@ -153,6 +202,7 @@ export const useInteractionStore = defineStore(
             addWinner,
             removeWinner,
             updatePinnedAsWinners,
+            submitFastest,
         };
     },
     {

@@ -39,7 +39,6 @@ class InteractionController extends Controller
                 'auditor' => [
                     'user',
                 ],
-                'replyable',
             ],
             'callToAction',
         ])->first();
@@ -72,7 +71,6 @@ class InteractionController extends Controller
                 'auditor' => [
                     'user',
                 ],
-                'replyable',
             ],
         ])->first();
 
@@ -111,7 +109,6 @@ class InteractionController extends Controller
                 'auditor' => [
                     'user',
                 ],
-                'replyable',
             ],
             'questionChoices',
         ])->first();
@@ -151,7 +148,6 @@ class InteractionController extends Controller
                 'auditor' => [
                     'user',
                 ],
-                'replyable',
             ],
             'questionChoices',
         ])->first();

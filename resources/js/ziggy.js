@@ -31,6 +31,7 @@ const Ziggy = {
         "interactions.answers.quick_click.store": {
             uri: "interactions/{interaction}/answers/quick_click",
             methods: ["POST"],
+            bindings: { interaction: "id" },
         },
         "interactions.answers.survey.store": {
             uri: "interactions/{interaction}/answers/survey",

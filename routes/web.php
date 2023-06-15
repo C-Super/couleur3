@@ -62,9 +62,9 @@ Route::middleware(['auth', 'auth.animator'])->group(function () {
     Route::post('/interactions/{interaction}/end', [InteractionController::class, 'endInteraction'])->name('interactions.end');
 
     Route::post('/interactions/{interaction}/winners/random', [WinnerController::class, 'generateRandomList'])->name('interactions.winners.random');
-    Route::post('/interactions/{interaction}/winners/replace', [WinnerController::class, 'generate1Random'])->name('interactions.winners.replace');
+    Route::post('/interactions/{interaction}/winners/replace', [WinnerController::class, 'generateReplace'])->name('interactions.winners.replace');
     Route::post('/interactions/{interaction}/winners/fastest', [WinnerController::class, 'generateFastestList'])->name('interactions.winners.fastest');
     Route::post('/interactions/{interaction}/winners/confirm', [WinnerController::class, 'store'])->name('interactions.winners.confirm');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
