@@ -5,7 +5,7 @@ import { useInteractionStore } from "@/Stores/useInteractionStore";
 import { storeToRefs } from "pinia";
 
 const interactionStore = useInteractionStore();
-const { currentInteraction, rewards, choosedReward } =
+const { currentInteraction, rewards, chosedReward } =
     storeToRefs(interactionStore);
 </script>
 <template>
@@ -17,7 +17,7 @@ const { currentInteraction, rewards, choosedReward } =
             )}  focus:ring-${Color.forInteractionType(
                 currentInteraction.type
             )} font-light`"
-            @change="choosedReward = Number($event.target.value)"
+            @change="chosedReward = Number($event.target.value)"
         >
             <option class="bg-neutral-200" disabled selected>
                 Sélectionnez un lot

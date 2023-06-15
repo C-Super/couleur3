@@ -36,7 +36,6 @@ const getHeights = (questionChoice) => {
 </script>
 
 <template>
-    <p class="text-2xl font-semibold">Réponses obtenues</p>
     <p class="font-light">
         Cliquez sur les barres pour voir le détail des participants.
     </p>

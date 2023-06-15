@@ -76,9 +76,15 @@ function hideDetails() {
                     />
 
                     <!--TEXT-->
-                    <answers-list
+                    <div
                         v-if="currentInteraction.type === InteractionType.TEXT"
-                    />
+                    >
+                        <p class="font-light">
+                            Cliquez sur les réponses que vous souhaitez épingler
+                            en haut de la liste.
+                        </p>
+                        <answers-list />
+                    </div>
                 </base-tab>
 
                 <!--SELECT MANUALLY-->
@@ -96,6 +102,10 @@ function hideDetails() {
 
                     <!--SURVEY  pseudo des gagnant random + n° de la question? -->
                     <!--TEXT  pseudo des gagnant random + contenu text -->
+                    <p class="font-light">
+                        Entrez le nombre d'auditeurs que vous souhaitez faire
+                        gagner aléatoirement.
+                    </p>
                     <answers-select-random />
                 </base-tab>
 
@@ -104,7 +114,17 @@ function hideDetails() {
                     v-if="currentInteraction.type === InteractionType.MCQ"
                     title="Sélection des premiers"
                 >
-                    <answers-select-fastest />
+                    <div>
+                        <p class="font-light">
+                            Entrez le nombre d'auditeurs que vous souhaitez
+                            faire gagner.
+                        </p>
+                        <p class="font-light">
+                            Cela sélectionne les plus rapides ayant répondu à la
+                            question correctement.
+                        </p>
+                        <answers-select-fastest />
+                    </div>
                 </base-tab>
             </base-tabs>
         </template>
@@ -118,6 +138,7 @@ function hideDetails() {
                 >
                     Retour
                 </base-button>
+                <!--END INTERACTION-->
                 <base-button
                     v-else
                     type="submit"
@@ -125,6 +146,7 @@ function hideDetails() {
                 >
                     Fin de l'interaction
                 </base-button>
+
                 <!--CONFIRM MANUAL-->
                 <base-button
                     v-if="
@@ -134,6 +156,36 @@ function hideDetails() {
                     type="submit"
                     :color="Color.PRIMARY"
                     @click="interactionStore.submitManual()"
+                >
+                    Confirmer
+                </base-button>
+
+                <!--CONFIRM RANDOM-->
+                <base-button
+                    v-if="
+                        (activeTab === 1 &&
+                            (currentInteraction.type === InteractionType.MCQ ||
+                                currentInteraction.type ===
+                                    InteractionType.SURVEY)) ||
+                        (activeTab === 2 &&
+                            currentInteraction.type === InteractionType.TEXT)
+                    "
+                    type="submit"
+                    :color="Color.PRIMARY"
+                    @click="interactionStore.submitRandom()"
+                >
+                    Confirmer
+                </base-button>
+
+                <!--CONFIRM FASTEST-->
+                <base-button
+                    v-if="
+                        activeTab === 2 &&
+                        currentInteraction.type === InteractionType.MCQ
+                    "
+                    type="submit"
+                    :color="Color.PRIMARY"
+                    @click="interactionStore.submitFastest()"
                 >
                     Confirmer
                 </base-button>

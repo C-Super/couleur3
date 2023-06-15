@@ -2,20 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\InteractionType;
 use App\Events\AnswerQuestionChoiceSubmited;
 use App\Events\AnswerSubmitedToAnimator;
 use App\Http\Requests\Answer\StoreAnswerQuestionChoiceRequest;
 use App\Http\Requests\Answer\StoreAnswerTextRequest;
-use App\Http\Requests\Answer\StoreAnswerRequest;
 use App\Models\Answer;
 use App\Models\AnswerText;
 use App\Models\Interaction;
-use App\Models\Media;
 use App\Models\QuestionChoice;
 use Illuminate\Support\Facades\Auth;
-use Inertia\Inertia;
-use Storage;
 
 class AnswerController extends Controller
 {
