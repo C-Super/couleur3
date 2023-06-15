@@ -35,7 +35,9 @@ const submit = () => {
     <base-card :color="Color.WHITE">
         <template #title>Chat</template>
         <template #content>
-            <ul class="overflow-y-scroll flex-col gap-2">
+            <ul
+                class="overflow-y-scroll h-[55vh] scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-white flex-col gap-2"
+            >
                 <li v-for="msg in messages" :key="msg.id">
                     <message-item :msg="msg" />
                 </li>
