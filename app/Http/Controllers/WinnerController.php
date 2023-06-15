@@ -21,6 +21,10 @@ class WinnerController extends Controller
     {
         $validated = $request->validated();
         $winnersCount = $validated['winners_count'];
+        $reward_id = $validated['reward_id'];
+
+        // Insert into interaction reward_id
+        $interaction->update(['reward_id' => $reward_id]);
 
         // Initialisez la requête pour récupérer les IDs des auditeurs
         $query = Answer::where('answers.interaction_id', $interaction->id)
@@ -64,7 +68,7 @@ class WinnerController extends Controller
         // Insert into interaction reward_id
         $interaction->update(['reward_id' => $reward_id]);
 
-        // Initialisez la requête pour récupérer les IDs des auditeurs les plus rapides
+        // Initialise la requête pour récupérer les IDs des auditeurs les plus rapides
         $query = Answer::where('answers.interaction_id', $interaction->id)
             ->whereNotIn('auditor_id', Winner::where('interaction_id', $interaction->id)->pluck('auditor_id'))
             ->with(['auditor.user']);
@@ -78,10 +82,10 @@ class WinnerController extends Controller
             });
         }
 
-        // Ordonnez par date de création et prenez le nombre spécifié de gagnants
-        $auditorIds = $query->orderBy('answers.created_at') // Assurez-vous de spécifier la table car created_at est présent dans les deux tables
+        // Ordonne par date de création et prends le nombre spécifié de gagnants
+        $auditorIds = $query->orderBy('answers.created_at')
             ->take($winnersCount)
-            ->pluck('answers.auditor_id') // Assurez-vous de spécifier la table car l'ID de l'auditeur est présent dans les deux tables
+            ->pluck('answers.auditor_id')
             ->toArray();
 
         // Créer les gagnants
