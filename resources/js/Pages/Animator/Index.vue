@@ -11,6 +11,7 @@ import CtaShow from "@/Components/Animator/Cta/CtaShow.vue";
 import QuestionCreate from "@/Components/Animator/Question/QuestionCreate.vue";
 import QuestionShow from "@/Components/Animator/Question/QuestionShow.vue";
 import InteractionType from "@/Enums/InteractionType.js";
+import EndingMessage from "@/Components/Animator/Answers/EndingMessage.vue";
 import { Head, router } from "@inertiajs/vue3";
 import { useInteractionStore } from "@/Stores/useInteractionStore.js";
 import { storeToRefs } from "pinia";
