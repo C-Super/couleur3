@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterRequest;
+use App\Models\Auditor;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
@@ -34,10 +35,19 @@ class RegisteredUserController extends Controller
             return $request->validated();
         });
 
+        $auditor = Auditor::create();
+
+        // Créez une nouvelle adresse si elle est définie dans le payload
+        if (isset($payload['address'])) {
+            $auditor->address()->create($payload['address']);
+        }
+
         $user = User::create([
             'name' => $payload['name'],
             'email' => $payload['email'],
             'password' => Hash::make($payload['password']),
+            'roleable_type' => get_class($auditor),
+            'roleable_id' => $auditor->id,
         ]);
 
         event(new Registered($user));
