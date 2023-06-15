@@ -21,6 +21,10 @@ class WinnerController extends Controller
     {
         $validated = $request->validated();
         $winnersCount = $validated['winners_count'];
+        $reward_id = $validated['reward_id'];
+
+        // Insert into interaction reward_id
+        $interaction->update(['reward_id' => $reward_id]);
 
         // Initialisez la requête pour récupérer les IDs des auditeurs
         $query = Answer::where('answers.interaction_id', $interaction->id)
