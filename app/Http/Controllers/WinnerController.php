@@ -115,36 +115,32 @@ class WinnerController extends Controller
         return response()->json(['new_auditor_id' => $newAuditorId], 200);
     }
 
-    public function store(StoreWinnerRequest $request)
+    public function store(StoreWinnerRequest $request, Interaction $interaction)
     {
         $validated = $request->validated();
 
-        $interaction_id = $validated['interaction_id'];
         $auditor_ids = $validated['auditor_ids'];
-        $reward = Reward::find($validated['reward_id']);
+        $reward_id = $validated['reward_id'];
 
-        DB::transaction(function () use ($interaction_id, $auditor_ids, $validated) {
+        // Insert into interaction reward_id
+        $interaction->update(['reward_id' => $reward_id]);
+
+        DB::transaction(function () use ($interaction, $auditor_ids,) {
             // Delete all existing winners for the interaction
-
-            Winner::where('interaction_id', $interaction_id)->delete();
+            Winner::where('interaction_id', $interaction->id)->delete();
 
             // Créer de nouveaux gagnants pour l'interaction
             foreach ($auditor_ids as $auditor_id) {
                 Winner::create([
-                    'interaction_id' => $interaction_id,
+                    'interaction_id' => $interaction->id,
                     'auditor_id' => $auditor_id,
                 ]);
             }
-
-            // Insert into interaction reward_id
-            DB::table('interactions')
-                ->where('id', $interaction_id)
-                ->update(['reward_id' => $validated['reward_id']]);
         });
 
         // Dispatch an event to notify the new winners
         foreach ($auditor_ids as $auditor_id) {
-            event(new WinnerSentResult($auditor_id, $reward));
+            event(new WinnerSentResult($auditor_id, $interaction->reward));
         }
 
         return response()->json(['message' => 'Winners stored successfully.'], 200);
