@@ -7,7 +7,7 @@ import BasesTitrePopup from "@/Components/Auditor/Bases/Popup/BasesTitrePopup.vu
 import PopupTitleType from "@/Enums/PopupTitleType.js";
 // type de popup
 import PopupText from "@/Components/Auditor/Home/Popup/PopupText.vue";
-import PopupSurveyMCQ from "@/Components/Auditor/Home/Popup/PopupSurveyMCQ.vue";
+import PopupSurveyMcq from "@/Components/Auditor/Home/Popup/PopupSurveyMcq.vue";
 // Interaction activée
 import InteractionType from "@/Enums/InteractionType.js";
 import { useInteractionStore } from "@/Stores/useInteractionStore.js";
@@ -163,7 +163,7 @@ function handleButtonPopup($event) {
                     "
                     v-model="inputTextValue"
                 />
-                <PopupSurveyMCQ
+                <PopupSurveyMcq
                     v-if="
                         (currentInteraction.type === InteractionType.SURVEY ||
                             currentInteraction.type === InteractionType.MCQ) &&
