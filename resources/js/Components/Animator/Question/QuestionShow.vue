@@ -59,25 +59,21 @@ function hideDetails() {
                 <!--ANSWER LIST-->
                 <base-tab title="Réponses">
                     <!--MCQ && SURVEY-->
+                    <div v-if="isDisplayed">
+                        <answers-simple
+                            :question-choice="questionDisplayed"
+                            :answers="answersDisplayed"
+                        />
+                    </div>
                     <answers-bar-chart
                         v-if="
-                            currentInteraction.type === InteractionType.MCQ ||
-                            (currentInteraction.type ===
-                                InteractionType.SURVEY &&
-                                !isDisplayed)
+                            (currentInteraction.type === InteractionType.MCQ ||
+                                currentInteraction.type ===
+                                    InteractionType.SURVEY) &&
+                            !isDisplayed
                         "
                         @display="displayDetails"
                     />
-                    <div v-if="isDisplayed">
-                        <p class="text-2xl font-semibold">
-                            Participants ayant répondu
-                        </p>
-                        <p class="font-light">
-                            Réponse: {{ questionDisplayed }}
-                        </p>
-                        {{ answersDisplayed }}
-                        <answers-simple :value="questionDisplayed.value" />
-                    </div>
 
                     <!--TEXT-->
                     <answers-list
@@ -114,11 +110,10 @@ function hideDetails() {
         </template>
         <template #actions>
             <div class="flex flex-row gap-3">
+                <!--BACK TO BAR CHART-->
                 <base-button
-                    v-if="
-                        isDisplayed &&
-                        (activeTab === 0 || activeTab === 'Réponses')
-                    "
+                    v-if="isDisplayed && activeTab === 0"
+                    :color="`${Color.PRIMARY}`"
                     @click="hideDetails()"
                 >
                     Retour

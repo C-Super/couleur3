@@ -19,7 +19,6 @@ const { min, sec } = calculateDuration(
     currentInteraction.value.ended_at,
     new Date()
 );
-console.log(min, sec);
 
 const activeTab = ref(0);
 </script>

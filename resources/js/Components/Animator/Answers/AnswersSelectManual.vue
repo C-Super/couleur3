@@ -17,7 +17,7 @@ const candidates = notPinnedAnswers;
     <div>
         <div class="flex flex-row items-center justify-between">
             <div>
-                <p class="text-2xl font-semibold">Réponse obtenues</p>
+                <p class="text-2xl font-semibold">Réponses obtenues</p>
                 <p class="font-light">
                     Cliquez sur les utilisateurs que vous souhaitez faire
                     gagner.
