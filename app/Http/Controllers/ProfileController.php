@@ -18,12 +18,13 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): Response
     {
-        $user = $request->user();
-
+        $user = Auth::user();
         $address = null;
+
         // Vérifier si l'utilisateur est un auditeur et a une adresse
         if ($user->roleable_type === 'App\Models\Auditor' && $user->roleable->address) {
             $address = $user->roleable->address;
+
         }
 
         return Inertia::render('Profile/Edit', [
