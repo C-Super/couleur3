@@ -17,7 +17,6 @@ const form = reactive({
 });
 
 const submitMessage = () => {
-    console.log("new message");
     form.processing = true;
     router.post(route("messages.store"), form, {
         preserveScroll: true,

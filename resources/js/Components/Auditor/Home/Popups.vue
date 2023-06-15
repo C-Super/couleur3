@@ -56,7 +56,6 @@ const popupTitle = computed(() => {
     return PopupTitleType.THANKS;
 });
 
-console.log(currentInteraction.value);
 // Clique sur le bouton du popup
 function handleButtonPopup($event) {
     if ($event.target.id === "login") {

@@ -13,6 +13,10 @@ defineProps({
         type: String,
         default: "",
     },
+    address: {
+        type: Object,
+        required: true,
+    },
 });
 
 const user = usePage().props.auth.user;
