@@ -12,6 +12,7 @@ const { currentInteraction } = storeToRefs(interactionStore);
 
 const isDisabled = ref(false);
 const statsChoices = computed(() => {
+
     return [20, 30, 40, 10]
 });
 
@@ -106,9 +107,6 @@ function responseAuditor () {
         </form>
 </template>
 <style scoped>
-input[type="radio"]:checked {
-
-}
 
 .container {
     --right-1: 100%;
