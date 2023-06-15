@@ -51,7 +51,7 @@ export const useInteractionStore = defineStore(
 
                 if (oldValue.id === newValue.id) return;
 
-                console.log(newValue);
+                console.log(oldValue, newValue);
 
                 if (newValue) {
                     if (
@@ -59,7 +59,10 @@ export const useInteractionStore = defineStore(
                         state.currentInteraction
                     ) {
                         subscribeAnimatorToPrivateChannel();
-                    } else {
+                    } else if (
+                        newValue.roleable_type === "App\\Models\\Auditor" &&
+                        state.currentInteraction
+                    ) {
                         subscribeAuditorToPrivateChannel();
                     }
                 }
@@ -84,7 +87,10 @@ export const useInteractionStore = defineStore(
                 state.currentInteraction
             ) {
                 subscribeAnimatorToPrivateChannel();
-            } else {
+            } else if (
+                page.props.auth.user.roleable_type === "App\\Models\\Auditor" &&
+                state.currentInteraction
+            ) {
                 subscribeAuditorToPrivateChannel();
             }
         });
@@ -113,7 +119,6 @@ export const useInteractionStore = defineStore(
         };
 
         const subscribeAuditorToPrivateChannel = () => {
-            console.log("sub private auditor: ", page.props.auth.user.id);
             window.Echo.private(`auditors.${page.props.auth.user.id}`).listen(
                 "WinnerSentResult",
                 (event) => {

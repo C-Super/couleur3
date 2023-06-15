@@ -19,9 +19,6 @@ onMounted(() => {
                     title: "Viens suivre l'émission ",
                     url: "/",
                 })
-                .then(() => {
-                    console.log("Merci!");
-                })
                 .catch(console.error);
         }
     });

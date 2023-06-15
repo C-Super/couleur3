@@ -70,7 +70,7 @@ const candidates = notPinnedAnswers;
                         </div>
 
                         <div class="text-base">
-                            Répondu en
+                            a répondu en
                             {{
                                 formatDuration(
                                     calculateDuration(

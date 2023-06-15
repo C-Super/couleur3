@@ -16,11 +16,24 @@ class ProfileController extends Controller
     /**
      * Display the user's profile form.
      */
-    public function edit(Request $request): Response
+    public function edit(): Response
     {
+        $user = Auth::user();
+        $address = ['street' => '', 'city' => '', 'zip_code' => '', 'country' => ''];
+
+        // Vérifier si l'utilisateur est un auditeur et a une adresse
+        if ($user->roleable_type === 'App\Models\Auditor' && $user->roleable->address !== null) {
+            /**
+             * @var \App\Models\Auditor $auditor
+             */
+            $auditor = $user->roleable;
+            $address = $auditor->address;
+        }
+
         return Inertia::render('Profile/Edit', [
-            'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
+            'mustVerifyEmail' => $user instanceof MustVerifyEmail,
             'status' => session('status'),
+            'address' => $address, // Ajouter l'adresse à la réponse
         ]);
     }
 
@@ -29,10 +42,28 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
+        $user = Auth::user();
         $request->user()->fill($request->validated());
 
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
+        }
+
+        if ($user->roleable_type === 'App\Models\Auditor') {
+            $auditor = $user->roleable;
+
+            // Vérifier si le payload contient une adresse
+            if ($request->has('address')) {
+                // Créer ou mettre à jour l'adresse
+                $address = $auditor->address()->updateOrCreate(
+                    ['id' => $auditor->address_id],
+                    $request->input('address')
+                );
+
+                // Mettre à jour l'auditeur avec l'ID de l'adresse
+                $auditor->address_id = $address->id;
+                $auditor->save();
+            }
         }
 
         $request->user()->save();
