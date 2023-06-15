@@ -6,7 +6,8 @@ import { storeToRefs } from "pinia";
 import BaseNotif from "@/Components/Auditor/Bases/BaseNotif.vue";
 
 const interactionStore = useInteractionStore();
-const { currentInteraction, hasOpenedNotif } = storeToRefs(interactionStore);
+const { currentInteraction, hasOpenedNotif, hasAnswerd } =
+    storeToRefs(interactionStore);
 
 // permet de récupérer la personne authentifiée si elle existe
 const props = defineProps({
@@ -47,6 +48,7 @@ function clicNotif() {
 <template>
     <BaseNotif
         v-if="
+            !hasAnswerd &&
             currentInteraction &&
             (currentInteraction.type === InteractionType.TEXT ||
                 currentInteraction.type === InteractionType.SURVEY ||

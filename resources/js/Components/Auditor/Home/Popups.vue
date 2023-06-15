@@ -42,6 +42,7 @@ const submitTextAnswer = () => {
             content: inputTextValue.value,
         }
     );
+    hasAnswerd.value = true;
 };
 
 watch(hasOpenedNotif, () => {
@@ -162,6 +163,7 @@ function handleButtonPopup($event) {
                 <!-- Type du popup -->
                 <PopupText
                     v-if="
+                        !hasAnswerd &&
                         currentInteraction.type === InteractionType.TEXT &&
                         authInf !== null
                     "

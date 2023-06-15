@@ -6,5 +6,7 @@ const modelValue = defineModel();
 </script>
 
 <template>
-    <text-input id="text-answer" v-model="modelValue" class="mb-10" />
+    <div class="mb-10">
+        <text-input id="text-answer" v-model="modelValue" />
+    </div>
 </template>
