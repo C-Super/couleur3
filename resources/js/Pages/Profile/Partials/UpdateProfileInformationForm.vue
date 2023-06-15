@@ -3,6 +3,8 @@ import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/Auditor/Bases/PrimaryButton.vue";
 import TextInput from "@/Components/Auditor/Bases/TextInput.vue";
+import TextInputPostalCode from "@/Components/Auditor/Bases/TextInputPostalCode.vue";
+import TextInputCity from "@/Components/Auditor/Bases/TextInputCity.vue";
 import { Link, useForm, usePage } from "@inertiajs/vue3";
 
 const props = defineProps({
@@ -18,7 +20,6 @@ const props = defineProps({
         required: true,
     },
 });
-console.log(props.address);
 const user = usePage().props.auth.user;
 
 const form = useForm({
@@ -89,6 +90,44 @@ const form = useForm({
                     class="mt-1 block w-full"
                     required
                     autocomplete="address"
+                />
+            </div>
+
+            <div class="mt-4 w-full flex gap-x-2">
+                <div class="w-24">
+                    <TextInputPostalCode
+                        id="zip_code"
+                        v-model="form.address.zip_code"
+                        label="NPA"
+                        type="zip_code"
+                        required
+                        autocomplete="zip_code"
+                    />
+                </div>
+
+                <div class="grow">
+                    <TextInputCity
+                        id="city"
+                        v-model="form.address.city"
+                        label="Ville"
+                        type="city"
+                        required
+                        autocomplete="city"
+                    />
+                </div>
+            </div>
+
+            <div>
+                <InputLabel for="street" :value="address.country" />
+
+                <TextInput
+                    id="country"
+                    v-model="form.address.country"
+                    label="Pays"
+                    type="text"
+                    class="mt-1 block w-full"
+                    required
+                    autocomplete="country"
                 />
             </div>
 
