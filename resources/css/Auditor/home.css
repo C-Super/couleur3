@@ -1,11 +1,10 @@
 body.chat-open {
     overflow: hidden;
 }
-#the-header.chat-open, #player_container.chat-open {
+#the-header.chat-open {
     position: fixed;
     left: 0;
     right: 0;
-}
-#the-header.chat-open {
     top: 0;
+    z-index: 1;
 }
