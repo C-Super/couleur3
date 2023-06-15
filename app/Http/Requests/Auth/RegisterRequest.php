@@ -25,7 +25,7 @@ class RegisterRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:' . User::class,
+            'email' => 'required|string|email|max:255|unique:'.User::class,
             'password' => ['required', 'confirmed', Password::defaults()],
             'address.street' => 'required_with_all:address.zip_code,address.city,address.country|string|max:255',
             'address.zip_code' => 'required_with_all:address.street,address.city,address.country|integer',
