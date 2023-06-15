@@ -21,7 +21,7 @@ const min = Math.floor(duration / (1000 * 60));
     <base-card :color="Color.SECONDARY">
         <template #title>
             <div class="flex flex-auto flex-row items-center justify-between">
-                {{ currentInteraction.title }}
+                <ending-message />
                 <base-countdown
                     :color="Color.SECONDARY"
                     :sec="sec"
@@ -29,12 +29,13 @@ const min = Math.floor(duration / (1000 * 60));
                 />
             </div>
         </template>
-        <template #subtitle>
-            {{ currentInteraction.call_to_action.link }}
-        </template>
         <template #content>
-            <ending-message />
+            <span class="text-xl">{{ currentInteraction.title }}</span>
+            <span class="italic">{{
+                currentInteraction.call_to_action.link
+            }}</span>
         </template>
+
         <template #actions>
             <div class="flex flex-row gap-3">
                 <base-button @click="interactionStore.endInteraction()"
