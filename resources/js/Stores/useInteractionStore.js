@@ -49,7 +49,7 @@ export const useInteractionStore = defineStore(
 
                 if (oldValue.id === newValue.id) return;
 
-                console.log(oldValue, newValue)
+                console.log(oldValue, newValue);
 
                 if (newValue) {
                     if (
@@ -57,8 +57,10 @@ export const useInteractionStore = defineStore(
                         state.currentInteraction
                     ) {
                         subscribeAnimatorToPrivateChannel();
-                    } else if (newValue.roleable_type === "App\\Models\\Auditor" &&
-                    state.currentInteraction) {
+                    } else if (
+                        newValue.roleable_type === "App\\Models\\Auditor" &&
+                        state.currentInteraction
+                    ) {
                         subscribeAuditorToPrivateChannel();
                     }
                 }
@@ -83,8 +85,10 @@ export const useInteractionStore = defineStore(
                 state.currentInteraction
             ) {
                 subscribeAnimatorToPrivateChannel();
-            } else if (page.props.auth.user.roleable_type === "App\\Models\\Auditor" &&
-            state.currentInteraction){
+            } else if (
+                page.props.auth.user.roleable_type === "App\\Models\\Auditor" &&
+                state.currentInteraction
+            ) {
                 subscribeAuditorToPrivateChannel();
             }
         });
