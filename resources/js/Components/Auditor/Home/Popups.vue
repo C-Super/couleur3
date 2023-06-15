@@ -35,6 +35,15 @@ const submitQuickClickAnswer = () => {
     );
 };
 
+const submitTextAnswer = () => {
+    router.post(
+        route("interactions.answers.text.store", currentInteraction.value.id),
+        {
+            content: inputTextValue.value,
+        }
+    );
+};
+
 watch(hasOpenedNotif, () => {
     if (
         props.authInf &&
@@ -47,8 +56,16 @@ watch(hasOpenedNotif, () => {
 
 const hasAnswered = ref(false);
 
+const inputTextValue = ref("");
+const formValidation = computed(() => {
+    if (currentInteraction.value?.type === InteractionType.TEXT) {
+        return inputTextValue.value.length > 0;
+    }
+
+    return false;
+});
+
 // Constante pour afficher ou non les titres et la validation
-const formValidation = ref(false);
 const popupTitle = computed(() => {
     if (hasBeenRewarded.value !== null) {
         document.querySelector("#popup-auditor").showModal();
@@ -74,6 +91,10 @@ function handleButtonPopup($event) {
     } else if ($event.target.id === "next") {
         window.location.href = "/profile";
     } else if ($event.target.id === "send") {
+        if (currentInteraction.value.type === InteractionType.TEXT) {
+            submitTextAnswer();
+        }
+
         popupTitle.value = "thanks";
     } else if (
         $event.target.id === "closeGift" &&
@@ -136,6 +157,7 @@ function handleButtonPopup($event) {
                         currentInteraction.type === InteractionType.TEXT &&
                         authInf !== null
                     "
+                    v-model="inputTextValue"
                 />
                 <PopupSurvey
                     v-if="
