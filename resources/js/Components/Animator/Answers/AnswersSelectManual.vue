@@ -130,6 +130,7 @@ const candidates = notPinnedAnswers;
                     </li>
                 </ul>
             </div>
+            <base-select-prize />
         </div>
     </div>
 </template>

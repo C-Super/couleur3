@@ -53,6 +53,10 @@ const Ziggy = {
             uri: "interactions/{interaction}/answers/picture",
             methods: ["POST"],
         },
+        "interactions.answers.text.store": {
+            uri: "interactions/{interaction}/answers/text",
+            methods: ["POST"],
+        },
         "animator.index": { uri: "dashboard", methods: ["GET", "HEAD"] },
         "animator.endEmission": { uri: "endEmission", methods: ["POST"] },
         "settings.update": { uri: "settings", methods: ["POST"] },
@@ -82,6 +86,10 @@ const Ziggy = {
         },
         "interactions.picture.store": {
             uri: "interactions/picture",
+            methods: ["POST"],
+        },
+        "interactions.text.store": {
+            uri: "interactions/text",
             methods: ["POST"],
         },
         "interactions.end": {
