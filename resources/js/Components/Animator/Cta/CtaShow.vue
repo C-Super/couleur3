@@ -22,6 +22,7 @@ const min = Math.floor(duration / (1000 * 60));
         <template #title>
             <div class="flex flex-auto flex-row items-center justify-between">
                 <ending-message />
+
                 <base-countdown
                     :color="Color.SECONDARY"
                     :sec="sec"
