@@ -195,7 +195,7 @@ it('stores winners successfully', function () {
 });
 
 it('generates fastest winners list successfully', function () {
-    Event::fake([WinnersListGenerated::class]);
+    Event::fake([WinnerSentResult::class]);
 
     $animator = Animator::factory()->create();
     $user = User::factory()->create([
@@ -232,16 +232,17 @@ it('generates fastest winners list successfully', function () {
         'winners_count' => 3,
     ]);
 
-    // Assert response
-    $response->assertStatus(200);
-    $response->assertJsonStructure(['auditor_ids']);
-    $this->assertCount(3, $response['auditor_ids']);
+    // Get the data from the session
+    $winners = session('interaction.winners');
+
+    // Ensure there are 3 winners
+    $this->assertCount(3, $winners);
 
     // Assert database winners with interaction_id
     $this->assertCount(3, Winner::where('interaction_id', $interaction->id)->get());
 
     // Assert event
-    Event::assertDispatched(WinnersListGenerated::class);
+    Event::assertDispatched(WinnerSentResult::class, 3); // Assure that WinnerSentResult event was dispatched 3 times
 });
 
 it('requires reward field to store winners', function () {

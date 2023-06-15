@@ -22,27 +22,34 @@ const minutes = ref(props.min);
 const opacity = ref(25);
 const bgColor = ref(props.color);
 
+if (seconds.value === 0 && minutes.value === 0) {
+    bgColor.value = "error";
+    opacity.value = 50;
+}
 const interval = setInterval(() => {
-    if (seconds.value >= 0) {
-        seconds.value--;
-        if (seconds.value <= 10 && minutes.value === 0) {
-            setTimeout(() => {
-                bgColor.value = "error";
-                if (seconds.value % 2 === 0) {
-                    opacity.value = 50;
-                } else {
-                    opacity.value = 25;
+    setTimeout(() => {
+        if (seconds.value === 0 && minutes.value === 0) {
+            clearInterval(interval);
+        } else {
+            if (seconds.value >= 0) {
+                seconds.value--;
+                if (seconds.value <= 10 && minutes.value === 0) {
+                    setTimeout(() => {
+                        bgColor.value = "error";
+                        if (seconds.value % 2 === 0) {
+                            opacity.value = 50;
+                        } else {
+                            opacity.value = 25;
+                        }
+                    }, 500);
                 }
-            }, 500);
+            }
+            if (seconds.value < 0 && minutes.value > 0) {
+                minutes.value--;
+                seconds.value = 59;
+            }
         }
-    }
-    if (seconds.value < 0 && !minutes.value == 0) {
-        minutes.value--;
-        seconds.value = 59;
-    }
-    if (seconds.value === 0 && minutes.value === 0) {
-        clearInterval(interval);
-    }
+    }, 500);
 }, 1000);
 </script>
 <template>
