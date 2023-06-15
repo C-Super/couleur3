@@ -25,5 +25,14 @@ const { winners } = storeToRefs(interactionStore);
                 <p class="font-light">{{ winners.length }} réponses</p>
             </li>
         </ul>
+        <template #actions>
+            <base-button
+                v-if="currentInteraction.winners.length > 0"
+                :color="Color.PRIMARY"
+                @click="interactionStore.endInteraction()"
+            >
+                Retour à l'accueil
+            </base-button>
+        </template>
     </base-card>
 </template>
