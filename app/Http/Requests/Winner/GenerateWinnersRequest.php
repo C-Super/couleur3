@@ -25,6 +25,7 @@ class GenerateWinnersRequest extends FormRequest
 
         return [
             'winners_count' => "required|integer|min:1|max:$totalAnswers",
+            'reward_id' => 'required|exists:rewards,id',
         ];
     }
 }

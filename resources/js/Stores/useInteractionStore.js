@@ -13,6 +13,9 @@ export const useInteractionStore = defineStore(
             hasOpenedNotif: false,
             currentInteraction: page.props.interaction,
             winnersCountForFastest: 1,
+            choosedWinners: [],
+            rewards: page.props.rewards,
+            choosedReward: null,
             errors: {},
             pinnedAnswers: [],
         });
@@ -179,6 +182,7 @@ export const useInteractionStore = defineStore(
                 ),
                 {
                     winners_count: state.winnersCountForFastest,
+                    reward_id: state.choosedReward,
                 },
                 {
                     preserveScroll: true,

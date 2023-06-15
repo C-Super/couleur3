@@ -30,6 +30,15 @@ const form = useForm("post", route("register"), {
 });
 
 const submit = () => {
+    if (Object.values(form.address).every((field) => field === "")) {
+        console.log(form.address);
+        // Make the address fields null if they are all empty
+        form.address.street = null;
+        form.address.zip_code = null;
+        form.address.city = null;
+        form.address.country = null;
+        form.address = null;
+    }
     form.submit({
         onFinish: () => form.reset("password", "password_confirmation"),
     });
@@ -142,12 +151,12 @@ const submit = () => {
                         <div class="w-full mt-4">
                             <TextInput
                                 id="street"
-                                v-model="form.street"
+                                v-model="form.address.street"
                                 label="Adresse"
                                 type="street"
                                 class="mt-1 block w-full"
                                 autocomplete="street"
-                                @change="form.validate('street')"
+                                @change="form.validate('address.street')"
                             />
                         </div>
 
@@ -155,22 +164,22 @@ const submit = () => {
                             <div class="w-24">
                                 <TextInputPostalCode
                                     id="zip_code"
-                                    v-model="form.zip_code"
+                                    v-model="form.address.zip_code"
                                     label="NPA"
                                     type="zip_code"
                                     autocomplete="zip_code"
-                                    @change="form.validate('zip_code')"
+                                    @change="form.validate('address.zip_code')"
                                 />
                             </div>
 
                             <div class="grow">
                                 <TextInputCity
                                     id="city"
-                                    v-model="form.city"
+                                    v-model="form.address.city"
                                     label="Ville"
                                     type="city"
                                     autocomplete="city"
-                                    @change="form.validate('city')"
+                                    @change="form.validate('address.city')"
                                 />
                             </div>
                         </div>
@@ -178,12 +187,12 @@ const submit = () => {
                         <div class="w-full mt-4">
                             <TextInput
                                 id="country"
-                                v-model="form.country"
+                                v-model="form.address.country"
                                 label="Pays"
                                 type="country"
                                 class="mt-1 block w-full"
                                 autocomplete="country"
-                                @change="form.validate('country')"
+                                @change="form.validate('address.country')"
                             />
                         </div>
                     </div>

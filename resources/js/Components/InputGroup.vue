@@ -1,6 +1,5 @@
 <script setup>
 import InputLabel from "@/Components/InputLabel.vue";
-//import InputError from "@/Components/InputError.vue";
 
 defineProps({
     label: {
@@ -16,7 +15,7 @@ defineProps({
 
 <template>
     <div class="flex flex-col gap-2">
-        <input-label :id="`${id}`">{{ label }}</input-label>
+        <input-label :for="id">{{ label }}</input-label>
 
         <div class="flex flex-col flex-auto">
             <slot></slot>

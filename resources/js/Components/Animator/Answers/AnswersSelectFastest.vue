@@ -2,6 +2,7 @@
 import InputGroup from "@/Components/InputGroup.vue";
 import TextInput from "@/Components/TextInput.vue";
 import InputError from "@/Components/InputError.vue";
+import SelectReward from "@/Components/Animator/Answers/SelectReward.vue";
 import { useInteractionStore } from "@/Stores/useInteractionStore.js";
 import { storeToRefs } from "pinia";
 import Color from "@/Enums/Color.js";
@@ -13,13 +14,6 @@ const { currentInteraction, winnersCountForFastest, errors } =
 
 <template>
     <div>
-        <div>
-            <p class="text-2xl font-semibold">Réponses obtenues</p>
-            <p class="font-light">
-                Cliquez sur les utilisateurs que vous souhaitez faire gagner.
-            </p>
-        </div>
-
         <div class="flex flex-col gap-4 mt-4">
             <input-group id="winners-count" label="Nombre de gagnant">
                 <text-input
@@ -36,6 +30,8 @@ const { currentInteraction, winnersCountForFastest, errors } =
 
                 <input-error class="mt-2" :message="errors.winners_count" />
             </input-group>
+
+            <select-reward />
         </div>
     </div>
 </template>

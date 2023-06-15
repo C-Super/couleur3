@@ -37,6 +37,12 @@ const activeTab = ref(0);
                     <answers-list />
                 </base-tab>
                 <base-tab title="Sélection des premiers">
+                    <div>
+                        <p class="font-light">
+                            Cliquez sur les utilisateurs que vous souhaitez
+                            faire gagner.
+                        </p>
+                    </div>
                     <answers-select-fastest />
                 </base-tab>
             </base-tabs>
