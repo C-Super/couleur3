@@ -44,7 +44,16 @@ const { pinnedAnswers, notPinnedAnswers, currentInteraction } =
                             {{ pinnedAnswer.auditor.user.name }}
                         </div>
 
-                        <div>
+                        <div
+                            v-if="
+                                InteractionType.isQuestion(
+                                    currentInteraction.type
+                                )
+                            "
+                        >
+                            {{ pinnedAnswer.replyable.content }}
+                        </div>
+                        <div v-else>
                             a répondu en
                             {{
                                 formatDuration(
@@ -90,7 +99,16 @@ const { pinnedAnswers, notPinnedAnswers, currentInteraction } =
                             {{ notPinnedAnswer.auditor.user.name }}
                         </div>
 
-                        <div>
+                        <div
+                            v-if="
+                                InteractionType.isQuestion(
+                                    currentInteraction.type
+                                )
+                            "
+                        >
+                            {{ notPinnedAnswer.replyable.content }}
+                        </div>
+                        <div v-else>
                             a répondu en
                             {{
                                 formatDuration(

@@ -13,6 +13,7 @@ export const useInteractionStore = defineStore(
             hasOpenedNotif: false,
             hasBeenRewarded: null,
             currentInteraction: page.props.interaction,
+            winnersCandidates: [],
             winnersCountForFastest: 1,
             choosedWinners: [],
             rewards: page.props.rewards,
@@ -177,6 +178,30 @@ export const useInteractionStore = defineStore(
             });
         };
 
+        const addCandidate = (candidate) => {
+            state.winnersCandidates.push(candidate);
+        };
+
+        const removeCandidate = (candidate) => {
+            state.winnersCandidates.splice(
+                state.winnersCandidates.indexOf(candidate),
+                1
+            );
+        };
+
+        const updatePinnedAsCandidates = (candidates) => {
+            candidates.forEach((candidate) => {
+                if (!state.winnersCandidates.includes(candidate)) {
+                    state.winnersCandidates.push(candidate);
+                } else {
+                    state.winnersCandidates.splice(
+                        state.winnersCandidates.indexOf(candidate),
+                        1
+                    );
+                }
+            });
+        };
+
         const submitFastest = () => {
             router.post(
                 route(
@@ -185,6 +210,28 @@ export const useInteractionStore = defineStore(
                 ),
                 {
                     winners_count: state.winnersCountForFastest,
+                    reward_id: state.choosedReward,
+                },
+                {
+                    preserveScroll: true,
+                    only: ["interaction", "errors"],
+                    onSuccess: () => {
+                        state.winnersCountForFastest = 1;
+                    },
+                }
+            );
+        };
+
+        const submitManual = () => {
+            router.post(
+                route(
+                    "interactions.winners.manual",
+                    state.currentInteraction.id
+                ),
+                {
+                    auditor_ids: state.winnersCandidates.map(
+                        (candidate) => candidate.id
+                    ),
                     reward_id: state.choosedReward,
                 },
                 {
@@ -210,6 +257,10 @@ export const useInteractionStore = defineStore(
             removeWinner,
             updatePinnedAsWinners,
             submitFastest,
+            submitManual,
+            addCandidate,
+            removeCandidate,
+            updatePinnedAsCandidates,
         };
     },
     {

@@ -23,7 +23,6 @@ class StoreWinnerRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'interaction_id' => 'required|exists:interactions,id',
             'auditor_ids' => 'required|array',
             'auditor_ids.*' => 'exists:auditors,id',
             'reward_id' => 'required|exists:rewards,id',

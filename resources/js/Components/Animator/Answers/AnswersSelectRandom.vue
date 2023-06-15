@@ -2,7 +2,6 @@
 import InputGroup from "@/Components/InputGroup.vue";
 import TextInput from "@/Components/TextInput.vue";
 import InputError from "@/Components/InputError.vue";
-import BaseButton from "@/Components/Animator/Bases/BaseButton.vue";
 import { useInteractionStore } from "@/Stores/useInteractionStore.js";
 import { storeToRefs } from "pinia";
 import Color from "@/Enums/Color.js";
@@ -13,29 +12,22 @@ const { currentInteraction } = storeToRefs(interactionStore);
 
 <template>
     <div>
-        <div>
-            <p class="text-2xl font-semibold">Réponses obtenues</p>
-            <p class="font-light">
-                Cliquez sur les utilisateurs que vous souhaitez faire gagner.
-            </p>
-        </div>
-
         <form class="flex flex-col gap-4 mt-4">
-            <input-group id="winners-count" label="Nombre de gagnant">
+            <input-group id="winners-count" label="Nombre de gagnants">
                 <text-input
                     id="winners-count"
+                    type="number"
                     :color="Color.forInteractionType(currentInteraction.type)"
+                    :min="1"
+                    :max="currentInteraction.answers.length"
+                    :value="winnersCountForRandom"
+                    @change="
+                        winnersCountForRandom = Number($event.target.value)
+                    "
                 />
 
                 <input-error class="mt-2" />
             </input-group>
-
-            <base-button
-                type="submit"
-                :color="Color.forInteractionType(currentInteraction.type)"
-            >
-                Générer
-            </base-button>
         </form>
     </div>
 </template>

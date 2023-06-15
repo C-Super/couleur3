@@ -6,7 +6,7 @@ import { useInteractionStore } from "@/Stores/useInteractionStore.js";
 import { storeToRefs } from "pinia";
 
 const interactionStore = useInteractionStore();
-const { pinnedAnswers, notPinnedAnswers, winners, currentInteraction } =
+const { pinnedAnswers, notPinnedAnswers, currentInteraction } =
     storeToRefs(interactionStore);
 
 const pinnedCandidates = pinnedAnswers;
@@ -17,10 +17,8 @@ const candidates = notPinnedAnswers;
     <div>
         <div class="flex flex-row items-center justify-between">
             <div>
-                <p class="text-2xl font-semibold">Réponses obtenues</p>
                 <p class="font-light">
-                    Cliquez sur les utilisateurs que vous souhaitez faire
-                    gagner.
+                    Cliquez sur les auditeurs que vous souhaitez faire gagner.
                 </p>
             </div>
             <div class="flex items-center">
@@ -30,7 +28,7 @@ const candidates = notPinnedAnswers;
                 <base-checkbox
                     :color="Color.forInteractionType(currentInteraction.type)"
                     @change="
-                        interactionStore.updatePinnedAsWinners(pinnedAnswers)
+                        interactionStore.updatePinnedAsCandidates(pinnedAnswers)
                     "
                 />
             </div>
@@ -52,10 +50,16 @@ const candidates = notPinnedAnswers;
                                     currentInteraction.type
                                 )
                             "
-                            :checked="winners.indexOf(pinnedCandidate) != -1"
+                            :checked="
+                                interactionStore.winnersCandidates.indexOf(
+                                    pinnedCandidate
+                                ) != -1
+                            "
                             class="mr-1"
                             @change="
-                                interactionStore.removeWinner(pinnedCandidate)
+                                interactionStore.removeCandidate(
+                                    pinnedCandidate
+                                )
                             "
                         />
 
@@ -100,9 +104,13 @@ const candidates = notPinnedAnswers;
                                     currentInteraction.type
                                 )
                             "
-                            :checked="winners.indexOf(candidate) != -1"
+                            :checked="
+                                interactionStore.winnersCandidates.indexOf(
+                                    candidate
+                                ) != -1
+                            "
                             class="mr-1"
-                            @change="interactionStore.addWinner(candidate)"
+                            @change="interactionStore.addCandidate(candidate)"
                         />
 
                         <div class="font-bold">

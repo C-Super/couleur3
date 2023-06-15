@@ -15,7 +15,7 @@ const { currentInteraction, winnersCountForFastest, errors } =
 <template>
     <div>
         <div class="flex flex-col gap-4 mt-4">
-            <input-group id="winners-count" label="Nombre de gagnant">
+            <input-group id="winners-count" label="Nombre de gagnants">
                 <text-input
                     id="winners-count"
                     type="number"

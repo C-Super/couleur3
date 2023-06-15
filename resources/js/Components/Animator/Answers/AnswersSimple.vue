@@ -13,10 +13,12 @@ defineProps({
 });
 </script>
 <template>
-    <p class="text-2xl font-semibold">Réponse: {{ questionChoice.value }}</p>
-    <p class="font-light">Participants ayant répondu:</p>
+    <p class="font-light">
+        Participants ayant répondu à :
+        <span class="font-bold">{{ questionChoice.value }}</span>
+    </p>
     <div
-        :class="`overflow-x-auto h-56 mt-3 scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-${Color.PRIMARY}`"
+        :class="`overflow-x-auto h-56 mt-8 scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-${Color.PRIMARY}`"
     >
         <table class="grid grid-cols-3 gap-2">
             <tbody v-for="answer of answers" :key="answer.id" :for="answer.id">
