@@ -37,6 +37,8 @@ it('generates random winners list successfully', function () {
         ]
     )->create();
 
+    $reward = Reward::factory()->create();
+
     $auditors = Auditor::factory()->count(5)->create();
 
     foreach ($auditors as $auditor) {
@@ -52,6 +54,7 @@ it('generates random winners list successfully', function () {
     $response = postJson("/interactions/{$interaction->id}/winners/random", [
         'interaction_id' => $interaction->id,
         'winners_count' => 3,
+        'reward_id' => $reward->id,
     ]);
 
     // Assert response
@@ -230,6 +233,7 @@ it('generates fastest winners list successfully', function () {
     $response = postJson("/interactions/{$interaction->id}/winners/fastest", [
         'interaction_id' => $interaction->id,
         'winners_count' => 3,
+        'reward_id' => $reward->id,
     ]);
 
     // Get the data from the session

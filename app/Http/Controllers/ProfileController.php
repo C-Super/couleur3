@@ -16,11 +16,24 @@ class ProfileController extends Controller
     /**
      * Display the user's profile form.
      */
-    public function edit(Request $request): Response
+    public function edit(): Response
     {
+        $user = Auth::user();
+        $address = null;
+
+        // Vérifier si l'utilisateur est un auditeur et a une adresse
+        if ($user->roleable_type === 'App\Models\Auditor') {
+            /**
+             * @var \App\Models\Auditor $auditor
+             */
+            $auditor = $user->roleable;
+            $address = $auditor->address;
+        }
+
         return Inertia::render('Profile/Edit', [
-            'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
+            'mustVerifyEmail' => $user instanceof MustVerifyEmail,
             'status' => session('status'),
+            'address' => $address, // Ajouter l'adresse à la réponse
         ]);
     }
 

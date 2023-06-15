@@ -20,6 +20,8 @@ namespace App\Models{
      * @property string $country
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property \Illuminate\Support\Carbon|null $updated_at
+     * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Auditor> $auditor
+     * @property-read int|null $auditor_count
      *
      * @method static \Database\Factories\AddressFactory factory($count = null, $state = [])
      * @method static \Illuminate\Database\Eloquent\Builder|Address newModelQuery()
@@ -139,6 +141,8 @@ namespace App\Models{
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Message> $messages
      * @property-read int|null $messages_count
      * @property-read \App\Models\User|null $user
+     * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Winner> $winners
+     * @property-read int|null $winners_count
      *
      * @method static \Database\Factories\AuditorFactory factory($count = null, $state = [])
      * @method static \Illuminate\Database\Eloquent\Builder|Auditor newModelQuery()
@@ -196,14 +200,15 @@ namespace App\Models{
      * @property \Illuminate\Support\Carbon|null $ended_at
      * @property int $animator_id
      * @property int|null $reward_id
-     * @property int|null $winners_count
+     * @property-read int|null $winners_count
      * @property \App\Enums\InteractionStatus $status
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Answer> $answers
      * @property-read int|null $answers_count
      * @property-read \App\Models\CallToAction|null $callToAction
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\QuestionChoice> $questionChoices
      * @property-read int|null $question_choices_count
-     * @property-read \App\Models\Reward|null $rewards
+     * @property-read \App\Models\Reward|null $reward
+     * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Winner> $winners
      *
      * @method static \Illuminate\Database\Eloquent\Builder|Interaction active()
      * @method static \Database\Factories\InteractionFactory factory($count = null, $state = [])

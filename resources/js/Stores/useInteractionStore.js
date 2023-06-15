@@ -11,6 +11,7 @@ export const useInteractionStore = defineStore(
         const state = reactive({
             isCreatingInteraction: null,
             hasOpenedNotif: false,
+            hasBeenRewarded: null,
             currentInteraction: page.props.interaction,
             winnersCountForFastest: 1,
             choosedWinners: [],
@@ -46,14 +47,20 @@ export const useInteractionStore = defineStore(
                     window.Echo.leaveChannel(`auditors.${oldValue.id}`);
                 }
 
+                if (oldValue.id === newValue.id) return;
+
+                console.log(oldValue, newValue);
+
                 if (newValue) {
                     if (
-                        page.props.auth.user.roleable_type ===
-                            "App\\Models\\Animator" &&
+                        newValue.roleable_type === "App\\Models\\Animator" &&
                         state.currentInteraction
                     ) {
                         subscribeAnimatorToPrivateChannel();
-                    } else {
+                    } else if (
+                        newValue.roleable_type === "App\\Models\\Auditor" &&
+                        state.currentInteraction
+                    ) {
                         subscribeAuditorToPrivateChannel();
                     }
                 }
@@ -78,7 +85,10 @@ export const useInteractionStore = defineStore(
                 state.currentInteraction
             ) {
                 subscribeAnimatorToPrivateChannel();
-            } else {
+            } else if (
+                page.props.auth.user.roleable_type === "App\\Models\\Auditor" &&
+                state.currentInteraction
+            ) {
                 subscribeAuditorToPrivateChannel();
             }
         });
@@ -102,16 +112,15 @@ export const useInteractionStore = defineStore(
             window.Echo.private(
                 `interactions.${state.currentInteraction.id}`
             ).listen("AnswerSubmitedToAnimator", (event) => {
-                console.log(event);
                 state.currentInteraction.answers.push(event.answer);
             });
         };
 
         const subscribeAuditorToPrivateChannel = () => {
-            window.Echo.channel(`auditors.${page.props.auth.user.id}`).listen(
+            window.Echo.private(`auditors.${page.props.auth.user.id}`).listen(
                 "WinnerSentResult",
                 (event) => {
-                    console.log("winner", event);
+                    state.hasBeenRewarded = event.reward;
                 }
             );
         };
@@ -142,7 +151,6 @@ export const useInteractionStore = defineStore(
         };
 
         const addPinned = (answer) => {
-            console.log(answer);
             state.pinnedAnswers.push(answer);
         };
 
