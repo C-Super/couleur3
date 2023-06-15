@@ -11,7 +11,7 @@ import InputGroup from "@/Components/InputGroup.vue";
             <input-group
                 id="input-1"
                 class="flex-row flex-auto"
-                label="Option 1"
+                label="Réponse 1"
             >
                 <slot name="input1"></slot>
             </input-group>
@@ -19,7 +19,7 @@ import InputGroup from "@/Components/InputGroup.vue";
             <input-group
                 id="input-2"
                 class="flex-row flex-auto"
-                label="Option 2"
+                label="Réponse 2"
             >
                 <slot name="input2"></slot>
             </input-group>
@@ -28,7 +28,7 @@ import InputGroup from "@/Components/InputGroup.vue";
             <input-group
                 id="input-3"
                 class="flex-row flex-auto"
-                label="Option 3"
+                label="Réponse 3"
             >
                 <slot name="input3"></slot>
             </input-group>
@@ -36,7 +36,7 @@ import InputGroup from "@/Components/InputGroup.vue";
             <input-group
                 id="input-4"
                 class="flex-row flex-auto"
-                label="Option 4"
+                label="Réponse 4"
             >
                 <slot name="input4"></slot>
             </input-group>

@@ -36,7 +36,7 @@ const activeTab = ref(0);
                 <base-tab title="Réponses">
                     <answers-list />
                 </base-tab>
-                <base-tab title="Sélection rapidité">
+                <base-tab title="Sélection des premiers">
                     <answers-select-rapidity />
                 </base-tab>
             </base-tabs>
