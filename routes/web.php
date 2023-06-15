@@ -42,6 +42,7 @@ Route::middleware(['auth', 'verified', 'auth.auditor'])->group(function () {
     Route::post('/interactions/{interaction}/answers/audio', [AnswerController::class, 'storeAudio'])->name('interactions.answers.audio.store');
     Route::post('/interactions/{interaction}/answers/video', [AnswerController::class, 'storeVideo'])->name('interactions.answers.video.store');
     Route::post('/interactions/{interaction}/answers/picture', [AnswerController::class, 'storePicture'])->name('interactions.answers.picture.store');
+    Route::post('/interactions/{interaction}/answers/text', [AnswerController::class, 'storeText'])->name('interactions.answers.text.store');
 });
 
 Route::middleware(['auth', 'auth.animator'])->group(function () {
@@ -57,6 +58,7 @@ Route::middleware(['auth', 'auth.animator'])->group(function () {
         Route::post('/interactions/audio', [InteractionController::class, 'storeAudio'])->name('interactions.audio.store');
         Route::post('/interactions/video', [InteractionController::class, 'storeVideo'])->name('interactions.video.store');
         Route::post('/interactions/picture', [InteractionController::class, 'storePicture'])->name('interactions.picture.store');
+        Route::post('/interactions/text', [InteractionController::class, 'storeText'])->name('interactions.text.store');
     });
 
     Route::post('/interactions/{interaction}/end', [InteractionController::class, 'endInteraction'])->name('interactions.end');

@@ -10,6 +10,7 @@ use App\Http\Requests\Interaction\StoreCallToActionRequest;
 use App\Http\Requests\Interaction\StoreMCQRequest;
 use App\Http\Requests\Interaction\StoreQuickClickRequest;
 use App\Http\Requests\Interaction\StoreSurveyRequest;
+use App\Http\Requests\Interaction\StoreTextRequest;
 use App\Models\CallToAction;
 use App\Models\Interaction;
 use Auth;
@@ -34,20 +35,13 @@ class InteractionController extends Controller
         $interaction->ended_at = now()->addSeconds($validated['duration']);
 
         $interaction->save();
-        $currentInteraction = Interaction::active()->with([
-            'answers' => [
-                'auditor' => [
-                    'user',
-                ],
-                'replyable',
-            ],
-            'callToAction',
-        ])->first();
 
-        broadcast(new InteractionCreated($currentInteraction))->toOthers();
+        $interaction->load("callToAction");
+
+        broadcast(new InteractionCreated($interaction))->toOthers();
 
         return redirect()->back()->with([
-            'interaction' => $currentInteraction,
+            'interaction' => $interaction,
         ]);
     }
 
@@ -67,19 +61,11 @@ class InteractionController extends Controller
         $interaction->ended_at = now()->addSeconds($validated['duration']);
 
         $interaction->save();
-        $currentInteraction = Interaction::active()->with([
-            'answers' => [
-                'auditor' => [
-                    'user',
-                ],
-                'replyable',
-            ],
-        ])->first();
 
-        broadcast(new InteractionCreated($currentInteraction))->toOthers();
+        broadcast(new InteractionCreated($interaction))->toOthers();
 
         return redirect()->back()->with([
-            'interaction' => $currentInteraction,
+            'interaction' => $interaction,
         ]);
     }
 
@@ -106,20 +92,36 @@ class InteractionController extends Controller
             }
         }
 
-        $currentInteraction = Interaction::active()->with([
-            'answers' => [
-                'auditor' => [
-                    'user',
-                ],
-                'replyable',
-            ],
-            'questionChoices',
-        ])->first();
+        $interaction->load("questionChoices");
 
-        broadcast(new InteractionCreated($currentInteraction))->toOthers();
+        broadcast(new InteractionCreated($interaction))->toOthers();
 
         return redirect()->back()->with([
-            'interaction' => $currentInteraction,
+            'interaction' => $interaction,
+        ]);
+    }
+
+    public function storeText(StoreTextRequest $request)
+    {
+        $validated = $request->validated();
+
+        $interaction = new Interaction();
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        /** @var \App\Models\Animator $animator */
+        $animator = $user->roleable;
+
+        $interaction->title = $validated['title'];
+        $interaction->type = InteractionType::TEXT;
+        $interaction->animator_id = $animator->id;
+        $interaction->ended_at = now()->addSeconds($validated['duration']);
+
+        $interaction->save();
+
+        broadcast(new InteractionCreated($interaction))->toOthers();
+
+        return back()->with([
+            'interaction' => $interaction,
         ]);
     }
 
@@ -146,20 +148,13 @@ class InteractionController extends Controller
             }
         }
 
-        $currentInteraction = Interaction::active()->with([
-            'answers' => [
-                'auditor' => [
-                    'user',
-                ],
-                'replyable',
-            ],
-            'questionChoices',
-        ])->first();
 
-        broadcast(new InteractionCreated($currentInteraction))->toOthers();
+        $interaction->load("questionChoices");
+
+        broadcast(new InteractionCreated($interaction))->toOthers();
 
         return redirect()->back()->with([
-            'interaction' => $currentInteraction,
+            'interaction' => $interaction,
         ]);
     }
 

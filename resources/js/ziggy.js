@@ -31,6 +31,7 @@ const Ziggy = {
         "interactions.answers.quick_click.store": {
             uri: "interactions/{interaction}/answers/quick_click",
             methods: ["POST"],
+            bindings: { interaction: "id" },
         },
         "interactions.answers.survey.store": {
             uri: "interactions/{interaction}/answers/survey",
@@ -50,6 +51,10 @@ const Ziggy = {
         },
         "interactions.answers.picture.store": {
             uri: "interactions/{interaction}/answers/picture",
+            methods: ["POST"],
+        },
+        "interactions.answers.text.store": {
+            uri: "interactions/{interaction}/answers/text",
             methods: ["POST"],
         },
         "animator.index": { uri: "dashboard", methods: ["GET", "HEAD"] },
@@ -81,6 +86,10 @@ const Ziggy = {
         },
         "interactions.picture.store": {
             uri: "interactions/picture",
+            methods: ["POST"],
+        },
+        "interactions.text.store": {
+            uri: "interactions/text",
             methods: ["POST"],
         },
         "interactions.end": {
