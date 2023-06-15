@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Enums\InteractionStatus;
 use App\Events\ChatUpdated;
 use App\Events\InteractionEndedEvent;
-use App\Events\InteractionEndedForAnimatorEvent;
 use App\Models\Interaction;
 use App\Models\Reward;
 use App\Settings\GeneralSettings;
@@ -17,7 +16,7 @@ class AnimatorController extends Controller
     {
         return Inertia::render('Animator/Index', [
             'chatEnabled' => $settings->chat_enabled,
-            'interaction' => Interaction::active()->with([
+            'interaction' => Interaction::pending()->with([
                 'answers' => [
                     'auditor' => [
                         'user',
@@ -27,7 +26,7 @@ class AnimatorController extends Controller
                 'callToAction',
                 'questionChoices',
             ])->first(),
-            'rewards' => Reward::all()
+            'rewards' => Reward::all(),
         ]);
     }
 
@@ -38,20 +37,17 @@ class AnimatorController extends Controller
 
         ChatUpdated::dispatch($settings->chat_enabled);
 
-        $currentInteraction = Interaction::active()->first();
+        $currentInteraction = Interaction::pending()->first();
         $currentInteraction->update([
             'ended_at' => now(),
             'status' => InteractionStatus::STOPPED,
         ]);
 
-        event(new InteractionEndedEvent($currentInteraction));
+        broadcast(new InteractionEndedEvent())->toOthers();
 
-        // Collect all answers && rewards
-        $answers = $currentInteraction->answers()->with('auditor')->get();
-        $rewards = Reward::all();
-
-        event(new InteractionEndedForAnimatorEvent($currentInteraction, $answers, $rewards));
-
-        return to_route('animator.index');
+        return redirect()->back()->with([
+            'chatEnabled' => $settings->chat_enabled,
+            'interaction' => null,
+        ]);
     }
 }

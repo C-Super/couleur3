@@ -41,7 +41,7 @@ it('can store mcq interactions', function () {
     expect(Interaction::where('title', 'Test Interaction')->exists())->toBeTrue();
     // Assert that the question_choice were stored correctly
     $interaction = Interaction::where('title', 'Test Interaction')->first();
-    expect($interaction->question_choices()->count())->toBe(2);
+    expect($interaction->questionChoices()->count())->toBe(2);
 });
 
 it('can store survey interactions', function () {
@@ -76,7 +76,7 @@ it('can store survey interactions', function () {
     expect(Interaction::where('title', 'Test Interaction')->exists())->toBeTrue();
     // Assert that the question_choice were stored correctly
     $interaction = Interaction::where('title', 'Test Interaction')->first();
-    expect($interaction->question_choices()->count())->toBe(2);
+    expect($interaction->questionChoices()->count())->toBe(2);
 });
 
 it('can store audio interactions', function () {

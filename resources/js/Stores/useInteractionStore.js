@@ -45,6 +45,7 @@ export const useInteractionStore = defineStore(
             if (!page.props.auth) return;
 
             if (
+                page.props.auth.user &&
                 page.props.auth.user.roleable_type ===
                     "App\\Models\\Animator" &&
                 state.currentInteraction
@@ -58,11 +59,12 @@ export const useInteractionStore = defineStore(
         const subscribeToPublicChannel = () => {
             window.Echo.channel("public")
                 .listen("InteractionCreated", (event) => {
-                    state.currentInteraction = event.interaction;
                     state.hasOpenedNotif = false;
+                    state.currentInteraction = event.interaction;
                 })
                 .listen("InteractionEndedEvent", () => {
                     state.currentInteraction = null;
+                    state.hasOpenedNotif = false;
                 })
                 .error((error) => {
                     console.error(error);

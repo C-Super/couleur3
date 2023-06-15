@@ -4,7 +4,6 @@ import { Link } from "@inertiajs/vue3";
 import MiniaturePlayer from '@/Components/Auditor/MiniaturePlayer.vue';
 
 const activePage = ref(location.pathname);
-
 </script>
 
 <template>

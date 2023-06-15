@@ -8,17 +8,17 @@ import AnswersList from "@/Components/Animator/Answers/AnswersList.vue";
 import AnswersSelectRapidity from "@/Components/Animator/Answers/AnswersSelectRapidity.vue";
 import Color from "@/Enums/Color.js";
 import { ref } from "vue";
+import { calculateDuration } from "@/Utils/time.js";
 import { useInteractionStore } from "@/Stores/useInteractionStore.js";
 import { storeToRefs } from "pinia";
 
 const interactionStore = useInteractionStore();
 const { currentInteraction } = storeToRefs(interactionStore);
 
-const duration =
-    new Date(currentInteraction.value.ended_at).getTime() -
-    new Date().getTime();
-const sec = Math.floor((duration / 1000) % 60);
-const min = Math.floor(duration / (1000 * 60));
+const { sec, min } = calculateDuration(
+    currentInteraction.value.ended_at,
+    new Date()
+);
 
 const activeTab = ref(0);
 </script>

@@ -17,7 +17,10 @@ const props = defineProps({
 });
 
 function clicNotif() {
-    if (currentInteraction.value.type === InteractionType.QUICK_CLICK && props.authInf === null) {
+    if (
+        currentInteraction.value.type === InteractionType.QUICK_CLICK &&
+        props.authInf === null
+    ) {
         document.querySelector("#popup-auditor").showModal();
     } else if (
         currentInteraction.value.type === InteractionType.QUICK_CLICK ||
@@ -32,7 +35,6 @@ function clicNotif() {
         hasOpenedNotif.value = true;
         // Ouvre la modal
         document.querySelector("#popup-auditor").showModal();
-
     } else if (currentInteraction.value.type === InteractionType.CTA) {
         // l'auditeur à ouvert la notification
         hasOpenedNotif.value = true;
@@ -61,7 +63,8 @@ function clicNotif() {
     <BaseNotif
         v-if="
             currentInteraction &&
-            currentInteraction.type === InteractionType.QUICK_CLICK && hasOpenedNotif === false
+            currentInteraction.type === InteractionType.QUICK_CLICK &&
+            hasOpenedNotif === false
         "
         id="notification-rapide"
         @click="clicNotif"
@@ -78,9 +81,7 @@ function clicNotif() {
     >
         <span class="flex gap-x-1"
             ><span>{{ currentInteraction.title }}</span>
-            <span
-                id="link"
-                class="material-symbols-rounded text-xl"
+            <span id="link" class="material-symbols-rounded text-xl"
                 >open_in_new</span
             >
         </span>

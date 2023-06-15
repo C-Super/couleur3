@@ -29,8 +29,7 @@ defineProps({
             id="fixed-container"
             class="fixed bottom-16 w-screen flex flex-col"
         >
-
-            <Notification :auth-inf="auth.user"/>
+            <Notification :auth-inf="auth.user" />
             <Chat :chat-enabled="chatEnabled" class="grow" />
         </div>
     </AuditorLayout>
