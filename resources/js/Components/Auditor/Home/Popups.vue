@@ -47,6 +47,12 @@ watch(hasOpenedNotif, () => {
 // Constante pour afficher ou non les titres et la validation
 const formValidation = ref(false);
 const popupTitle = computed(() => {
+    // Rajouter si l'utilisateur fait partie des réponse mettre thanks
+    // if (props.authInf !== null) {
+    //     if (currentInteraction.value.answers.find((user) => user.id === props.authInf.id)) {
+    //         return PopupTitleType.THANKS;
+    //     }
+    // }
     if (InteractionType.isQuestion(currentInteraction.value?.type)) {
         return PopupTitleType.QUESTION;
     } else if (currentInteraction.value?.type === InteractionType.QUICK_CLICK) {
@@ -123,7 +129,7 @@ function handleButtonPopup($event) {
                 <div class="flex justify-center">
                     <BaseButtonPopup
                         v-if="
-                            popupTitle === PopupTitleType.THANKS &&
+                            (popupTitle === PopupTitleType.GIFT || popupTitle === PopupTitleType.THANKS) &&
                             authInf !== null
                         "
                         id="close"
@@ -132,7 +138,7 @@ function handleButtonPopup($event) {
                         >Fermer</BaseButtonPopup
                     >
                     <BaseButtonPopup
-                        v-if="popupTitle === 'gift' && authInf === null"
+                        v-if="popupTitle === PopupTitleType.GIFT && authInf === null"
                         id="next"
                         :is-validate="true"
                         @click="handleButtonPopup"
@@ -140,6 +146,7 @@ function handleButtonPopup($event) {
                     >
                     <BaseButtonPopup
                         v-if="
+                            currentInteraction.type !== InteractionType.MCQ && currentInteraction.type !== InteractionType.SURVEY &&
                             popupTitle === PopupTitleType.QUESTION &&
                             authInf !== null
                         "

@@ -39,6 +39,10 @@ export default {
             variants: ["hover", "focus"],
         },
         {
+            pattern: /ring-(primary|secondary|accent|white|error)/,
+            variants: ["hover", "focus"],
+        },
+        {
             pattern: /text-(primary|secondary|accent|white|error)/,
         },
         {

@@ -5,24 +5,24 @@ namespace App\Http\Controllers;
 use App\Events\NewWinnerGenerated;
 use App\Events\WinnerSentResult;
 use App\Events\WinnersListGenerated;
-use App\Http\Requests\GenerateWinnersRequest;
 use App\Http\Requests\ReplaceWinnerRequest;
 use App\Http\Requests\StoreWinnerRequest;
+use App\Http\Requests\Winner\GenerateWinnersRequest;
 use App\Models\Answer;
+use App\Models\Interaction;
 use App\Models\Winner;
 use DB;
 
 class WinnerController extends Controller
 {
-    public function generateRandomList(GenerateWinnersRequest $request)
+    public function generateRandomList(GenerateWinnersRequest $request, Interaction $interaction)
     {
         $validated = $request->validated();
-        $interaction_id = $validated['interaction_id'];
         $winnersCount = $validated['winners_count'];
 
         // Récupérer les IDs de tous les auditeurs qui ont répondu à l'interaction et qui ne sont pas déjà des gagnants
-        $auditorIds = Answer::where('interaction_id', $interaction_id)
-            ->whereNotIn('auditor_id', Winner::where('interaction_id', $interaction_id)->pluck('auditor_id'))
+        $auditorIds = Answer::where('interaction_id', $interaction->id)
+            ->whereNotIn('auditor_id', Winner::where('interaction_id', $interaction->id)->pluck('auditor_id'))
             ->inRandomOrder()
             ->take($winnersCount)
             ->pluck('auditor_id')
@@ -31,7 +31,7 @@ class WinnerController extends Controller
         //Store temp winners
         foreach ($auditorIds as $auditorId) {
             Winner::create([
-                'interaction_id' => $interaction_id,
+                'interaction_id' => $interaction->id,
                 'auditor_id' => $auditorId,
             ]);
         }
@@ -42,35 +42,48 @@ class WinnerController extends Controller
         return response()->json(['auditor_ids' => $auditorIds], 200);
     }
 
-    public function generateFastestList(GenerateWinnersRequest $request)
+    public function generateFastestList(GenerateWinnersRequest $request, Interaction $interaction)
     {
         $validated = $request->validated();
-        $interaction_id = $validated['interaction_id'];
         $winnersCount = $validated['winners_count'];
+        $reward_id = $validated['reward_id'];
+
+        // Insert into interaction reward_id
+        $interaction->update(['reward_id' => $reward_id]);
 
         // Récupérer les IDs des auditeurs les plus rapides qui ont répondu à l'interaction et qui ne sont pas déjà des gagnants
-        $auditorIds = Answer::where('interaction_id', $interaction_id)
-            ->whereNotIn('auditor_id', Winner::where('interaction_id', $interaction_id)->pluck('auditor_id'))
+        $auditorIds = Answer::where('interaction_id', $interaction->id)
+            ->whereNotIn('auditor_id', Winner::where('interaction_id', $interaction->id)->pluck('auditor_id'))
             ->orderBy('created_at')
+            ->with(['auditor.user'])
             ->take($winnersCount)
             ->pluck('auditor_id')
             ->toArray();
 
         //Store temp winner
+        $winners = [];
         foreach ($auditorIds as $auditorId) {
-            Winner::create([
-                'interaction_id' => $interaction_id,
+            $winner = Winner::create([
+                'interaction_id' => $interaction->id,
                 'auditor_id' => $auditorId,
             ]);
+
+            array_push($winners, $winner);
         }
 
-        // Dispatch an event with the auditor list
-        event(new WinnersListGenerated($auditorIds));
+        // Broadcast an event to winners
+        foreach ($winners as $winner) {
+            broadcast(new WinnerSentResult($winner->auditor_id));
+        }
 
-        return response()->json(['auditor_ids' => $auditorIds], 200);
+        return back()->with([
+            'interaction' => [
+                'winners' => $winners,
+            ],
+        ]);
     }
 
-    public function generate1Random(ReplaceWinnerRequest $request)
+    public function generateReplace(ReplaceWinnerRequest $request)
     {
         $validated = $request->validated();
         $interaction_id = $validated['interaction_id'];

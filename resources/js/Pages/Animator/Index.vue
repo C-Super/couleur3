@@ -11,6 +11,7 @@ import CtaShow from "@/Components/Animator/Cta/CtaShow.vue";
 import QuestionCreate from "@/Components/Animator/Question/QuestionCreate.vue";
 import QuestionShow from "@/Components/Animator/Question/QuestionShow.vue";
 import InteractionType from "@/Enums/InteractionType.js";
+import EndingMessage from "@/Components/Animator/Answers/EndingMessage.vue";
 import { Head, router } from "@inertiajs/vue3";
 import { useInteractionStore } from "@/Stores/useInteractionStore.js";
 import { storeToRefs } from "pinia";
@@ -63,19 +64,33 @@ const endEmission = () => {
             <quick-click-show
                 v-if="
                     currentInteraction &&
-                    currentInteraction.type === InteractionType.QUICK_CLICK
+                    currentInteraction.type === InteractionType.QUICK_CLICK &&
+                    currentInteraction.winners &&
+                    currentInteraction.winners.length === 0
                 "
             />
             <cta-show
                 v-if="
                     currentInteraction &&
-                    currentInteraction.type === InteractionType.CTA
+                    currentInteraction.type === InteractionType.CTA &&
+                    currentInteraction.winners &&
+                    currentInteraction.winners.length === 0
                 "
             />
             <question-show
                 v-if="
                     currentInteraction &&
-                    InteractionType.isQuestion(currentInteraction.type)
+                    InteractionType.isQuestion(currentInteraction.type) &&
+                    currentInteraction.winners &&
+                    currentInteraction.winners.length === 0
+                "
+            />
+
+            <ending-message
+                v-if="
+                    currentInteraction &&
+                    currentInteraction.winners &&
+                    currentInteraction.winners.length > 0
                 "
             />
         </div>
@@ -95,7 +110,6 @@ const endEmission = () => {
 }
 
 #animator-container {
-    overflow-x: hidden;
     background-color: #1c1354;
 }
 </style>

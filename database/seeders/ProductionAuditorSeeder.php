@@ -16,7 +16,7 @@ class ProductionAuditorSeeder extends Seeder
     {
         $file = fopen(storage_path('listeAuditeurs.csv'), 'r');
 
-        while (($data = fgetcsv($file, 81, ',')) !== false) {
+        while (($data = fgetcsv($file, 86, ',')) !== false) {
             $email = $data[0]; // assuming email is the first column in the csv
             $name = explode('.', $email)[0]; // get the name before the dot
             $name = ucfirst($name); // capitalize the first letter

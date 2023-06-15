@@ -1,26 +1,25 @@
 <script setup>
-import { useInteractionStore } from "@/Stores/useInteractionStore";
-import { storeToRefs } from "pinia";
+import Color from "@/Enums/Color.js";
+
 defineProps({
-    value: {
+    questionChoice: {
         type: String,
         required: true,
     },
+    answers: {
+        type: Array,
+        default: null,
+    },
 });
-const interactionStore = useInteractionStore();
-const { notPinnedAnswers } = storeToRefs(interactionStore);
-const answers = notPinnedAnswers;
 </script>
 <template>
-    <p class="text-2xl font-semibold">Participants ayant répondu</p>
-    <p class="font-light">{{ value }}</p>
-    <div class="overflow-x-auto h-60">
+    <p class="text-2xl font-semibold">Réponse: {{ questionChoice.value }}</p>
+    <p class="font-light">Participants ayant répondu:</p>
+    <div
+        :class="`overflow-x-auto h-56 mt-3 scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-${Color.PRIMARY}`"
+    >
         <table class="grid grid-cols-3 gap-2">
-            <tbody
-                v-for="answer of answers"
-                :key="answer.value"
-                :for="answer.value"
-            >
+            <tbody v-for="answer of answers" :key="answer.id" :for="answer.id">
                 <tr class="border-none">
                     <td class="font-bold text-base">
                         <slot>{{ answer.auditor.user.name }}</slot>
@@ -29,5 +28,5 @@ const answers = notPinnedAnswers;
             </tbody>
         </table>
     </div>
-    <p class="font-light">{{ answers.length }} réponses</p>
+    <p class="font-light mt-4">{{ answers.length }} réponses</p>
 </template>

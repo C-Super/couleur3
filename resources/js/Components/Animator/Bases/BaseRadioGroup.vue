@@ -31,7 +31,7 @@ defineProps({
                 class="hidden"
                 @input="$emit('update:modelValue', choice.value)"
             />
-            {{ choice.name }}
+            <span class="hidden lg:block">{{ choice.name }}</span>
         </label>
     </div>
 </template>

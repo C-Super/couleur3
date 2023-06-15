@@ -4,8 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 /**
@@ -22,6 +22,7 @@ class Auditor extends Model
      */
     protected $fillable = [
         'phone',
+        'address_id',
     ];
 
     /**
@@ -35,9 +36,9 @@ class Auditor extends Model
     /**
      * Get the auditor's address.
      */
-    public function address(): HasOne
+    public function address(): BelongsTo
     {
-        return $this->hasOne(Address::class);
+        return $this->belongsTo(Address::class);
     }
 
     /*

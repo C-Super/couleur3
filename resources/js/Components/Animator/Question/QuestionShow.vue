@@ -8,7 +8,7 @@ import AnswersBarChart from "@/Components/Animator/Answers/AnswersBarChart.vue";
 import AnswersList from "@/Components/Animator/Answers/AnswersList.vue";
 import AnswersSelectManual from "@/Components/Animator/Answers/AnswersSelectManual.vue";
 import AnswersSelectRandom from "@/Components/Animator/Answers/AnswersSelectRandom.vue";
-import AnswersSelectRapidity from "@/Components/Animator/Answers/AnswersSelectRapidity.vue";
+import AnswersSelectFastest from "@/Components/Animator/Answers/AnswersSelectFastest.vue";
 import AnswersSimple from "@/Components/Animator/Answers/AnswersSimple.vue";
 import InteractionType from "@/Enums/InteractionType.js";
 import Color from "@/Enums/Color.js";
@@ -20,7 +20,7 @@ import { storeToRefs } from "pinia";
 const interactionStore = useInteractionStore();
 const { currentInteraction } = storeToRefs(interactionStore);
 
-const { sec, min } = calculateDuration(
+const { min, sec } = calculateDuration(
     currentInteraction.value.ended_at,
     new Date()
 );
@@ -59,25 +59,21 @@ function hideDetails() {
                 <!--ANSWER LIST-->
                 <base-tab title="Réponses">
                     <!--MCQ && SURVEY-->
+                    <div v-if="isDisplayed">
+                        <answers-simple
+                            :question-choice="questionDisplayed"
+                            :answers="answersDisplayed"
+                        />
+                    </div>
                     <answers-bar-chart
                         v-if="
-                            currentInteraction.type === InteractionType.MCQ ||
-                            (currentInteraction.type ===
-                                InteractionType.SURVEY &&
-                                !isDisplayed)
+                            (currentInteraction.type === InteractionType.MCQ ||
+                                currentInteraction.type ===
+                                    InteractionType.SURVEY) &&
+                            !isDisplayed
                         "
                         @display="displayDetails"
                     />
-                    <div v-if="isDisplayed">
-                        <p class="text-2xl font-semibold">
-                            Participants ayant répondu
-                        </p>
-                        <p class="font-light">
-                            Réponse: {{ questionDisplayed }}
-                        </p>
-                        {{ answersDisplayed }}
-                        <answers-simple :value="questionDisplayed.value" />
-                    </div>
 
                     <!--TEXT-->
                     <answers-list
@@ -108,17 +104,16 @@ function hideDetails() {
                     v-if="currentInteraction.type === InteractionType.MCQ"
                     title="Sélection des premiers"
                 >
-                    <answers-select-rapidity />
+                    <answers-select-fastest />
                 </base-tab>
             </base-tabs>
         </template>
         <template #actions>
             <div class="flex flex-row gap-3">
+                <!--BACK TO BAR CHART-->
                 <base-button
-                    v-if="
-                        isDisplayed &&
-                        (activeTab === 0 || activeTab === 'Réponses')
-                    "
+                    v-if="isDisplayed && activeTab === 0"
+                    :color="`${Color.PRIMARY}`"
                     @click="hideDetails()"
                 >
                     Retour

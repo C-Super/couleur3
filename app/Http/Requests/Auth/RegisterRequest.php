@@ -23,14 +23,15 @@ class RegisterRequest extends FormRequest
      */
     public function rules(): array
     {
+
         return [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:' . User::class,
+            'email' => 'required|string|email|max:255|unique:'.User::class,
             'password' => ['required', 'confirmed', Password::defaults()],
-            'address.street' => 'required_with_all:address.zip_code,address.city,address.country|string|max:255',
-            'address.zip_code' => 'required_with_all:address.street,address.city,address.country|integer',
-            'address.city' => 'required_with_all:address.street,address.zip_code,address.country|string|max:255',
-            'address.country' => 'required_with_all:address.street,address.zip_code,address.city|string|max:255',
+            'address.street' => 'sometimes|required_with_all:address.zip_code,address.city,address.country|string|max:255',
+            'address.zip_code' => 'sometimes|required_with_all:address.street,address.city,address.country|integer',
+            'address.city' => 'sometimes|required_with_all:address.street,address.zip_code,address.country|string|max:255',
+            'address.country' => 'sometimes|required_with_all:address.street,address.zip_code,address.city|string|max:255',
         ];
     }
 

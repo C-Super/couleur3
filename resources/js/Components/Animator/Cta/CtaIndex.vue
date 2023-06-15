@@ -12,7 +12,7 @@ const interactionStore = useInteractionStore();
     <base-card :color="Color.SECONDARY">
         <template #title>Lien</template>
         <template #subtitle>
-            Envoyer un lien de redirection aux auditeurs
+            Envoyez un lien de redirection aux auditeurs
         </template>
         <template #actions>
             <base-button
