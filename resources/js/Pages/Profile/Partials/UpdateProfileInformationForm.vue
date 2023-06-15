@@ -153,7 +153,7 @@ const form = useForm({
 
             <div class="flex items-center gap-4">
                 <PrimaryButton :disabled="form.processing"
-                    >sauvgarder</PrimaryButton
+                    >Sauvegarder</PrimaryButton
                 >
 
                 <Transition
@@ -165,7 +165,7 @@ const form = useForm({
                         v-if="form.recentlySuccessful"
                         class="text-sm text-base-100"
                     >
-                        sauvegardé
+                        Sauvegarder
                     </p>
                 </Transition>
             </div>
