@@ -125,7 +125,7 @@ class WinnerController extends Controller
         // Insert into interaction reward_id
         $interaction->update(['reward_id' => $reward_id]);
 
-        DB::transaction(function () use ($interaction, $auditor_ids,) {
+        DB::transaction(function () use ($interaction, $auditor_ids) {
             // Delete all existing winners for the interaction
             Winner::where('interaction_id', $interaction->id)->delete();
 
