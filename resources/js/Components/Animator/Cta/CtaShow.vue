@@ -3,6 +3,7 @@ import BaseCard from "@/Components/Animator/Bases/BaseCard.vue";
 import BaseButton from "@/Components/Animator/Bases/BaseButton.vue";
 import BaseCountdown from "@/Components/Animator/Bases/BaseCountdown.vue";
 import Color from "@/Enums/Color.js";
+import EndingMessage from "../Answers/EndingMessage.vue";
 import { useInteractionStore } from "@/Stores/useInteractionStore.js";
 import { storeToRefs } from "pinia";
 
@@ -30,6 +31,9 @@ const min = Math.floor(duration / (1000 * 60));
         </template>
         <template #subtitle>
             {{ currentInteraction.call_to_action.link }}
+        </template>
+        <template #content>
+            <ending-message />
         </template>
         <template #actions>
             <div class="flex flex-row gap-3">
