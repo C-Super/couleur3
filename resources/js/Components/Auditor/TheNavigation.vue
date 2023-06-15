@@ -25,7 +25,7 @@ function handleButtonClick(index) {
     } else if (buttons.value[index].name === "smart_display") {
         // Rediriger vers la page du lecteur
         window.location.href = "/";
-    }else {
+    } else {
         // Parcourir tous les boutons et les mettre à jour
         buttons.value.forEach((button, i) => {
             button.active = i === index;

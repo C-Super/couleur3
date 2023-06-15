@@ -120,7 +120,6 @@ const submit = () => {
                     </div>
                 </div>
 
-
                 <div class="w-full mt-4">
                     <InputLabel for="country" value="Country" />
 

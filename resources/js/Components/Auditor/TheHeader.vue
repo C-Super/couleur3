@@ -1,8 +1,7 @@
 <script setup>
-import {ref} from 'vue';
+import { ref } from "vue";
 
 const activePage = ref(location.pathname);
-
 </script>
 
 <template>
