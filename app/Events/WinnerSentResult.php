@@ -31,6 +31,6 @@ class WinnerSentResult implements ShouldBroadcast
      */
     public function broadcastOn(): PrivateChannel
     {
-        return new PrivateChannel('auditors.' . $this->auditorId);
+        return new PrivateChannel('auditors.'.$this->auditorId);
     }
 }
