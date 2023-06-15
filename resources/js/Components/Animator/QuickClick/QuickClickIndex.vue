@@ -12,7 +12,7 @@ const interactionStore = useInteractionStore();
     <base-card :color="Color.ACCENT">
         <template #title>Rapidité</template>
         <template #subtitle>
-            Envoyer un bouton de participation de rapidité aux auditeurs
+            Envoyez un bouton de participation de rapidité aux auditeurs
         </template>
 
         <template #actions>

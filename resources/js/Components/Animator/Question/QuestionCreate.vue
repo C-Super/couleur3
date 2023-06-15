@@ -135,7 +135,7 @@ const cancelQuestionType = () => {
                             v-if="form.type === InteractionType.SURVEY"
                             #instructions
                         >
-                            Entrer les réponses que les auditeurs pourraient
+                            Entrez les réponses que les auditeurs pourraient
                             répondre.
                             <InputError
                                 class="mt-2"
@@ -143,8 +143,8 @@ const cancelQuestionType = () => {
                             />
                         </template>
                         <template v-else #instructions>
-                            Entrer les réponses que les auditeurs pourraient
-                            répondre. Cocher la réponse correcte.
+                            Entrez les réponses que les auditeurs pourraient
+                            répondre. Cochez la réponse correcte.
                             <InputError
                                 class="mt-2"
                                 :message="form.errors.question_choices"

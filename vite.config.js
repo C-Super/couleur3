@@ -32,27 +32,31 @@ export default defineConfig({
         eslintPlugin(),
         VueI18nPlugin(),
         VitePWA({
-            registerType: 'autoUpdate',
+            outDir: "public/build",
+            scope: "/",
+            base: "/",
+            registerType: "autoUpdate",
             manifest: {
-                "name": "Couleur 3 SparkShow",
-                "short_name": "Couleur3",
-                "description": "Intéragissez avec Couleur 3",
-                "start_url": ".",
-                "display": "standalone",
-                "icons": [
-                  {
-                    "src": "images/couleur3-low.jpeg",
-                    "sizes": "72x72",
-                    "type": "image/jpeg"
-                  },
-                  {
-                    "src": "images/couleur3-high.jpeg",
-                    "sizes": "248x247",
-                    "type": "image/jpeg"
-                  }
-                ]
-              },
-        })
+                name: "Couleur 3 SparkShow",
+                short_name: "Couleur3",
+                description: "Intéragissez avec Couleur 3",
+                start_url: "/",
+                scope: "/",
+                display: "standalone",
+                icons: [
+                    {
+                        src: "../images/couleur3-high.png",
+                        sizes: "247x247",
+                        type: "image/png",
+                    },
+                    {
+                        src: "../images/couleur3-low.png",
+                        sizes: "72x72",
+                        type: "image/png",
+                    },
+                ],
+            },
+        }),
     ],
     server: {
         hmr: {

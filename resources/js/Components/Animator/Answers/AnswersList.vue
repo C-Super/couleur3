@@ -9,7 +9,7 @@ const { pinnedAnswers, notPinnedAnswers, currentInteraction } =
     storeToRefs(interactionStore);
 </script>
 <template>
-    <p class="text-2xl font-semibold">Réponse obtenues</p>
+    <p class="text-2xl font-semibold">Réponses obtenues</p>
     <p class="font-light">
         Cliquez sur les réponses que vous souhaitez épingler en haut de la
         liste.

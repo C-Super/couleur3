@@ -35,7 +35,7 @@ class InteractionController extends Controller
         $interaction->ended_at = now()->addSeconds($validated['duration']);
 
         $interaction->save();
-
+      
         $interaction->load("callToAction");
 
         broadcast(new InteractionCreated($interaction))->toOthers();
@@ -147,7 +147,6 @@ class InteractionController extends Controller
                 $interaction->questionChoices()->create($validated['question_choices'][$i]);
             }
         }
-
 
         $interaction->load("questionChoices");
 

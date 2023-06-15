@@ -33,10 +33,9 @@ const submit = () => {
         <base-card :color="Color.ACCENT">
             <template #title>Rapidité</template>
             <template #subtitle>
-                Le but est de tester la rapidité des auditeurs. Puis de
-                sélectionner automatiquement un nombre de participants qui ont
-                cliqué le plus rapidement sur un bouton affiché à leur écran,
-                afin de les récompenser.
+                Le but est de tester la rapidité des auditeurs. Sélectionnez
+                automatiquement les premiers participants qui ont cliqué sur un
+                bouton affiché à leur écran, afin de les récompenser.
             </template>
             <template #content>
                 <div class="flex flex-col gap-8">

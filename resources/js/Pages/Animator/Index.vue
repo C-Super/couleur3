@@ -95,7 +95,6 @@ const endEmission = () => {
 }
 
 #animator-container {
-    overflow-x: hidden;
     background-color: #1c1354;
 }
 </style>
