@@ -14,8 +14,7 @@ export const useInteractionStore = defineStore(
             hasBeenRewarded: null,
             currentInteraction: page.props.interaction,
             winnersCandidates: [],
-            winnersCountForFastest: 1,
-            winnersCountForRandom: 1,
+            winnersCount: 1,
             choosedWinners: [],
             rewards: page.props.rewards,
             choosedReward: null,
@@ -217,14 +216,14 @@ export const useInteractionStore = defineStore(
                     state.currentInteraction.id
                 ),
                 {
-                    winners_count: state.winnersCountForFastest,
+                    winners_count: state.winnersCount,
                     reward_id: state.choosedReward,
                 },
                 {
                     preserveScroll: true,
                     only: ["interaction", "errors"],
                     onSuccess: () => {
-                        state.winnersCountForFastest = 1;
+                        state.winnersCount = 1;
                     },
                 }
             );
@@ -237,36 +236,14 @@ export const useInteractionStore = defineStore(
                     state.currentInteraction.id
                 ),
                 {
-                    winners_count: state.winnersCountForRandom,
+                    winners_count: state.winnersCount,
                     reward_id: state.choosedReward,
                 },
                 {
                     preserveScroll: true,
                     only: ["interaction", "errors"],
                     onSuccess: () => {
-                        state.winnersCountForRandom = 1;
-                    },
-                }
-            );
-        };
-
-        const submitManual = () => {
-            router.post(
-                route(
-                    "interactions.winners.manual",
-                    state.currentInteraction.id
-                ),
-                {
-                    auditor_ids: state.winnersCandidates.map(
-                        (candidate) => candidate.id
-                    ),
-                    reward_id: state.choosedReward,
-                },
-                {
-                    preserveScroll: true,
-                    only: ["interaction", "errors"],
-                    onSuccess: () => {
-                        state.winnersCountForFastest = 1;
+                        state.winnersCount = 1;
                     },
                 }
             );
@@ -285,7 +262,6 @@ export const useInteractionStore = defineStore(
             removeWinner,
             updatePinnedAsWinners,
             submitFastest,
-            submitManual,
             submitRandom,
             updateCandidate,
             updatePinnedAsCandidates,

@@ -154,8 +154,7 @@ function hideDetails() {
                         currentInteraction.type === InteractionType.TEXT
                     "
                     type="submit"
-                    :color="Color.ACCENT"
-                    @click="interactionStore.submitManual()"
+                    :color="Color.PRIMARY"
                 >
                     Confirmer
                 </base-button>
@@ -171,7 +170,8 @@ function hideDetails() {
                             currentInteraction.type === InteractionType.TEXT)
                     "
                     type="submit"
-                    :color="Color.ERROR"
+                    :color="Color.PRIMARY"
+                    @click="interactionStore.submitRandom()"
                 >
                     Confirmer
                 </base-button>

@@ -46,17 +46,25 @@ class WinnerController extends Controller
             ->toArray();
 
         // Créer les gagnants
+        $winners = [];
         foreach ($auditorIds as $auditorId) {
-            Winner::create([
+            $winner = Winner::create([
                 'interaction_id' => $interaction->id,
                 'auditor_id' => $auditorId,
             ]);
+            array_push($winners, $winner);
         }
 
-        // Lancer un événement avec la liste des auditeurs
-        event(new WinnersListGenerated($auditorIds));
+        // Lancer un événement pour les gagnants
+        foreach ($winners as $winner) {
+            broadcast(new WinnerSentResult($winner->auditor_id, $interaction->reward));
+        }
 
-        return response()->json(['auditor_ids' => $auditorIds], 200);
+        return back()->with([
+            'interaction' => [
+                'winners' => $winners,
+            ],
+        ]);
     }
 
     public function generateFastestList(GenerateWinnersRequest $request, Interaction $interaction)
