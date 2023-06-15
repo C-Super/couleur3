@@ -14,7 +14,8 @@ import { storeToRefs } from "pinia";
 import { router } from "@inertiajs/vue3";
 
 const interactionStore = useInteractionStore();
-const { currentInteraction, hasOpenedNotif, hasBeenRewarded } = storeToRefs(interactionStore);
+const { currentInteraction, hasOpenedNotif, hasBeenRewarded } =
+    storeToRefs(interactionStore);
 
 // permet de récupérer la personne authentifiée si elle existe
 const props = defineProps({
@@ -98,7 +99,9 @@ function handleButtonPopup($event) {
                     >L’animateur te remercie pour ta participation
                     !</BasesTitrePopup
                 >
-                <BasesTitrePopup v-if="popupTitle === PopupTitleType.GIFT" icone="redeem"
+                <BasesTitrePopup
+                    v-if="popupTitle === PopupTitleType.GIFT"
+                    icone="redeem"
                     >Vous avez gagné {{ hasBeenRewarded.name }}</BasesTitrePopup
                 >
                 <BasesTitrePopup
@@ -123,7 +126,8 @@ function handleButtonPopup($event) {
                 <div class="flex justify-center mt-10">
                     <BaseButtonPopup
                         v-if="
-                            (popupTitle === PopupTitleType.GIFT || popupTitle === PopupTitleType.THANKS) &&
+                            (popupTitle === PopupTitleType.GIFT ||
+                                popupTitle === PopupTitleType.THANKS) &&
                             authInf !== null
                         "
                         id="close"
@@ -132,7 +136,10 @@ function handleButtonPopup($event) {
                         >Fermer</BaseButtonPopup
                     >
                     <BaseButtonPopup
-                        v-if="popupTitle === PopupTitleType.GIFT && authInf === null"
+                        v-if="
+                            popupTitle === PopupTitleType.GIFT &&
+                            authInf === null
+                        "
                         id="next"
                         :is-validate="true"
                         @click="handleButtonPopup"
@@ -140,7 +147,9 @@ function handleButtonPopup($event) {
                     >
                     <BaseButtonPopup
                         v-if="
-                            currentInteraction.type !== InteractionType.MCQ && currentInteraction.type !== InteractionType.SURVEY &&
+                            currentInteraction.type !== InteractionType.MCQ &&
+                            currentInteraction.type !==
+                                InteractionType.SURVEY &&
                             popupTitle === PopupTitleType.QUESTION &&
                             authInf !== null
                         "
