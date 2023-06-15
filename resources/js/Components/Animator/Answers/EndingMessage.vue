@@ -39,7 +39,7 @@ const { currentInteraction } = storeToRefs(interactionStore);
                             "
                         >
                             <div>
-                                Répondu en
+                                a répondu en
                                 {{
                                     formatDuration(
                                         calculateDuration(
@@ -57,7 +57,7 @@ const { currentInteraction } = storeToRefs(interactionStore);
                     >
                         <li>
                             <p class="font-light">
-                                {{ currentInteraction.winners.length }} gagants
+                                {{ currentInteraction.winners.length }} gagnants
                             </p>
                         </li></template
                     >
