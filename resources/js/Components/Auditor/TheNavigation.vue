@@ -13,8 +13,8 @@ defineProps({
 const buttons = ref([
     { name: "home", active: false },
     { name: "search", active: false },
-    { name: "smart_display", active: true },
-    { name: "person", active: false },
+    { name: "smart_display", active: location.pathname === "/" },
+    { name: "person", active: location.pathname !== "/" },
 ]);
 
 // Fonction appelée lorsqu'on clique sur un bouton
@@ -22,7 +22,10 @@ function handleButtonClick(index) {
     if (buttons.value[index].name === "person") {
         // Rediriger vers la page de profil
         window.location.href = "/profile";
-    } else {
+    } else if (buttons.value[index].name === "smart_display") {
+        // Rediriger vers la page du lecteur
+        window.location.href = "/";
+    }else {
         // Parcourir tous les boutons et les mettre à jour
         buttons.value.forEach((button, i) => {
             button.active = i === index;

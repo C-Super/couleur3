@@ -82,12 +82,8 @@ class AnswerController extends Controller
         $answer = Answer::create([
             'auditor_id' => Auth::user()->id,
             'interaction_id' => $interaction->id,
-        ]);
-
-        $answer->with('auditor.user')->get();
+        ])->load('auditor.user');
 
         broadcast(new AnswerSubmitedToAnimator($answer))->toOthers();
-
-        return Inertia::render('Auditor/Index', $answer);
     }
 }

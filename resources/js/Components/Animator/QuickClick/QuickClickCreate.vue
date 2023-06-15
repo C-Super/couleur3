@@ -20,8 +20,7 @@ const form = useForm("post", route("interactions.quick_click.store"), {
 const submit = () => {
     form.submit({
         preserveScroll: true,
-        onSuccess: (response) => {
-            console.log(response);
+        onSuccess: () => {
             form.reset();
             interactionStore.createdInteraction();
         },
