@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Answer;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreAnswerTextRequest extends FormRequest
+class StoreAnswerQuestionChoiceRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +22,7 @@ class StoreAnswerTextRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'content' => 'required|string',
+            'questionChoiceChosed' => 'required|exists:question_choices,id',
         ];
     }
 }

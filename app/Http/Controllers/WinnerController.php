@@ -7,11 +7,10 @@ use App\Events\NewWinnerGenerated;
 use App\Events\WinnerSentResult;
 use App\Events\WinnersListGenerated;
 use App\Http\Requests\ReplaceWinnerRequest;
-use App\Http\Requests\StoreWinnerRequest;
+use App\Http\Requests\Winner\StoreWinnerRequest;
 use App\Http\Requests\Winner\GenerateWinnersRequest;
 use App\Models\Answer;
 use App\Models\Interaction;
-use App\Models\Reward;
 use App\Models\Winner;
 use DB;
 
@@ -154,30 +153,34 @@ class WinnerController extends Controller
     {
         $validated = $request->validated();
 
-        $auditor_ids = $validated['auditor_ids'];
+        $winners_id = $validated['winners'];
         $reward_id = $validated['reward_id'];
 
         // Insert into interaction reward_id
         $interaction->update(['reward_id' => $reward_id]);
 
-        DB::transaction(function () use ($interaction, $auditor_ids) {
+        DB::transaction(function () use ($interaction, $winners_id) {
             // Delete all existing winners for the interaction
             Winner::where('interaction_id', $interaction->id)->delete();
 
             // Créer de nouveaux gagnants pour l'interaction
-            foreach ($auditor_ids as $auditor_id) {
+            foreach ($winners_id as $winner_id) {
                 Winner::create([
                     'interaction_id' => $interaction->id,
-                    'auditor_id' => $auditor_id,
+                    'auditor_id' => $winner_id,
                 ]);
             }
         });
 
         // Dispatch an event to notify the new winners
-        foreach ($auditor_ids as $auditor_id) {
-            event(new WinnerSentResult($auditor_id, $interaction->reward));
+        foreach ($winners_id as $winner_id) {
+            event(new WinnerSentResult($winner_id, $interaction->reward));
         }
 
-        return response()->json(['message' => 'Winners stored successfully.'], 200);
+        return back()->with([
+            'interaction' => [
+                'winners' => $winners_id,
+            ],
+        ]);
     }
 }

@@ -1,12 +1,13 @@
 <script setup>
 import BaseCheckbox from "@/Components/Animator/Bases/BaseCheckbox.vue";
+import SelectReward from "@/Components/Animator/Answers/SelectReward.vue";
 import Color from "@/Enums/Color.js";
 import { calculateDuration, formatDuration } from "@/Utils/time.js";
 import { useInteractionStore } from "@/Stores/useInteractionStore.js";
 import { storeToRefs } from "pinia";
 
 const interactionStore = useInteractionStore();
-const { pinnedAnswers, notPinnedAnswers, currentInteraction } =
+const { pinnedAnswers, notPinnedAnswers, currentInteraction, choosedWinners } =
     storeToRefs(interactionStore);
 
 const pinnedCandidates = pinnedAnswers;
@@ -53,9 +54,7 @@ const candidates = notPinnedAnswers;
                                 )
                             "
                             :checked="
-                                interactionStore.winnersCandidates.indexOf(
-                                    pinnedCandidate
-                                ) != -1
+                                choosedWinners.indexOf(pinnedCandidate) != -1
                             "
                             class="mr-1"
                             @change="
@@ -106,11 +105,7 @@ const candidates = notPinnedAnswers;
                                     currentInteraction.type
                                 )
                             "
-                            :checked="
-                                interactionStore.winnersCandidates.indexOf(
-                                    candidate
-                                ) != -1
-                            "
+                            :checked="choosedWinners.indexOf(candidate) != -1"
                             class="mr-1"
                             @change="
                                 interactionStore.updateCandidate(candidate)
@@ -142,6 +137,7 @@ const candidates = notPinnedAnswers;
                     </li>
                 </ul>
             </div>
+            <select-reward />
         </div>
     </div>
 </template>
