@@ -2,23 +2,31 @@
 <script setup>
 import AuditorLayout from "@/Layouts/AuditorLayout.vue";
 import InputError from "@/Components/InputError.vue";
-import InputLabel from "@/Components/InputLabel.vue";
 import ProfileButton from "@/Components/Auditor/Bases/ProfileButton.vue";
 import TextInput from "@/Components/Auditor/Bases/TextInput.vue";
 import TextInputPostalCode from "@/Components/Auditor/Bases/TextInputPostalCode.vue";
 import TextInputCity from "@/Components/Auditor/Bases/TextInputCity.vue";
-import { Head, Link } from "@inertiajs/vue3";
+import { Head } from "@inertiajs/vue3";
 import { useForm } from "laravel-precognition-vue-inertia";
+
+defineProps({
+    auth: {
+        type: Object,
+        required: true,
+    },
+});
 
 const form = useForm("post", route("register"), {
     name: "",
     email: "",
     password: "",
     password_confirmation: "",
-    adress: "",
-    postal_code: "",
-    city: "",
-    country: "",
+    address: {
+        street: "",
+        zip_code: "",
+        city: "",
+        country: "",
+    },
 });
 
 const submit = () => {
@@ -29,12 +37,12 @@ const submit = () => {
 </script>
 
 <template>
-    <AuditorLayout>
+    <AuditorLayout :auth-inf="auth.user">
         <Head title="Register" />
 
         <div
             id="register"
-            class="flex flex-col justify-center items-center px-3.5 mt-52"
+            class="flex flex-col justify-center items-center px-3.5 py-24"
         >
             <h2 class="font-semibold text-3xl mb-5">S'enregistrer</h2>
 
@@ -43,8 +51,6 @@ const submit = () => {
                 @submit.prevent="submit"
             >
                 <div class="w-full">
-                    <InputLabel for="name" value="Name" />
-
                     <TextInput
                         id="name"
                         v-model="form.name"
@@ -61,8 +67,6 @@ const submit = () => {
                 </div>
 
                 <div class="w-full mt-4">
-                    <InputLabel for="email" value="Email" />
-
                     <TextInput
                         id="email"
                         v-model="form.email"
@@ -78,66 +82,6 @@ const submit = () => {
                 </div>
 
                 <div class="w-full mt-4">
-                    <InputLabel for="adress" value="Adress" />
-
-                    <TextInput
-                        id="adress"
-                        v-model="form.adress"
-                        label="Adresse"
-                        type="adress"
-                        class="mt-1 block w-full"
-                        autocomplete="adress"
-                        @change="form.validate('adress')"
-                    />
-                </div>
-
-                <div class="mt-4 w-full">
-                    <InputLabel for="postal_code" value="Postal code" />
-                    <InputLabel for="city" value="City" />
-
-                    <div class="inline-block">
-                        <TextInputPostalCode
-                            id="postal_code"
-                            v-model="form.postal_code"
-                            label="NPA"
-                            type="postal_code"
-                            class="mt-1 block w-full"
-                            autocomplete="postal_code"
-                            @change="form.validate('postal_code')"
-                        />
-                    </div>
-
-                    <div class="inline-block">
-                        <TextInputCity
-                            id="city"
-                            v-model="form.city"
-                            label="Ville"
-                            type="city"
-                            class="mt-1 block w-full"
-                            autocomplete="city"
-                            @change="form.validate('city')"
-                        />
-                    </div>
-                </div>
-
-
-                <div class="w-full mt-4">
-                    <InputLabel for="country" value="Country" />
-
-                    <TextInput
-                        id="country"
-                        v-model="form.country"
-                        label="Pays"
-                        type="country"
-                        class="mt-1 block w-full"
-                        autocomplete="country"
-                        @change="form.validate('country')"
-                    />
-                </div>
-
-                <div class="w-full mt-4">
-                    <InputLabel for="password" value="Password" />
-
                     <TextInput
                         id="password"
                         v-model="form.password"
@@ -153,11 +97,6 @@ const submit = () => {
                 </div>
 
                 <div class="w-full mt-4">
-                    <InputLabel
-                        for="password_confirmation"
-                        value="Confirm Password"
-                    />
-
                     <TextInput
                         id="password_confirmation"
                         v-model="form.password_confirmation"
@@ -175,14 +114,82 @@ const submit = () => {
                     />
                 </div>
 
-                <div class="flex flex-col items-center mt-8 gap-y-4">
-                    <Link
-                        :href="route('login')"
-                        class="underline text-sm text-base-100 dark:text-base-100 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none"
+                <div class="collapse bg-black">
+                    <input
+                        id="checkboxAddress"
+                        type="checkbox"
+                        class="w-full h-full"
+                    />
+                    <div
+                        class="collapse-title text-lg font-light text-base-100 flex flex-col items-center justify-center px-0"
                     >
-                        Déjà enregistré?
-                    </Link>
+                        Ajoutez votre adresse pour recevoir des récompenses
+                        <br />
+                        <span
+                            id="openAddress"
+                            class="material-symbols-rounded text-4xl font-light"
+                        >
+                            add
+                        </span>
+                        <span
+                            id="closeAddress"
+                            class="material-symbols-rounded text-4xl font-light"
+                        >
+                            remove
+                        </span>
+                    </div>
+                    <div class="collapse-content">
+                        <div class="w-full mt-4">
+                            <TextInput
+                                id="street"
+                                v-model="form.street"
+                                label="Adresse"
+                                type="street"
+                                class="mt-1 block w-full"
+                                autocomplete="street"
+                                @change="form.validate('street')"
+                            />
+                        </div>
 
+                        <div class="mt-4 w-full flex gap-x-2">
+                            <div class="w-24">
+                                <TextInputPostalCode
+                                    id="zip_code"
+                                    v-model="form.zip_code"
+                                    label="NPA"
+                                    type="zip_code"
+                                    autocomplete="zip_code"
+                                    @change="form.validate('zip_code')"
+                                />
+                            </div>
+
+                            <div class="grow">
+                                <TextInputCity
+                                    id="city"
+                                    v-model="form.city"
+                                    label="Ville"
+                                    type="city"
+                                    autocomplete="city"
+                                    @change="form.validate('city')"
+                                />
+                            </div>
+                        </div>
+
+                        <div class="w-full mt-4">
+                            <TextInput
+                                id="country"
+                                v-model="form.country"
+                                label="Pays"
+                                type="country"
+                                class="mt-1 block w-full"
+                                autocomplete="country"
+                                @change="form.validate('country')"
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col items-center">
                     <ProfileButton
                         :class="{ 'opacity-25': form.processing }"
                         :outlined="false"
@@ -196,7 +203,14 @@ const submit = () => {
     </AuditorLayout>
 </template>
 <style scoped>
-#register {
-    height: calc(100vh - 4rem - 4rem);
+#checkboxAddress:checked + div > #openAddress {
+    display: none;
+}
+#checkboxAddress:checked + div > #closeAddress {
+    display: block;
+}
+
+#closeAddress {
+    display: none;
 }
 </style>

@@ -22,6 +22,7 @@ class AnimatorController extends Controller
                         'user',
                     ],
                 ],
+                'winners',
                 'callToAction',
                 'questionChoices',
             ])->first(),

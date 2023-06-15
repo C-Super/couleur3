@@ -8,7 +8,7 @@ import AnswersBarChart from "@/Components/Animator/Answers/AnswersBarChart.vue";
 import AnswersList from "@/Components/Animator/Answers/AnswersList.vue";
 import AnswersSelectManual from "@/Components/Animator/Answers/AnswersSelectManual.vue";
 import AnswersSelectRandom from "@/Components/Animator/Answers/AnswersSelectRandom.vue";
-import AnswersSelectRapidity from "@/Components/Animator/Answers/AnswersSelectRapidity.vue";
+import AnswersSelectFastest from "@/Components/Animator/Answers/AnswersSelectFastest.vue";
 import AnswersSimple from "@/Components/Animator/Answers/AnswersSimple.vue";
 import InteractionType from "@/Enums/InteractionType.js";
 import Color from "@/Enums/Color.js";
@@ -104,7 +104,7 @@ function hideDetails() {
                     v-if="currentInteraction.type === InteractionType.MCQ"
                     title="Sélection des premiers"
                 >
-                    <answers-select-rapidity />
+                    <answers-select-fastest />
                 </base-tab>
             </base-tabs>
         </template>

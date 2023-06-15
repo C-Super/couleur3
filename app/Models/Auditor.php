@@ -50,8 +50,18 @@ class Auditor extends Model
         return $this->hasMany(Message::class);
     }
 
+    /*
+     * Get all of the answers for the Auditor
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function answers(): HasMany
     {
         return $this->hasMany(Answer::class);
+    }
+
+    public function winners(): HasMany
+    {
+        return $this->hasMany(Winner::class);
     }
 }
