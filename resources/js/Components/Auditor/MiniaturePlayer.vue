@@ -48,16 +48,20 @@ export default {
         loadExternalScript(src) {
             return new Promise((resolve, reject) => {
                 const script = document.createElement("script");
+                script.id = "miniature_player_script"
                 script.src = src;
                 script.onload = () => resolve(script);
                 script.onerror = (error) => reject(error);
+                document.querySelector("#miniature_player_script")?.remove();
                 document.head.appendChild(script);
             });
         },
         loadExternalStylesheet(href) {
             const link = document.createElement("link");
+            link.id = "miniature_player_link"
             link.href = href;
             link.rel = "stylesheet";
+            document.querySelector("#miniature_player_link")?.remove();
             document.head.appendChild(link);
         },
         toggleVideo() {
