@@ -37,8 +37,8 @@ Route::middleware(['auth', 'verified', 'auth.auditor'])->group(function () {
 
     Route::post('/interactions/{interaction}/answers/cta', [AnswerController::class, 'storeCTA'])->name('interactions.answers.cta.store');
     Route::post('/interactions/{interaction}/answers/quick_click', [AnswerController::class, 'storeQuickClick'])->name('interactions.answers.quick_click.store');
-    Route::post('/interactions/{interaction}/answers/survey', [AnswerController::class, 'storeSurvey'])->name('interactions.answers.survey.store');
-    Route::post('/interactions/{interaction}/answers/mcq', [AnswerController::class, 'storeMCQ'])->name('interactions.answers.mcq.store');
+    Route::post('/interactions/{interaction}/answers/survey', [AnswerController::class, 'storeQuestionChoice'])->name('interactions.answers.survey.store');
+    Route::post('/interactions/{interaction}/answers/mcq', [AnswerController::class, 'storeQuestionChoice'])->name('interactions.answers.mcq.store');
     Route::post('/interactions/{interaction}/answers/audio', [AnswerController::class, 'storeAudio'])->name('interactions.answers.audio.store');
     Route::post('/interactions/{interaction}/answers/video', [AnswerController::class, 'storeVideo'])->name('interactions.answers.video.store');
     Route::post('/interactions/{interaction}/answers/picture', [AnswerController::class, 'storePicture'])->name('interactions.answers.picture.store');
@@ -69,4 +69,4 @@ Route::middleware(['auth', 'auth.animator'])->group(function () {
     Route::post('/interactions/{interaction}/winners/confirm', [WinnerController::class, 'store'])->name('interactions.winners.confirm');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

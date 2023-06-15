@@ -1,12 +1,13 @@
 <script setup>
 import BaseCheckbox from "@/Components/Animator/Bases/BaseCheckbox.vue";
+import SelectReward from "@/Components/Animator/Answers/SelectReward.vue";
 import Color from "@/Enums/Color.js";
 import { calculateDuration, formatDuration } from "@/Utils/time.js";
 import { useInteractionStore } from "@/Stores/useInteractionStore.js";
 import { storeToRefs } from "pinia";
 
 const interactionStore = useInteractionStore();
-const { pinnedAnswers, notPinnedAnswers, winners, currentInteraction } =
+const { pinnedAnswers, notPinnedAnswers, currentInteraction, choosedWinners } =
     storeToRefs(interactionStore);
 
 const pinnedCandidates = pinnedAnswers;
@@ -52,7 +53,9 @@ const candidates = notPinnedAnswers;
                                     currentInteraction.type
                                 )
                             "
-                            :checked="winners.indexOf(pinnedCandidate) != -1"
+                            :checked="
+                                choosedWinners.indexOf(pinnedCandidate) != -1
+                            "
                             class="mr-1"
                             @change="
                                 interactionStore.removeWinner(pinnedCandidate)
@@ -100,7 +103,7 @@ const candidates = notPinnedAnswers;
                                     currentInteraction.type
                                 )
                             "
-                            :checked="winners.indexOf(candidate) != -1"
+                            :checked="choosedWinners.indexOf(candidate) != -1"
                             class="mr-1"
                             @change="interactionStore.addWinner(candidate)"
                         />
@@ -130,7 +133,7 @@ const candidates = notPinnedAnswers;
                     </li>
                 </ul>
             </div>
-            <base-select-prize />
+            <select-reward />
         </div>
     </div>
 </template>

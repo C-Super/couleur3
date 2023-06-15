@@ -8,7 +8,7 @@ import { storeToRefs } from "pinia";
 import Color from "@/Enums/Color.js";
 
 const interactionStore = useInteractionStore();
-const { currentInteraction, winnersCountForFastest, errors } =
+const { currentInteraction, winnersCount, errors } =
     storeToRefs(interactionStore);
 </script>
 
@@ -22,10 +22,8 @@ const { currentInteraction, winnersCountForFastest, errors } =
                     :color="Color.forInteractionType(currentInteraction.type)"
                     :min="1"
                     :max="currentInteraction.answers.length"
-                    :value="winnersCountForFastest"
-                    @change="
-                        winnersCountForFastest = Number($event.target.value)
-                    "
+                    :value="winnersCount"
+                    @change="winnersCount = Number($event.target.value)"
                 />
 
                 <input-error class="mt-2" :message="errors.winners_count" />

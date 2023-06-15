@@ -125,6 +125,18 @@ function hideDetails() {
                 >
                     Fin de l'interaction
                 </base-button>
+                <!--CONFIRM MANUAL-->
+                <base-button
+                    v-if="
+                        activeTab === 1 &&
+                        currentInteraction.type === InteractionType.TEXT
+                    "
+                    type="submit"
+                    :color="Color.PRIMARY"
+                    @click="interactionStore.submitManual()"
+                >
+                    Confirmer
+                </base-button>
             </div>
         </template>
     </base-card>
