@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\InteractionStatus;
 use App\Enums\InteractionType;
 use App\Events\InteractionCreated;
+use App\Events\InteractionEndedEvent;
 use App\Http\Requests\Interaction\StoreCallToActionRequest;
 use App\Http\Requests\Interaction\StoreMCQRequest;
 use App\Http\Requests\Interaction\StoreQuickClickRequest;
@@ -163,7 +165,12 @@ class InteractionController extends Controller
 
     public function endInteraction(Interaction $interaction)
     {
-        $interaction->update(['ended_at' => now()]);
+        $interaction->update([
+            'ended_at' => now(),
+            'status' => InteractionStatus::STOPPED,
+        ]);
+
+        broadcast(new InteractionEndedEvent())->toOthers();
 
         return redirect()->back()->with([
             'interaction' => null,
