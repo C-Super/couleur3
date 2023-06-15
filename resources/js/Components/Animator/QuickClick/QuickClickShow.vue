@@ -28,20 +28,11 @@ const activeTab = ref(0);
         <template #title>
             <div class="flex flex-auto flex-row items-center justify-between">
                 {{ currentInteraction.title }}
-                <base-countdown
-                    v-if="!currentInteraction.winners.length > 0"
-                    :color="Color.ACCENT"
-                    :sec="sec"
-                    :min="min"
-                />
+                <base-countdown :color="Color.ACCENT" :sec="sec" :min="min" />
             </div>
         </template>
         <template #content>
-            <div v-if="currentInteraction.winners.length > 0">
-                afficher les winners:
-                {{ currentInteraction.winners }}
-            </div>
-            <base-tabs v-else v-model="activeTab" :color="Color.ACCENT">
+            <base-tabs v-model="activeTab" :color="Color.ACCENT">
                 <base-tab title="Réponses">
                     <answers-list />
                 </base-tab>
@@ -53,7 +44,6 @@ const activeTab = ref(0);
         <template #actions>
             <div class="flex flex-row gap-3">
                 <base-button
-                    v-if="currentInteraction.winners.length == 0"
                     type="submit"
                     @click="interactionStore.endInteraction()"
                 >
@@ -61,23 +51,12 @@ const activeTab = ref(0);
                 </base-button>
 
                 <base-button
-                    v-if="
-                        activeTab === 1 &&
-                        currentInteraction.winners.length === 0
-                    "
+                    v-if="activeTab === 1"
                     type="submit"
                     :color="Color.ACCENT"
-                    @click="interactionStore.submitFastest"
+                    @click="interactionStore.submitFastest()"
                 >
                     Confirmer
-                </base-button>
-
-                <base-button
-                    v-if="currentInteraction.winners.length > 0"
-                    :color="Color.ACCENT"
-                    @click="interactionStore.endInteraction()"
-                >
-                    Retour à l'accueil
                 </base-button>
             </div>
         </template>

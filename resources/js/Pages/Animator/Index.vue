@@ -78,6 +78,8 @@ const endEmission = () => {
                     InteractionType.isQuestion(currentInteraction.type)
                 "
             />
+
+            <ending-message v-if="currentInteraction.winners.length > 0" />
         </div>
     </div>
 </template>
