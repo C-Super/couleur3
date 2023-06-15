@@ -7,6 +7,7 @@ import BasesTitrePopup from "@/Components/Auditor/Bases/Popup/BasesTitrePopup.vu
 import PopupTitleType from "@/Enums/PopupTitleType.js";
 // type de popup
 import PopupText from "@/Components/Auditor/Home/Popup/PopupText.vue";
+import PopupSurvey from "@/Components/Auditor/Home/Popup/PopupSurvey.vue";
 // Interaction activée
 import InteractionType from "@/Enums/InteractionType.js";
 import { useInteractionStore } from "@/Stores/useInteractionStore.js";
@@ -56,7 +57,6 @@ const popupTitle = computed(() => {
     return PopupTitleType.THANKS;
 });
 
-console.log(currentInteraction.value);
 // Clique sur le bouton du popup
 function handleButtonPopup($event) {
     if ($event.target.id === "login") {
@@ -108,16 +108,19 @@ function handleButtonPopup($event) {
                     v-if="
                         currentInteraction.type !== InteractionType.QUICK_CLICK
                     "
-                    class="text-base-100 text-base font-bold mt-6"
+                    class="text-base-100 text-base font-bold mt-6 mb-8"
                 >
                     {{ currentInteraction.title }}
                 </p>
                 <!-- Type du popup -->
                 <PopupText
-                    v-if="currentInteraction.type === InteractionType.TEXT"
+                    v-if="currentInteraction.type === InteractionType.TEXT && authInf !== null"
+                />
+                <PopupSurvey
+                    v-if="(currentInteraction.type === InteractionType.SURVEY || currentInteraction.type === InteractionType.MCQ) && authInf !== null"
                 />
                 <!-- Bouton envoyer, fermer, suivant, se connecter -->
-                <div class="flex justify-center mt-10">
+                <div class="flex justify-center">
                     <BaseButtonPopup
                         v-if="
                             popupTitle === PopupTitleType.THANKS &&

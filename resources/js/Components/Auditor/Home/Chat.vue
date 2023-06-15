@@ -96,7 +96,6 @@ function check($event) {
                     <p
                         v-for="msg in messages"
                         :key="msg.id"
-                        :msg="msg"
                         class="font-light"
                     >
                         <span class="text-base-100 opacity-70">
