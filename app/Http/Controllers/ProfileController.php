@@ -19,10 +19,10 @@ class ProfileController extends Controller
     public function edit(): Response
     {
         $user = Auth::user();
-        $address = null;
+        $address = ['street' => '', 'city' => '', 'zip' => '', 'country' => ''];
 
         // Vérifier si l'utilisateur est un auditeur et a une adresse
-        if ($user->roleable_type === 'App\Models\Auditor') {
+        if ($user->roleable_type === 'App\Models\Auditor' && $user->roleable->address !== null) {
             /**
              * @var \App\Models\Auditor $auditor
              */
