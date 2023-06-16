@@ -50,6 +50,9 @@ class ProfileController extends Controller
         }
 
         if ($user->roleable_type === 'App\Models\Auditor') {
+            /**
+             * @var \App\Models\Auditor $auditor
+             */
             $auditor = $user->roleable;
 
             // Vérifier si le payload contient une adresse
