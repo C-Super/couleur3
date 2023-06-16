@@ -9,18 +9,18 @@ import { router } from "@inertiajs/vue3";
 const interactionStore = useInteractionStore();
 const { currentInteraction, hasAnswerd } = storeToRefs(interactionStore);
 
+const answers = ref(currentInteraction.value.answers);
+
 const isDisabled = ref(false);
 const statsChoices = computed(() => {
-    const answers = currentInteraction.value.answers;
-    const percentageZero = [0, 0, 0, 0];
-    if (answers) {
-        const total = answers.length;
+    if (answers.value) {
+        const total = answers.value.length;
         const count = [];
         const percentage = [];
         currentInteraction.value.question_choices.forEach((choice) => {
             count.push({ id: choice.id, nb: 0 });
         });
-        answers.forEach((answer) => {
+        answers.value.forEach((answer) => {
             count.forEach((element) => {
                 if (element.id === answer.replyable.id) {
                     element.nb++;
@@ -32,9 +32,9 @@ const statsChoices = computed(() => {
             percentage.push(Math.round((count[i].nb * 100) / total));
         }
         return percentage;
+    } else {
+        return [100, 100, 100, 100];
     }
-
-    return percentageZero;
 });
 
 function responseAuditor(choiceId) {
@@ -44,10 +44,8 @@ function responseAuditor(choiceId) {
     const container = document.querySelector(".container");
     console.log(statsChoices.value, statsChoices);
     statsChoices.value.forEach((stat, index) => {
-        console.log(stat);
         container.style.setProperty(`--right-${index + 1}`, `${100 - stat}%`);
     });
-    console.log(statsChoices);
 
     // désactive les réponses
     isDisabled.value = true;
@@ -67,10 +65,7 @@ const submit = (choiceId) => {
 </script>
 
 <template>
-    <form
-        class="container flex flex-col gap-y-3 mb-10"
-        @submit.prevent="submit"
-    >
+    <form class="container flex flex-col gap-y-3" @submit.prevent="submit">
         <div
             v-for="(choice, index) in currentInteraction.question_choices"
             :key="choice.id"
