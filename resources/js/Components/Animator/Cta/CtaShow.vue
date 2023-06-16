@@ -30,11 +30,14 @@ const min = Math.floor(duration / (1000 * 60));
                 />
             </div>
         </template>
+        <template #subtitle
+            >Le lien suivant a bien été envoyé aux auditeurs :</template
+        >
         <template #content>
-            <span class="text-xl">{{ currentInteraction.title }}</span>
-            <span class="italic">{{
-                currentInteraction.call_to_action.link
-            }}</span>
+            <span class="font-light italic"
+                >{{ currentInteraction.title }} -
+                {{ currentInteraction.call_to_action.link }}</span
+            >
         </template>
 
         <template #actions>
