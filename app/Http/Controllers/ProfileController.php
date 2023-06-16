@@ -22,12 +22,15 @@ class ProfileController extends Controller
         $address = ['street' => '', 'city' => '', 'zip_code' => '', 'country' => ''];
 
         // Vérifier si l'utilisateur est un auditeur et a une adresse
-        if ($user->roleable_type === 'App\Models\Auditor' && $user->roleable->address !== null) {
+        if ($user->roleable_type === 'App\Models\Auditor') {
             /**
              * @var \App\Models\Auditor $auditor
              */
             $auditor = $user->roleable;
-            $address = $auditor->address;
+
+            if ($auditor->address !== null) {
+                $address = $auditor->address;
+            }
         }
 
         return Inertia::render('Profile/Edit', [
