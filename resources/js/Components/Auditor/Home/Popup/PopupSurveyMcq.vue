@@ -41,7 +41,7 @@ function responseAuditor(choiceId) {
     hasAnswerd.value = true;
     // change la taille des résultats
     const container = document.querySelector(".container");
-    console.log(statsChoices.value, statsChoices);
+
     statsChoices.value.forEach((stat, index) => {
         container.style.setProperty(`--right-${index + 1}`, `${100 - stat}%`);
     });
