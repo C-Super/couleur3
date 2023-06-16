@@ -4,9 +4,10 @@ import { storeToRefs } from "pinia";
 
 const interactionStore = useInteractionStore();
 const { currentInteraction } = storeToRefs(interactionStore);
+import { ref, computed } from "vue";
 
 const barMaxHeight = 220;
-const questionChoices = currentInteraction.value.question_choices;
+const questionChoices = ref(currentInteraction.value.question_choices);
 
 defineEmits(["display"]);
 
@@ -18,17 +19,31 @@ const getQuestionChoiceAnswers = (questionChoice) => {
         (answer) => answer.replyable_id === questionChoice.id
     );
 };
+/*
 let maxValue = 0;
-questionChoices.forEach((questionChoice) => {
+questionChoices.value.forEach((questionChoice) => {
     if (getQuestionChoiceAnswers(questionChoice).length > maxValue) {
         maxValue = getQuestionChoiceAnswers(questionChoice).length;
     }
 });
+*/
 
+const maxValue = computed(() => {
+    let max = 0;
+    questionChoices.value.forEach((questionChoice) => {
+        const choiceAnswers = getQuestionChoiceAnswers(questionChoice);
+        if (choiceAnswers.length > max) {
+            max = choiceAnswers.length;
+        }
+    });
+    return max;
+});
 const getHeights = (questionChoice) => {
     const questionChoiceValue = getQuestionChoiceAnswers(questionChoice).length;
-    if (maxValue != 0) {
-        return (questionChoiceValue / maxValue) * (barMaxHeight - 50) + 50;
+    if (maxValue.value !== 0) {
+        return (
+            (questionChoiceValue / maxValue.value) * (barMaxHeight - 50) + 50
+        );
     } else {
         return 50;
     }

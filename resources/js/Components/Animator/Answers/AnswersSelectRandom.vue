@@ -14,7 +14,7 @@ const { currentInteraction, winnersCount, errors } =
 
 <template>
     <div>
-        <div class="flex flex-col gap-4 mt-4">
+        <div class="flex flex-col h-[29vh] gap-4 mt-4">
             <input-group id="winners-count" label="Nombre de gagnants">
                 <text-input
                     id="winners-count"
@@ -28,7 +28,7 @@ const { currentInteraction, winnersCount, errors } =
 
                 <input-error class="mt-2" :message="errors.winners_count" />
             </input-group>
-            <select-reward />
         </div>
     </div>
+    <select-reward />
 </template>

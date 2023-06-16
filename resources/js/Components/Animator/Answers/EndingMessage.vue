@@ -22,7 +22,11 @@ const { currentInteraction } = storeToRefs(interactionStore);
                 Un message a été envoyé aux gagnants suivant :</template
             >
             <template #content>
-                <ul class="flex flex-col gap-2">
+                <ul
+                    :class="`overflow-y-scroll max-h-[55vh] scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-${Color.forInteractionType(
+                        currentInteraction.type
+                    )} flex flex-col gap-2`"
+                >
                     <li
                         v-for="winner of currentInteraction.winners"
                         :key="winner.id"

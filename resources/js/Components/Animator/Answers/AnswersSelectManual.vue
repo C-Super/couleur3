@@ -17,14 +17,14 @@ const candidates = ref(notPinnedAnswers);
 
 <template>
     <div>
-        <div class="flex flex-row items-center justify-between">
-            <div>
+        <div class="flex flex-row items-top justify-between">
+            <div class="grow">
                 <p class="font-light">
-                    Cliquez sur les auditeurs que vous souhaitez faire gagner.
+                    Sélectionnez les réponses que vous souhaitez faire gagner.
                 </p>
             </div>
-            <div class="flex items-center">
-                <p class="pr-4 text-sm font-light">
+            <div class="flex flex-row shrink">
+                <p class="text-sm font-light w-24">
                     Sélectionner toutes les épingles
                 </p>
                 <base-checkbox
@@ -38,7 +38,7 @@ const candidates = ref(notPinnedAnswers);
             </div>
         </div>
 
-        <div class="overflow-x-auto h-[36vh] mt-4 pl-1 pt-1">
+        <div class="overflow-x-auto h-[22vh] mt-4 pl-1 pt-1">
             <div>
                 <!-- Array pinned -->
                 <ul class="flex flex-col gap-4">
@@ -141,7 +141,7 @@ const candidates = ref(notPinnedAnswers);
                     </li>
                 </ul>
             </div>
-            <select-reward class="mt-4" />
         </div>
+        <select-reward class="mt-4" />
     </div>
 </template>
