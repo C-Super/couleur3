@@ -3,7 +3,6 @@
 use App\Enums\InteractionType;
 use App\Events\NewWinnerGenerated;
 use App\Events\WinnerSentResult;
-use App\Events\WinnersListGenerated;
 use App\Models\Animator;
 use App\Models\Answer;
 use App\Models\Auditor;
@@ -20,7 +19,7 @@ use function Pest\Laravel\postJson;
 uses(DatabaseTransactions::class);
 
 it('generates random winners list successfully', function () {
-    Event::fake([WinnersListGenerated::class]);
+    Event::fake([WinnerSentResult::class]);
 
     $animator = Animator::factory()->create();
     $user = User::factory()->create([
@@ -59,18 +58,23 @@ it('generates random winners list successfully', function () {
 
     // Assert response
     $response->assertStatus(302);
-    $response->assertJsonStructure(['interaction' => ['winners']]);
-    $this->assertCount(3, $response['auditor_ids']);
+
+    $response->assertSessionHas('interaction');
+    $this->assertArrayHasKey('winners', session('interaction'));
+    $this->assertCount(3, session('interaction')['winners']);
+
+    // Get the winners from the session
+    $winners = session('interaction')['winners'];
 
     // Assert database winners with interaction_id
     $this->assertCount(3, Winner::where('interaction_id', $interaction->id)->get());
 
     // Assert event
-    Event::assertDispatched(WinnersListGenerated::class);
+    Event::assertDispatched(WinnerSentResult::class);
 });
 
 it('generates random winners list with correct MCQ answers', function () {
-    Event::fake([WinnersListGenerated::class]);
+    Event::fake([WinnerSentResult::class]);
 
     $animator = Animator::factory()->create();
     $user = User::factory()->create([
@@ -130,12 +134,17 @@ it('generates random winners list with correct MCQ answers', function () {
 
     // Assert response
     $response->assertStatus(302);
-    $response->assertJsonStructure(['winners']);
-    $this->assertCount(2, $response['interaction.winners']);
+
+    $response->assertSessionHas('interaction');
+    $this->assertArrayHasKey('winners', session('interaction'));
+    $this->assertCount(2, session('interaction')['winners']);
+
+    // Get the winners from the session
+    $winners = session('interaction')['winners'];
 
     // Assert all winners have the correct answer
-    foreach ($response['winners'] as $auditorId) {
-        $answer = Answer::where('auditor_id', $auditorId)->where('interaction_id', $interaction->id)->first();
+    foreach ($winners as $winner) {
+        $answer = Answer::where('auditor_id', $winner->auditor_id)->where('interaction_id', $interaction->id)->first();
         $this->assertEquals($correctChoice->id, $answer->replyable_id);
     }
 
@@ -143,7 +152,7 @@ it('generates random winners list with correct MCQ answers', function () {
     $this->assertCount(2, Winner::where('interaction_id', $interaction->id)->get());
 
     // Assert event
-    Event::assertDispatched(WinnersListGenerated::class);
+    Event::assertDispatched(WinnerSentResult::class);
 });
 
 it('replaces a winner successfully', function () {
@@ -255,7 +264,7 @@ it('stores winners successfully', function () {
 
     // Assert response
     $response->assertStatus(302);
-    $response->assertJsonStructure(['interaction.winners']);
+    $response->assertSessionHas('interaction.winners', $winners);
 
     // Assert database winners with interaction_id
     $winnersInDb = Winner::where('interaction_id', $interaction->id)->pluck('auditor_id')->toArray();
