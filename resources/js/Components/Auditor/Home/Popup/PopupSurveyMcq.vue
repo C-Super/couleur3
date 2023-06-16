@@ -9,18 +9,17 @@ import { router } from "@inertiajs/vue3";
 const interactionStore = useInteractionStore();
 const { currentInteraction, hasAnswerd } = storeToRefs(interactionStore);
 
-const answers = ref(currentInteraction.value.answers);
-
 const isDisabled = ref(false);
 const statsChoices = computed(() => {
-    if (answers.value) {
-        const total = answers.value.length;
+    const answers = currentInteraction.value.answers;
+    if (answers) {
+        const total = answers.length;
         const count = [];
         const percentage = [];
         currentInteraction.value.question_choices.forEach((choice) => {
             count.push({ id: choice.id, nb: 0 });
         });
-        answers.value.forEach((answer) => {
+        answers.forEach((answer) => {
             count.forEach((element) => {
                 if (element.id === answer.replyable.id) {
                     element.nb++;
@@ -42,7 +41,7 @@ function responseAuditor(choiceId) {
     hasAnswerd.value = true;
     // change la taille des résultats
     const container = document.querySelector(".container");
-    console.log(statsChoices.value, statsChoices);
+
     statsChoices.value.forEach((stat, index) => {
         container.style.setProperty(`--right-${index + 1}`, `${100 - stat}%`);
     });
