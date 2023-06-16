@@ -42,7 +42,6 @@ const submitTextAnswer = () => {
             content: inputTextValue.value,
         }
     );
-    hasAnswerd.value = true;
 };
 
 watch(hasOpenedNotif, () => {
@@ -94,6 +93,9 @@ function handleButtonPopup($event) {
     } else if ($event.target.id === "send") {
         if (currentInteraction.value.type === InteractionType.TEXT) {
             submitTextAnswer();
+            inputTextValue.value = "";
+            hasAnswerd.value = true;
+            document.querySelector("#closePopup").click();
         }
 
         popupTitle.value = "thanks";
@@ -109,7 +111,12 @@ function handleButtonPopup($event) {
 
 <template>
     <dialog
-        v-if="currentInteraction !== null && popupTitle !== null"
+        v-if="
+            (currentInteraction !== null && popupTitle !== null) ||
+            (currentInteraction !== null &&
+                currentInteraction.value.type === InteractionType.TEXT &&
+                !hasAnswerd)
+        "
         id="popup-auditor"
         class="modal"
     >
@@ -118,7 +125,11 @@ function handleButtonPopup($event) {
             class="modal-box gradient-auditor flex flex-col text-blue-auditor"
         >
             <!-- Ferme le popup-->
-            <button for="my-modal-3" class="absolute right-4 top-4">
+            <button
+                id="closePopup"
+                for="my-modal-3"
+                class="absolute right-4 top-4"
+            >
                 <span class="material-symbols-rounded text-4xl leading-none">
                     cancel
                 </span>
