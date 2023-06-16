@@ -13,16 +13,20 @@ const { currentInteraction } = storeToRefs(interactionStore);
 <template>
     <!-- Message du CTA -->
     <template v-if="currentInteraction.type === InteractionType.CTA">
-        <h2>Merci! Le lien a été envoyé aux auditeurs</h2>
+        <h2>Merci !</h2>
     </template>
     <template v-if="currentInteraction.type !== InteractionType.CTA">
         <base-card :color="Color.forInteractionType(currentInteraction.type)">
-            <template #title>
-                Merci! Un message a été envoyé aux gagnants suivant
-            </template>
-
+            <template #title> Merci ! </template>
+            <template #subtitle>
+                Un message a été envoyé aux gagnants suivant :</template
+            >
             <template #content>
-                <ul class="flex flex-col gap-2">
+                <ul
+                    :class="`overflow-y-scroll max-h-[55vh] scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-${Color.forInteractionType(
+                        currentInteraction.type
+                    )} flex flex-col gap-2`"
+                >
                     <li
                         v-for="winner of currentInteraction.winners"
                         :key="winner.id"
@@ -43,25 +47,38 @@ const { currentInteraction } = storeToRefs(interactionStore);
                                 {{
                                     formatDuration(
                                         calculateDuration(
-                                            winner.created_at,
+                                            currentInteraction.answers.filter(
+                                                (answer) =>
+                                                    winner.auditor_id ===
+                                                    answer.auditor_id
+                                            )[0].created_at,
                                             currentInteraction.created_at
                                         )
                                     )
                                 }}
                             </div>
                         </template>
+                        <!-- Text -> Contenu -->
+                        <template
+                            v-if="
+                                currentInteraction.type === InteractionType.TEXT
+                            "
+                            ><div class="pr-5">a répondu</div>
+                            <div>
+                                "{{
+                                    currentInteraction.answers.filter(
+                                        (answer) =>
+                                            winner.auditor_id ===
+                                            answer.auditor_id
+                                    )[0].replyable.content
+                                }}"
+                            </div>
+                        </template>
                     </li>
-                    <!-- Ne s'affiche pas dans le CTA -->
-                    <template
-                        v-if="currentInteraction.type !== InteractionType.CTA"
-                    >
-                        <li>
-                            <p class="font-light">
-                                {{ currentInteraction.winners.length }} gagnants
-                            </p>
-                        </li></template
-                    >
                 </ul>
+                <p class="font-light">
+                    {{ currentInteraction.winners.length }} gagnants
+                </p>
             </template>
             <template #actions>
                 <base-button
