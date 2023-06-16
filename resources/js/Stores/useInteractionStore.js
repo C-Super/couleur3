@@ -103,6 +103,10 @@ export const useInteractionStore = defineStore(
                     state.currentInteraction = null;
                     state.hasOpenedNotif = false;
                 })
+                .listen("AnswerQuestionChoiceSubmited", (event) => {
+                    console.log(event);
+                    state.currentInteraction.answers.push(event.answer);
+                })
                 .error((error) => {
                     console.error(error);
                 });
