@@ -59,16 +59,15 @@ const { currentInteraction } = storeToRefs(interactionStore);
                             v-if="
                                 currentInteraction.type === InteractionType.TEXT
                             "
-                        >
+                            ><div class="pr-5">a répondu</div>
                             <div>
-                                a répondu
-                                {{
+                                "{{
                                     currentInteraction.answers.filter(
                                         (answer) =>
                                             winner.auditor_id ===
                                             answer.auditor_id
                                     )[0].replyable.content
-                                }}
+                                }}"
                             </div>
                         </template>
                     </li>
