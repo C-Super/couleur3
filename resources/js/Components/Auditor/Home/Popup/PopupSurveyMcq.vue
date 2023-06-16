@@ -7,20 +7,47 @@ import { storeToRefs } from "pinia";
 import { router } from "@inertiajs/vue3";
 
 const interactionStore = useInteractionStore();
-const { currentInteraction } = storeToRefs(interactionStore);
+const { currentInteraction, hasAnswerd } = storeToRefs(interactionStore);
 
 const isDisabled = ref(false);
 const statsChoices = computed(() => {
-    return [20, 30, 40, 10];
+    const answers = currentInteraction.value.answers;
+    const percentageZero = [0, 0, 0, 0];
+    if (answers) {
+        const total = answers.length;
+        const count = [];
+        const percentage = [];
+        currentInteraction.value.question_choices.forEach((choice) => {
+            count.push({ id: choice.id, nb: 0 });
+        });
+        answers.forEach((answer) => {
+            count.forEach((element) => {
+                if (element.id === answer.replyable.id) {
+                    element.nb++;
+                    return;
+                }
+            });
+        });
+        for (let i = 0; i < count.length; i++) {
+            percentage.push(Math.round((count[i].nb * 100) / total));
+        }
+        return percentage;
+    }
+
+    return percentageZero;
 });
 
 function responseAuditor(choiceId) {
     submit(choiceId);
+    hasAnswerd.value = true;
     // change la taille des résultats
     const container = document.querySelector(".container");
+    console.log(statsChoices.value, statsChoices);
     statsChoices.value.forEach((stat, index) => {
+        console.log(stat);
         container.style.setProperty(`--right-${index + 1}`, `${100 - stat}%`);
     });
+    console.log(statsChoices);
 
     // désactive les réponses
     isDisabled.value = true;
@@ -53,7 +80,7 @@ const submit = (choiceId) => {
                 type="radio"
                 class="hidden"
                 name="SurveyMCQ"
-                :disabled="isDisabled"
+                :disabled="isDisabled || hasAnswerd"
                 :value="choice.value"
                 @change="responseAuditor(choice.id)"
             />
@@ -67,13 +94,19 @@ const submit = (choiceId) => {
                     class="propositionSolution"
                 >
                     <span
-                        v-if="isDisabled && choice.is_correct_answer === 0"
+                        v-if="
+                            (hasAnswerd || isDisabled) &&
+                            choice.is_correct_answer === 0
+                        "
                         class="material-symbols-rounded align-middle"
                     >
                         close
                     </span>
                     <span
-                        v-if="isDisabled && choice.is_correct_answer === 1"
+                        v-if="
+                            (hasAnswerd || isDisabled) &&
+                            choice.is_correct_answer === 1
+                        "
                         class="material-symbols-rounded align-middle"
                     >
                         done
@@ -81,7 +114,9 @@ const submit = (choiceId) => {
                 </span>
                 <span>{{ choice.value }}</span>
                 <span class="answers">
-                    <span v-if="isDisabled">{{ statsChoices[index] }}%</span>
+                    <span v-if="isDisabled || hasAnswerd"
+                        >{{ statsChoices[index] }}%</span
+                    >
                 </span>
             </label>
         </div>

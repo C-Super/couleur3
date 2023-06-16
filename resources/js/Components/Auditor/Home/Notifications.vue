@@ -48,16 +48,25 @@ function clicNotif() {
 <template>
     <BaseNotif
         v-if="
-            !hasAnswerd &&
             currentInteraction &&
-            (currentInteraction.type === InteractionType.TEXT ||
-                currentInteraction.type === InteractionType.SURVEY ||
+            (currentInteraction.type === InteractionType.SURVEY ||
                 currentInteraction.type === InteractionType.MCQ ||
                 currentInteraction.type === InteractionType.AUDIO ||
                 currentInteraction.type === InteractionType.VIDEO ||
                 currentInteraction.type === InteractionType.PICTURE)
         "
         id="notification-animateur"
+        @click="clicNotif"
+    >
+        Interagir avec l’animateur
+    </BaseNotif>
+    <BaseNotif
+        v-if="
+            !hasAnswerd &&
+            currentInteraction &&
+            currentInteraction.type === InteractionType.TEXT
+        "
+        id="notification-animateur-text"
         @click="clicNotif"
     >
         Interagir avec l’animateur

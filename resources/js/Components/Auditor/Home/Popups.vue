@@ -66,7 +66,6 @@ const formValidation = computed(() => {
 
 // Constante pour afficher ou non les titres et la validation
 const popupTitle = computed(() => {
-    console.log(hasBeenRewarded.value);
     if (hasBeenRewarded.value !== null) {
         document.querySelector("#popup-auditor").showModal();
         return PopupTitleType.GIFT;
