@@ -50,8 +50,6 @@ export const useInteractionStore = defineStore(
 
                 if (oldValue.id === newValue.id) return;
 
-                console.log(oldValue, newValue);
-
                 if (newValue) {
                     if (
                         newValue.roleable_type === "App\\Models\\Animator" &&
@@ -109,7 +107,6 @@ export const useInteractionStore = defineStore(
                     state.currentInteraction = null;
                 })
                 .listen("AnswerQuestionChoiceSubmited", (event) => {
-                    console.log(event);
                     state.currentInteraction.answers.push(event.answer);
                 })
                 .error((error) => {
@@ -129,7 +126,6 @@ export const useInteractionStore = defineStore(
             window.Echo.private(`auditors.${page.props.auth.user.id}`).listen(
                 "WinnerSentResult",
                 (event) => {
-                    console.log(event);
                     state.hasBeenRewarded = event.reward;
                 }
             );
@@ -241,7 +237,6 @@ export const useInteractionStore = defineStore(
         };
 
         const submitManual = () => {
-            console.log("submitManual");
             router.post(
                 route(
                     "interactions.winners.confirm",

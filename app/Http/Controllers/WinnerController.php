@@ -143,7 +143,7 @@ class WinnerController extends Controller
             ->delete();
 
         // Dispatch an event with the new auditor id
-        event(new NewWinnerGenerated([$newAuditorId]));
+        broadcast(new NewWinnerGenerated([$newAuditorId]));
 
         return response()->json(['new_auditor_id' => $newAuditorId], 200);
     }
