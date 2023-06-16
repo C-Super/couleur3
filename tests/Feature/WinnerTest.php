@@ -53,14 +53,13 @@ it('generates random winners list successfully', function () {
 
     // Send request
     $response = postJson("/interactions/{$interaction->id}/winners/random", [
-        'interaction_id' => $interaction->id,
         'winners_count' => 3,
         'reward_id' => $reward->id,
     ]);
 
     // Assert response
-    $response->assertStatus(200);
-    $response->assertJsonStructure(['auditor_ids']);
+    $response->assertStatus(302);
+    $response->assertJsonStructure(['interaction' => ['winners']]);
     $this->assertCount(3, $response['auditor_ids']);
 
     // Assert database winners with interaction_id
@@ -125,18 +124,17 @@ it('generates random winners list with correct MCQ answers', function () {
 
     // Send request
     $response = postJson("/interactions/{$interaction->id}/winners/random", [
-        'interaction_id' => $interaction->id,
         'winners_count' => 2,
         'reward_id' => $reward->id,
     ]);
 
     // Assert response
-    $response->assertStatus(200);
-    $response->assertJsonStructure(['auditor_ids']);
-    $this->assertCount(2, $response['auditor_ids']);
+    $response->assertStatus(302);
+    $response->assertJsonStructure(['winners']);
+    $this->assertCount(2, $response['interaction.winners']);
 
     // Assert all winners have the correct answer
-    foreach ($response['auditor_ids'] as $auditorId) {
+    foreach ($response['winners'] as $auditorId) {
         $answer = Answer::where('auditor_id', $auditorId)->where('interaction_id', $interaction->id)->first();
         $this->assertEquals($correctChoice->id, $answer->replyable_id);
     }
@@ -251,14 +249,13 @@ it('stores winners successfully', function () {
 
     // Send request to store the winners
     $response = postJson("/interactions/{$interaction->id}/winners/confirm", [
-        'interaction_id' => $interaction->id,
-        'auditor_ids' => $winners,
+        'winners' => $winners,
         'reward_id' => $reward->id,
     ]);
 
     // Assert response
-    $response->assertStatus(200);
-    $response->assertJson(['message' => 'Winners stored successfully.']);
+    $response->assertStatus(302);
+    $response->assertJsonStructure(['interaction.winners']);
 
     // Assert database winners with interaction_id
     $winnersInDb = Winner::where('interaction_id', $interaction->id)->pluck('auditor_id')->toArray();

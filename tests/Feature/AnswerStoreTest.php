@@ -37,8 +37,7 @@ it('can store quick click answer and fires correct event', function () {
 
     $this->actingAs($user);
 
-    $response = postJson("/interactions/{$interaction->id}/answers/quick_click", [
-    ]);
+    $response = postJson("/interactions/{$interaction->id}/answers/quick_click", []);
 
     $response->assertStatus(200);
     expect(Answer::where('auditor_id', $auditor->id)->exists())->toBeTrue();
